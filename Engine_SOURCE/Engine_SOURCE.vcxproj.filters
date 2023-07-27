@@ -118,6 +118,12 @@
     <Filter Include="FontWrapper">
       <UniqueIdentifier>{21b1b362-6e4d-4257-9449-c22529d2b35d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Monster">
+      <UniqueIdentifier>{05134daf-a390-4ea9-8951-bd829bc254b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Monster\Base">
+      <UniqueIdentifier>{c5e28f3c-938b-4690-8ddb-d006b5bbc85a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaApplication.cpp">
@@ -268,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="yaFontWrapper.cpp">
       <Filter>FontWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterBase.cpp">
+      <Filter>GameObject\Monster\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -431,6 +440,9 @@
     </ClInclude>
     <ClInclude Include="yaFontWrapper.h">
       <Filter>FontWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterBase.h">
+      <Filter>GameObject\Monster\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
