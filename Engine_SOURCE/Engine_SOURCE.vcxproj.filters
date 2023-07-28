@@ -124,6 +124,9 @@
     <Filter Include="GameObject\Monster\Base">
       <UniqueIdentifier>{c5e28f3c-938b-4690-8ddb-d006b5bbc85a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Rigidbody">
+      <UniqueIdentifier>{6a200c63-e605-4ef6-a29f-b6d0f64d6a2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaApplication.cpp">
@@ -277,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="MonsterBase.cpp">
       <Filter>GameObject\Monster\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaRigidbody.cpp">
+      <Filter>Component\Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="yaGroundScript.cpp">
+      <Filter>Component\Script\Contents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -443,6 +452,12 @@
     </ClInclude>
     <ClInclude Include="MonsterBase.h">
       <Filter>GameObject\Monster\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaRigidbody.h">
+      <Filter>Component\Rigidbody</Filter>
+    </ClInclude>
+    <ClInclude Include="yaGroundScript.h">
+      <Filter>Component\Script\Contents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
