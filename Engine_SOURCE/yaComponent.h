@@ -2,6 +2,7 @@
 #include "yaMath.h"
 #include "yaEntity.h"
 
+
 using namespace ya::enums;
 namespace ya
 {

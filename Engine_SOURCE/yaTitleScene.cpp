@@ -19,7 +19,10 @@
 #include "yaLight.h"
 #include "yaPaintShader.h"
 #include "yaParticleSystem.h"
+#include "yaSpearman.h"
 //#include "yaFBXLoader.h"
+
+
 namespace ya
 {
 	TitleScene::TitleScene()
@@ -46,7 +49,8 @@ namespace ya
 		GameObject* player = object::Instantiate<GameObject>(eLayerType::Player);
 		player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 10.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
+
+		
 		player->SetName(L"Player");
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
@@ -56,19 +60,22 @@ namespace ya
 		col->SetType(eColliderType::Box);
 		col->SetSize(Vector3(1.0, 1.0f,1.0f));
 
-		GameObject* player2 = object::Instantiate<GameObject>(eLayerType::Player);
+		mainCamera->SetPlayer(player);
+
+		Spearman* player2 = object::Instantiate<Spearman>(eLayerType::Monster);
 		player2->GetComponent<Transform>()->SetPosition(Vector3(10.0f, 0.0f, 10.0f));
 		player2->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
-		player2->SetName(L"Player");
+		player2->GetComponent<Transform>()->SetRotation(Vector3(1.0f, 1.0f, 1.0f));
+		player2->SetName(L"Spearman");
 		MeshRenderer* mr2 = player2->AddComponent<MeshRenderer>();
 		mr2->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		mr2->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		Collider2D* col2 = player2->AddComponent <Collider2D>();
 		col2->SetType(eColliderType::Box);
 		col2->SetSize(Vector3(1.0, 2.0f, 2.0f));
+		player2->SetTarget(player);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
 		//mr->SetMesh(Resources::Find<Mesh>(L"SphereMesh"));
 

@@ -50,6 +50,10 @@ namespace ya
 			pos += 100.0f * -tr->Up() * Time::DeltaTime();
 		}
 
+		
+
+
+
 		tr->SetPosition(pos);
 	}
 	void CameraScript::Render()

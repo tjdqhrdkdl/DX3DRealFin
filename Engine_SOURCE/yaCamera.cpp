@@ -39,6 +39,22 @@ namespace ya
 
 	void Camera::Update()
 	{
+		if (nullptr != mPlayer)
+		{
+			Vector3 playerpos = mPlayer->GetComponent<Transform>()->GetPosition();
+
+			Transform* tr = GetOwner()->GetComponent<Transform>();
+
+			playerpos.z -= 20.0f;		
+			tr->SetPosition(playerpos);
+
+
+
+
+			//Vector3 playerrot = tr->GetRotation();
+			//tr->SetRotation(playerrot);
+
+		}
 
 	}
 

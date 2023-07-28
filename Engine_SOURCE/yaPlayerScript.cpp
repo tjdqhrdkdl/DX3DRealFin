@@ -4,6 +4,7 @@
 #include "yaInput.h"
 #include "yaTime.h"
 #include "yaAnimator.h"
+#include "yaMonster.h"
 
 namespace ya
 {
@@ -28,79 +29,78 @@ namespace ya
 	void PlayerScript::Update()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		//Vector3 rot = tr->GetRotation();
-		//rot.z += 10.0f * Time::DeltaTime();
-		//tr->SetRotation(rot);
 
-		//if (Input::GetKeyState(eKeyCode::R) == eKeyState::PRESSED)
+		Vector3 rihght = tr->Right();
+		Vector3 up = tr->Up();
+		Vector3 foward = tr->Foward();
+
+
+		//if (Input::GetKey(eKeyCode::RIGHT))
 		//{
-		//	Vector3 rot = tr->GetRotation();
-		//	rot.z += 10.0f * Time::DeltaTime();
-		//	tr->SetRotation(rot);
+		//	Vector3 pos = tr->Right();
+		//	pos.x += 30.0f * Time::DeltaTime();
+		//	tr->SetRight(pos);
 		//}
+		//if (Input::GetKey(eKeyCode::LEFT))
+		//{
+		//	Vector3 pos = tr->Right();
+		//	pos.x -= 30.0f * Time::DeltaTime();
+		//	tr->SetRight(pos);
+		//}
+
+		//if (Input::GetKey(eKeyCode::DOWN))
+		//{
+		//	Vector3 pos = tr->Foward();
+		//	pos.x -= 30.0f * Time::DeltaTime();
+		//	tr->SetFoward(pos);
+		//}
+		//if (Input::GetKey(eKeyCode::UP))
+		//{
+		//	Vector3 pos = tr->Foward();
+		//	pos.x += 30.0f * Time::DeltaTime();
+		//	tr->SetFoward(pos);
+		//}
+
+
+
 
 
 		if (Input::GetKey(eKeyCode::RIGHT))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.x += 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			Vector3 pos = tr->GetRotation();
+			pos.y += 20.0f * Time::DeltaTime();
+			tr->SetRotation(pos);			
 		}
 		if (Input::GetKey(eKeyCode::LEFT))
 		{
+			Vector3 pos = tr->GetRotation();
+			pos.y -= 20.0f * Time::DeltaTime();
+			tr->SetRotation(pos);
+		}
+		if (Input::GetKey(eKeyCode::UP))
+		{
 			Vector3 pos = tr->GetPosition();
-			pos.x -= 60.0f * Time::DeltaTime();
+			Vector3 test = tr->Foward();
+			pos.x += test.x;
+			pos.y += test.y;
+			pos.z += 10.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
 		}
 
 		if (Input::GetKey(eKeyCode::DOWN))
 		{
-			Vector3 pos = tr->GetRotation();
-			pos.y -= 60.0f * Time::DeltaTime();
-			tr->SetRotation(pos);
-		}
-		if (Input::GetKey(eKeyCode::UP))
-		{
-			Vector3 pos = tr->GetRotation();
-			pos.y += 60.0f * Time::DeltaTime();
-			tr->SetRotation(pos);
+			Vector3 pos = tr->GetPosition();
+			Vector3 test = tr->Foward();
+			pos.x -= test.x;
+			pos.y -= test.y;
+			pos.z -= 10.0f * Time::DeltaTime();
+			tr->SetPosition(pos);
 		}
 
-		/*Transform* tr = GetOwner()->GetComponent<Transform>();
 
-		Vector3 pos = tr->GetPosition();
 
-		if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
-		{
-			pos.x += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
-		{
-			pos.x -= 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
-		{
-			pos.y += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
-		{
-			pos.y -= 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
-		{
-			pos.z += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::E) == eKeyState::PRESSED)
-		{
-			pos.z -= 3.0f * Time::DeltaTime();
-		}
-
-		tr->SetPosition(pos);*/
 		Animator* animator = GetOwner()->GetComponent<Animator>();
-		//if (Input::GetKey(eKeyCode::N_1))
-		//{
-		//	animator->Play(L"MoveDown");
-		//}
+
 
 	}
 
@@ -110,7 +110,13 @@ namespace ya
 
 	void PlayerScript::OnCollisionEnter(Collider2D* collider)
 	{
-		int a = 0;
+		if (dynamic_cast<GameObject*>(collider->GetOwner()))
+		{
+			int a = 0;
+		}
+
+
+
 	}
 
 	void PlayerScript::OnCollisionStay(Collider2D* collider)

@@ -32,6 +32,11 @@ namespace ya
 		Vector3 Right() { return mRight; }
 		Vector3 Up() { return mUp; }
 
+		void SetFoward(Vector3 foward) { mFoward = foward; }
+		void SetRight(Vector3 right) { mRight = right; }
+		void SetUp(Vector3 up) { mUp = up; }
+
+
 		Matrix& GetWorldMatrix() { return mWorld; }
 
 	private:

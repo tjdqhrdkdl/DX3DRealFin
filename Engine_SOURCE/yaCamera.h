@@ -1,6 +1,7 @@
 #pragma once
 #include "yaComponent.h"
 
+
 namespace ya
 {
 	using namespace math;
@@ -39,6 +40,10 @@ namespace ya
 		Matrix& GetViewMatrix() { return mView; }
 		Matrix& GetProjectionMatrix() { return mProjection; }
 
+
+		GameObject* GetPlayer() { return mPlayer; }
+		void SetPlayer(GameObject* player) { mPlayer = player; }
+
 	private:
 		void sortGameObjects();
 		void renderOpaque();
@@ -48,6 +53,9 @@ namespace ya
 		void pushGameObjectToRenderingModes(GameObject* gameObj);
 
 	private:
+
+		GameObject* mPlayer;
+
 		static Matrix View;
 		static Matrix Projection;
 
