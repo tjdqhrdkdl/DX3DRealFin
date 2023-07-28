@@ -24,13 +24,13 @@ namespace ya
 		virtual void OnTriggerExit(Collider2D* collider);
 
 		void SetType(eColliderType type) { mType = type; }
-		void SetSize(Vector2 size) { mSize = size; }
-		void SetCenter(Vector2 center) { mCenter = center; }
+		void SetSize(Vector3 size) { mSize = size; }
+		void SetCenter(Vector3 center) { mCenter = center; }
 		void SetRadius(float radius) { mRadius = radius; }
 		bool IsTriiger() { return mbTrigger; }
 		UINT GetID() { return mID; }
 		Vector3 GetPosition() { return mPosition; }
-		Vector2 GetSize() { return mSize; }
+		Vector3 GetSize() { return mSize; }
 		eColliderType GetColliderType() { return mType; }
 
 	private:
@@ -39,8 +39,8 @@ namespace ya
 		eColliderType mType;
 		Transform* mTransform;
 
-		Vector2 mSize;
-		Vector2 mCenter;
+		Vector3 mSize;
+		Vector3 mCenter;
 		Vector3 mPosition;
 		float mRadius;
 		bool mbTrigger;

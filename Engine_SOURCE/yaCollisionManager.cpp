@@ -293,11 +293,11 @@ namespace ya
 			Matrix leftMat = leftTr->GetWorldMatrix();
 			Matrix rightMat = rightTr->GetWorldMatrix();
 
-			Vector3 leftScale = Vector3(left->GetSize().x, left->GetSize().y, 1.0f);
+			Vector3 leftScale = Vector3(left->GetSize().x, left->GetSize().y, left->GetSize().z);
 			Matrix finalLeft = Matrix::CreateScale(leftScale);
 			finalLeft *= leftMat;
 
-			Vector3 rightScale = Vector3(right->GetSize().x, right->GetSize().y, 1.0f);
+			Vector3 rightScale = Vector3(right->GetSize().x, right->GetSize().y, right->GetSize().z);
 			Matrix finalRight = Matrix::CreateScale(rightScale);
 			finalRight *= rightMat;
 
