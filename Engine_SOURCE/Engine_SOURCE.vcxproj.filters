@@ -125,7 +125,7 @@
       <UniqueIdentifier>{c5e28f3c-938b-4690-8ddb-d006b5bbc85a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Rigidbody">
-      <UniqueIdentifier>{7d525d01-38b9-4a33-b28e-d7df9f6cf011}</UniqueIdentifier>
+
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -281,12 +281,7 @@
     <ClCompile Include="MonsterBase.cpp">
       <Filter>GameObject\Monster\Base</Filter>
     </ClCompile>
-    <ClCompile Include="yaSpearman.cpp">
-      <Filter>GameObject\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="yaRigidbody.cpp">
-      <Filter>Component\Rigidbody</Filter>
-    </ClCompile>
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -453,12 +448,7 @@
     <ClInclude Include="MonsterBase.h">
       <Filter>GameObject\Monster\Base</Filter>
     </ClInclude>
-    <ClInclude Include="yaSpearman.h">
-      <Filter>GameObject\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="yaRigidbody.h">
-      <Filter>Component\Rigidbody</Filter>
-    </ClInclude>
+
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">

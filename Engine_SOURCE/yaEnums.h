@@ -14,6 +14,7 @@ namespace ya::enums
 		None = 0,
 		Camera,
 		Grid,
+		Ground,
 		Monster,
 		Player,
 

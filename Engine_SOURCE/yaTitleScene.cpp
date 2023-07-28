@@ -22,7 +22,6 @@
 #include "yaSpearman.h"
 //#include "yaFBXLoader.h"
 
-
 namespace ya
 {
 	TitleScene::TitleScene()
@@ -58,7 +57,10 @@ namespace ya
 		player->AddComponent<PlayerScript>();
 		Collider2D* col = player->AddComponent <Collider2D>();
 		col->SetType(eColliderType::Box);
-		col->SetSize(Vector3(1.0, 1.0f,1.0f));
+    col->SetSize(Vector3(1.0, 1.0f, 1.0f));
+		Rigidbody* playerRigidbody = player->AddComponent<Rigidbody>();
+		playerRigidbody->SetGround(false);
+		
 
 		mainCamera->SetPlayer(player);
 
@@ -75,7 +77,7 @@ namespace ya
 		col2->SetSize(Vector3(1.0, 2.0f, 2.0f));
 		player2->SetTarget(player);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
+
 
 		//mr->SetMesh(Resources::Find<Mesh>(L"SphereMesh"));
 

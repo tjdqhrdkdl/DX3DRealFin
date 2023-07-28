@@ -1,14 +1,19 @@
 #pragma once
+class GroundScript
+{
+};
+
+#pragma once
 #include "yaScript.h"
 
 
 namespace ya
 {
-	class PlayerScript : public Script
+	class GroundScript : public Script
 	{
 	public:
-		PlayerScript();
-		~PlayerScript();
+		GroundScript();
+		~GroundScript();
 
 		virtual void Initalize() override;
 		virtual void Update() override;
@@ -23,6 +28,6 @@ namespace ya
 		void End();
 
 	private:
-		float mJumpTimer;
+
 	};
 }
