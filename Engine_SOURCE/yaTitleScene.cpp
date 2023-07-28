@@ -56,7 +56,7 @@ namespace ya
 		player->AddComponent<PlayerScript>();
 		Collider2D* col = player->AddComponent <Collider2D>();
 		col->SetType(eColliderType::Box);
-		col->SetSize(Vector2(1.0, 1.0f));
+    col->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		Rigidbody* playerRigidbody = player->AddComponent<Rigidbody>();
 		playerRigidbody->SetGround(false);
 		
@@ -71,7 +71,7 @@ namespace ya
 		mr2->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		Collider2D* col2 = player2->AddComponent <Collider2D>();
 		col2->SetType(eColliderType::Box);
-		col2->SetSize(Vector2(1.0, 1.0f));
+		col2->SetSize(Vector3(1.0, 2.0f, 2.0f));
 
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);

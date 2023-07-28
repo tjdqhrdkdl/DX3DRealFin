@@ -53,29 +53,63 @@ namespace ya
 		const std::vector<GameObject*>& lefts = scene->GetGameObjects(left);
 		const std::vector<GameObject*>& rights = scene->GetGameObjects(right);
 
-		for (GameObject* left : lefts)
+		if (left == right)
 		{
-			if (left->GetState() != GameObject::Active)
-				continue;
-			if (left->GetComponent<Collider2D>() == nullptr)
-				continue;
-
-			for (GameObject* right : rights)
+			for (size_t i = 0; i < lefts.size(); i++)
 			{
-				if (right->GetState() != GameObject::Active)
-					continue;
-				if (right->GetComponent<Collider2D>() == nullptr)
-					continue;
-				if (left == right)
-					continue;
+				GameObject* left = lefts[i];
 
-				ColliderCollision(left->GetComponent<Collider2D>(), right->GetComponent<Collider2D>());
+				{
+					if (left->GetState() != GameObject::Active)
+						continue;
+					if (left->GetComponent<Collider2D>() == nullptr)
+						continue;
+
+					for (size_t k = i; k < rights.size(); k++)
+					{
+						GameObject* right = rights[k];
+
+						if (right->GetState() != GameObject::Active)
+							continue;
+						if (right->GetComponent<Collider2D>() == nullptr)
+							continue;
+						if (left == right)
+							continue;
+
+						ColliderCollision(left->GetComponent<Collider2D>(), right->GetComponent<Collider2D>());
+					}
+
+					if ((UINT)left == (UINT)right)
+						break;
+				}
 			}
-
-			if ((UINT)left == (UINT)right)
-				break;
 		}
 
+		else
+		{
+			for (GameObject* left : lefts)
+			{
+				if (left->GetState() != GameObject::Active)
+					continue;
+				if (left->GetComponent<Collider2D>() == nullptr)
+					continue;
+
+				for (GameObject* right : rights)
+				{
+					if (right->GetState() != GameObject::Active)
+						continue;
+					if (right->GetComponent<Collider2D>() == nullptr)
+						continue;
+					if (left == right)
+						continue;
+
+					ColliderCollision(left->GetComponent<Collider2D>(), right->GetComponent<Collider2D>());
+				}
+
+				if ((UINT)left == (UINT)right)
+					break;
+			}
+		}
 	}
 
 	void CollisionManager::ColliderCollision(Collider2D* left, Collider2D* right)
@@ -259,11 +293,11 @@ namespace ya
 			Matrix leftMat = leftTr->GetWorldMatrix();
 			Matrix rightMat = rightTr->GetWorldMatrix();
 
-			Vector3 leftScale = Vector3(left->GetSize().x, left->GetSize().y, 1.0f);
+			Vector3 leftScale = Vector3(left->GetSize().x, left->GetSize().y, left->GetSize().z);
 			Matrix finalLeft = Matrix::CreateScale(leftScale);
 			finalLeft *= leftMat;
 
-			Vector3 rightScale = Vector3(right->GetSize().x, right->GetSize().y, 1.0f);
+			Vector3 rightScale = Vector3(right->GetSize().x, right->GetSize().y, right->GetSize().z);
 			Matrix finalRight = Matrix::CreateScale(rightScale);
 			finalRight *= rightMat;
 
