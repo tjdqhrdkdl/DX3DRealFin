@@ -10,8 +10,8 @@ namespace ya
 		: Component(eComponentType::Collider)
 		, mType(eColliderType::None)
 		, mTransform(nullptr)
-		, mSize(Vector2::One)
-		, mCenter(Vector2::Zero)
+		, mSize(Vector3::One)
+		, mCenter(Vector3::Zero)
 		, mbTrigger(false)
 		, mID(0)
 		, mRadius(0.0f)
@@ -35,12 +35,12 @@ namespace ya
 	void Collider2D::FixedUpdate()
 	{
 		Vector3 scale = mTransform->GetScale();
-		scale *= Vector3(mSize.x, mSize.y, 1.0f);
+		scale *= Vector3(mSize.x, mSize.y, mSize.z);
 
 		Vector3 rotation = mTransform->GetRotation();
 
 		Vector3 position = mTransform->GetPosition();
-		Vector3 colliderPos = position + Vector3(mCenter.x, mCenter.y, 0.0f);
+		Vector3 colliderPos = position + Vector3(mCenter.x, mCenter.y, mCenter.z);
 		mPosition = colliderPos;
 
 		Matrix scaleMatrix = Matrix::CreateScale(scale);
