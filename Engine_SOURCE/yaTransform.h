@@ -34,6 +34,7 @@ namespace ya
 
 		Matrix& GetWorldMatrix() { return mWorld; }
 
+		void RotateFromAxis(Matrix matrix) { mbRotateFromAxis = true; mRotationFromAxis = matrix; }
 	private:
 		Transform* mParent;
 		Vector3 mFoward;
@@ -42,6 +43,10 @@ namespace ya
 		Vector3 mPosition;
 		Vector3 mRotation;
 		Vector3 mScale;
+		
+		bool mbRotateFromAxis;
+		Matrix mRotationFromAxis;
+
 		Matrix mWorld;
 	};
 }

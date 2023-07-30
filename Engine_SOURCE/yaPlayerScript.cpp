@@ -55,15 +55,15 @@ namespace ya
 
 		if (Input::GetKey(eKeyCode::DOWN))
 		{
-			Vector3 pos = tr->GetRotation();
-			pos.y -= 60.0f * Time::DeltaTime();
-			tr->SetRotation(pos);
+			Vector3 pos = tr->GetPosition();
+			pos.z -= 60.0f * Time::DeltaTime();
+			tr->SetPosition(pos);
 		}
 		if (Input::GetKey(eKeyCode::UP))
 		{
-			Vector3 pos = tr->GetRotation();
-			pos.y += 60.0f * Time::DeltaTime();
-			tr->SetRotation(pos);
+			Vector3 pos = tr->GetPosition();
+			pos.z += 60.0f * Time::DeltaTime();
+			tr->SetPosition(pos);
 		}
 
 		/*Transform* tr = GetOwner()->GetComponent<Transform>();

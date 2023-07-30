@@ -43,20 +43,28 @@ namespace ya
 		// 회전 변환 행렬
 		Matrix rotation;
 
-		Vector3 radian(mRotation.x * (XM_PI / 180)
-			, mRotation.y * (XM_PI / 180)
-			, mRotation.z * (XM_PI / 180));
+		if (mbRotateFromAxis)
+		{
+			rotation = mRotationFromAxis;
+		}
+		else
+		{
+			Vector3 radian(mRotation.x * (XM_PI / 180)
+				, mRotation.y * (XM_PI / 180)
+				, mRotation.z * (XM_PI / 180));
 
-		rotation = Matrix::CreateRotationX(radian.x);
-		rotation *= Matrix::CreateRotationY(radian.y);
-		rotation *= Matrix::CreateRotationZ(radian.z);
+			float theta;
 
+
+			rotation = Matrix::CreateRotationX(radian.x);
+			rotation *= Matrix::CreateRotationY(radian.y);
+			rotation *= Matrix::CreateRotationZ(radian.z);
+		}
 		// 이동 변환 행렬
 		Matrix position;
 		position.Translation(mPosition);
 
 		mWorld = scale * rotation * position;
-
 		mFoward = Vector3::TransformNormal(Vector3::Forward, rotation);
 		mRight = Vector3::TransformNormal(Vector3::Right, rotation);
 		mUp = Vector3::TransformNormal(Vector3::Up, rotation);
@@ -91,4 +99,5 @@ namespace ya
 		cb->Bind(eShaderStage::PS);
 		cb->Bind(eShaderStage::CS);
 	}
+
 }
