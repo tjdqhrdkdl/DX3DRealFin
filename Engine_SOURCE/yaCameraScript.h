@@ -12,8 +12,7 @@ namespace ya
 
 		virtual void Initalize() override;
 		virtual void Update() override;
-		virtual void Render() override;
-
+		virtual void Render() override;	
 		
 		void TrackTarget();
 

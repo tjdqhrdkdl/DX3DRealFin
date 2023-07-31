@@ -27,9 +27,15 @@ namespace ya::renderer
 
 	CBUFFER(TransformCB, CBSLOT_TRANSFORM)
 	{
+		Matrix scale;
+		Matrix rotation;
+		Matrix translation;
 		Matrix world;
 		Matrix view;
 		Matrix projection;
+
+		BOOL useQuaternion;
+		Vector4 rotQuaternion;
 	};
 
 	CBUFFER(MaterialCB, CBSLOT_MATERIAL)

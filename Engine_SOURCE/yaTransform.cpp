@@ -6,7 +6,7 @@ namespace ya
 {
 	Transform::Transform()
 		: Component(eComponentType::Transform)
-		, mFoward(Vector3::Forward)
+		, mForward(Vector3::Forward)
 		, mRight(Vector3::Right)
 		, mUp(Vector3::Up)
 		, mScale(Vector3::One)
@@ -37,8 +37,12 @@ namespace ya
 
 		// 월드 행렬 생성
 		
+
 		// 크기 변환 행렬
 		Matrix scale = Matrix::CreateScale(mScale);
+		mMatScale = scale;
+
+
 
 		// 회전 변환 행렬
 		Matrix rotation;
@@ -46,6 +50,11 @@ namespace ya
 		if (mbRotateFromAxis)
 		{
 			rotation = mRotationFromAxis;
+		}
+		else if (mbUseQuaternion)
+		{
+			Matrix qM = XMMatrixRotationQuaternion(mRotationQuaternion);
+			rotation = qM;
 		}
 		else
 		{
@@ -55,24 +64,35 @@ namespace ya
 
 			float theta;
 
-
 			rotation = Matrix::CreateRotationX(radian.x);
 			rotation *= Matrix::CreateRotationY(radian.y);
 			rotation *= Matrix::CreateRotationZ(radian.z);
 		}
+		mMatRotation = rotation;
+
+
+
 		// 이동 변환 행렬
 		Matrix position;
 		position.Translation(mPosition);
 
+		mMatTranslation = position;
+
 		mWorld = scale * rotation * position;
-		mFoward = Vector3::TransformNormal(Vector3::Forward, rotation);
-		mRight = Vector3::TransformNormal(Vector3::Right, rotation);
-		mUp = Vector3::TransformNormal(Vector3::Up, rotation);
-		
+		if (mbCamera)
+		{
+		}
+		else
+		{
+			mForward = Vector3::TransformNormal(Vector3::Forward, rotation);
+			mRight = Vector3::TransformNormal(Vector3::Right, rotation);
+			mUp = Vector3::TransformNormal(Vector3::Up, rotation);
+		}
 		// 카메라 컴포넌트에서 세팅해준다
 		// 뷰행렬 세팅
 		// 프로젝션 행렬 세팅
 
+	
 		if (mParent)
 		{
 			mWorld *= mParent->mWorld;
@@ -86,9 +106,18 @@ namespace ya
 	void Transform::SetConstantBuffer()
 	{
 		renderer::TransformCB trCb = {};
+		trCb.scale = mMatScale;
+		trCb.rotation = mMatRotation;
+		trCb.translation = mMatTranslation;
 		trCb.world = mWorld;
 		trCb.view = Camera::GetGpuViewMatrix();
 		trCb.projection = Camera::GetGpuProjectionMatrix();
+		trCb.useQuaternion = mbUseQuaternion;
+		trCb.rotQuaternion = mRotationQuaternion;
+
+		if (mbUseQuaternion)
+			int a = 0;
+
 
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Transform];
 		cb->SetData(&trCb);

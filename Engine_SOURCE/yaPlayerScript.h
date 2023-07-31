@@ -22,7 +22,9 @@ namespace ya
 		void Action();
 		void End();
 
-	private:
+		void SetTarget(GameObject* target) { mTarget = target; }
 
+	private:
+		GameObject* mTarget;
 	};
 }

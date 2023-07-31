@@ -66,6 +66,20 @@ namespace ya
 			tr->SetPosition(pos);
 		}
 
+		if (Input::GetKey(eKeyCode::SPACE))
+		{
+			Vector3 pos = tr->GetPosition();
+			pos.y += 60.0f * Time::DeltaTime();
+			tr->SetPosition(pos);
+		}
+
+		if (Input::GetKey(eKeyCode::M))
+		{
+			Vector3 pos = tr->GetPosition();
+			pos.y -= 60.0f * Time::DeltaTime();
+			tr->SetPosition(pos);
+		}
+
 		/*Transform* tr = GetOwner()->GetComponent<Transform>();
 
 		Vector3 pos = tr->GetPosition();
@@ -102,7 +116,61 @@ namespace ya
 		//	animator->Play(L"MoveDown");
 		//}
 
+
+		// 마우스의 이동 거리(픽셀) 측정 - 반영 - 마우스 위치 고정 
+		
+		
+
+			//디버깅시에 문제생기는 부분 막음.
+			if (Time::DeltaTime() < 0.1f)
+			{
+				//두번 계산해줄 것이다.
+				//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
+				//카메라 오브젝트의 회전을 바꿔준다.
+
+
+
+				//위치 이동 다음 카메라를 회전 시켜서 항상 타겟을 바라보게끔.
+				//목표 : forward가 newForward가 되는 것.
+				//두 벡터의 외적을 통해서 수직이 되는 벡터를 구한다.
+				//두 벡터의 내적을 통해서 두 벡터 사이의 코사인 세타를 구한다.
+				//수직이 되는 벡터를 축으로, 세타만큼 회전시킨다.
+
+				Vector3 forward = Vector3::Forward;
+				Vector3 pos = tr->GetPosition();
+				Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
+
+				Vector3 newForward = targetPos - pos;
+
+
+				newForward.Normalize();
+				Vector3 axis = forward.Cross(newForward);
+				axis.Normalize();
+
+				float c = forward.Dot(newForward);
+				float vecTheta = acosf(c);
+				float s = sinf(vecTheta);
+
+				//축 벡터에 기반한 rotation matrix.
+				Matrix rotationFromAxis = {
+					c + (1 - c) * axis.x * axis.x			, (1 - c) * axis.x * axis.y + s * axis.z , (1 - c) * axis.x * axis.z - s * axis.y	, 0,
+					(1 - c) * axis.x * axis.y - s * axis.z  , c + (1 - c) * axis.y * axis.y			 , (1 - c) * axis.y * axis.z + s * axis.x	, 0,
+					(1 - c) * axis.x * axis.z + s * axis.y  , (1 - c) * axis.y * axis.z - s * axis.x ,  c + (1 - c) * axis.z * axis.z			, 0,
+					0										, 0									     , 0										, 1
+				};
+
+				tr->RotateFromAxis(rotationFromAxis);
+
+
+				
+
+
+
+			}
+
+		
 	}
+
 
 	void PlayerScript::Render()
 	{
