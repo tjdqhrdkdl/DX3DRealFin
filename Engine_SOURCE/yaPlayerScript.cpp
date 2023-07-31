@@ -1,14 +1,20 @@
 #include "yaPlayerScript.h"
+#include "yaPlayer.h"
 #include "yaTransform.h"
 #include "yaGameObject.h"
 #include "yaInput.h"
 #include "yaTime.h"
 #include "yaAnimator.h"
+#include "yaObject.h";
+#include "yaMeshRenderer.h"
+#include "yaResources.h"
+#include "yaRigidbody.h"
 
 namespace ya
 {
 	PlayerScript::PlayerScript()
 		: Script()
+		, mJumpTimer(0.0f)
 	{
 	}
 
@@ -18,90 +24,82 @@ namespace ya
 
 	void PlayerScript::Initalize()
 	{
-		//Animator* animator = GetOwner()->GetComponent<Animator>();
-		//animator->GetStartEvent(L"MoveDown") = std::bind(&PlayerScript::Start, this);
-		//animator->GetCompleteEvent(L"Idle") = std::bind(&PlayerScript::Action, this);
-		//animator->GetEndEvent(L"Idle") = std::bind(&PlayerScript::End, this);
-		//animator->GetEvent(L"Idle", 1) = std::bind(&PlayerScript::End, this);
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		{
+			// 플레이어의 forward를 구분하기위한 object
+			// 후에 mesh 씌우면 없앨 예정
+			GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
+			face->SetName(L"face");
+			Transform* faceTr = face->GetComponent<Transform>();
+			faceTr->SetPosition(Vector3(0.0f, 0.5f, 0.5f));
+			faceTr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
+			MeshRenderer* faceRenderer = face->AddComponent<MeshRenderer>();
+			faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+			faceRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		}
+
 	}
 
 	void PlayerScript::Update()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		//Vector3 rot = tr->GetRotation();
-		//rot.z += 10.0f * Time::DeltaTime();
-		//tr->SetRotation(rot);
 
-		//if (Input::GetKeyState(eKeyCode::R) == eKeyState::PRESSED)
-		//{
-		//	Vector3 rot = tr->GetRotation();
-		//	rot.z += 10.0f * Time::DeltaTime();
-		//	tr->SetRotation(rot);
-		//}
+		float speed = 120.0f; // 후에 플레이어 status로 변경
+		
 
+		Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>();
 
-		if (Input::GetKey(eKeyCode::RIGHT))
+		// camera script wasd 미사용시 키 변경
+		if (Input::GetKey(eKeyCode::L))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.x += 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			rigidbody->AddForce(speed * tr->Right());
 		}
-		if (Input::GetKey(eKeyCode::LEFT))
+		if (Input::GetKey(eKeyCode::J))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.x -= 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			rigidbody->AddForce(speed * -tr->Right());
 		}
 
-		if (Input::GetKey(eKeyCode::DOWN))
+		if (Input::GetKey(eKeyCode::I))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.z -= 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			rigidbody->AddForce(speed * tr->Foward());
 		}
-		if (Input::GetKey(eKeyCode::UP))
+		if (Input::GetKey(eKeyCode::K))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.z += 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			rigidbody->AddForce(speed * -tr->Foward());
 		}
 
-		/*Transform* tr = GetOwner()->GetComponent<Transform>();
+		if (Input::GetKey(eKeyCode::SPACE))
+		{
+			Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>();
+			if (rigidbody == nullptr)
+			{
+				return;
+			}
 
-		Vector3 pos = tr->GetPosition();
-
-		if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
-		{
-			pos.x += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
-		{
-			pos.x -= 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
-		{
-			pos.y += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
-		{
-			pos.y -= 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
-		{
-			pos.z += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::E) == eKeyState::PRESSED)
-		{
-			pos.z -= 3.0f * Time::DeltaTime();
+			if (rigidbody->IsGround())
+			{
+				rigidbody->SetGround(false);
+				mJumpTimer = 0.1f;
+			}
 		}
 
-		tr->SetPosition(pos);*/
-		Animator* animator = GetOwner()->GetComponent<Animator>();
-		//if (Input::GetKey(eKeyCode::N_1))
-		//{
-		//	animator->Play(L"MoveDown");
-		//}
-
+		if (mJumpTimer > 0.0f)
+		{
+			mJumpTimer -= Time::DeltaTime();
+			rigidbody->AddForce(Vector3(0.0f, 400.0f, 0.0f));
+		}
+		
+		Vector3 rot = tr->GetRotation();
+		// 임시 회전. 마우스로 방향 전환 추가시 삭제
+		if (Input::GetKey(eKeyCode::O))
+		{
+			rot += speed * 2.0f * tr->Up() * Time::DeltaTime();
+		}
+		if (Input::GetKey(eKeyCode::U))
+		{
+			rot += speed * 2.0f * -tr->Up() * Time::DeltaTime();
+		}
+		tr->SetRotation(rot);
 	}
 
 	void PlayerScript::Render()
@@ -110,7 +108,6 @@ namespace ya
 
 	void PlayerScript::OnCollisionEnter(Collider2D* collider)
 	{
-		int a = 0;
 	}
 
 	void PlayerScript::OnCollisionStay(Collider2D* collider)
