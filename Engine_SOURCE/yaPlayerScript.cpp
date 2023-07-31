@@ -26,8 +26,8 @@ namespace ya
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		{
-			// ÇÃ·¹ÀÌ¾îÀÇ forward¸¦ ±¸ºĞÇÏ±âÀ§ÇÑ object
-			// ÈÄ¿¡ mesh ¾º¿ì¸é ¾ø¾Ù ¿¹Á¤
+			// í”Œë ˆì´ì–´ì˜ forwardë¥¼ êµ¬ë¶„í•˜ê¸°ìœ„í•œ object
+			// í›„ì— mesh ì”Œìš°ë©´ ì—†ì•¨ ì˜ˆì •
 			GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
 			face->SetName(L"face");
 			Transform* faceTr = face->GetComponent<Transform>();
@@ -44,12 +44,12 @@ namespace ya
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 
-		float speed = 120.0f; // ÈÄ¿¡ ÇÃ·¹ÀÌ¾î status·Î º¯°æ
+		float speed = 120.0f; // í›„ì— í”Œë ˆì´ì–´ statusë¡œ ë³€ê²½
 		
 
 		Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>();
 
-		// camera script wasd ¹Ì»ç¿ë½Ã Å° º¯°æ
+		// camera script wasd ë¯¸ì‚¬ìš©ì‹œ í‚¤ ë³€ê²½
 		if (Input::GetKey(eKeyCode::L))
 		{
 			rigidbody->AddForce(speed * tr->Right());
@@ -90,7 +90,7 @@ namespace ya
 		}
 		
 		Vector3 rot = tr->GetRotation();
-		// ÀÓ½Ã È¸Àü. ¸¶¿ì½º·Î ¹æÇâ ÀüÈ¯ Ãß°¡½Ã »èÁ¦
+		// ì„ì‹œ íšŒì „. ë§ˆìš°ìŠ¤ë¡œ ë°©í–¥ ì „í™˜ ì¶”ê°€ì‹œ ì‚­ì œ
 		if (Input::GetKey(eKeyCode::O))
 		{
 			rot += speed * 2.0f * tr->Up() * Time::DeltaTime();
@@ -101,6 +101,7 @@ namespace ya
 		}
 		tr->SetRotation(rot);
 	}
+
 
 	void PlayerScript::Render()
 	{
