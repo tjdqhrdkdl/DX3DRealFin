@@ -92,44 +92,11 @@ namespace ya
 				mChildPos += 60 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 				mChildPos.Normalize();
 				mChildPos *= mDistFromTarget;
-				if (mChildPos.y < -mDistFromTarget + mDistFromTarget/5)
-					mChildPos.y = -mDistFromTarget + mDistFromTarget / 5;
-				if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
-					mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
-				////위치 이동 다음 카메라를 회전 시켜서 항상 타겟을 바라보게끔.
-				////목표 : forward가 newForward가 되는 것.
-				////두 벡터의 외적을 통해서 수직이 되는 벡터를 구한다.
-				////두 벡터의 내적을 통해서 두 벡터 사이의 코사인 세타를 구한다.
-				////수직이 되는 벡터를 축으로, 세타만큼 회전시킨다.
-				//
-				//Vector3 forward = Vector3::Forward;
+				if (mChildPos.y < -mDistFromTarget + mDistFromTarget/ 10)
+					mChildPos.y = -mDistFromTarget + mDistFromTarget / 10;
+				if (mChildPos.y > mDistFromTarget - mDistFromTarget / 10)
+					mChildPos.y = mDistFromTarget - mDistFromTarget / 10;
 
-				//Vector3 pos = tr->GetPosition();
-				//Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
-
-				//Vector3 newForward = targetPos - pos;
-
-
-				////newForward.Normalize();
-				////Vector3 axis = forward.Cross(newForward);
-				////axis.Normalize();
-
-				////float c = forward.Dot(newForward);
-				////float vecTheta = acosf(c);
-				////float s = sinf(vecTheta);
-
-				//////축 벡터에 기반한 rotation matrix.
-				////Matrix rotationFromAxis = {
-				////	c + (1 - c) * axis.x * axis.x			, (1 - c) * axis.x * axis.y + s * axis.z , (1 - c) * axis.x * axis.z - s * axis.y	, 0,
-				////	(1 - c) * axis.x * axis.y - s * axis.z  , c + (1 - c) * axis.y * axis.y			 , (1 - c) * axis.y * axis.z + s * axis.x	, 0,
-				////	(1 - c) * axis.x * axis.z + s * axis.y  , (1 - c) * axis.y * axis.z - s * axis.x ,  c + (1 - c) * axis.z * axis.z			, 0,
-				////	0										, 0									     , 0										, 1
-				////};
-
-				////tr->RotateFromAxis(rotationFromAxis);
-				//
-				//
-				//tr->SetQuaternion(Quaternion::FromToRotation(forward, newForward));
 				
 				
 				

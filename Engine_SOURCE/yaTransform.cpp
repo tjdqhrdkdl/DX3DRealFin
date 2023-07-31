@@ -106,14 +106,9 @@ namespace ya
 	void Transform::SetConstantBuffer()
 	{
 		renderer::TransformCB trCb = {};
-		trCb.scale = mMatScale;
-		trCb.rotation = mMatRotation;
-		trCb.translation = mMatTranslation;
 		trCb.world = mWorld;
 		trCb.view = Camera::GetGpuViewMatrix();
 		trCb.projection = Camera::GetGpuProjectionMatrix();
-		trCb.useQuaternion = mbUseQuaternion;
-		trCb.rotQuaternion = mRotationQuaternion;
 
 		if (mbUseQuaternion)
 			int a = 0;

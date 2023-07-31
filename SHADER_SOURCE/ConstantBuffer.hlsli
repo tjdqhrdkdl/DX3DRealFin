@@ -1,14 +1,8 @@
 cbuffer Transform : register(b0)
 {
-    row_major matrix scale;
-    row_major matrix rotation;
-    row_major matrix translation;
     row_major matrix world;
     row_major matrix view;
     row_major matrix projection;
-    
-    bool useQuaternion;
-    float4 rotQuaternion;
 }
 
 cbuffer MaterialData : register(b1)
