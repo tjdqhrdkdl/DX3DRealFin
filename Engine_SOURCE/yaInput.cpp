@@ -6,7 +6,7 @@ extern ya::Application application;
 namespace ya
 {
 	std::vector<Input::Key> Input::mKeys;
-	math::Vector2 Input::mMousPosition;
+	math::Vector2 Input::mMousePosition;
 	int ASCII[(UINT)eKeyCode::END] =
 	{
 		//Alphabet
@@ -77,8 +77,8 @@ namespace ya
 			POINT mousePos = {};
 			GetCursorPos(&mousePos);
 			ScreenToClient(application.GetHwnd(), &mousePos);
-			mMousPosition.x = mousePos.x;
-			mMousPosition.y = mousePos.y;
+			mMousePosition.x = mousePos.x;
+			mMousePosition.y = mousePos.y;
 		}
 		else
 		{

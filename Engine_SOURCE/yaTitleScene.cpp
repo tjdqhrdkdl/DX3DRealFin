@@ -41,7 +41,7 @@ namespace ya
 		cameraComp->SetProjectionType(Camera::eProjectionType::Perspective);
 		//cameraComp->RegisterCameraInRenderer();
 		cameraComp->TurnLayerMask(eLayerType::UI, false);
-		cameraObj->AddComponent<CameraScript>();
+		CameraScript* camScript = cameraObj->AddComponent<CameraScript>();
 		mainCamera = cameraComp;
 
 
@@ -53,7 +53,7 @@ namespace ya
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		player->AddComponent<PlayerScript>();
+		PlayerScript* plScript = player->AddComponent<PlayerScript>();
 		Collider2D* col = player->AddComponent <Collider2D>();
 		col->SetType(eColliderType::Box);
     col->SetSize(Vector3(1.0, 1.0f, 1.0f));
@@ -72,6 +72,7 @@ namespace ya
 		Collider2D* col2 = player2->AddComponent <Collider2D>();
 		col2->SetType(eColliderType::Box);
 		col2->SetSize(Vector3(1.0, 2.0f, 2.0f));
+		plScript->SetTarget(player2);
 
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);

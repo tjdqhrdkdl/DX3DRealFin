@@ -56,9 +56,9 @@ namespace ya
 			return mKeys[static_cast<UINT>(keyCode)].eState; 
 		}
 
-		static __forceinline math::Vector2 GetMousPosition()
+		static __forceinline math::Vector2 GetMousePosition()
 		{
-			return mMousPosition;
+			return mMousePosition;
 		}
 
 		//GetKey()		키를 누르는 시간만큼 true를 반환
@@ -88,6 +88,6 @@ namespace ya
 
 	private:
 		static std::vector<Key> mKeys;
-		static math::Vector2 mMousPosition;
+		static math::Vector2 mMousePosition;
 	};
 }

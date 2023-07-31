@@ -72,15 +72,36 @@ namespace ya
 		mView = Matrix::Identity;
 		mView *= Matrix::CreateTranslation(-pos);
 		//회전 정보
-
 		Vector3 up = tr->Up();
 		Vector3 right = tr->Right();
-		Vector3 foward = tr->Foward();
+		Vector3 forward = tr->Forward();
+
+		if (mTarget)
+		{
+			Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
+
+			Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
+			Vector3 newForward = targetPos - pos;
+			newForward.Normalize();
+			forward = newForward;
+
+			right = UpVector.Cross(forward);
+			right.Normalize();
+
+			up = forward.Cross(right);
+			up.Normalize();
+
+			tr->IsCamera(true);
+			tr->SetForward(forward);
+			tr->SetUp(up);
+			tr->SetRight(right);
+		}
+
 
 		Matrix viewRotate;
-		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
-		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
-		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
+		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = forward.x;
+		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = forward.y;
+		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = forward.z;
 
 		mView *= viewRotate;
 	}
