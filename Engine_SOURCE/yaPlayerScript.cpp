@@ -1,14 +1,20 @@
 #include "yaPlayerScript.h"
+#include "yaPlayer.h"
 #include "yaTransform.h"
 #include "yaGameObject.h"
 #include "yaInput.h"
 #include "yaTime.h"
 #include "yaAnimator.h"
+#include "yaObject.h";
+#include "yaMeshRenderer.h"
+#include "yaResources.h"
+#include "yaRigidbody.h"
 
 namespace ya
 {
 	PlayerScript::PlayerScript()
 		: Script()
+		, mJumpTimer(0.0f)
 	{
 	}
 
@@ -18,157 +24,82 @@ namespace ya
 
 	void PlayerScript::Initalize()
 	{
-		//Animator* animator = GetOwner()->GetComponent<Animator>();
-		//animator->GetStartEvent(L"MoveDown") = std::bind(&PlayerScript::Start, this);
-		//animator->GetCompleteEvent(L"Idle") = std::bind(&PlayerScript::Action, this);
-		//animator->GetEndEvent(L"Idle") = std::bind(&PlayerScript::End, this);
-		//animator->GetEvent(L"Idle", 1) = std::bind(&PlayerScript::End, this);
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		{
+			// í”Œë ˆì´ì–´ì˜ forwardë¥¼ êµ¬ë¶„í•˜ê¸°ìœ„í•œ object
+			// í›„ì— mesh ì”Œìš°ë©´ ì—†ì•¨ ì˜ˆì •
+			GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
+			face->SetName(L"face");
+			Transform* faceTr = face->GetComponent<Transform>();
+			faceTr->SetPosition(Vector3(0.0f, 0.5f, 0.5f));
+			faceTr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
+			MeshRenderer* faceRenderer = face->AddComponent<MeshRenderer>();
+			faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+			faceRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		}
+
 	}
 
 	void PlayerScript::Update()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		//Vector3 rot = tr->GetRotation();
-		//rot.z += 10.0f * Time::DeltaTime();
-		//tr->SetRotation(rot);
 
-		//if (Input::GetKeyState(eKeyCode::R) == eKeyState::PRESSED)
-		//{
-		//	Vector3 rot = tr->GetRotation();
-		//	rot.z += 10.0f * Time::DeltaTime();
-		//	tr->SetRotation(rot);
-		//}
+		float speed = 120.0f; // í›„ì— í”Œë ˆì´ì–´ statusë¡œ ë³€ê²½
+		
 
+		Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>();
 
-		if (Input::GetKey(eKeyCode::RIGHT))
+		// camera script wasd ë¯¸ì‚¬ìš©ì‹œ í‚¤ ë³€ê²½
+		if (Input::GetKey(eKeyCode::L))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.x += 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			rigidbody->AddForce(speed * tr->Right());
 		}
-		if (Input::GetKey(eKeyCode::LEFT))
+		if (Input::GetKey(eKeyCode::J))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.x -= 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			rigidbody->AddForce(speed * -tr->Right());
 		}
 
-		if (Input::GetKey(eKeyCode::DOWN))
+		if (Input::GetKey(eKeyCode::I))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.z -= 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			rigidbody->AddForce(speed * tr->Foward());
 		}
-		if (Input::GetKey(eKeyCode::UP))
+		if (Input::GetKey(eKeyCode::K))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.z += 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
+			rigidbody->AddForce(speed * -tr->Foward());
 		}
 
 		if (Input::GetKey(eKeyCode::SPACE))
 		{
-			Vector3 pos = tr->GetPosition();
-			pos.y += 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
-		}
-
-		if (Input::GetKey(eKeyCode::M))
-		{
-			Vector3 pos = tr->GetPosition();
-			pos.y -= 60.0f * Time::DeltaTime();
-			tr->SetPosition(pos);
-		}
-
-		/*Transform* tr = GetOwner()->GetComponent<Transform>();
-
-		Vector3 pos = tr->GetPosition();
-
-		if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
-		{
-			pos.x += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
-		{
-			pos.x -= 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
-		{
-			pos.y += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
-		{
-			pos.y -= 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
-		{
-			pos.z += 3.0f * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::E) == eKeyState::PRESSED)
-		{
-			pos.z -= 3.0f * Time::DeltaTime();
-		}
-
-		tr->SetPosition(pos);*/
-		Animator* animator = GetOwner()->GetComponent<Animator>();
-		//if (Input::GetKey(eKeyCode::N_1))
-		//{
-		//	animator->Play(L"MoveDown");
-		//}
-
-
-		// ¸¶¿ì½ºÀÇ ÀÌµ¿ °Å¸®(ÇÈ¼¿) ÃøÁ¤ - ¹İ¿µ - ¸¶¿ì½º À§Ä¡ °íÁ¤ 
-		
-		
-
-			//µğ¹ö±ë½Ã¿¡ ¹®Á¦»ı±â´Â ºÎºĞ ¸·À½.
-			if (Time::DeltaTime() < 0.1f)
+			Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>();
+			if (rigidbody == nullptr)
 			{
-				//µÎ¹ø °è»êÇØÁÙ °ÍÀÌ´Ù.
-				//Ä«¸Ş¶ó¸¦ ¿øÁ¡(ÇÃ·¹ÀÌ¾î) ±âÁØÀ¸·Î ¸ÕÀú À§Ä¡¸¦ ÀÌµ¿½ÃÅ°°í
-				//Ä«¸Ş¶ó ¿ÀºêÁ§Æ®ÀÇ È¸ÀüÀ» ¹Ù²ãÁØ´Ù.
-
-
-
-				//À§Ä¡ ÀÌµ¿ ´ÙÀ½ Ä«¸Ş¶ó¸¦ È¸Àü ½ÃÄÑ¼­ Ç×»ó Å¸°ÙÀ» ¹Ù¶óº¸°Ô²û.
-				//¸ñÇ¥ : forward°¡ newForward°¡ µÇ´Â °Í.
-				//µÎ º¤ÅÍÀÇ ¿ÜÀûÀ» ÅëÇØ¼­ ¼öÁ÷ÀÌ µÇ´Â º¤ÅÍ¸¦ ±¸ÇÑ´Ù.
-				//µÎ º¤ÅÍÀÇ ³»ÀûÀ» ÅëÇØ¼­ µÎ º¤ÅÍ »çÀÌÀÇ ÄÚ»çÀÎ ¼¼Å¸¸¦ ±¸ÇÑ´Ù.
-				//¼öÁ÷ÀÌ µÇ´Â º¤ÅÍ¸¦ ÃàÀ¸·Î, ¼¼Å¸¸¸Å­ È¸Àü½ÃÅ²´Ù.
-
-				Vector3 forward = Vector3::Forward;
-				Vector3 pos = tr->GetPosition();
-				Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
-
-				Vector3 newForward = targetPos - pos;
-
-
-				newForward.Normalize();
-				Vector3 axis = forward.Cross(newForward);
-				axis.Normalize();
-
-				float c = forward.Dot(newForward);
-				float vecTheta = acosf(c);
-				float s = sinf(vecTheta);
-
-				//Ãà º¤ÅÍ¿¡ ±â¹İÇÑ rotation matrix.
-				Matrix rotationFromAxis = {
-					c + (1 - c) * axis.x * axis.x			, (1 - c) * axis.x * axis.y + s * axis.z , (1 - c) * axis.x * axis.z - s * axis.y	, 0,
-					(1 - c) * axis.x * axis.y - s * axis.z  , c + (1 - c) * axis.y * axis.y			 , (1 - c) * axis.y * axis.z + s * axis.x	, 0,
-					(1 - c) * axis.x * axis.z + s * axis.y  , (1 - c) * axis.y * axis.z - s * axis.x ,  c + (1 - c) * axis.z * axis.z			, 0,
-					0										, 0									     , 0										, 1
-				};
-
-				tr->RotateFromAxis(rotationFromAxis);
-
-
-				
-
-
-
+				return;
 			}
 
+			if (rigidbody->IsGround())
+			{
+				rigidbody->SetGround(false);
+				mJumpTimer = 0.1f;
+			}
+		}
+
+		if (mJumpTimer > 0.0f)
+		{
+			mJumpTimer -= Time::DeltaTime();
+			rigidbody->AddForce(Vector3(0.0f, 400.0f, 0.0f));
+		}
 		
+		Vector3 rot = tr->GetRotation();
+		// ì„ì‹œ íšŒì „. ë§ˆìš°ìŠ¤ë¡œ ë°©í–¥ ì „í™˜ ì¶”ê°€ì‹œ ì‚­ì œ
+		if (Input::GetKey(eKeyCode::O))
+		{
+			rot += speed * 2.0f * tr->Up() * Time::DeltaTime();
+		}
+		if (Input::GetKey(eKeyCode::U))
+		{
+			rot += speed * 2.0f * -tr->Up() * Time::DeltaTime();
+		}
+		tr->SetRotation(rot);
 	}
 
 
@@ -178,7 +109,6 @@ namespace ya
 
 	void PlayerScript::OnCollisionEnter(Collider2D* collider)
 	{
-		int a = 0;
 	}
 
 	void PlayerScript::OnCollisionStay(Collider2D* collider)

@@ -14,6 +14,7 @@ namespace ya::enums
 		None = 0,
 		Camera,
 		Grid,
+		Ground,
 		Monster,
 		Player,
 
@@ -29,6 +30,7 @@ namespace ya::enums
 		Transform, // 위치 데이터 수정하는 컴포넌트
 		Camera,
 		Mesh,
+		Rigidbody,
 		Collider,
 		//Collider2,
 		MeshRenderer,
