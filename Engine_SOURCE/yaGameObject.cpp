@@ -10,6 +10,10 @@ namespace ya
 	{
 		mComponents.resize((UINT)eComponentType::End);
 		AddComponent(new Transform());
+
+		mbDontDestroy = true;
+		mType;
+		
 	}
 
 	GameObject::~GameObject()
