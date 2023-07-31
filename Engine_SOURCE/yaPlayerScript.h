@@ -22,8 +22,6 @@ namespace ya
 		void Action();
 		void End();
 
-		void SetTarget(GameObject* target) { mTarget = target; }
-
 	private:
 		float mJumpTimer;
 	};
