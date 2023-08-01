@@ -23,6 +23,9 @@ namespace ya
 
 
 
+
+
+
 	private:
 		GameObject* mTarget;
 		std::queue<Vector3> mQueDelayedTargetPos;
