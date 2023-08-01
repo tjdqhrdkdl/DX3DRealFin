@@ -88,6 +88,22 @@ namespace ya::enums
 		End,
 	};
 
+	enum class eSituation
+	{
+		None,
+		Idle,			//기본 상태
+		Boundary,		//경계
+		Chase,			//
+		Attack,			
+		Sit,			//휴식
+		Death,			
+		End,
+	};
+
+
+
+
+
 	//struct Ray
 	//{
 	//	Vector3 origin;
