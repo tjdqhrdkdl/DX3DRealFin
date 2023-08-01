@@ -14,9 +14,9 @@ namespace ya
 		, mAccelation(Vector3::Zero)
 		, mFriction(180.0f)
 	{
-		mGravity = Vector3(0.0f, -150.0f, 0.0f);
+		mGravity = Vector3(0.0f, -200.0f, 0.0f);
 		mbGround = true;
-		mLimitVelocity = Vector3(20.0f, 600.0f, 20.0f);
+		mLimitVelocity = Vector3(20.0f, 1000.0f, 20.0f);
 	}
 
 	Rigidbody::~Rigidbody()

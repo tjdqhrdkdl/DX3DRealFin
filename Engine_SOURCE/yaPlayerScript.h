@@ -23,6 +23,5 @@ namespace ya
 		void End();
 
 	private:
-		float mJumpTimer;
 	};
 }
