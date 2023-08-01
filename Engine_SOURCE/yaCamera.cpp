@@ -76,26 +76,6 @@ namespace ya
 		Vector3 right = tr->Right();
 		Vector3 forward = tr->Forward();
 
-		if (mTarget)
-		{
-			Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
-
-			Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
-			Vector3 newForward = targetPos - pos;
-			newForward.Normalize();
-			forward = newForward;
-
-			right = UpVector.Cross(forward);
-			right.Normalize();
-
-			up = forward.Cross(right);
-			up.Normalize();
-
-			tr->IsCamera(true);
-			tr->SetForward(forward);
-			tr->SetUp(up);
-			tr->SetRight(right);
-		}
 
 
 		Matrix viewRotate;

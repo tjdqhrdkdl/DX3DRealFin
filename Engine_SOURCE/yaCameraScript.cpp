@@ -97,6 +97,30 @@ namespace ya
 				if (mChildPos.y > mDistFromTarget - mDistFromTarget / 10)
 					mChildPos.y = mDistFromTarget - mDistFromTarget / 10;
 
+
+				if (mTarget)
+				{
+					
+					Vector3 pos = tr->GetPosition();
+					Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
+
+					Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
+					Vector3 newForward = targetPos - pos;
+					newForward.Normalize();
+					
+					Vector3 forward = newForward;
+
+					Vector3 right = UpVector.Cross(forward);
+					right.Normalize();
+
+					Vector3 up = forward.Cross(right);
+					up.Normalize();
+
+					tr->IsCamera(true);
+					tr->SetForward(forward);
+					tr->SetUp(up);
+					tr->SetRight(right);
+				}
 				
 				
 				
