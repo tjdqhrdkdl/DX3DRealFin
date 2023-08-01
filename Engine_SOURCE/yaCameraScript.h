@@ -1,6 +1,6 @@
 #pragma once
 #include "yaScript.h"
-
+#include <queue>
 
 namespace ya
 {
@@ -23,13 +23,15 @@ namespace ya
 
 
 
-
 	private:
 		GameObject* mTarget;
+		std::queue<Vector3> mQueDelayedTargetPos;
+		Vector3 mDelayedTargetPos;
 
-		
 		Vector3 mChildPos;
-	
+
+		float mDelayTime;
+		float mDelayTimeChecker;
 		float mThetaAxisY;
 		float mThetaAxisX;
 		float mDistFromTarget;

@@ -39,8 +39,6 @@ namespace ya
 		Matrix& GetViewMatrix() { return mView; }
 		Matrix& GetProjectionMatrix() { return mProjection; }
 
-		void SetTarget(GameObject* target) { mTarget = target; }
-
 	private:
 		void sortGameObjects();
 		void renderOpaque();
@@ -68,7 +66,6 @@ namespace ya
 		std::vector<GameObject*> mCutoutGameObjects;
 		std::vector<GameObject*> mTransparentGameObjects;
 		std::vector<GameObject*> mPostProcessGameObjects;
-		
-		GameObject* mTarget;
+
 	};
 }
