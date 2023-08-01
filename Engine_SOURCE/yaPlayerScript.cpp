@@ -10,6 +10,7 @@
 #include "yaResources.h"
 #include "yaRigidbody.h"
 #include "yaActionScript.h"
+#include "yaGrappleHookScript.h"
 
 namespace ya
 {
@@ -80,6 +81,8 @@ namespace ya
 
 		if (Input::GetKey(eKeyCode::F))
 		{
+			GrappleHookScript* grap = GetOwner()->GetScript<GrappleHookScript>();
+			grap->GrappleHook();
 		}
 	}
 
