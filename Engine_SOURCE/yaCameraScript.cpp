@@ -15,6 +15,9 @@ namespace ya
 		, mThetaAxisY(1.57)
 		, mThetaAxisX(1.57)
 		, mDistFromTarget(40)
+		, mDelayTime(0.1f)
+		, mDelayTimeChecker(0)
+		, mbFirstInit(false)
 	{
 	}
 
@@ -39,8 +42,8 @@ namespace ya
 		tr->SetPosition(pos);
 		if (mTarget != nullptr)
 		{
-			MouseMove();
 			TrackTarget();
+			MouseMove();
 		}
 	}
 	void CameraScript::Render()
@@ -51,9 +54,19 @@ namespace ya
 	{
 		
 			Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
+			mQueDelayedTargetPos.push(targetPos);
 			Transform* tr = GetOwner()->GetComponent<Transform>();
 
-			tr->SetPosition(targetPos + mChildPos);
+
+			if (mDelayTimeChecker < mDelayTime && mbFirstInit)
+				mDelayTimeChecker += Time::DeltaTime();
+			else
+			{
+				Vector3 delayedPos = mQueDelayedTargetPos.front();
+				mQueDelayedTargetPos.pop();
+				mDelayedTargetPos = delayedPos;
+				tr->SetPosition(delayedPos + mChildPos);
+			}
 		
 	}
 	void CameraScript::MouseMove()
@@ -84,6 +97,7 @@ namespace ya
 				//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
 				//카메라 오브젝트의 회전을 바꿔준다.
 				
+				//구 이동
 				mChildPos += 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 				mChildPos.Normalize();
 				mChildPos *= mDistFromTarget;
@@ -92,35 +106,35 @@ namespace ya
 				mChildPos += 60 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 				mChildPos.Normalize();
 				mChildPos *= mDistFromTarget;
+
+				//y축 이동 한계 지정
 				if (mChildPos.y < -mDistFromTarget + mDistFromTarget/ 10)
 					mChildPos.y = -mDistFromTarget + mDistFromTarget / 10;
 				if (mChildPos.y > mDistFromTarget - mDistFromTarget / 10)
 					mChildPos.y = mDistFromTarget - mDistFromTarget / 10;
 
 
-				if (mTarget)
-				{
+				//회전
+				Vector3 pos = tr->GetPosition();
+				Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
+
+				Vector3 targetPos = mDelayedTargetPos;
+				Vector3 newForward = targetPos - pos;
+				newForward.Normalize();
 					
-					Vector3 pos = tr->GetPosition();
-					Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
+				Vector3 forward = newForward;
 
-					Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
-					Vector3 newForward = targetPos - pos;
-					newForward.Normalize();
-					
-					Vector3 forward = newForward;
+				Vector3 right = UpVector.Cross(forward);
+				right.Normalize();
 
-					Vector3 right = UpVector.Cross(forward);
-					right.Normalize();
+				Vector3 up = forward.Cross(right);
+				up.Normalize();
 
-					Vector3 up = forward.Cross(right);
-					up.Normalize();
-
-					tr->IsCamera(true);
-					tr->SetForward(forward);
-					tr->SetUp(up);
-					tr->SetRight(right);
-				}
+				tr->IsCamera(true);
+				tr->SetForward(forward);
+				tr->SetUp(up);
+				tr->SetRight(right);
+				
 				
 				
 				

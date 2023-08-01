@@ -59,7 +59,6 @@ namespace ya
 		col->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		Rigidbody* playerRigidbody = player->AddComponent<Rigidbody>();
 		playerRigidbody->SetGround(false);
-		cameraComp->SetTarget(player);
 		camScript->SetTarget(player);
 
 
