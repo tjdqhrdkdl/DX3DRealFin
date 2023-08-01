@@ -61,11 +61,11 @@ namespace ya
 
 		if (Input::GetKey(eKeyCode::I))
 		{
-			rigidbody->AddForce(speed * tr->Foward());
+			rigidbody->AddForce(speed * tr->Forward());
 		}
 		if (Input::GetKey(eKeyCode::K))
 		{
-			rigidbody->AddForce(speed * -tr->Foward());
+			rigidbody->AddForce(speed * -tr->Forward());
 		}
 
 		if (Input::GetKey(eKeyCode::SPACE))

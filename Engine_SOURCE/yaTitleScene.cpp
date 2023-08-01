@@ -56,10 +56,13 @@ namespace ya
 		PlayerScript* plScript = player->AddComponent<PlayerScript>();
 		Collider2D* col = player->AddComponent <Collider2D>();
 		col->SetType(eColliderType::Box);
-    col->SetSize(Vector3(1.0, 1.0f, 1.0f));
+		col->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		Rigidbody* playerRigidbody = player->AddComponent<Rigidbody>();
 		playerRigidbody->SetGround(false);
-		
+		cameraComp->SetTarget(player);
+		camScript->SetTarget(player);
+
+
 
 		GameObject* player2 = object::Instantiate<GameObject>(eLayerType::Player);
 		player2->GetComponent<Transform>()->SetPosition(Vector3(10.0f, 0.0f, 10.0f));
@@ -72,7 +75,7 @@ namespace ya
 		Collider2D* col2 = player2->AddComponent <Collider2D>();
 		col2->SetType(eColliderType::Box);
 		col2->SetSize(Vector3(1.0, 2.0f, 2.0f));
-		plScript->SetTarget(player2);
+		
 
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
@@ -86,7 +89,7 @@ namespace ya
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector2(1.0, 1.0f));
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
 		}
 
