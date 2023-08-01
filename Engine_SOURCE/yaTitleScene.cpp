@@ -22,6 +22,8 @@
 //#include "yaFBXLoader.h"
 #include "yaRigidbody.h"
 #include "yaGroundScript.h"
+#include "yaActionScript.h"
+
 namespace ya
 {
 	TitleScene::TitleScene()
@@ -53,12 +55,14 @@ namespace ya
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		player->AddComponent<PlayerScript>();
 		Collider2D* col = player->AddComponent <Collider2D>();
 		col->SetType(eColliderType::Box);
-    col->SetSize(Vector3(1.0, 1.0f, 1.0f));
+		col->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		Rigidbody* playerRigidbody = player->AddComponent<Rigidbody>();
 		playerRigidbody->SetGround(false);
+		player->AddComponent<PlayerScript>();
+		player->AddComponent<ActionScript>();
+		player->AddComponent<GrappleHookScript>();
 		
 
 		GameObject* player2 = object::Instantiate<GameObject>(eLayerType::Player);
@@ -78,16 +82,18 @@ namespace ya
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(0.0f, -10.0f, 10.0f));
-			groundTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
-			groundTr->SetRotation(Vector3(90.0f, 0.0f, 0.0f));
+			groundTr->SetScale(Vector3(50.0f, 4.0f, 50.0f));
+			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector2(1.0, 1.0f));
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
 		}
+
+		
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
