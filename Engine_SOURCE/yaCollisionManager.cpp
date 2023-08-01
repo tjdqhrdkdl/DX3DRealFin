@@ -347,4 +347,41 @@ namespace ya
 		else
 			return false;
 	}
+
+	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, eLayerType colType)
+	{
+		Scene* scene = SceneManager::GetActiveScene();
+		Vector3 position = owner->GetComponent<Transform>()->GetPosition();
+		Ray ray = Ray(position, direction);
+		RayHit hit = RayHit();
+		for (UINT row = 0; row < (UINT)eLayerType::End; row++)
+		{
+			
+			if (mLayerCollisionMatrix[row][(UINT)colType])
+			{
+				LayerRayCollision(scene, (eLayerType)row, ray, owner, &hit);
+			}
+			
+		}
+		return ;
+	}
+	void CollisionManager::LayerRayCollision(Scene* scene, eLayerType objType, Ray ray, GameObject* owner, RayHit* hit)
+	{
+		std::vector<GameObject*> objects = scene->GetGameObjects(objType);
+
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			GameObject* obj = objects[i];
+			if (obj->GetState() != GameObject::Active)
+				continue;
+			if (obj->GetComponent<Collider2D>() == nullptr)
+				continue;
+			if (obj == owner)
+				continue;
+
+
+		}
+
+
+	}
 }

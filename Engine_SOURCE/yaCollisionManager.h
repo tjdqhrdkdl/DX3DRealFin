@@ -15,6 +15,19 @@ namespace ya
 		UINT64 id;
 	};
 
+	struct Ray
+	{
+		Vector3 position;
+		Vector3 direction;
+	};
+
+	struct RayHit
+	{
+		bool isHit;
+		GameObject* hitObj;
+		Vector3 contact[2];
+	};
+
 	//	class Scene;
 	class CollisionManager
 	{
@@ -29,6 +42,9 @@ namespace ya
 		static void ColliderCollision(Collider2D* left, Collider2D* right);
 		static bool Intersect(Collider2D* left, Collider2D* right);
 
+		static RayHit RayCast(GameObject* owner, Vector3 direction, eLayerType colType);
+		static void LayerRayCollision(class Scene* scene, eLayerType objType, Ray ray, GameObject* owner, RayHit* hit);
+	
 	private:
 		static std::bitset<(UINT)eLayerType::End> mLayerCollisionMatrix[(UINT)eLayerType::End];
 		static std::map<UINT64, bool> mCollisionMap;
