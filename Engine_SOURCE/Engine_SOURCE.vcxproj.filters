@@ -287,6 +287,8 @@
     <ClCompile Include="yaGroundScript.cpp">
       <Filter>Component\Script\Contents</Filter>
     </ClCompile>
+    <ClCompile Include="yaSperaman.cpp" />
+    <ClCompile Include="yaSpearman.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -459,6 +461,8 @@
     <ClInclude Include="yaGroundScript.h">
       <Filter>Component\Script\Contents</Filter>
     </ClInclude>
+    <ClInclude Include="yaSperaman.h" />
+    <ClInclude Include="yaSpearman.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">
