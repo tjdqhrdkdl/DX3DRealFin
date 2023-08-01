@@ -40,5 +40,6 @@ namespace ya
 		float mDistFromTarget;
 
 		bool mbFirstInit;
+		bool mbMouseMove;
 	};
 }
