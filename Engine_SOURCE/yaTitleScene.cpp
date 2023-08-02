@@ -22,9 +22,10 @@
 //#include "yaFBXLoader.h"
 #include "yaRigidbody.h"
 #include "yaGroundScript.h"
+#include "yaActionScript.h"
+#include "yaGrappleHookScript.h"
+#include "yaHookTargetScript.h"
 #include "yaSpearman.h"
-
-
 
 namespace ya
 {
@@ -57,13 +58,19 @@ namespace ya
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		PlayerScript* plScript = player->AddComponent<PlayerScript>();
+	
 		Collider2D* col = player->AddComponent <Collider2D>();
 		col->SetType(eColliderType::Box);
 		col->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		Rigidbody* playerRigidbody = player->AddComponent<Rigidbody>();
 		playerRigidbody->SetGround(false);
+
+		PlayerScript* plScript = player->AddComponent<PlayerScript>();
+		player->AddComponent<ActionScript>();
+		player->AddComponent<GrappleHookScript>();
+
 		camScript->SetTarget(player);
+
 
 
 
@@ -87,8 +94,8 @@ namespace ya
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(0.0f, -10.0f, 10.0f));
-			groundTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
-			groundTr->SetRotation(Vector3(90.0f, 0.0f, 0.0f));
+			groundTr->SetScale(Vector3(50.0f, 4.0f, 50.0f));
+			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -96,6 +103,37 @@ namespace ya
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
+		}
+
+		{
+			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
+			grappleGround->SetName(L"grapple target");
+			Transform* groundTr = grappleGround->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, 7.0f, 0.0f));
+			groundTr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
+			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			Collider2D* groundCollider = grappleGround->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			grappleGround->AddComponent<GroundScript>();
+
+			GrappleHookScript* action = player->GetScript<GrappleHookScript>();
+			action->SetGrappleHookTarget(grappleGround);
+
+			{
+				GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground);
+				hookTarget->SetName(L"grapple target");
+				Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
+				hookTargetTr->SetPosition(Vector3(0.0f, 12.0f, 0.0f));
+				hookTargetTr->SetScale(Vector3(4.0f, 20.0f, 4.0f));
+				Collider2D* hookTargetCollider = hookTarget->AddComponent<Collider2D>();
+				hookTargetCollider->SetType(eColliderType::Box);
+				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+				hookTarget->AddComponent<HookTargetScript>();
+			}
 		}
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);

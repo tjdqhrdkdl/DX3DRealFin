@@ -127,8 +127,14 @@
     <Filter Include="Component\Rigidbody">
       <UniqueIdentifier>{6a200c63-e605-4ef6-a29f-b6d0f64d6a2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State">
-      <UniqueIdentifier>{1c7dd324-49aa-4346-b89f-0ee4434a3255}</UniqueIdentifier>
+    <Filter Include="GameObject\Sekiro">
+      <UniqueIdentifier>{94c1d857-2529-4d6a-8d63-73d99e674a2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Player">
+      <UniqueIdentifier>{73fe241b-e302-49fb-a055-4ab4a2cc1bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Ground">
+      <UniqueIdentifier>{482e9e00-2551-4804-b846-b889c3598f2a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +188,6 @@
     </ClCompile>
     <ClCompile Include="yaMeshRenderer.cpp">
       <Filter>Component\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="yaPlayerScript.cpp">
-      <Filter>Component\Script\Contents</Filter>
     </ClCompile>
     <ClCompile Include="yaCamera.cpp">
       <Filter>Component\Camera</Filter>
@@ -287,8 +290,20 @@
     <ClCompile Include="yaRigidbody.cpp">
       <Filter>Component\Rigidbody</Filter>
     </ClCompile>
+    <ClCompile Include="yaPlayerScript.cpp">
+      <Filter>Component\Script\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaActionScript.cpp">
+      <Filter>Component\Script\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaGrappleHookScript.cpp">
+      <Filter>Component\Script\Player</Filter>
+    </ClCompile>
     <ClCompile Include="yaGroundScript.cpp">
-      <Filter>Component\Script\Contents</Filter>
+      <Filter>Component\Script\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="yaHookTargetScript.cpp">
+      <Filter>Component\Script\Ground</Filter>
     </ClCompile>
     <ClCompile Include="yaSpearman.cpp">
       <Filter>GameObject\Monster\Base</Filter>
@@ -360,9 +375,6 @@
     </ClInclude>
     <ClInclude Include="yaMeshRenderer.h">
       <Filter>Component\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="yaPlayerScript.h">
-      <Filter>Component\Script\Contents</Filter>
     </ClInclude>
     <ClInclude Include="yaCamera.h">
       <Filter>Component\Camera</Filter>
@@ -465,8 +477,23 @@
     <ClInclude Include="yaRigidbody.h">
       <Filter>Component\Rigidbody</Filter>
     </ClInclude>
+    <ClInclude Include="yaPlayerScript.h">
+      <Filter>Component\Script\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaActionScript.h">
+      <Filter>Component\Script\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaGrappleHookScript.h">
+      <Filter>Component\Script\Player</Filter>
+    </ClInclude>
     <ClInclude Include="yaGroundScript.h">
-      <Filter>Component\Script\Contents</Filter>
+      <Filter>Component\Script\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaHookTargetScript.h">
+      <Filter>Component\Script\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="yaSpearman.h">
       <Filter>GameObject\Monster\Base</Filter>

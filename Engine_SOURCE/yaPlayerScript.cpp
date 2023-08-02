@@ -9,12 +9,13 @@
 #include "yaMeshRenderer.h"
 #include "yaResources.h"
 #include "yaRigidbody.h"
+#include "yaActionScript.h"
+#include "yaGrappleHookScript.h"
 
 namespace ya
 {
 	PlayerScript::PlayerScript()
 		: Script()
-		, mJumpTimer(0.0f)
 	{
 	}
 
@@ -37,69 +38,52 @@ namespace ya
 			faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			faceRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		}
-
 	}
 
 	void PlayerScript::Update()
 	{
+		ActionScript* action = GetOwner()->GetScript<ActionScript>();
+		action->SetSpeed(120.0f); // �Ŀ� �÷��̾� status�� ����
+
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-
 		float speed = 120.0f; // 후에 플레이어 status로 변경
-		
 
-		Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>();
-
-		// camera script wasd 미사용시 키 변경
 		if (Input::GetKey(eKeyCode::L))
 		{
-			rigidbody->AddForce(speed * tr->Right());
+			action->Move(tr->Right());
 		}
 		if (Input::GetKey(eKeyCode::J))
 		{
-			rigidbody->AddForce(speed * -tr->Right());
+			action->Move(-tr->Right());
 		}
-
 		if (Input::GetKey(eKeyCode::I))
 		{
-			rigidbody->AddForce(speed * tr->Forward());
+			action->Move(tr->Foward());
 		}
 		if (Input::GetKey(eKeyCode::K))
 		{
-			rigidbody->AddForce(speed * -tr->Forward());
+			action->Move(-tr->Foward());
 		}
 
 		if (Input::GetKey(eKeyCode::SPACE))
 		{
-			Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>();
-			if (rigidbody == nullptr)
-			{
-				return;
-			}
-
-			if (rigidbody->IsGround())
-			{
-				rigidbody->SetGround(false);
-				mJumpTimer = 0.1f;
-			}
-		}
-
-		if (mJumpTimer > 0.0f)
-		{
-			mJumpTimer -= Time::DeltaTime();
-			rigidbody->AddForce(Vector3(0.0f, 400.0f, 0.0f));
+			action->Jump();
 		}
 		
-		Vector3 rot = tr->GetRotation();
-		// 임시 회전. 마우스로 방향 전환 추가시 삭제
 		if (Input::GetKey(eKeyCode::O))
 		{
-			rot += speed * 2.0f * tr->Up() * Time::DeltaTime();
+			action->Rotate(tr->Up());
 		}
 		if (Input::GetKey(eKeyCode::U))
 		{
-			rot += speed * 2.0f * -tr->Up() * Time::DeltaTime();
+			action->Rotate(-tr->Up());
 		}
-		tr->SetRotation(rot);
+
+		if (Input::GetKey(eKeyCode::F))
+		{
+			GrappleHookScript* grap = GetOwner()->GetScript<GrappleHookScript>();
+			grap->GrappleHook();
+		}
 	}
 
 

@@ -1,14 +1,13 @@
 #pragma once
 #include "yaScript.h"
 
-
 namespace ya
 {
-	class PlayerScript : public Script
+	class HookTargetScript : public Script
 	{
 	public:
-		PlayerScript();
-		~PlayerScript();
+		HookTargetScript();
+		~HookTargetScript();
 
 		virtual void Initalize() override;
 		virtual void Update() override;
@@ -18,10 +17,8 @@ namespace ya
 		virtual void OnCollisionStay(Collider2D* collider) override;
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
-		void Start();
-		void Action();
-		void End();
 
 	private:
+
 	};
 }
