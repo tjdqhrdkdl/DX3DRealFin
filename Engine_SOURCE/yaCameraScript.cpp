@@ -151,7 +151,10 @@ namespace ya
 		Vector3 direction = tr->GetPosition() - mDelayedTargetPos;
 		direction.Normalize();
 		RayHit hit = CollisionManager::RayCast(mTarget, direction);
-		if(hit.isHit)
+		if (hit.isHit)
+		{
 			int a = 0;
+			tr->SetPosition(hit.contact);
+		}
 	}
 }

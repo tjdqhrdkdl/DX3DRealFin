@@ -53,7 +53,7 @@ namespace ya
 		
 	private:
 		static DistAndObj LayerRayCollision(class Scene* scene, eLayerType objType, ya::Ray ray, GameObject* owner);
-		static float RayIntersect(ya::Ray ray, Matrix worldMatrix);
+		static float RayIntersect(ya::Ray ray, GameObject* colObj);
 
 	private:
 		static std::bitset<(UINT)eLayerType::End> mLayerCollisionMatrix[(UINT)eLayerType::End];

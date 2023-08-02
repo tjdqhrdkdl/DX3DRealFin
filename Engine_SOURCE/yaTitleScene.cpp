@@ -67,7 +67,7 @@ namespace ya
 		player2->GetComponent<Transform>()->SetPosition(Vector3(10.0f, 0.0f, 10.0f));
 		player2->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
-		player2->SetName(L"Player");
+		player2->SetName(L"Monster");
 		MeshRenderer* mr2 = player2->AddComponent<MeshRenderer>();
 		mr2->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		mr2->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));

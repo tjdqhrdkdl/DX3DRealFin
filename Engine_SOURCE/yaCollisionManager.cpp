@@ -415,7 +415,7 @@ namespace ya
 			Matrix colMatrix = Matrix::CreateScale(colScale);
 			worldMat *= colMatrix;
 
-			float dist = RayIntersect(ray, worldMat);
+			float dist = RayIntersect(ray, obj);
 			if (dist < 0)
 				continue;
 			
@@ -425,31 +425,46 @@ namespace ya
 		return DistAndObj(distMin, colObj);
 
 	}
-	float CollisionManager::RayIntersect(ya::Ray ray, Matrix worldMatrix)
+	float CollisionManager::RayIntersect(ya::Ray ray, GameObject* colObj)
 	{
 		Vector3 aabb_min = Vector3(-0.5, -0.5, -0.5);
 		Vector3 aabb_max = Vector3(0.5, 0.5, 0.5);
 
+		Transform* tr = colObj->GetComponent<Transform>();
+		Collider2D* col = colObj->GetComponent<Collider2D>();
+		Matrix worldMatrix = tr->GetWorldMatrix();
+		Vector3 scale = tr->GetScale();
+		Vector3 colScale = col->GetSize();
+		scale.x *= colScale.x;
+		scale.y *= colScale.y;
+		scale.z *= colScale.z;
+		
 		float tMin = 0.0f;
 		float tMax = 100000.0f;
 		float threshHold = 0.00000001;
 
+
+
 		Vector3 boxWorldPosition(worldMatrix._41, worldMatrix._42, worldMatrix._43);
-		Vector3 delta = boxWorldPosition - ray.position;
+
 
 		//x
 		{
-			Vector3 xaxis(worldMatrix._11, worldMatrix._12, worldMatrix._13);
+			Vector3 xaxis = tr->Right();
+			xaxis.Normalize();
+				
+			Vector3 xdeltaMax = boxWorldPosition + xaxis * scale.x / 2 - ray.position;
+			Vector3 xdeltaMin = boxWorldPosition - xaxis * scale.x / 2 - ray.position;
 
-			float e = xaxis.Dot(delta);
-			
+			float e1 = xaxis.Dot(xdeltaMax);
+			float e2 = xaxis.Dot(xdeltaMin);
 			float f = ray.direction.Dot(xaxis);
 
 
 			if (fabsf(f) > threshHold)
 			{
-				float t1 = (e + aabb_min.x) / f; // Intersection with the "left" plane
-				float t2 = (e + aabb_max.x) / f; // Intersection with the "right" plane
+				float t1 = e1 / f; // Intersection with the "left" plane
+				float t2 = e2 / f; // Intersection with the "right" plane
 
 				if (t1 > t2) { // if wrong order
 					float w = t1;
@@ -457,7 +472,12 @@ namespace ya
 					t2 = w; // swap t1 and t2
 				}
 
-				// tMin 은 가장 가까이있는 "먼" 교차
+				if (t1< 0)
+					t1 = 0;
+
+				if (t1 < 0 && t2 < 0)
+					return -1;
+				// tMax 은 가장 가까이있는 "먼" 교차
 				if (t2 < tMax)
 					tMax = t2;
 				// tMin 은 가장 멀리있는 "가까운" 교차
@@ -472,23 +492,33 @@ namespace ya
 		}
 		//y
 		{
-			Vector3 yaxis(worldMatrix._31, worldMatrix._32, worldMatrix._33);
+			Vector3 yaxis = tr->Up();
+			yaxis.Normalize();
 
-			float e = yaxis.Dot(delta);
+			Vector3 ydeltaMax = boxWorldPosition + yaxis * scale.y / 2 - ray.position;
+			Vector3 ydeltaMin = boxWorldPosition - yaxis * scale.y / 2 - ray.position;
+
+			float e1 = yaxis.Dot(ydeltaMax);
+			float e2 = yaxis.Dot(ydeltaMin);
+
 			float f = ray.direction.Dot(yaxis);
 
 
 			if (fabsf(f) > threshHold)
 			{
-				float t1 = (e + aabb_min.y) / f; // Intersection with the "left" plane
-				float t2 = (e + aabb_max.y) / f; // Intersection with the "right" plane
+				float t1 = e1 / f; // Intersection with the "left" plane
+				float t2 = e2 / f; // Intersection with the "right" plane
 
 				if (t1 > t2) { // if wrong order
 					float w = t1;
 					t1 = t2;
 					t2 = w; // swap t1 and t2
 				}
+				if (t1 < 0)
+					t1 = 0;
 
+				if (t1 < 0 && t2 < 0)
+					return -1;
 				// tMin 은 가장 가까이있는 "먼" 교차
 				if (t2 < tMax)
 					tMax = t2;
@@ -504,23 +534,34 @@ namespace ya
 		}
 		//z
 		{
-			Vector3 zaxis(worldMatrix._21, worldMatrix._22, worldMatrix._23);
+			Vector3 zaxis = tr->Forward();
 
-			float e = zaxis.Dot(delta);
+			zaxis.Normalize();
+				
+			Vector3 zdeltaMax = boxWorldPosition + zaxis * scale.z / 2 - ray.position;
+			Vector3 zdeltaMin = boxWorldPosition - zaxis * scale.z / 2 - ray.position;
+
+			float e1 = zaxis.Dot(zdeltaMax);
+			float e2 = zaxis.Dot(zdeltaMin);
+
 			float f = ray.direction.Dot(zaxis);
 
 
 			if (fabsf(f) > threshHold)
 			{
-				float t1 = (e + aabb_min.z) / f; // Intersection with the "left" plane
-				float t2 = (e + aabb_max.z) / f; // Intersection with the "right" plane
+				float t1 = e1 / f; // Intersection with the "left" plane
+				float t2 = e2 / f; // Intersection with the "right" plane
 
 				if (t1 > t2) { // if wrong order
 					float w = t1;
 					t1 = t2;
 					t2 = w; // swap t1 and t2
 				}
+				if (t1 < 0)
+					t1 = 0;
 
+				if (t1 < 0 && t2 < 0)
+					return -1;
 				// tMin 은 가장 가까이있는 "먼" 교차
 				if (t2 < tMax)
 					tMax = t2;
