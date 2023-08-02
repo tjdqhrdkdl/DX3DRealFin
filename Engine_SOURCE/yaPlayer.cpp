@@ -19,8 +19,6 @@ namespace ya
 	void Player::Update()
 	{
 		GameObject::Update();
-		//head->update();
-		//body->update();
 	}
 
 	void Player::FixedUpdate()

@@ -486,6 +486,9 @@
     <ClInclude Include="yaHookTargetScript.h">
       <Filter>Component\Script\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">
