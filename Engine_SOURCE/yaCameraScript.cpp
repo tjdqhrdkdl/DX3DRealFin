@@ -115,8 +115,8 @@ namespace ya
 					mChildPos *= mDistFromTarget;
 
 					//y축 이동 한계 지정
-					if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.5)
-						mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.5;
+					if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2)
+						mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2;
 					if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
 						mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
 
@@ -163,7 +163,7 @@ namespace ya
 		if (hit.isHit)
 		{
 			int a = 0;
-			tr->SetPosition(hit.contact);
+			tr->SetPosition(hit.contact - direction);
 		}
 	}
 }
