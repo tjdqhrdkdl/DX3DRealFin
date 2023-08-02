@@ -157,7 +157,9 @@ namespace ya
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		Vector3 direction = tr->GetPosition() - mDelayedTargetPos;
 		direction.Normalize();
-		RayHit hit = CollisionManager::RayCast(mTarget, direction);
+		std::vector<eLayerType> layers = {};
+		layers.push_back(eLayerType::Ground);
+		RayHit hit = CollisionManager::RayCast(mTarget, direction, layers);
 		if (hit.isHit)
 		{
 			int a = 0;

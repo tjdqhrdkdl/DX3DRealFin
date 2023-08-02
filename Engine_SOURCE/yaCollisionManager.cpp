@@ -348,7 +348,7 @@ namespace ya
 			return false;
 	}
 
-	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction)
+	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers)
 	{
 		Scene* scene = SceneManager::GetActiveScene();
 		Vector3 position = owner->GetComponent<Transform>()->GetPosition();
@@ -360,20 +360,21 @@ namespace ya
 		GameObject* colObj = nullptr;
 
 		eLayerType colType = eLayerType::Player;
-		for (UINT row = 0; row < (UINT)eLayerType::End; row++)
+		for (eLayerType layer:layers )
 		{
-			
-			if (mLayerCollisionMatrix[row][(UINT)colType])
+			DistAndObj ret = LayerRayCollision(scene, layer, ray, owner);
+			if (ret.obj != nullptr && ret.dist < distMin)
 			{
-				DistAndObj ret = LayerRayCollision(scene, (eLayerType)row, ray, owner);
-				if (ret.obj != nullptr && ret.dist < distMin)
-				{
-					distMin = ret.dist;
-					colObj = ret.obj;
-				}
+				distMin = ret.dist;
+				colObj = ret.obj;
 			}
-			
 		}
+			
+			
+
+			
+		
+		
 		if (colObj != nullptr)
 		{
 			hit.isHit = true;
