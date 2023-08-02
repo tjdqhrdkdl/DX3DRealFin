@@ -231,6 +231,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaTime.h" />
     <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaTransform.h" />
+    <ClInclude Include="yaWallScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MonsterBase.cpp" />
@@ -292,6 +293,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaTime.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaTransform.cpp" />
+    <ClCompile Include="yaWallScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl" />
