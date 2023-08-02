@@ -127,6 +127,9 @@
     <Filter Include="Component\Rigidbody">
       <UniqueIdentifier>{6a200c63-e605-4ef6-a29f-b6d0f64d6a2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{1c7dd324-49aa-4346-b89f-0ee4434a3255}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaApplication.cpp">
@@ -286,6 +289,12 @@
     </ClCompile>
     <ClCompile Include="yaGroundScript.cpp">
       <Filter>Component\Script\Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSpearman.cpp">
+      <Filter>GameObject\Monster\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaState.cpp">
+      <Filter>State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -458,6 +467,12 @@
     </ClInclude>
     <ClInclude Include="yaGroundScript.h">
       <Filter>Component\Script\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSpearman.h">
+      <Filter>GameObject\Monster\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaState.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -22,6 +22,10 @@
 //#include "yaFBXLoader.h"
 #include "yaRigidbody.h"
 #include "yaGroundScript.h"
+#include "yaSpearman.h"
+
+
+
 namespace ya
 {
 	TitleScene::TitleScene()
@@ -63,17 +67,19 @@ namespace ya
 
 
 
-		GameObject* player2 = object::Instantiate<GameObject>(eLayerType::Player);
-		player2->GetComponent<Transform>()->SetPosition(Vector3(10.0f, 0.0f, 10.0f));
-		player2->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
-		player2->SetName(L"Monster");
-		MeshRenderer* mr2 = player2->AddComponent<MeshRenderer>();
-		mr2->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
-		mr2->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		Collider2D* col2 = player2->AddComponent <Collider2D>();
-		col2->SetType(eColliderType::Box);
-		col2->SetSize(Vector3(1.0, 2.0f, 2.0f));
+		Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
+		spearman->GetComponent<Transform>()->SetPosition(Vector3(10.0f, 0.0f, 10.0f));
+		spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		spearman->SetName(L"Spearman");
+		spearman->SetPlayerObject(player);
+		MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
+		spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+		spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
+		spearmancol->SetType(eColliderType::Box);
+		spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+		Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
+		spearmanRigidbody->SetGround(false);
 		
 
 		{
@@ -93,7 +99,10 @@ namespace ya
 		}
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
+
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
 		//mr->SetMesh(Resources::Find<Mesh>(L"SphereMesh"));
 

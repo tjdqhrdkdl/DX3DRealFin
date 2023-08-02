@@ -23,8 +23,8 @@ namespace ya
 		void SetTarget(GameObject* target) { mTarget = target; }
 
 
-
-
+		void Sangsu() { ; }
+		  
 
 
 	private:
@@ -41,5 +41,6 @@ namespace ya
 		float mDistFromTarget;
 
 		bool mbFirstInit;
+		bool mbMouseMove;
 	};
 }
