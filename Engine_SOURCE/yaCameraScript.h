@@ -18,6 +18,7 @@ namespace ya
 
 		void MouseMove();
 		
+		void ObstacleDetection();
 
 		void SetTarget(GameObject* target) { mTarget = target; }
 
