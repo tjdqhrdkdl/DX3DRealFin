@@ -59,11 +59,11 @@ namespace ya
 		}
 		if (Input::GetKey(eKeyCode::I))
 		{
-			action->Move(tr->Foward());
+			action->Move(tr->Forward());
 		}
 		if (Input::GetKey(eKeyCode::K))
 		{
-			action->Move(-tr->Foward());
+			action->Move(-tr->Forward());
 		}
 
 		if (Input::GetKey(eKeyCode::SPACE))
