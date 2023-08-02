@@ -27,8 +27,8 @@ namespace ya
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		{
-			// ÇÃ·¹ÀÌ¾îÀÇ forward¸¦ ±¸ºĞÇÏ±âÀ§ÇÑ object
-			// ÈÄ¿¡ mesh ¾º¿ì¸é ¾ø¾Ù ¿¹Á¤
+			// í”Œë ˆì´ì–´ì˜ forwardë¥¼ êµ¬ë¶„í•˜ê¸°ìœ„í•œ object
+			// í›„ì— mesh ì”Œìš°ë©´ ì—†ì•¨ ì˜ˆì •
 			GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
 			face->SetName(L"face");
 			Transform* faceTr = face->GetComponent<Transform>();
@@ -43,10 +43,11 @@ namespace ya
 	void PlayerScript::Update()
 	{
 		ActionScript* action = GetOwner()->GetScript<ActionScript>();
-		action->SetSpeed(120.0f); // ÈÄ¿¡ ÇÃ·¹ÀÌ¾î status·Î º¯°æ
+		action->SetSpeed(120.0f); // ï¿½Ä¿ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ statusï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		// camera script wasd ¹Ì»ç¿ë½Ã Å° º¯°æ
+		float speed = 120.0f; // í›„ì— í”Œë ˆì´ì–´ statusë¡œ ë³€ê²½
+
 		if (Input::GetKey(eKeyCode::L))
 		{
 			action->Move(tr->Right());
@@ -69,7 +70,6 @@ namespace ya
 			action->Jump();
 		}
 		
-		// ÀÓ½Ã È¸Àü. ¸¶¿ì½º·Î ¹æÇâ ÀüÈ¯ Ãß°¡½Ã »èÁ¦
 		if (Input::GetKey(eKeyCode::O))
 		{
 			action->Rotate(tr->Up());
@@ -85,6 +85,7 @@ namespace ya
 			grap->GrappleHook();
 		}
 	}
+
 
 	void PlayerScript::Render()
 	{

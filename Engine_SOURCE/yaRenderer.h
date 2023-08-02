@@ -30,6 +30,7 @@ namespace ya::renderer
 		Matrix world;
 		Matrix view;
 		Matrix projection;
+
 	};
 
 	CBUFFER(MaterialCB, CBSLOT_MATERIAL)

@@ -66,5 +66,6 @@ namespace ya
 		std::vector<GameObject*> mCutoutGameObjects;
 		std::vector<GameObject*> mTransparentGameObjects;
 		std::vector<GameObject*> mPostProcessGameObjects;
+
 	};
 }

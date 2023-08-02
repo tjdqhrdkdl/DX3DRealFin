@@ -223,6 +223,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaScript.h" />
     <ClInclude Include="yaSekiroEnums.h" />
     <ClInclude Include="yaShader.h" />
+    <ClInclude Include="yaState.h" />
+    <ClInclude Include="yaSpearman.h" />
     <ClInclude Include="yaSpriteRenderer.h" />
     <ClInclude Include="yaStructedBuffer.h" />
     <ClInclude Include="yaTexture.h" />
@@ -282,6 +284,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaSceneManager.cpp" />
     <ClCompile Include="yaScript.cpp" />
     <ClCompile Include="yaShader.cpp" />
+    <ClCompile Include="yaState.cpp" />
+    <ClCompile Include="yaSpearman.cpp" />
     <ClCompile Include="yaSpriteRenderer.cpp" />
     <ClCompile Include="yaStructedBuffer.cpp" />
     <ClCompile Include="yaTexture.cpp" />

@@ -305,6 +305,12 @@
     <ClCompile Include="yaHookTargetScript.cpp">
       <Filter>Component\Script\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="yaSpearman.cpp">
+      <Filter>GameObject\Monster\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -488,6 +494,12 @@
     </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSpearman.h">
+      <Filter>GameObject\Monster\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaState.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
