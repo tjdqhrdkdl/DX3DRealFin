@@ -14,7 +14,7 @@ namespace ya
 	{
 	}
 
-	void SpriteRenderer::Initalize()
+	void SpriteRenderer::Initialize()
 	{
 	}
 

@@ -23,7 +23,7 @@ namespace ya
 	{
 	}
 
-	void Collider2D::Initalize()
+	void Collider2D::Initialize()
 	{
 		mTransform = GetOwner()->GetComponent<Transform>();
 	}

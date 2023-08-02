@@ -37,7 +37,7 @@ namespace ya
 		mSharedBuffer = nullptr;
 	}
 
-	void ParticleSystem::Initalize()
+	void ParticleSystem::Initialize()
 	{
 		mCS = Resources::Find<ParticleShader>(L"ParticleCS");
 

@@ -17,7 +17,7 @@ namespace ya
 	std::vector<Scene*> SceneManager::mScenes = {};
 	Scene* SceneManager::mActiveScene = nullptr;
 
-	void SceneManager::Initalize()
+	void SceneManager::Initialize()
 	{
 		mScenes.resize((UINT)eSceneType::End);
 
@@ -31,7 +31,7 @@ namespace ya
 
 		for (Scene* scene : mScenes)
 		{
-			scene->Initalize();
+			scene->Initialize();
 		}
 	}
 

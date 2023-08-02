@@ -3,12 +3,12 @@
 
 namespace ya
 {
-	void Spearman::Initalize()
+	void Spearman::Initialize()
 	{
 
 
 		//몬스터 할일 있나
-		MonsterBase::Initalize();
+		MonsterBase::Initialize();
 	}
 
 

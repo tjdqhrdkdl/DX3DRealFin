@@ -25,7 +25,7 @@ namespace ya
 	ActionScript::~ActionScript()
 	{
 	}
-	void ActionScript::Initalize()
+	void ActionScript::Initialize()
 	{
 		GameObject* obj = GetOwner();
 		assert(obj != nullptr);

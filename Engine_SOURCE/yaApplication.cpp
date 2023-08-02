@@ -22,7 +22,7 @@ namespace ya
 		
 	}
 
-	void Application::Initalize()
+	void Application::Initialize()
 	{
 		Time::Initialize();
 		Input::Initialize();
@@ -31,7 +31,7 @@ namespace ya
 
 		CollisionManager::Initialize();
 		renderer::Initialize();
-		SceneManager::Initalize();
+		SceneManager::Initialize();
 	}
 
 	// 게임 로직 캐릭터 이동 등등 

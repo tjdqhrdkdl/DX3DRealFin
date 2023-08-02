@@ -146,8 +146,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    UpdateWindow(hWnd);
 
    application.SetWindow(hWnd, 1600, 900);
-   application.Initalize();
-   editor.Initalize();
+   application.Initialize();
+   editor.Initialize();
 
    return TRUE;
 }

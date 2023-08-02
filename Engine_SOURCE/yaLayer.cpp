@@ -34,7 +34,7 @@ namespace ya
 		}
 	}
 
-	void Layer::Initalize()
+	void Layer::Initialize()
 	{
 		
 	}

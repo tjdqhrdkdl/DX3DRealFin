@@ -18,7 +18,7 @@ namespace ya
 		GameObject();
 		virtual ~GameObject();
 
-		virtual void Initalize();
+		virtual void Initialize();
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void Render();
@@ -40,7 +40,7 @@ namespace ya
 				comp->SetOwner(this);
 			}
 
-			comp->Initalize();
+			comp->Initialize();
 
 			return comp;
 		}
