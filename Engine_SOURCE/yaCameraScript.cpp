@@ -3,7 +3,7 @@
 #include "yaGameObject.h"
 #include "yaInput.h"
 #include "yaTime.h"
-
+#include "yaCollisionManager.h"
 
 extern ya::Application application;
 
@@ -44,6 +44,7 @@ namespace ya
 		{
 			TrackTarget();
 			MouseMove();
+			ObstacleDetection();
 		}
 	}
 	void CameraScript::Render()
@@ -143,5 +144,14 @@ namespace ya
 			
 			SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
 		}
+	}
+	void CameraScript::ObstacleDetection()
+	{
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		Vector3 direction = tr->GetPosition() - mDelayedTargetPos;
+		direction.Normalize();
+		RayHit hit = CollisionManager::RayCast(mTarget, direction);
+		if(hit.isHit)
+			int a = 0;
 	}
 }

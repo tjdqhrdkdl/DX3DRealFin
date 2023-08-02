@@ -25,7 +25,14 @@ namespace ya
 	{
 		bool isHit;
 		GameObject* hitObj;
-		Vector3 contact[2];
+		Vector3 contact;
+	};
+
+	struct DistAndObj
+	{
+		float dist;
+
+		GameObject* obj;
 	};
 
 	//	class Scene;
@@ -42,9 +49,12 @@ namespace ya
 		static void ColliderCollision(Collider2D* left, Collider2D* right);
 		static bool Intersect(Collider2D* left, Collider2D* right);
 
-		static RayHit RayCast(GameObject* owner, Vector3 direction, eLayerType colType);
-		static void LayerRayCollision(class Scene* scene, eLayerType objType, Ray ray, GameObject* owner, RayHit* hit);
-	
+		static RayHit RayCast(GameObject* owner, Vector3 direction);
+		
+	private:
+		static DistAndObj LayerRayCollision(class Scene* scene, eLayerType objType, ya::Ray ray, GameObject* owner);
+		static float RayIntersect(ya::Ray ray, Matrix worldMatrix);
+
 	private:
 		static std::bitset<(UINT)eLayerType::End> mLayerCollisionMatrix[(UINT)eLayerType::End];
 		static std::map<UINT64, bool> mCollisionMap;

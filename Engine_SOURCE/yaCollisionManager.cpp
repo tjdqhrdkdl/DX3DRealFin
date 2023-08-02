@@ -348,40 +348,193 @@ namespace ya
 			return false;
 	}
 
-	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, eLayerType colType)
+	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction)
 	{
 		Scene* scene = SceneManager::GetActiveScene();
 		Vector3 position = owner->GetComponent<Transform>()->GetPosition();
-		Ray ray = Ray(position, direction);
-		RayHit hit = RayHit();
+		ya::Ray ray = ya::Ray(position, direction);
+
+		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
+
+		float distMin = 10000000;
+		GameObject* colObj = nullptr;
+
+		eLayerType colType = eLayerType::Player;
 		for (UINT row = 0; row < (UINT)eLayerType::End; row++)
 		{
 			
 			if (mLayerCollisionMatrix[row][(UINT)colType])
 			{
-				LayerRayCollision(scene, (eLayerType)row, ray, owner, &hit);
+				DistAndObj ret = LayerRayCollision(scene, (eLayerType)row, ray, owner);
+				if (ret.obj != nullptr && ret.dist < distMin)
+				{
+					distMin = ret.dist;
+					colObj = ret.obj;
+				}
 			}
 			
 		}
-		return ;
+		if (colObj != nullptr)
+		{
+			hit.isHit = true;
+			hit.hitObj = colObj;
+			hit.contact = distMin * ray.direction + ray.position;
+		}
+		return hit;
 	}
-	void CollisionManager::LayerRayCollision(Scene* scene, eLayerType objType, Ray ray, GameObject* owner, RayHit* hit)
+	//bool TestRayOBBIntersection(
+	//	Vector3 ray_origin,        // Ray origin, in world space
+	//	Vector3 ray_direction,     // Ray direction (NOT target position!), in world space. Must be normalize()'d.
+	//	Vector3 aabb_min,          // Minimum X,Y,Z coords of the mesh when not transformed at all.
+	//	Vector3 aabb_max,          // Maximum X,Y,Z coords. Often aabb_min*-1 if your mesh is centered, but it's not always the case.
+	//	glm::mat4 ModelMatrix,       // Transformation applied to the mesh (which will thus be also applied to its bounding box)
+	//	float& intersection_distance // Output : distance between ray_origin and the intersection with the OBB
+	//) {
+	DistAndObj CollisionManager::LayerRayCollision(Scene* scene, eLayerType objType, ya::Ray ray, GameObject* owner)
 	{
 		std::vector<GameObject*> objects = scene->GetGameObjects(objType);
+
+		GameObject* colObj = nullptr;
+		float distMin = 100000000;
 
 		for (size_t i = 0; i < objects.size(); i++)
 		{
 			GameObject* obj = objects[i];
+			Transform* tr = obj->GetComponent<Transform>();
 			if (obj->GetState() != GameObject::Active)
 				continue;
 			if (obj->GetComponent<Collider2D>() == nullptr)
 				continue;
 			if (obj == owner)
 				continue;
+			
+			Matrix worldMat = tr->GetWorldMatrix();
 
+			Collider2D* collider = obj->GetComponent<Collider2D>();
+			Vector3 colScale = Vector3(collider->GetSize().x, collider->GetSize().y, collider->GetSize().z);
+			Matrix colMatrix = Matrix::CreateScale(colScale);
+			worldMat *= colMatrix;
 
+			float dist = RayIntersect(ray, worldMat);
+			if (dist < 0)
+				continue;
+			
+			if (dist < distMin)
+				distMin = dist; colObj = obj;
 		}
+		return DistAndObj(distMin, colObj);
+
+	}
+	float CollisionManager::RayIntersect(ya::Ray ray, Matrix worldMatrix)
+	{
+		Vector3 aabb_min = Vector3(-0.5, -0.5, -0.5);
+		Vector3 aabb_max = Vector3(0.5, 0.5, 0.5);
+
+		float tMin = 0.0f;
+		float tMax = 100000.0f;
+		float threshHold = 0.00000001;
+
+		Vector3 boxWorldPosition(worldMatrix._41, worldMatrix._42, worldMatrix._43);
+		Vector3 delta = boxWorldPosition - ray.position;
+
+		//x
+		{
+			Vector3 xaxis(worldMatrix._11, worldMatrix._12, worldMatrix._13);
+
+			float e = xaxis.Dot(delta);
+			
+			float f = ray.direction.Dot(xaxis);
 
 
+			if (fabsf(f) > threshHold)
+			{
+				float t1 = (e + aabb_min.x) / f; // Intersection with the "left" plane
+				float t2 = (e + aabb_max.x) / f; // Intersection with the "right" plane
+
+				if (t1 > t2) { // if wrong order
+					float w = t1;
+					t1 = t2;
+					t2 = w; // swap t1 and t2
+				}
+
+				// tMin 은 가장 가까이있는 "먼" 교차
+				if (t2 < tMax)
+					tMax = t2;
+				// tMin 은 가장 멀리있는 "가까운" 교차
+				if (t1 > tMin)
+					tMin = t1;
+
+				if (tMax < tMin)
+					return -1;
+			}
+			else
+				return -1;
+		}
+		//y
+		{
+			Vector3 yaxis(worldMatrix._31, worldMatrix._32, worldMatrix._33);
+
+			float e = yaxis.Dot(delta);
+			float f = ray.direction.Dot(yaxis);
+
+
+			if (fabsf(f) > threshHold)
+			{
+				float t1 = (e + aabb_min.y) / f; // Intersection with the "left" plane
+				float t2 = (e + aabb_max.y) / f; // Intersection with the "right" plane
+
+				if (t1 > t2) { // if wrong order
+					float w = t1;
+					t1 = t2;
+					t2 = w; // swap t1 and t2
+				}
+
+				// tMin 은 가장 가까이있는 "먼" 교차
+				if (t2 < tMax)
+					tMax = t2;
+				// tMin 은 가장 멀리있는 "가까운" 교차
+				if (t1 > tMin)
+					tMin = t1;
+
+				if (tMax < tMin)
+					return -1;
+			}
+			else
+				return -1;
+		}
+		//z
+		{
+			Vector3 zaxis(worldMatrix._21, worldMatrix._22, worldMatrix._23);
+
+			float e = zaxis.Dot(delta);
+			float f = ray.direction.Dot(zaxis);
+
+
+			if (fabsf(f) > threshHold)
+			{
+				float t1 = (e + aabb_min.z) / f; // Intersection with the "left" plane
+				float t2 = (e + aabb_max.z) / f; // Intersection with the "right" plane
+
+				if (t1 > t2) { // if wrong order
+					float w = t1;
+					t1 = t2;
+					t2 = w; // swap t1 and t2
+				}
+
+				// tMin 은 가장 가까이있는 "먼" 교차
+				if (t2 < tMax)
+					tMax = t2;
+				// tMin 은 가장 멀리있는 "가까운" 교차
+				if (t1 > tMin)
+					tMin = t1;
+
+				if (tMax < tMin)
+					return-1;
+			}
+
+			else
+				return -1;
+		}
+		return tMin;
 	}
 }
