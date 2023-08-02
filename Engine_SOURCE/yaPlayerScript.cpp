@@ -11,6 +11,7 @@
 #include "yaRigidbody.h"
 #include "yaActionScript.h"
 #include "yaGrappleHookScript.h"
+#include "yaWallScript.h"
 
 namespace ya
 {
@@ -92,10 +93,53 @@ namespace ya
 
 	void PlayerScript::OnCollisionEnter(Collider2D* collider)
 	{
+		GameObject* colObj = collider->GetOwner();
+		Transform* colTransform = colObj->GetComponent<Transform>();
+
+		GameObject* obj = GetOwner();
+		Transform* objTransform = obj->GetComponent<Transform>();
+
+		// 벽 충돌
+		if (nullptr != colObj->GetScript<WallScript>())
+		{
+			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+
+			Vector3 velocity = objRigidbody->GetVelocity();
+			Vector3 pos = objTransform->GetPosition();
+
+			pos -= velocity * Time::DeltaTime();
+			objTransform->SetPosition(pos);
+
+			//colRigidbody->SetWall(true);
+		}
 	}
 
 	void PlayerScript::OnCollisionStay(Collider2D* collider)
 	{
+		GameObject* colObj = collider->GetOwner();
+		Transform* colTransform = colObj->GetComponent<Transform>();
+
+		GameObject* obj = GetOwner();
+		Transform* objTransform = obj->GetComponent<Transform>();
+
+		// 벽 충돌
+		if (nullptr != colObj->GetScript<WallScript>())
+		{
+			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+
+			Vector3 wallNormal = colTransform->Right();
+
+			Vector3 objVelocity = objRigidbody->GetVelocity();
+			Vector3 objPos = objTransform->GetPosition();
+
+			Vector3 projvec = wallNormal * objVelocity;
+			projvec *= wallNormal;
+
+			objVelocity -= projvec;
+
+			objPos -= objVelocity * Time::DeltaTime();
+			objTransform->SetPosition(objPos);
+		}
 	}
 
 	void PlayerScript::OnCollisionExit(Collider2D* collider)
