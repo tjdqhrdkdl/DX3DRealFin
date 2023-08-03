@@ -46,7 +46,7 @@ namespace ya
 	{
 		if (nullptr != mPlayerObject)
 		{
-			//위치 정보
+			//Postion 
 			mPlayerPos = mPlayerObject->GetComponent<Transform>()->GetPosition();
 			Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
@@ -59,7 +59,7 @@ namespace ya
 
 
 
-			//앞뒤 판별
+			//Back or Front
 			Vec3 monForward = GetComponent<Transform>()->Forward();
 			float direction = monForward.Dot(mMonster2PlayerNormalize);
 
@@ -90,73 +90,73 @@ namespace ya
 
 		GameObject::Render();
 
-		if(mMonsterState)
+		if (mMonsterState)
 		{
 
 			//int MonsterState;
 			float MonsterAlertnessCount = GetAlertnessCount();
 
-			// �ؽ�Ʈ ���
+			
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� �λ� ī��Ʈ: %.2f", MonsterAlertnessCount);
+				swprintf_s(szFloat, 50, L"MonsterAlertnessCount: %.2f", MonsterAlertnessCount);
 				TextOut(application.GetHdc(), 200, 200, szFloat, wcslen(szFloat));
 			}
 
-#pragma region ���� ���º� �޼��� Ȯ�ο�
-			// ���� ���� �� ��� ���߿� ���� ���� �Ұ�
+#pragma region MonsterState
+			
 			if ((int)mMonsterState->GetSituation() == 0)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: None ����");
+				swprintf_s(szFloat, 50, L"None");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 1)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: ���̵� ����");
+				swprintf_s(szFloat, 50, L"Idle");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 2)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: ��� ����");
+				swprintf_s(szFloat, 50, L"Boundary");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 3)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: �������·� �i�� ����");
+				swprintf_s(szFloat, 50, L"Chase");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 4)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: ��Ʋ ���� ��");
+				swprintf_s(szFloat, 50, L"Battle");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 5)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: ��������");
+				swprintf_s(szFloat, 50, L"Run");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 6)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: ���");
+				swprintf_s(szFloat, 50, L"Defense");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 7)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: ����");
+				swprintf_s(szFloat, 50, L"Attack");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 8)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"���� ���� ����: �޽�");
+				swprintf_s(szFloat, 50, L"Sit");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 #pragma endregion
@@ -167,7 +167,7 @@ namespace ya
 	}
 
 
-	//���� �ֺ����� �ÿ��̾� �ִ��� �˻�
+	
 	bool MonsterBase::NavigationPlayer(float range)
 	{
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
@@ -183,7 +183,7 @@ namespace ya
 		return false;
 	}
 
-	//�÷��̾� ��ġ�� ���ƺ���
+	
 	void MonsterBase::TurnToPlayer()
 	{
 		Transform* tr = GetComponent<Transform>();
@@ -221,46 +221,47 @@ namespace ya
 	void MonsterBase::AlertnessLevel()
 	{
 
-		//�÷��̾� ��ġ �տ�����
+	
 		if (IsPlayerFront())
 		{
-			//�̰� ���߿� �߰��� ��� ���� �����ؼ� ���� �սô�
+			
 			if (mMonsterState->GetSituation() == enums::eSituation::Battle ||
 				mMonsterState->GetSituation() == enums::eSituation::Attack ||
 				mMonsterState->GetSituation() == enums::eSituation::Chase)
 				return;
 
-			//�������� �Ѿ ��Ȳ
+		
 			if (NavigationPlayer(3.0f))
 			{
 				mMonsterState->SetSituation(enums::eSituation::Battle);
 			}
 
-			////��� �ϸ� �ൿ �� ��Ȳ
+			
 			//else if (NavigationPlayer(4.5f))
 			//{
 			//	mAlertnessCount = 60.f;
 			//}
-			//������� �þ� �Ÿ������� (��� ���� �׾��ֱ�) 
+			
+
 			if (NavigationPlayer(7.0f))
 			{
 				SetAlertnessCount(Time::DeltaTime() * 5);
 			}
 
 		}
-		//�÷��̾� ��ġ �ڿ�����
+	
 		else
 		{
 
 
-			//������� �þ� �Ÿ������� (��� ���� �׾��ֱ�) 
+			
 			if (NavigationPlayer(5.0f))
 			{			
 				SetAlertnessCount(Time::DeltaTime() * 5);
 			}
 		}
 
-		//��� ���� ���� ����?
+		
 		if (GetAlertnessCount() > 80.f)
 		{
 			mMonsterState->SetSituation(eSituation::Attack);
