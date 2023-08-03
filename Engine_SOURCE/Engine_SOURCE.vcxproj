@@ -207,6 +207,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaMesh.h" />
     <ClInclude Include="yaMeshRenderer.h" />
     <ClInclude Include="yaMonster.h" />
+    <ClInclude Include="yaMonsterScript.h" />
     <ClInclude Include="yaMultiRenderTarget.h" />
     <ClInclude Include="yaObject.h" />
     <ClInclude Include="yaPaintShader.h" />
@@ -272,6 +273,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaMesh.cpp" />
     <ClCompile Include="yaMeshRenderer.cpp" />
     <ClCompile Include="yaMonster.cpp" />
+    <ClCompile Include="yaMonsterScript.cpp" />
     <ClCompile Include="yaMultiRenderTarget.cpp" />
     <ClCompile Include="yaPaintShader.cpp" />
     <ClCompile Include="yaParticleShader.cpp" />

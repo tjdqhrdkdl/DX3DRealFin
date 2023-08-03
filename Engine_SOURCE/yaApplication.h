@@ -26,6 +26,7 @@ namespace ya
 		void SetWindow(HWND hwnd, UINT width, UINT height);
 		void SetHwnd(HWND hwnd) { mHwnd = hwnd; }
 		HWND GetHwnd() { return mHwnd; }
+		HDC GetHdc() { return mHdc; }
 		UINT GetWidth() { return mWidth; }
 		UINT GetHeight() { return mHeight; }
 

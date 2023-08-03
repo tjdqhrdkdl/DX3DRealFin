@@ -31,6 +31,12 @@ namespace ya
 		void SetProsthetic(eProsthetics prosthetic) { mProsthetic = prosthetic; }
 		eProsthetics GetProsthetic() { return mProsthetic; }
 
+
+		bool IsAttack() { return mbTESTAttack; }
+		void SetAttack(bool attack) { mbTESTAttack = attack; }
+		bool IsWalk() { return mbTESTWalk; }
+		void SetWalk(bool walk) { mbTESTWalk = walk; }
+
 	private:
 		int mHp;
 		int mHpMax;
@@ -41,5 +47,8 @@ namespace ya
 		int mResurrectionCountMax;
 
 		eProsthetics mProsthetic;
+
+		bool mbTESTAttack;
+		bool mbTESTWalk;
 	};
 }
