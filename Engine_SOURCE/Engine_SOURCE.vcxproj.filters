@@ -2,9 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="yaComputeShader.cpp" />
-    <ClCompile Include="yaConstantBuffer.cpp" />
     <ClCompile Include="yaFmod.cpp" />
-    <ClCompile Include="yaGraphicDevice_DX11.cpp" />
     <ClCompile Include="yaGridScript.cpp" />
     <ClCompile Include="yaLayer.cpp" />
     <ClCompile Include="yaMaterial.cpp" />
@@ -15,7 +13,6 @@
     <ClCompile Include="yaParticleSystem.cpp" />
     <ClCompile Include="yaPlayScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />
-    <ClCompile Include="yaRenderer.cpp" />
     <ClCompile Include="yaResource.cpp" />
     <ClCompile Include="yaResources.cpp" />
     <ClCompile Include="yaScene.cpp" />
@@ -23,7 +20,6 @@
     <ClCompile Include="yaShader.cpp" />
     <ClCompile Include="yaState.cpp" />
     <ClCompile Include="yaSpearman.cpp" />
-    <ClCompile Include="yaStructedBuffer.cpp" />
     <ClCompile Include="yaTexture.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaWallScript.cpp" />
@@ -135,13 +131,22 @@
     <ClCompile Include="yaGameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="yaGraphicDevice_DX11.cpp">
+      <Filter>Graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="yaConstantBuffer.cpp">
+      <Filter>Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="yaStructedBuffer.cpp">
+      <Filter>Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="yaRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaComputeShader.h" />
-    <ClInclude Include="yaConstantBuffer.h" />
     <ClInclude Include="yaFmod.h" />
-    <ClInclude Include="yaGraphicDevice_DX11.h" />
-    <ClInclude Include="yaGraphics.h" />
     <ClInclude Include="yaGridScript.h" />
     <ClInclude Include="yaLayer.h" />
     <ClInclude Include="yaMaterial.h" />
@@ -152,7 +157,6 @@
     <ClInclude Include="yaParticleSystem.h" />
     <ClInclude Include="yaPlayScene.h" />
     <ClInclude Include="yaPrefab.h" />
-    <ClInclude Include="yaRenderer.h" />
     <ClInclude Include="yaResource.h" />
     <ClInclude Include="yaResources.h" />
     <ClInclude Include="yaScene.h" />
@@ -161,7 +165,6 @@
     <ClInclude Include="yaShader.h" />
     <ClInclude Include="yaState.h" />
     <ClInclude Include="yaSpearman.h" />
-    <ClInclude Include="yaStructedBuffer.h" />
     <ClInclude Include="yaTexture.h" />
     <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaWallScript.h" />
@@ -282,6 +285,21 @@
     <ClInclude Include="yaObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="yaGraphicDevice_DX11.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="yaConstantBuffer.h">
+      <Filter>Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="yaStructedBuffer.h">
+      <Filter>Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="yaGraphics.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="yaRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -373,6 +391,21 @@
     </Filter>
     <Filter Include="GameObject\Monster\Base">
       <UniqueIdentifier>{c3a5730a-0574-404c-9a51-67ed132a6f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\API">
+      <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Buffer">
+      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Base">
+      <UniqueIdentifier>{58f8760f-8987-4a61-8e49-0bb36005ccbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Layer">
+      <UniqueIdentifier>{5a835ebf-edb9-4d75-8210-4e7b46ecff73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Manager">
+      <UniqueIdentifier>{a9b53643-d197-478b-ab4e-8678361d76e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
