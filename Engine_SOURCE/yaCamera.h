@@ -26,6 +26,7 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
+
 		void CreateViewMatrix();
 		void CreateProjectionMatrix();
 		void RegisterCameraInRenderer();
@@ -41,6 +42,7 @@ namespace ya
 
 	private:
 		void sortGameObjects();
+		void renderDeferred();
 		void renderOpaque();
 		void renderCutout();
 		void renderTransparent();
@@ -50,6 +52,7 @@ namespace ya
 	private:
 		static Matrix View;
 		static Matrix Projection;
+		static Matrix InverseView;
 
 		Matrix mView;
 		Matrix mProjection;
@@ -62,6 +65,7 @@ namespace ya
 		float mScale;
 
 		std::bitset<(UINT)eLayerType::End> mLayerMasks;
+		std::vector<GameObject*> mDeferredOpaqueGameObjects;
 		std::vector<GameObject*> mOpaqueGameObjects;
 		std::vector<GameObject*> mCutoutGameObjects;
 		std::vector<GameObject*> mTransparentGameObjects;

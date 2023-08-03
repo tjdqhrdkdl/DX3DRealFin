@@ -34,7 +34,7 @@ namespace ya
 		SceneManager::Initialize();
 	}
 
-	// °ÔÀÓ ·ÎÁ÷ Ä³¸¯ÅÍ ÀÌµ¿ µîµî 
+	// ê²Œì„ ë¡œì§ ìºë¦­í„° ì´ë™ ë“±ë“± 
 	// CPU UPDATE
 	void Application::Update()
 	{
@@ -55,8 +55,10 @@ namespace ya
 	{
 		Time::Render(mHdc);
 
-		graphicDevice->Clear();
+		//graphicDevice->Clear();
 		graphicDevice->AdjustViewPorts();
+		renderer::ClearRenderTargets();
+
 		
 		renderer::Render();
 	}

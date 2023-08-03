@@ -312,6 +312,9 @@
     <ClCompile Include="yaWallScript.cpp">
       <Filter>Component\Script\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="yaMultiRenderTarget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -502,6 +505,9 @@
     <ClInclude Include="yaState.h" />
     <ClInclude Include="yaWallScript.h">
       <Filter>Component\Script\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMultiRenderTarget.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
