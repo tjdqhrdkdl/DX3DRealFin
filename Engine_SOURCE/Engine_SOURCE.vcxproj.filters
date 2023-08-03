@@ -133,8 +133,8 @@
     <Filter Include="Component\Script\Ground">
       <UniqueIdentifier>{482e9e00-2551-4804-b846-b889c3598f2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Script\Monster">
-      <UniqueIdentifier>{b792bade-2153-4db1-9de3-b8b58b58cb25}</UniqueIdentifier>
+    <Filter Include="Test">
+      <UniqueIdentifier>{950159f2-a237-4e69-8c9d-4337539d47ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

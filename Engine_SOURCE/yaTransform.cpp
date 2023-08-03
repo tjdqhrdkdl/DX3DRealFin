@@ -47,28 +47,19 @@ namespace ya
 		// 회전 변환 행렬
 		Matrix rotation;
 
-		if (mbRotateFromAxis)
-		{
-			rotation = mRotationFromAxis;
-		}
-		else if (mbUseQuaternion)
-		{
-			Matrix qM = XMMatrixRotationQuaternion(mRotationQuaternion);
-			rotation = qM;
-		}
-		else
-		{
-			Vector3 radian(mRotation.x * (XM_PI / 180)
-				, mRotation.y * (XM_PI / 180)
-				, mRotation.z * (XM_PI / 180));
 
-			float theta;
+		Vector3 radian(mRotation.x * (XM_PI / 180)
+			, mRotation.y * (XM_PI / 180)
+			, mRotation.z * (XM_PI / 180));
 
-			rotation = Matrix::CreateRotationX(radian.x);
-			rotation *= Matrix::CreateRotationY(radian.y);
-			rotation *= Matrix::CreateRotationZ(radian.z);
-		}
+		float theta;
+
+		rotation = Matrix::CreateRotationX(radian.x);
+		rotation *= Matrix::CreateRotationY(radian.y);
+		rotation *= Matrix::CreateRotationZ(radian.z);
+
 		mMatRotation = rotation;
+
 
 
 
@@ -113,8 +104,6 @@ namespace ya
 		trCb.inverseView = trCb.view.Invert();
 		trCb.projection = Camera::GetGpuProjectionMatrix();
 
-		if (mbUseQuaternion)
-			int a = 0;
 
 
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Transform];
