@@ -13,7 +13,7 @@ namespace ya
 	{
 	}
 
-	void HookTargetScript::Initalize()
+	void HookTargetScript::Initialize()
 	{
 	}
 

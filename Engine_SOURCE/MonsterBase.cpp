@@ -31,18 +31,18 @@ namespace ya
 
 	}
 
-	void MonsterBase::Initalize()
+	void MonsterBase::Initialize()
 	{
 
 
-		GameObject::Initalize();
+		GameObject::Initialize();
 	}
 
 	void MonsterBase::Update()
 	{
 		if (nullptr != mPlayerObject)
 		{
-			//À§Ä¡ Á¤º¸
+			//ìœ„ì¹˜ ì •ë³´
 			mPlayerPos = mPlayerObject->GetComponent<Transform>()->GetPosition();
 			Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
@@ -53,7 +53,7 @@ namespace ya
 			mPlayer2MonsterNormalize.Normalize();
 						
 
-			//¾ÕµÚ ÆÇº°
+			//ì•ë’¤ íŒë³„
 			Vec3 monForward = GetComponent<Transform>()->Forward();
 			float direction = monForward.Dot(mPlayerPos);
 
@@ -67,7 +67,7 @@ namespace ya
 			}
 			
 
-			//ÇÃ·¹ÀÌ¾î À§Ä¡ 1´Ü°è
+			//í”Œë ˆì´ì–´ ìœ„ì¹˜ 1ë‹¨ê³„
 			
 
 

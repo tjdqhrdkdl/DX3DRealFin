@@ -10,7 +10,7 @@ namespace ya
 		Player();
 		virtual ~Player();
 
-		virtual void Initalize();
+		virtual void Initialize();
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void Render();

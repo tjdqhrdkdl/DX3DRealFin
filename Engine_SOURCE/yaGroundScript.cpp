@@ -18,7 +18,7 @@ namespace ya
 	{
 	}
 
-	void GroundScript::Initalize()
+	void GroundScript::Initialize()
 	{
 		int a = 0;
 	}

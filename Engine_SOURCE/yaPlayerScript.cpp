@@ -24,7 +24,7 @@ namespace ya
 	{
 	}
 
-	void PlayerScript::Initalize()
+	void PlayerScript::Initialize()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		{
@@ -100,7 +100,7 @@ namespace ya
 		GameObject* obj = GetOwner();
 		Transform* objTransform = obj->GetComponent<Transform>();
 
-		// º® Ãæµ¹
+		// ï¿½ï¿½ ï¿½æµ¹
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
 			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
@@ -123,7 +123,7 @@ namespace ya
 		GameObject* obj = GetOwner();
 		Transform* objTransform = obj->GetComponent<Transform>();
 
-		// º® Ãæµ¹
+		// ï¿½ï¿½ ï¿½æµ¹
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
 			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();

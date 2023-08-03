@@ -6,7 +6,7 @@ namespace ya
 	class SceneManager
 	{
 	public:
-		static void Initalize();
+		static void Initialize();
 		static void Update();
 		static void FixedUpdate();
 		static void Render();

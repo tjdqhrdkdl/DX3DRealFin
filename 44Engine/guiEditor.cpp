@@ -25,7 +25,7 @@ extern ya::Application application;
 
 namespace gui
 {
-	void Editor::Initalize()
+	void Editor::Initialize()
 	{
 		mEnable = true;
 

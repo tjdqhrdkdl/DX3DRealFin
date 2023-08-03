@@ -36,7 +36,7 @@ namespace ya
 	TitleScene::~TitleScene()
 	{
 	}
-	void TitleScene::Initalize()
+	void TitleScene::Initialize()
 	{
 		// Main Camera Game Object
 		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera);
@@ -288,7 +288,7 @@ namespace ya
 		//	mr->SetMesh(mesh);
 		//}
 	
-		Scene::Initalize();
+		Scene::Initialize();
 	}
 	void TitleScene::Update()
 	{
