@@ -79,7 +79,7 @@ namespace ya
 		}
 		if (mbMouseMove)
 		{
-			//ÃÖÃÊÀÇ ¸¶¿ì½º À§Ä¡¿¡ Ä«¸Ş¶ó°¡ ¿µÇâ¹ŞÁö ¾Êµµ·Ï.
+			//ìµœì´ˆì˜ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì— ì¹´ë©”ë¼ê°€ ì˜í–¥ë°›ì§€ ì•Šë„ë¡.
 			if (!mbFirstInit)
 			{
 				SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
@@ -87,7 +87,7 @@ namespace ya
 			}
 
 
-			// ¸¶¿ì½ºÀÇ ÀÌµ¿ °Å¸®(ÇÈ¼¿) ÃøÁ¤ - ¹İ¿µ - ¸¶¿ì½º À§Ä¡ °íÁ¤ 
+			// ë§ˆìš°ìŠ¤ì˜ ì´ë™ ê±°ë¦¬(í”½ì…€) ì¸¡ì • - ë°˜ì˜ - ë§ˆìš°ìŠ¤ ìœ„ì¹˜ ê³ ì • 
 			else
 			{
 				Vector2 mousePos = Input::GetMousePosition();
@@ -97,14 +97,14 @@ namespace ya
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 
-				//µğ¹ö±ë½Ã¿¡ ¹®Á¦»ı±â´Â ºÎºĞ ¸·À½.
+				//ë””ë²„ê¹…ì‹œì— ë¬¸ì œìƒê¸°ëŠ” ë¶€ë¶„ ë§‰ìŒ.
 				if (Time::DeltaTime() < 0.1f)
 				{
-					//µÎ¹ø °è»êÇØÁÙ °ÍÀÌ´Ù.
-					//Ä«¸Ş¶ó¸¦ ¿øÁ¡(ÇÃ·¹ÀÌ¾î) ±âÁØÀ¸·Î ¸ÕÀú À§Ä¡¸¦ ÀÌµ¿½ÃÅ°°í
-					//Ä«¸Ş¶ó ¿ÀºêÁ§Æ®ÀÇ È¸ÀüÀ» ¹Ù²ãÁØ´Ù.
+					//ë‘ë²ˆ ê³„ì‚°í•´ì¤„ ê²ƒì´ë‹¤.
+					//ì¹´ë©”ë¼ë¥¼ ì›ì (í”Œë ˆì´ì–´) ê¸°ì¤€ìœ¼ë¡œ ë¨¼ì € ìœ„ì¹˜ë¥¼ ì´ë™ì‹œí‚¤ê³ 
+					//ì¹´ë©”ë¼ ì˜¤ë¸Œì íŠ¸ì˜ íšŒì „ì„ ë°”ê¿”ì¤€ë‹¤.
 
-					//±¸ ÀÌµ¿
+					//êµ¬ ì´ë™
 					mChildPos += 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 					mChildPos.Normalize();
 					mChildPos *= mDistFromTarget;
@@ -114,14 +114,14 @@ namespace ya
 					mChildPos.Normalize();
 					mChildPos *= mDistFromTarget;
 
-					//yÃà ÀÌµ¿ ÇÑ°è ÁöÁ¤
+					//yì¶• ì´ë™ í•œê³„ ì§€ì •
 					if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2)
 						mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2;
 					if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
 						mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
 
 
-					//È¸Àü
+					//íšŒì „
 					Vector3 pos = tr->GetPosition();
 					Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
 

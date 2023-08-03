@@ -44,7 +44,7 @@ namespace ya
 	void PlayerScript::Update()
 	{
 		ActionScript* action = GetOwner()->GetScript<ActionScript>();
-		action->SetSpeed(120.0f); // �Ŀ� �÷��̾� status�� ����
+		action->SetSpeed(120.0f);
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		float speed = 120.0f; // 후에 플레이어 status로 변경
@@ -100,7 +100,7 @@ namespace ya
 		GameObject* obj = GetOwner();
 		Transform* objTransform = obj->GetComponent<Transform>();
 
-		// �� �浹
+		// 벽 충돌
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
 			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
@@ -123,7 +123,7 @@ namespace ya
 		GameObject* obj = GetOwner();
 		Transform* objTransform = obj->GetComponent<Transform>();
 
-		// �� �浹
+		// 벽 충돌
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
 			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
