@@ -26,6 +26,7 @@
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaSpearman.h"
+#include "yaMonsterScript.h"
 
 namespace ya
 {
@@ -50,8 +51,8 @@ namespace ya
 		mainCamera = cameraComp;
 
 
-		GameObject* player = object::Instantiate<GameObject>(eLayerType::Player);
-		player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 10.0f));
+		Player* player = object::Instantiate<Player>(eLayerType::Player);
+		player->GetComponent<Transform>()->SetPosition(Vector3(-13.0f, 0.0f, -10.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
 		player->SetName(L"Player");
@@ -75,7 +76,7 @@ namespace ya
 
 
 		Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
-		spearman->GetComponent<Transform>()->SetPosition(Vector3(10.0f, 0.0f, 10.0f));
+		spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
 		spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 		spearman->SetName(L"Spearman");
 		spearman->SetPlayerObject(player);
@@ -87,6 +88,9 @@ namespace ya
 		spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
 		Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
 		spearmanRigidbody->SetGround(false);
+		spearman->AddComponent<MonsterScript>();
+
+
 		
 
 		{

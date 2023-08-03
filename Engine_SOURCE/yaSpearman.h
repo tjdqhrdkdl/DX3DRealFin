@@ -17,9 +17,20 @@ namespace ya
 
     public:
 
+\
+        bool IsParrying() { return mbParrying; }
+
 
 
     private:
+
+        float                   mTime;
+        Vec3                    mRandomXY;
+        Vec3                    mRandomFinPos;
+        Vec3                    mWlakFixPos;
+        
+        bool                    mbParrying;
+
 
     };
 }

@@ -58,11 +58,11 @@ namespace ya
 		}
 		if (Input::GetKey(eKeyCode::I))
 		{
-			action->Move(tr->Foward());
+			action->Move(tr->Forward());
 		}
 		if (Input::GetKey(eKeyCode::K))
 		{
-			action->Move(-tr->Foward());
+			action->Move(-tr->Forward());
 		}
 
 		if (Input::GetKey(eKeyCode::SPACE))
@@ -84,6 +84,37 @@ namespace ya
 			GrappleHookScript* grap = GetOwner()->GetScript<GrappleHookScript>();
 			grap->GrappleHook();
 		}
+
+		// 테스트로 만든 공격 입니다 나중에 지울것
+		if (Input::GetKeyDown(eKeyCode::Q))
+		{
+			action->Move(tr->Forward() * 500.f);
+			Player* player = (Player*)GetOwner();
+			player->SetAttack(true);
+		}
+		Player* player = (Player*)GetOwner();
+		if (player->IsAttack())
+		{
+			TESTTime += Time::DeltaTime();
+			if (TESTTime >= 1.5f)
+			{
+				player->SetAttack(false);
+				TESTTime = 0.f;
+			}
+		}
+		if (player->IsWalk())
+		{
+			action->Move(-(tr->Forward() * 250.f));
+			TESTTime += Time::DeltaTime();
+			if (TESTTime >= 0.5f)
+			{
+				player->SetWalk(false);
+				TESTTime = 0.f;
+			}
+		}
+
+
+
 	}
 
 

@@ -127,14 +127,14 @@
     <Filter Include="Component\Rigidbody">
       <UniqueIdentifier>{6a200c63-e605-4ef6-a29f-b6d0f64d6a2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Sekiro">
-      <UniqueIdentifier>{94c1d857-2529-4d6a-8d63-73d99e674a2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Script\Player">
       <UniqueIdentifier>{73fe241b-e302-49fb-a055-4ab4a2cc1bf3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Script\Ground">
       <UniqueIdentifier>{482e9e00-2551-4804-b846-b889c3598f2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Monster">
+      <UniqueIdentifier>{b792bade-2153-4db1-9de3-b8b58b58cb25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -308,8 +308,9 @@
     <ClCompile Include="yaSpearman.cpp">
       <Filter>GameObject\Monster\Base</Filter>
     </ClCompile>
-    <ClCompile Include="yaState.cpp">
-      <Filter>State</Filter>
+    <ClCompile Include="yaState.cpp" />
+    <ClCompile Include="yaMonsterScript.cpp">
+      <Filter>Component\Script\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -498,8 +499,9 @@
     <ClInclude Include="yaSpearman.h">
       <Filter>GameObject\Monster\Base</Filter>
     </ClInclude>
-    <ClInclude Include="yaState.h">
-      <Filter>State</Filter>
+    <ClInclude Include="yaState.h" />
+    <ClInclude Include="yaMonsterScript.h">
+      <Filter>Component\Script\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
