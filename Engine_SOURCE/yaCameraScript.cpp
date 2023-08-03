@@ -163,7 +163,9 @@ namespace ya
 		if (hit.isHit)
 		{
 			int a = 0;
+
 			tr->SetPosition(hit.contact - direction);
+
 		}
 	}
 }

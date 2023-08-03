@@ -36,12 +36,7 @@ namespace ya
 		void SetUp(Vector3 up)		{ mUp = up;}
 		Matrix& GetWorldMatrix() { return mWorld; }
 
-		void RotateFromAxis(Matrix matrix) { mbRotateFromAxis = true; mRotationFromAxis = matrix; }
-
-		void SetQuaternion(Quaternion quat) { mbUseQuaternion = true; mRotationQuaternion = quat; }
-
 		void IsCamera(bool cam) { mbCamera = cam; }
-		Quaternion GetQuaternion() { return mRotationQuaternion; }
 
 	private:
 		Transform* mParent;
@@ -51,16 +46,8 @@ namespace ya
 		Vector3 mPosition;
 		Vector3 mRotation;
 		Vector3 mScale;
-		
-		bool mbRotateFromAxis;
-
-		bool mbUseQuaternion;
 
 		bool mbCamera;
-
-		Quaternion mRotationQuaternion;
-
-		Matrix mRotationFromAxis;
 
 		Matrix mMatScale;
 		Matrix mMatTranslation;
