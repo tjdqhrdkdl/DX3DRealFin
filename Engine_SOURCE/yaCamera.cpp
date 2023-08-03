@@ -4,6 +4,7 @@
 #include "yaApplication.h"
 #include "yaRenderer.h"
 #include "yaScene.h"
+#include "yaResources.h"
 #include "yaSceneManager.h"
 #include "yaMaterial.h"
 #include "yaBaseRenderer.h"
@@ -14,6 +15,7 @@ extern ya::Application application;
 namespace ya
 {
 	Matrix Camera::View = Matrix::Identity;
+	Matrix Camera::InverseView = Matrix::Identity;
 	Matrix Camera::Projection = Matrix::Identity;
 
 	Camera::Camera()
@@ -31,9 +33,9 @@ namespace ya
 	{
 	}
 
-	void Camera::Initalize()
+	void Camera::Initialize()
 	{
-		
+
 		RegisterCameraInRenderer();
 	}
 
@@ -53,10 +55,40 @@ namespace ya
 	void Camera::Render()
 	{
 		View = mView;
+		InverseView = View.Invert();
 		Projection = mProjection;
+
 
 		sortGameObjects();
 
+		// deffered opaque render
+		renderTargets[(UINT)eRTType::Deferred]->OmSetRenderTarget();
+		renderDeferred();
+
+
+		//// deffered light 
+		renderTargets[(UINT)eRTType::Light]->OmSetRenderTarget();
+		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
+		// 붙여버리자
+
+		for (Light* light : renderer::lights)
+		{
+			light->Render();
+		}
+
+
+		// swapchain 
+		renderTargets[(UINT)eRTType::Swapchain]->OmSetRenderTarget();
+
+		////// defferd + swapchain merge
+		std::shared_ptr<Material> mergeMaterial = Resources::Find<Material>(L"MergeMaterial");
+		std::shared_ptr<Mesh> rectMesh = Resources::Find<Mesh>(L"RectMesh");
+
+		rectMesh->BindBuffer();
+		mergeMaterial->Bind();
+		rectMesh->Render();
+
+		// Foward render
 		renderOpaque();
 		renderCutout();
 		renderTransparent();
@@ -71,17 +103,16 @@ namespace ya
 		// Crate Translate view matrix
 		mView = Matrix::Identity;
 		mView *= Matrix::CreateTranslation(-pos);
-		//ȸ�� ����
+		//회전 정보
+
 		Vector3 up = tr->Up();
 		Vector3 right = tr->Right();
-		Vector3 forward = tr->Forward();
-
-
+		Vector3 foward = tr->Forward();
 
 		Matrix viewRotate;
-		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = forward.x;
-		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = forward.y;
-		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = forward.z;
+		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
+		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
+		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
 
 		mView *= viewRotate;
 	}
@@ -124,6 +155,7 @@ namespace ya
 
 	void Camera::sortGameObjects()
 	{
+		mDeferredOpaqueGameObjects.clear();
 		mOpaqueGameObjects.clear();
 		mCutoutGameObjects.clear();
 		mTransparentGameObjects.clear();
@@ -144,6 +176,17 @@ namespace ya
 					pushGameObjectToRenderingModes(obj);
 				}
 			}
+		}
+	}
+
+	void Camera::renderDeferred()
+	{
+		for (GameObject* obj : mDeferredOpaqueGameObjects)
+		{
+			if (obj == nullptr)
+				continue;
+
+			obj->Render();
 		}
 	}
 
@@ -207,6 +250,10 @@ namespace ya
 
 		switch (mode)
 		{
+		case ya::graphics::eRenderingMode::DeferredOpaque:
+		case ya::graphics::eRenderingMode::DeferredMask:
+			mDeferredOpaqueGameObjects.push_back(gameObj);
+			break;
 		case ya::graphics::eRenderingMode::Opaque:
 			mOpaqueGameObjects.push_back(gameObj);
 			break;

@@ -17,7 +17,7 @@ namespace ya
 
 	}
 
-	void AudioSource::Initalize()
+	void AudioSource::Initialize()
 	{
 	}
 

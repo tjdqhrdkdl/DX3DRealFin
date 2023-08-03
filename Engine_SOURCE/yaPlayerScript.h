@@ -10,7 +10,7 @@ namespace ya
 		PlayerScript();
 		~PlayerScript();
 
-		virtual void Initalize() override;
+		virtual void Initialize() override;
 		virtual void Update() override;
 		virtual void Render() override;
 
@@ -19,5 +19,8 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	private:
+
+		float TESTTime;
+
 	};
 }

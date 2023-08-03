@@ -22,7 +22,7 @@ namespace ya
 	GrappleHookScript::~GrappleHookScript()
 	{
 	}
-	void GrappleHookScript::Initalize()
+	void GrappleHookScript::Initialize()
 	{
 	}
 

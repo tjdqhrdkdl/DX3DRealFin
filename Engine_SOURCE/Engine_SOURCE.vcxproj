@@ -126,6 +126,7 @@
       </PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)\External\FBXLoader\Include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -207,6 +208,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaMeshRenderer.h" />
     <ClInclude Include="yaMonster.h" />
     <ClInclude Include="yaMoveScript.h" />
+    <ClInclude Include="yaMonsterScript.h" />
+    <ClInclude Include="yaMultiRenderTarget.h" />
     <ClInclude Include="yaObject.h" />
     <ClInclude Include="yaPaintShader.h" />
     <ClInclude Include="yaParticleShader.h" />
@@ -232,6 +235,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaTime.h" />
     <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaTransform.h" />
+    <ClInclude Include="yaWallScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MonsterBase.cpp" />
@@ -271,6 +275,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaMeshRenderer.cpp" />
     <ClCompile Include="yaMonster.cpp" />
     <ClCompile Include="yaMoveScript.cpp" />
+    <ClCompile Include="yaMonsterScript.cpp" />
+    <ClCompile Include="yaMultiRenderTarget.cpp" />
     <ClCompile Include="yaPaintShader.cpp" />
     <ClCompile Include="yaParticleShader.cpp" />
     <ClCompile Include="yaParticleSystem.cpp" />
@@ -294,6 +300,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaTime.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaTransform.cpp" />
+    <ClCompile Include="yaWallScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl" />

@@ -32,9 +32,9 @@ namespace ya
 	{
 	}
 
-	void Player::Initalize()
+	void Player::Initialize()
 	{
-		GameObject::Initalize();
+		GameObject::Initialize();
 	}
 
 	void Player::Update()
