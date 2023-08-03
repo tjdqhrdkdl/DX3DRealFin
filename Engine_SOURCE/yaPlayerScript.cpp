@@ -44,11 +44,13 @@ namespace ya
 	void PlayerScript::Update()
 	{
 		ActionScript* action = GetOwner()->GetScript<ActionScript>();
-		action->SetSpeed(120.0f); // �Ŀ� �÷��̾� status�� ����
+		action->SetSpeed(120.0f); // 占식울옙 占시뤄옙占싱억옙 status占쏙옙 占쏙옙占쏙옙
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		float speed = 120.0f; // 후에 플레이어 status로 변경
 
+		float speed = 120.0f; // 후에 플레이어 status로 변경
+		
+		// camera script wasd 미사용시 키 변경
 		if (Input::GetKey(eKeyCode::L))
 		{
 			action->Move(tr->Right());
@@ -59,11 +61,11 @@ namespace ya
 		}
 		if (Input::GetKey(eKeyCode::I))
 		{
-			action->Move(tr->Foward());
+			action->Move(tr->Forward());
 		}
 		if (Input::GetKey(eKeyCode::K))
 		{
-			action->Move(-tr->Foward());
+			action->Move(-tr->Forward());
 		}
 
 		if (Input::GetKey(eKeyCode::SPACE))
@@ -100,7 +102,7 @@ namespace ya
 		GameObject* obj = GetOwner();
 		Transform* objTransform = obj->GetComponent<Transform>();
 
-		// �� �浹
+		// 벽 충돌
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
 			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
@@ -123,7 +125,7 @@ namespace ya
 		GameObject* obj = GetOwner();
 		Transform* objTransform = obj->GetComponent<Transform>();
 
-		// �� �浹
+		// 벽 충돌
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
 			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
