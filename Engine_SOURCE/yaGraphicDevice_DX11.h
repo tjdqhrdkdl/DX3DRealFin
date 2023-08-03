@@ -54,8 +54,10 @@ namespace ya::graphics
 		void CopyResource(ID3D11Resource* pDstResource, ID3D11Resource* pSrcResource);
 
 		void Clear();
+		void ClearRenderTargetView(ID3D11RenderTargetView* pRenderTargetView, const FLOAT ColorRGBA[4]);
+		void ClearDepthStencilView(ID3D11DepthStencilView* pDepthStencilView, UINT ClearFlags);
 		void AdjustViewPorts();
-		void OMSetRenderTarget();
+		void OMSetRenderTarget(UINT NumViews, ID3D11RenderTargetView** ppRenderTargetViews, ID3D11DepthStencilView* pDepthStencilView);
 
 		void Draw();
 		void DrawIndexed(UINT indexCount, UINT StartIndexLocation, UINT BaseVertexLocation);

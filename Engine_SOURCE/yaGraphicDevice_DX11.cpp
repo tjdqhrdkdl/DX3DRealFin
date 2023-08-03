@@ -14,11 +14,11 @@ namespace ya::graphics
 	{
 		graphics::GetDevice() = this;
 		/// <summary>
-		/// 1. Device ¿Í SwapChain »ý¼ºÇÑ´Ù.
-		/// 2. ¹é¹öÆÛ¿¡ ½ÇÁ¦·Î ·»´õ¸µÇÒ ·»´õÅ¸°Ù ºä¸¦ »ý¼ºÇØ¾ßÇÑ´Ù.
-		/// 3. È­¸éÀ» Å¬¸®¾î ÇØÁà¾ßÇÑ´Ù. ºäÆ÷Æ®¸¦ »ý¼ºÇØÁà¾ß ÇÑ´Ù.
-		/// 4. ¸ÅÇÁ·¹ÀÓ¸¶´Ù À§¿¡¼­ »ý¼ºÇÑ ·»´õÅ¸°Ùºä¿¡ ·»´õ¸µÇØÁÖ¾î¾ßÇÑ´Ù.
-		/// 5. SwapchainÀ» ÀÌ¿ëÇÏ¿© ÃÖÁ¾ µð¹ÙÀÌ½º(µð½ºÇÃ·¹ÀÌ)¿¡ È­¸éÀ» ±×·ÁÁà¾ßÇÑ´Ù.
+		/// 1. Device ì™€ SwapChain ìƒì„±í•œë‹¤.
+		/// 2. ë°±ë²„í¼ì— ì‹¤ì œë¡œ ë Œë”ë§í•  ë Œë”íƒ€ê²Ÿ ë·°ë¥¼ ìƒì„±í•´ì•¼í•œë‹¤.
+		/// 3. í™”ë©´ì„ í´ë¦¬ì–´ í•´ì¤˜ì•¼í•œë‹¤. ë·°í¬íŠ¸ë¥¼ ìƒì„±í•´ì¤˜ì•¼ í•œë‹¤.
+		/// 4. ë§¤í”„ë ˆìž„ë§ˆë‹¤ ìœ„ì—ì„œ ìƒì„±í•œ ë Œë”íƒ€ê²Ÿë·°ì— ë Œë”ë§í•´ì£¼ì–´ì•¼í•œë‹¤.
+		/// 5. Swapchainì„ ì´ìš©í•˜ì—¬ ìµœì¢… ë””ë°”ì´ìŠ¤(ë””ìŠ¤í”Œë ˆì´)ì— í™”ë©´ì„ ê·¸ë ¤ì¤˜ì•¼í•œë‹¤.
 		/// </summary>
 		/// <param name="validationMode"></param>
 
@@ -83,6 +83,7 @@ namespace ya::graphics
 
 		mDepthStencilBufferTexture = std::make_shared<Texture>();
 		mDepthStencilBufferTexture->Create(1600, 900, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+		Resources::Insert<Texture>(L"DepthStencilTexture", mDepthStencilBufferTexture);
 
 		RECT winRect;
 		GetClientRect(application.GetHwnd(), &winRect);
@@ -430,10 +431,20 @@ namespace ya::graphics
 
 	void GraphicDevice_DX11::Clear()
 	{
-		// È­¸é Áö¿öÁÖ±â
+		// í™”ë©´ ì§€ì›Œì£¼ê¸°
 		FLOAT backgroundColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
 		mContext->ClearRenderTargetView(mRenderTargetTexture->GetRTV().Get(), backgroundColor);
 		mContext->ClearDepthStencilView(mDepthStencilBufferTexture->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+	}
+
+	void GraphicDevice_DX11::ClearRenderTargetView(ID3D11RenderTargetView* pRenderTargetView, const FLOAT ColorRGBA[4])
+	{
+		mContext->ClearRenderTargetView(pRenderTargetView, ColorRGBA);
+	}
+
+	void GraphicDevice_DX11::ClearDepthStencilView(ID3D11DepthStencilView* pDepthStencilView, UINT ClearFlags)
+	{
+		mContext->ClearDepthStencilView(pDepthStencilView, ClearFlags, 1.0f, 0.0f);
 	}
 
 	void GraphicDevice_DX11::AdjustViewPorts()
@@ -446,11 +457,9 @@ namespace ya::graphics
 		mContext->OMSetRenderTargets(1, mRenderTargetTexture->GetRTV().GetAddressOf(), mDepthStencilBufferTexture->GetDSV().Get());
 	}
 
-	void GraphicDevice_DX11::OMSetRenderTarget()
+	void GraphicDevice_DX11::OMSetRenderTarget(UINT NumViews, ID3D11RenderTargetView** ppRenderTargetViews, ID3D11DepthStencilView* pDepthStencilView)
 	{
-		mContext->OMSetRenderTargets(1
-			, mRenderTargetTexture->GetRTV().GetAddressOf()
-			, mDepthStencilBufferTexture->GetDSV().Get());
+		mContext->OMSetRenderTargets(NumViews, ppRenderTargetViews, pDepthStencilView);
 	}
 
 	void GraphicDevice_DX11::Draw()
