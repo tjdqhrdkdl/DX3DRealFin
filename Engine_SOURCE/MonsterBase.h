@@ -18,7 +18,7 @@ namespace ya
 
     public:
 
-        virtual void Initalize() override;
+        virtual void Initialize() override;
         virtual void Update() override;
         virtual void FixedUpdate() = 0;
         virtual void Render() = 0;

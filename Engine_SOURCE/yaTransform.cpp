@@ -21,7 +21,7 @@ namespace ya
 	{
 	}
 
-	void Transform::Initalize()
+	void Transform::Initialize()
 	{
 		//cos(180);
 	}

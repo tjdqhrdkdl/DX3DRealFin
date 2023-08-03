@@ -9,7 +9,7 @@ ya::WallScript::~WallScript()
 {
 }
 
-void ya::WallScript::Initalize()
+void ya::WallScript::Initialize()
 {
 
 }

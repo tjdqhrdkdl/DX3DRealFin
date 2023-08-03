@@ -22,7 +22,7 @@ namespace ya
 
 	}
 
-	void GridScript::Initalize()
+	void GridScript::Initialize()
 	{
 		eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
 		mCamera = renderer::cameras[(UINT)type][0];

@@ -17,7 +17,7 @@ namespace ya
 
 	}
 
-	void Light::Initalize()
+	void Light::Initialize()
 	{
 
 	}

@@ -33,7 +33,7 @@ namespace ya
 		}
 	}
 
-	void GameObject::Initalize()
+	void GameObject::Initialize()
 	{
 
 	}
