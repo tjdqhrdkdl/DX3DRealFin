@@ -136,6 +136,9 @@
     <Filter Include="Component\Script\Ground">
       <UniqueIdentifier>{482e9e00-2551-4804-b846-b889c3598f2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{950159f2-a237-4e69-8c9d-4337539d47ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaApplication.cpp">
