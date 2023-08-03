@@ -93,8 +93,11 @@ namespace ya::enums
 		None,
 		Idle,			//기본 상태
 		Boundary,		//경계
-		Chase,			//
-		Attack,			
+		Chase,			//		
+		Battle,			//여기에서 분기 공격 , 후퇴, 막기 나눠서갈것
+		Run,			//도망
+		Defense,		//막기
+		Attack,			//공격
 		Sit,			//휴식
 		Death,			
 		End,
