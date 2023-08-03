@@ -1,7 +1,14 @@
 // Material Default Texture
 Texture2D albedoTexture : register(t0);
 Texture2D normalTexture : register(t1);
+// defferd
+Texture2D positionTarget : register(t2);
+Texture2D normalTarget : register(t3);
+Texture2D albedoTarget : register(t4);
+Texture2D specularTarget : register(t5);
 
+Texture2D diffuseLightTarget : register(t6);
+Texture2D specularLightTarget : register(t7);
 //Atlas texture
 Texture2D atlasTexture : register(t12);
 

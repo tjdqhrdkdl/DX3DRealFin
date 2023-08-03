@@ -21,30 +21,30 @@ namespace ya
 	{
 	}
 
-	void Transform::Initalize()
+	void Transform::Initialize()
 	{
 		//cos(180);
 	}
 
 	void Transform::Update()
 	{
-		//½ÇÁ¦ ·ÎÁ÷»ó Ä³¸¯ÅÍÀÌµ¿ Ã³¸®
+		//ì‹¤ì œ ë¡œì§ìƒ ìºë¦­í„°ì´ë™ ì²˜ë¦¬
 	}
 
 	void Transform::FixedUpdate()
 	{
-		//·»´õ¸µ¿¡ »ç¿ëµÉ À§Ä¡°ªµéÀ» ¾÷µ¥ÀÌÆ®
+		//ë Œë”ë§ì— ì‚¬ìš©ë  ìœ„ì¹˜ê°’ë“¤ì„ ì—…ë°ì´íŠ¸
 
-		// ¿ùµå Çà·Ä »ı¼º
+		// ì›”ë“œ í–‰ë ¬ ìƒì„±
 		
 
-		// Å©±â º¯È¯ Çà·Ä
+		// í¬ê¸° ë³€í™˜ í–‰ë ¬
 		Matrix scale = Matrix::CreateScale(mScale);
 		mMatScale = scale;
 
 
 
-		// È¸Àü º¯È¯ Çà·Ä
+		// íšŒì „ ë³€í™˜ í–‰ë ¬
 		Matrix rotation;
 
 		if (mbRotateFromAxis)
@@ -72,7 +72,7 @@ namespace ya
 
 
 
-		// ÀÌµ¿ º¯È¯ Çà·Ä
+		// ì´ë™ ë³€í™˜ í–‰ë ¬
 		Matrix position;
 		position.Translation(mPosition);
 
@@ -88,9 +88,9 @@ namespace ya
 			mRight = Vector3::TransformNormal(Vector3::Right, rotation);
 			mUp = Vector3::TransformNormal(Vector3::Up, rotation);
 		}
-		// Ä«¸Ş¶ó ÄÄÆ÷³ÍÆ®¿¡¼­ ¼¼ÆÃÇØÁØ´Ù
-		// ºäÇà·Ä ¼¼ÆÃ
-		// ÇÁ·ÎÁ§¼Ç Çà·Ä ¼¼ÆÃ
+		// ì¹´ë©”ë¼ ì»´í¬ë„ŒíŠ¸ì—ì„œ ì„¸íŒ…í•´ì¤€ë‹¤
+		// ë·°í–‰ë ¬ ì„¸íŒ…
+		// í”„ë¡œì ì…˜ í–‰ë ¬ ì„¸íŒ…
 
 	
 		if (mParent)
@@ -105,9 +105,12 @@ namespace ya
 
 	void Transform::SetConstantBuffer()
 	{
+
 		renderer::TransformCB trCb = {};
 		trCb.world = mWorld;
+		trCb.inverseWorld = mWorld.Invert();
 		trCb.view = Camera::GetGpuViewMatrix();
+		trCb.inverseView = trCb.view.Invert();
 		trCb.projection = Camera::GetGpuProjectionMatrix();
 
 		if (mbUseQuaternion)

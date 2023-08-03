@@ -1,10 +1,11 @@
 cbuffer Transform : register(b0)
 {
     row_major matrix world;
+    row_major matrix inverseWorld;
     row_major matrix view;
+    row_major matrix inverseView;
     row_major matrix projection;
 }
-
 cbuffer MaterialData : register(b1)
 {
     uint usedAlbedo;
@@ -34,6 +35,8 @@ cbuffer Animation : register(b3)
 cbuffer NumberOfLight : register(b4)
 {
     uint numberOfLight;
+    uint indexOfLight;
+    
 }
 
 cbuffer ParticleSystem : register(b5)

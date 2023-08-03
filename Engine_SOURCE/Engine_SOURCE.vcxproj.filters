@@ -309,8 +309,16 @@
       <Filter>GameObject\Monster\Base</Filter>
     </ClCompile>
     <ClCompile Include="yaState.cpp" />
+
     <ClCompile Include="yaMonsterScript.cpp">
       <Filter>Component\Script\Monster</Filter>
+
+    <ClCompile Include="yaWallScript.cpp">
+      <Filter>Component\Script\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMultiRenderTarget.cpp">
+      <Filter>Graphics</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,8 +508,16 @@
       <Filter>GameObject\Monster\Base</Filter>
     </ClInclude>
     <ClInclude Include="yaState.h" />
+
     <ClInclude Include="yaMonsterScript.h">
       <Filter>Component\Script\Monster</Filter>
+
+    <ClInclude Include="yaWallScript.h">
+      <Filter>Component\Script\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMultiRenderTarget.h">
+      <Filter>Graphics</Filter>
+
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

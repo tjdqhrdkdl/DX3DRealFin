@@ -23,7 +23,7 @@ namespace ya
 	{
 	}
 
-	void PlayerScript::Initalize()
+	void PlayerScript::Initialize()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		{
@@ -69,7 +69,7 @@ namespace ya
 		{
 			action->Jump();
 		}
-		
+
 		if (Input::GetKey(eKeyCode::O))
 		{
 			action->Rotate(tr->Up());

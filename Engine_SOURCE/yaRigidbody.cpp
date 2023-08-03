@@ -24,7 +24,7 @@ namespace ya
 
 	}
 
-	void Rigidbody::Initalize()
+	void Rigidbody::Initialize()
 	{
 	}
 

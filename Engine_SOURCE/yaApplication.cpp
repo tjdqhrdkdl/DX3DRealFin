@@ -22,7 +22,7 @@ namespace ya
 		
 	}
 
-	void Application::Initalize()
+	void Application::Initialize()
 	{
 		Time::Initialize();
 		Input::Initialize();
@@ -31,10 +31,10 @@ namespace ya
 
 		CollisionManager::Initialize();
 		renderer::Initialize();
-		SceneManager::Initalize();
+		SceneManager::Initialize();
 	}
 
-	// °ÔÀÓ ·ÎÁ÷ Ä³¸¯ÅÍ ÀÌµ¿ µîµî 
+	// ê²Œì„ ë¡œì§ ìºë¦­í„° ì´ë™ ë“±ë“± 
 	// CPU UPDATE
 	void Application::Update()
 	{
@@ -55,8 +55,10 @@ namespace ya
 	{
 		Time::Render(mHdc);
 
-		graphicDevice->Clear();
+		//graphicDevice->Clear();
 		graphicDevice->AdjustViewPorts();
+		renderer::ClearRenderTargets();
+
 		
 		renderer::Render();
 	}

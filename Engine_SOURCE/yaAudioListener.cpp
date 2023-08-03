@@ -16,7 +16,7 @@ namespace ya
 
 	}
 
-	void AudioListener::Initalize()
+	void AudioListener::Initialize()
 	{
 
 	}

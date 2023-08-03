@@ -76,12 +76,28 @@ namespace ya::graphics
 		End,
 	};
 
+	enum class eRTType
+	{
+		Swapchain,
+		Deferred,
+		Light,
+		Shadow,
+		End,
+	};
+
 	enum class eRenderingMode
 	{
+		DeferredOpaque,
+		DeferredMask,
+
+		Light,
+
 		Opaque,
 		CutOut,
 		Transparent,
 		PostProcess,
+
+		None,
 		End,
 	};
 
@@ -135,12 +151,12 @@ namespace ya::graphics
 	{
 		Albedo,
 		Normal,
-		T2,
-		T3,
-		T4,
-		T5,
-		T6,
-		T7,
+		PositionTarget,
+		NormalTarget,
+		AlbedoTarget,
+		SpecularTarget,
+		DiffuseLightTarget,
+		SpecularLightTarget,
 
 		CubeT8,
 		CubeT9,

@@ -18,6 +18,7 @@ namespace ya
 
 	{
 
+
 		srand((unsigned int)time(nullptr));
 		int Rand = rand();
 
@@ -34,28 +35,31 @@ namespace ya
 
 	}
 
-	void MonsterBase::Initalize()
+	void MonsterBase::Initialize()
 	{
 
 
-		GameObject::Initalize();
+		GameObject::Initialize();
 	}
 
 	void MonsterBase::Update()
 	{
 		if (nullptr != mPlayerObject)
 		{
-			//À§Ä¡ Á¤º¸
+			//ìœ„ì¹˜ ì •ë³´
 			mPlayerPos = mPlayerObject->GetComponent<Transform>()->GetPosition();
 			Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
 			mMonster2PlayerNormalize = mPlayerPos - monsterPos;
 			mMonster2PlayerNormalize.Normalize();
 
+
 			mPlayer2MonsterNormalize = monsterPos - mPlayerPos;
 			mPlayer2MonsterNormalize.Normalize();						
 
-			//¾ÕµÚ ÆÇº°
+
+
+			//ì•ë’¤ íŒë³„
 			Vec3 monForward = GetComponent<Transform>()->Forward();
 			float direction = monForward.Dot(mMonster2PlayerNormalize);
 
@@ -67,6 +71,7 @@ namespace ya
 			{
 				mbPlayerFront = false;
 			}
+
 
 		}
 
@@ -91,67 +96,67 @@ namespace ya
 			//int MonsterState;
 			float MonsterAlertnessCount = GetAlertnessCount();
 
-			// ÅØ½ºÆ® Ãâ·Â
+			// ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÀÎ»ì Ä«¿îÆ®: %.2f", MonsterAlertnessCount);
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½Î»ï¿½ Ä«ï¿½ï¿½Æ®: %.2f", MonsterAlertnessCount);
 				TextOut(application.GetHdc(), 200, 200, szFloat, wcslen(szFloat));
 			}
 
-#pragma region ¸ó½ºÅÍ »óÅÂº° ¸Ş¼¼Áö È®ÀÎ¿ë
-			// ¸ó½ºÅÍ »óÅÂ º° Ãâ·Â ³ªÁß¿¡ ÀüºÎ »èÁ¦ ÇÒ°Å
+#pragma region ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Âºï¿½ ï¿½Ş¼ï¿½ï¿½ï¿½ È®ï¿½Î¿ï¿½
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
 			if ((int)mMonsterState->GetSituation() == 0)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: None »óÅÂ");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: None ï¿½ï¿½ï¿½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 1)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: ¾ÆÀÌµé »óÅÂ");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 2)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: °æ°è »óÅÂ");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 3)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: °ø°İÇüÅÂ·Î ¦i´Â »óÅÂ");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ ï¿½iï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 4)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: ¹èÆ² ¼±ÅÃ Áß");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½Æ² ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 5)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: µµ¸Á°¡±â");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 6)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: ¹æ¾î");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 7)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: °ø°İ");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 			else if ((int)mMonsterState->GetSituation() == 8)
 			{
 				wchar_t szFloat[50] = {};
-				swprintf_s(szFloat, 50, L"¸ó½ºÅÍ ÇöÀç »óÅÂ: ÈŞ½Ä");
+				swprintf_s(szFloat, 50, L"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½Ş½ï¿½");
 				TextOut(application.GetHdc(), 200, 240, szFloat, wcslen(szFloat));
 			}
 #pragma endregion
@@ -162,11 +167,12 @@ namespace ya
 	}
 
 
-	//¸ó½ºÅÍ ÁÖº¯À¸·Î ÇÃ¿¡ÀÌ¾î ÀÖ´ÂÁö °Ë»ö
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½Öºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¿ï¿½ï¿½Ì¾ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
 	bool MonsterBase::NavigationPlayer(float range)
 	{
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 		Vec3 monsterScale = GetComponent<Transform>()->GetScale();
+
 
 		if ((monsterPos.x - (monsterScale.x * range) <= mPlayerPos.x &&
 			monsterPos.x + (monsterScale.x * range) >= mPlayerPos.x) &&
@@ -177,7 +183,7 @@ namespace ya
 		return false;
 	}
 
-	//ÇÃ·¹ÀÌ¾î À§Ä¡·Î µ¹¾Æº¸±â
+	//ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½
 	void MonsterBase::TurnToPlayer()
 	{
 		Transform* tr = GetComponent<Transform>();
@@ -215,45 +221,46 @@ namespace ya
 	void MonsterBase::AlertnessLevel()
 	{
 
-		//ÇÃ·¹ÀÌ¾î À§Ä¡ ¾Õ¿¡ÀÖÀ½
+		//ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ ï¿½Õ¿ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (IsPlayerFront())
 		{
-			//ÀÌ°Ç ³ªÁß¿¡ Ãß°¡·Î ¾î¶»°Ô ÇÒÁö °í¹ÎÇØ¼­ º¯°æ ÇÕ½Ã´Ù
+			//ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½î¶»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Õ½Ã´ï¿½
 			if (mMonsterState->GetSituation() == enums::eSituation::Battle ||
 				mMonsterState->GetSituation() == enums::eSituation::Attack ||
 				mMonsterState->GetSituation() == enums::eSituation::Chase)
 				return;
 
-			//°ø°İÀ¸·Î ³Ñ¾î°¥ »óÈ²
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾î°¥ ï¿½ï¿½È²
 			if (NavigationPlayer(3.0f))
 			{
 				mMonsterState->SetSituation(enums::eSituation::Battle);
 			}
 
-			////°æ°è ÇÏ¸ç Çàµ¿ ÇÒ »óÈ²
+			////ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½àµ¿ ï¿½ï¿½ ï¿½ï¿½È²
 			//else if (NavigationPlayer(4.5f))
 			//{
 			//	mAlertnessCount = 60.f;
 			//}
-			//¾î´ÀÁ¤µµ ½Ã¾ß °Å¸®¿¡ÀÖÀ½ (°æ°è ·¹º§ ½×¾ÆÁÖ±â) 
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¾ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¾ï¿½ï¿½Ö±ï¿½) 
 			if (NavigationPlayer(7.0f))
 			{
 				SetAlertnessCount(Time::DeltaTime() * 5);
 			}
 
 		}
-		//ÇÃ·¹ÀÌ¾î À§Ä¡ µÚ¿¡ÀÖÀ½
+		//ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½
 		else
 		{
 
-			//¾î´ÀÁ¤µµ ½Ã¾ß °Å¸®¿¡ÀÖÀ½ (°æ°è ·¹º§ ½×¾ÆÁÖ±â) 
+
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¾ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¾ï¿½ï¿½Ö±ï¿½) 
 			if (NavigationPlayer(5.0f))
 			{			
 				SetAlertnessCount(Time::DeltaTime() * 5);
 			}
 		}
 
-		//°æ°è ·¹º§ ±îÁö °°ÀÌ?
+		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½?
 		if (GetAlertnessCount() > 80.f)
 		{
 			mMonsterState->SetSituation(eSituation::Attack);
@@ -290,6 +297,7 @@ namespace ya
 		}
 		
 		
+
 
 
 

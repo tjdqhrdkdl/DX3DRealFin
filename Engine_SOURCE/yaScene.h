@@ -12,7 +12,7 @@ namespace ya
 		Scene(eSceneType type);
 		virtual ~Scene();
 
-		virtual void Initalize();
+		virtual void Initialize();
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void Render();

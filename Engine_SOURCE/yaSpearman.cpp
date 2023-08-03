@@ -3,7 +3,7 @@
 
 namespace ya
 {
-	void Spearman::Initalize()
+	void Spearman::Initialize()
 	{
 
 		Transform* tr = GetComponent<Transform>();
@@ -25,7 +25,7 @@ namespace ya
 		mTime = 0.f;
 		
 		//몬스터 할일 있나
-		MonsterBase::Initalize();
+		MonsterBase::Initialize();
 	}
 
 
