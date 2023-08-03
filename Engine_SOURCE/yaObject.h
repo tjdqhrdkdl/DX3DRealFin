@@ -80,7 +80,7 @@ namespace ya::object
 		gameObject->Death();
 	}
 
-	static void DontDestroyOnLoad(GameObject* gameObject)   //¾À ÀÌµ¿½Ã ÀÌ ¿ÀºêÁ§Æ®´Â »èÁ¦ÇÏÁö ¾Ê´Â´Ù
+	static void DontDestroyOnLoad(GameObject* gameObject)   //ì”¬ ì´ë™ì‹œ ì´ ì˜¤ë¸Œì íŠ¸ëŠ” ì‚­ì œí•˜ì§€ ì•ŠëŠ”ë‹¤
 	{
 		if (gameObject == nullptr)
 			return;
