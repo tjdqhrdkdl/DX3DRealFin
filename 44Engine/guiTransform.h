@@ -17,6 +17,10 @@ namespace gui
 		ya::math::Vector3 mPosisition;
 		ya::math::Vector3 mRotation;
 		ya::math::Vector3 mScale;
+
+		ya::math::Vector3 mForward;
+		ya::math::Vector3 mRight;
+		ya::math::Vector3 mUp;
 	};
 
 }

@@ -22,10 +22,11 @@
 //#include "yaFBXLoader.h"
 #include "yaRigidbody.h"
 #include "yaGroundScript.h"
+#include "yaSpearman.h"
 #include "yaActionScript.h"
+#include "yaMoveScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
-#include "yaSpearman.h"
 
 namespace ya
 {
@@ -50,28 +51,17 @@ namespace ya
 		mainCamera = cameraComp;
 
 
-		GameObject* player = object::Instantiate<GameObject>(eLayerType::Player);
+		Player* player = object::Instantiate<Player>(eLayerType::Player);
 		player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 10.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
-		player->SetName(L"Player");
+		
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-	
-		Collider2D* col = player->AddComponent <Collider2D>();
-		col->SetType(eColliderType::Box);
-		col->SetSize(Vector3(1.0, 1.0f, 1.0f));
-		Rigidbody* playerRigidbody = player->AddComponent<Rigidbody>();
-		playerRigidbody->SetGround(false);
-
-		PlayerScript* plScript = player->AddComponent<PlayerScript>();
-		player->AddComponent<ActionScript>();
-		player->AddComponent<GrappleHookScript>();
 
 		camScript->SetTarget(player);
-
-
+		player->SetCamera(cameraObj);
 
 
 		Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
@@ -94,7 +84,7 @@ namespace ya
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(0.0f, -10.0f, 10.0f));
-			groundTr->SetScale(Vector3(50.0f, 4.0f, 50.0f));
+			groundTr->SetScale(Vector3(100.0f, 4.0f, 100.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));

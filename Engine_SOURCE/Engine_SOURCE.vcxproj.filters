@@ -308,8 +308,9 @@
     <ClCompile Include="yaSpearman.cpp">
       <Filter>GameObject\Monster\Base</Filter>
     </ClCompile>
-    <ClCompile Include="yaState.cpp">
-      <Filter>State</Filter>
+    <ClCompile Include="yaState.cpp" />
+    <ClCompile Include="yaMoveScript.cpp">
+      <Filter>Component\Script\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -498,8 +499,9 @@
     <ClInclude Include="yaSpearman.h">
       <Filter>GameObject\Monster\Base</Filter>
     </ClInclude>
-    <ClInclude Include="yaState.h">
-      <Filter>State</Filter>
+    <ClInclude Include="yaState.h" />
+    <ClInclude Include="yaMoveScript.h">
+      <Filter>Component\Script\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
