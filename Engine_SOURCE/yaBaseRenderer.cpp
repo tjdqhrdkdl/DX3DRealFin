@@ -15,7 +15,7 @@ namespace ya
 	{
 	}
 
-	void BaseRenderer::Initalize()
+	void BaseRenderer::Initialize()
 	{
 	}
 

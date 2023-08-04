@@ -9,7 +9,7 @@ namespace ya
 		HookTargetScript();
 		~HookTargetScript();
 
-		virtual void Initalize() override;
+		virtual void Initialize() override;
 		virtual void Update() override;
 		virtual void Render() override;
 

@@ -23,7 +23,7 @@ namespace ya
 	{
 	}
 
-	void PlayerScript::Initalize()
+	void PlayerScript::Initialize()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		{
@@ -42,48 +42,47 @@ namespace ya
 
 	void PlayerScript::Update()
 	{
-		ActionScript* action = GetOwner()->GetScript<ActionScript>();
-		action->SetSpeed(120.0f); // �Ŀ� �÷��̾� status�� ����
-
-		Transform* tr = GetOwner()->GetComponent<Transform>();
-		float speed = 120.0f; // 후에 플레이어 status로 변경
-
-		if (Input::GetKey(eKeyCode::L))
-		{
-			action->Move(tr->Right());
-		}
-		if (Input::GetKey(eKeyCode::J))
-		{
-			action->Move(-tr->Right());
-		}
-		if (Input::GetKey(eKeyCode::I))
-		{
-			action->Move(tr->Foward());
-		}
-		if (Input::GetKey(eKeyCode::K))
-		{
-			action->Move(-tr->Foward());
-		}
-
-		if (Input::GetKey(eKeyCode::SPACE))
-		{
-			action->Jump();
-		}
-		
-		if (Input::GetKey(eKeyCode::O))
-		{
-			action->Rotate(tr->Up());
-		}
-		if (Input::GetKey(eKeyCode::U))
-		{
-			action->Rotate(-tr->Up());
-		}
-
 		if (Input::GetKey(eKeyCode::F))
 		{
 			GrappleHookScript* grap = GetOwner()->GetScript<GrappleHookScript>();
-			grap->GrappleHook();
+			if(grap != nullptr)
+			{
+				grap->GrappleHook();
+			}
 		}
+		ActionScript* action = GetOwner()->GetScript<ActionScript>();
+		Transform* tr = GetOwner()->GetComponent < Transform>();
+
+		// 테스트로 만든 공격 입니다 나중에 지울것
+		if (Input::GetKeyDown(eKeyCode::Q))
+		{
+			action->Move(tr->Forward() * 500.f);
+			Player* player = (Player*)GetOwner();
+			player->SetAttack(true);
+		}
+		Player* player = (Player*)GetOwner();
+		if (player->IsAttack())
+		{
+			TESTTime += Time::DeltaTime();
+			if (TESTTime >= 1.5f)
+			{
+				player->SetAttack(false);
+				TESTTime = 0.f;
+			}
+		}
+		if (player->IsWalk())
+		{
+			action->Move(-(tr->Forward() * 250.f));
+			TESTTime += Time::DeltaTime();
+			if (TESTTime >= 0.5f)
+			{
+				player->SetWalk(false);
+				TESTTime = 0.f;
+			}
+		}
+
+
+
 	}
 
 
@@ -100,18 +99,6 @@ namespace ya
 	}
 
 	void PlayerScript::OnCollisionExit(Collider2D* collider)
-	{
-	}
-
-	void PlayerScript::Start()
-	{
-	}
-
-	void PlayerScript::Action()
-	{
-	}
-
-	void PlayerScript::End()
 	{
 	}
 

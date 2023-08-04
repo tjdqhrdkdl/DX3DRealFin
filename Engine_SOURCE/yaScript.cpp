@@ -14,7 +14,7 @@ namespace ya
 	{
 	}
 
-	void Script::Initalize()
+	void Script::Initialize()
 	{
 	}
 

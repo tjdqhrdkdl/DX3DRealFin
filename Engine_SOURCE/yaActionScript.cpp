@@ -25,13 +25,13 @@ namespace ya
 	ActionScript::~ActionScript()
 	{
 	}
-	void ActionScript::Initalize()
+	void ActionScript::Initialize()
 	{
 		GameObject* obj = GetOwner();
 		assert(obj != nullptr);
 
 		mTransform = obj->GetComponent<Transform>();
-		mRigidbody = obj->AddComponent<Rigidbody>();
+		mRigidbody = obj->GetComponent<Rigidbody>();
 	}
 
 	void ActionScript::Update()
@@ -59,10 +59,10 @@ namespace ya
 	}
 
 	/// <summary>
-	/// owner rigidbody¸¦ ÅëÇÑ ÀÌµ¿
+	/// owner rigidbodyë¥¼ í†µí•œ ì´ë™
 	/// </summary>
-	/// <param name="dir">¹æÇâ</param>
-	/// <param name="speed">¼Óµµ</param>
+	/// <param name="dir">ë°©í–¥</param>
+	/// <param name="speed">ì†ë„</param>
 	void ActionScript::Move(const Vector3 dir, float speed)
 	{
 		if (mRigidbody == nullptr)
@@ -83,10 +83,10 @@ namespace ya
 	}
 
 	/// <summary>
-	/// owner rigidbody¸¦ ÅëÇÑ È¸Àü
+	/// owner rigidbodyë¥¼ í†µí•œ íšŒì „
 	/// </summary>
-	/// <param name="dir">¹æÇâ</param>
-	/// <param name="speed">¼Óµµ</param>
+	/// <param name="dir">ë°©í–¥</param>
+	/// <param name="speed">ì†ë„</param>
 	void ActionScript::Rotate(const Vector3 dir, float speed)
 	{
 		if(mTransform == nullptr)
@@ -110,9 +110,9 @@ namespace ya
 	}
 
 	/// <summary>
-	/// rigidbody¸¦ ÅëÇÑ Á¡ÇÁ
+	/// rigidbodyë¥¼ í†µí•œ ì í”„
 	/// </summary>
-	/// <param name="force">Á¡ÇÁ force</param>
+	/// <param name="force">ì í”„ force</param>
 	void ActionScript::Jump(float force)
 	{
 		if (mRigidbody == nullptr)
@@ -121,12 +121,12 @@ namespace ya
 			return;
 		}
 
-		// force°¡ ÁöÁ¤µÇ¾úÀ» ¶§(À½¼ö°¡ ¾Æ´Ñ°æ¿ì) force·Î »ç¿ë
+		// forceê°€ ì§€ì •ë˜ì—ˆì„ ë•Œ(ìŒìˆ˜ê°€ ì•„ë‹Œê²½ìš°) forceë¡œ ì‚¬ìš©
 		if (force > 0.0f)
 		{
 			mJumpForce = force;
 		}
-		// force°¡ ÁöÁ¤µÇÁö ¾Ê¾ÒÀ» ¶§ ±âÁ¸ÀÇ force »ç¿ë
+		// forceê°€ ì§€ì •ë˜ì§€ ì•Šì•˜ì„ ë•Œ ê¸°ì¡´ì˜ force ì‚¬ìš©
 		else
 		{
 			mJumpForce = defaultJumpForce;
@@ -140,21 +140,21 @@ namespace ya
 	}
 
 	/// <summary>
-	/// °ø°İ
+	/// ê³µê²©
 	/// </summary>
 	void ActionScript::Attack()
 	{
 	}
 
 	/// <summary>
-	/// ¸·±â
+	/// ë§‰ê¸°
 	/// </summary>
 	void ActionScript::Deflect()
 	{
 	}
 
 	/// <summary>
-	/// ÆĞ¸µ
+	/// íŒ¨ë§
 	/// </summary>
 	void ActionScript::Parrying()
 	{

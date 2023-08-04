@@ -26,7 +26,7 @@ namespace ya
 			evt.second = nullptr;
 		}
 	}
-	void Animator::Initalize()
+	void Animator::Initialize()
 	{
 	}
 	void Animator::Update()

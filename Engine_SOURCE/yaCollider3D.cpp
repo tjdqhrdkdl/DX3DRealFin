@@ -23,7 +23,7 @@
 //	{
 //	}
 //
-//	void Collider3D::Initalize()
+//	void Collider3D::Initialize()
 //	{
 //		mTransform = GetOwner()->GetComponent<Transform>();
 //	}

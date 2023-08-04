@@ -14,8 +14,8 @@ namespace ya::object
 		Scene* scene = SceneManager::GetActiveScene();
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
-		gameObj->Initalize();
-
+		gameObj->Initialize();
+		gameObj->SetLayerType(type);
 
 		return gameObj;
 	}
@@ -26,6 +26,7 @@ namespace ya::object
 		T* gameObj = new T();
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
+		gameObj->SetLayerType(type);
 
 		return gameObj;
 	}
@@ -40,6 +41,7 @@ namespace ya::object
 
 		Transform* tr = gameObj->GameObject::GetComponent<Transform>();
 		tr->SetParent(parent);
+		gameObj->SetLayerType(type);
 
 		return gameObj;
 	}
@@ -55,6 +57,7 @@ namespace ya::object
 		Transform* tr = gameObj->GameObject::GetComponent<Transform>();
 		tr->SetPosition(position);
 		tr->SetRotation(rotation);
+		gameObj->SetLayerType(type);
 
 		return gameObj;
 	}
@@ -71,6 +74,7 @@ namespace ya::object
 		tr->SetPosition(position);
 		tr->SetRotation(rotation);
 		tr->SetParent(parent);
+		gameObj->SetLayerType(type);
 
 		return gameObj;
 	}
@@ -80,7 +84,7 @@ namespace ya::object
 		gameObject->Death();
 	}
 
-	static void DontDestroyOnLoad(GameObject* gameObject)   //¾À ÀÌµ¿½Ã ÀÌ ¿ÀºêÁ§Æ®´Â »èÁ¦ÇÏÁö ¾Ê´Â´Ù
+	static void DontDestroyOnLoad(GameObject* gameObject)   //ì”¬ ì´ë™ì‹œ ì´ ì˜¤ë¸Œì íŠ¸ëŠ” ì‚­ì œí•˜ì§€ ì•ŠëŠ”ë‹¤
 	{
 		if (gameObject == nullptr)
 			return;

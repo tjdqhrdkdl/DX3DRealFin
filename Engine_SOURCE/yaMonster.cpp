@@ -9,7 +9,7 @@ namespace ya
 	Monster::~Monster()
 	{
 	}
-	void Monster::Initalize()
+	void Monster::Initialize()
 	{
 	}
 	void Monster::Update()
