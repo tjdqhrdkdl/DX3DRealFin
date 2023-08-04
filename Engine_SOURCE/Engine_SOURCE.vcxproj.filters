@@ -4,7 +4,6 @@
     <ClCompile Include="yaMultiRenderTarget.cpp" />
     <ClCompile Include="yaParticleShader.cpp" />
     <ClCompile Include="yaParticleSystem.cpp" />
-    <ClCompile Include="yaWallScript.cpp" />
     <ClCompile Include="yaMath.cpp">
       <Filter>Common\Math</Filter>
     </ClCompile>
@@ -180,13 +179,18 @@
       <Filter>State</Filter>
     </ClCompile>
     <ClCompile Include="yaMoveScript.cpp" />
+    <ClCompile Include="yaWallScript.cpp">
+      <Filter>Component\Script\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="yaLogBridgeScript.cpp">
+      <Filter>Component\Script\Ground</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMultiRenderTarget.h" />
     <ClInclude Include="yaParticleShader.h" />
     <ClInclude Include="yaParticleSystem.h" />
     <ClInclude Include="yaSekiroEnums.h" />
-    <ClInclude Include="yaWallScript.h" />
     <ClInclude Include="yaMath.h">
       <Filter>Common\Math</Filter>
     </ClInclude>
@@ -374,6 +378,12 @@
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="yaMoveScript.h" />
+    <ClInclude Include="yaWallScript.h">
+      <Filter>Component\Script\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaLogBridgeScript.h">
+      <Filter>Component\Script\Ground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

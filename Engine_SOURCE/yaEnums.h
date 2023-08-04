@@ -15,6 +15,8 @@ namespace ya::enums
 		Camera,
 		Grid,
 		Ground,
+		LogBridge,
+
 		Monster,
 		Player,
 
@@ -27,7 +29,7 @@ namespace ya::enums
 	enum class eComponentType
 	{
 		None,
-		Transform, // À§Ä¡ µ¥ÀÌÅÍ ¼öÁ¤ÇÏ´Â ÄÄÆ÷³ÍÆ®
+		Transform, // ìœ„ì¹˜ ë°ì´í„° ìˆ˜ì •í•˜ëŠ” ì»´í¬ë„ŒíŠ¸
 		Camera,
 		Mesh,
 		Rigidbody,
@@ -91,14 +93,14 @@ namespace ya::enums
 	enum class eSituation
 	{
 		None,
-		Idle,			//±âº» »óÅÂ
-		Boundary,		//°æ°è
+		Idle,			//ê¸°ë³¸ ìƒíƒœ
+		Boundary,		//ê²½ê³„
 		Chase,			//		
-		Battle,			//¿©±â¿¡¼­ ºĞ±â °ø°İ , ÈÄÅğ, ¸·±â ³ª´²¼­°¥°Í
-		Run,			//µµ¸Á
-		Defense,		//¸·±â
-		Attack,			//°ø°İ
-		Sit,			//ÈŞ½Ä
+		Battle,			//ì—¬ê¸°ì—ì„œ ë¶„ê¸° ê³µê²© , í›„í‡´, ë§‰ê¸° ë‚˜ëˆ ì„œê°ˆê²ƒ
+		Run,			//ë„ë§
+		Defense,		//ë§‰ê¸°
+		Attack,			//ê³µê²©
+		Sit,			//íœ´ì‹
 		Death,			
 		End,
 	};

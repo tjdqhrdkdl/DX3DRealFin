@@ -3,7 +3,7 @@
 
 using namespace ya::math;
 namespace ya
-{	/// ¹°¸®
+{	/// ë¬¼ë¦¬
 	class Rigidbody : public Component
 	{
 	public:
@@ -21,6 +21,7 @@ namespace ya
 		void SetMass(float mass) { mMass = mass; }
 		void SetGround(bool isGround) { mbGround = isGround; }
 		bool IsGround() { return mbGround; }
+		bool IsLogBridge() { return mbLogBridge; }
 
 		void SetVelocity(Vector3 velocity) { mVelocity = velocity; }
 		Vector3 GetVelocity() { return mVelocity; }
@@ -28,16 +29,17 @@ namespace ya
 		void SetLimitVelocity(Vector3 limit) { mLimitVelocity = limit; }
 
 	private:
-		// Èû°ú ¸¶Âû·ÂÀ» ÀÌ¿ëÇÑ ÀÌµ¿
-		float mMass;		/// ¹«°Ô
-		Vector3 mForce;		/// ¹°Ã¼´Â ¹Ì´Â Èû
-		Vector3 mVelocity;	/// ¹æÇâÀ» °®´Â ¼Óµµ
-		Vector3 mAccelation;/// °¡¼Óµµ
-		float mFriction;	/// ¸¶Âû·Â
+		// í˜ê³¼ ë§ˆì°°ë ¥ì„ ì´ìš©í•œ ì´ë™
+		float mMass;		/// ë¬´ê²Œ
+		Vector3 mForce;		/// ë¬¼ì²´ëŠ” ë¯¸ëŠ” í˜
+		Vector3 mVelocity;	/// ë°©í–¥ì„ ê°–ëŠ” ì†ë„
+		Vector3 mAccelation;/// ê°€ì†ë„
+		float mFriction;	/// ë§ˆì°°ë ¥
 
-		// Áß·ÂÀ» ÀÌ¿ëÇÑ Á¡ÇÁ
-		Vector3 mGravity;	/// Áß·Â Å©±â
-		bool mbGround;		/// Áö¸é¿¡ ºÙ¾îÀÖ´ÂÁö
-		Vector3 mLimitVelocity;	/// ¶³¾îÁö´Â ¼Óµµ ÇÑ°è°ª
+		// ì¤‘ë ¥ì„ ì´ìš©í•œ ì í”„
+		Vector3 mGravity;	/// ì¤‘ë ¥ í¬ê¸°
+		bool mbGround;		/// ì§€ë©´ì— ë¶™ì–´ìˆëŠ”ì§€
+		bool mbLogBridge;
+		Vector3 mLimitVelocity;	/// ë–¨ì–´ì§€ëŠ” ì†ë„ í•œê³„ê°’
 	};
 }
