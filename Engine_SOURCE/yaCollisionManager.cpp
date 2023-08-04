@@ -114,25 +114,25 @@ namespace ya
 
 	void CollisionManager::ColliderCollision(Collider2D* left, Collider2D* right)
 	{
-		// µÎ Ãæµ¹Ã¼ ·¹ÀÌ¾î·Î ±¸¼ºµÈ ID È®ÀÎ
+		// ë‘ ì¶©ëŒì²´ ë ˆì´ì–´ë¡œ êµ¬ì„±ëœ ID í™•ì¸
 		ColliderID colliderID;
 		colliderID.left = (UINT)left->GetID();
 		colliderID.right = (UINT)right->GetID();
 
-		// ÀÌÀü Ãæµ¹ Á¤º¸¸¦ °Ë»öÇÑ´Ù.
-		// ¸¸¾à¿¡ Ãæµ¹Á¤º¸°¡ ¾ø´Â »óÅÂ¶ó¸é
-		// Ãæµ¹Á¤º¸¸¦ »ı¼ºÇØÁØ´Ù.
+		// ì´ì „ ì¶©ëŒ ì •ë³´ë¥¼ ê²€ìƒ‰í•œë‹¤.
+		// ë§Œì•½ì— ì¶©ëŒì •ë³´ê°€ ì—†ëŠ” ìƒíƒœë¼ë©´
+		// ì¶©ëŒì •ë³´ë¥¼ ìƒì„±í•´ì¤€ë‹¤.
 		std::map<UINT64, bool>::iterator iter = mCollisionMap.find(colliderID.id);
 		if (iter == mCollisionMap.end())
 		{
 			mCollisionMap.insert(std::make_pair(colliderID.id, false));
 			iter = mCollisionMap.find(colliderID.id);
 		}
-		
-		// Ãæµ¹Ã¼Å©¸¦ ÇØÁØ´Ù.
-		if (Intersect(left, right)) // Ãæµ¹À» ÇÑ »óÅÂ
+
+		// ì¶©ëŒì²´í¬ë¥¼ í•´ì¤€ë‹¤.
+		if (Intersect(left, right)) // ì¶©ëŒì„ í•œ ìƒíƒœ
 		{
-			// ÃÖÃÊ Ãæµ¹Áß Enter
+			// ìµœì´ˆ ì¶©ëŒì¤‘ Enter
 			if (iter->second == false)
 			{
 				if (left->IsTriiger())
@@ -147,7 +147,7 @@ namespace ya
 
 				iter->second = true;
 			}
-			else // Ãæµ¹ ÁßÀÌÁö ¾ÊÀº »óÅÂ Enter
+			else // ì¶©ëŒ ì¤‘ì´ì§€ ì•Šì€ ìƒíƒœ Enter
 			{
 				if (left->IsTriiger())
 					left->OnTriggerStay(right);
@@ -160,9 +160,9 @@ namespace ya
 					right->OnCollisionStay(left);
 			}
 		}
-		else // Ãæµ¹ÇÏÁö ¾ÊÀº»óÅÂ
+		else // ì¶©ëŒí•˜ì§€ ì•Šì€ìƒíƒœ
 		{
-			// Ãæµ¹ ÁßÀÎ»óÅÂ Exit
+			// ì¶©ëŒ ì¤‘ì¸ìƒíƒœ Exit
 			if (iter->second == true)
 			{
 				if (left->IsTriiger())
@@ -204,7 +204,7 @@ namespace ya
 		if (left->GetColliderType() == eColliderType::Rect
 			&& right->GetColliderType() == eColliderType::Rect
 			)
-		{	// ºĞ¸®Ãà º¤ÅÍ 4°³ ±¸ÇÏ±â
+		{	// ë¶„ë¦¬ì¶• ë²¡í„° 4ê°œ êµ¬í•˜ê¸°
 			Vector3 Axis[4] = {};
 
 			Vector3 leftScale = Vector3(left->GetSize().x, left->GetSize().y, 1.0f);
@@ -257,32 +257,32 @@ namespace ya
 		{
 			Vector3 arrCubeLocalPos[24] =
 			{
-				//À­¸é
+				//ìœ—ë©´
 				arrCubeLocalPos[0] = Vector3(-0.5f, 0.5f, 0.5f) ,
 				arrCubeLocalPos[1] = Vector3(0.5f, 0.5f, 0.5f),
 				arrCubeLocalPos[2] = Vector3(0.5f, 0.5f, -0.5f),
 				arrCubeLocalPos[3] = Vector3(-0.5f, 0.5f, -0.5f),
-				//¾Æ·¡					 3
+				//ì•„ë˜					 3
 				arrCubeLocalPos[4] = Vector3(-0.5f, -0.5f, -0.5f),
 				arrCubeLocalPos[5] = Vector3(0.5f, -0.5f, -0.5f),
 				arrCubeLocalPos[6] = Vector3(0.5f, -0.5f, 0.5f),
 				arrCubeLocalPos[7] = Vector3(-0.5f, -0.5f, 0.5f),
-				//¿Ş						  3
+				//ì™¼						  3
 				arrCubeLocalPos[8] = Vector3(-0.5f, 0.5f, 0.5f),
 				arrCubeLocalPos[9] = Vector3(-0.5f, 0.5f, -0.5f),
 				arrCubeLocalPos[10] = Vector3(-0.5f, -0.5f, -0.5f),
 				arrCubeLocalPos[11] = Vector3(-0.5f, -0.5f, 0.5f),
-				//¿À						   
+				//ì˜¤						   
 				arrCubeLocalPos[12] = Vector3(0.5f, 0.5f, -0.5f),
 				arrCubeLocalPos[13] = Vector3(0.5f, 0.5f, 0.5f),
 				arrCubeLocalPos[14] = Vector3(0.5f, -0.5f, 0.5f),
 				arrCubeLocalPos[15] = Vector3(0.5f, -0.5f, -0.5f),
-				//µÚ						   
+				//ë’¤						   
 				arrCubeLocalPos[16] = Vector3(0.5f, 0.5f, 0.5f),
 				arrCubeLocalPos[17] = Vector3(-0.5f, 0.5f, 0.5f),
 				arrCubeLocalPos[18] = Vector3(-0.5f, -0.5f, 0.5f),
 				arrCubeLocalPos[19] = Vector3(0.5f, -0.5f, 0.5f),
-				//¾Õ						   
+				//ì•						   
 				arrCubeLocalPos[20] = Vector3(-0.5f, 0.5f, -0.5f),
 				arrCubeLocalPos[21] = Vector3(0.5f, 0.5f, -0.5f),
 				arrCubeLocalPos[22] = Vector3(0.5f, -0.5f, -0.5f),
@@ -301,7 +301,7 @@ namespace ya
 			Matrix finalRight = Matrix::CreateScale(rightScale);
 			finalRight *= rightMat;
 
-			// ºĞ¸®Ãà º¤ÅÍ °¢ ¹Ú½ºÀÇ ³ôÀÌ¿Í ³Êºñ, ±íÀÌ ÃÑ 6°¡Áö
+			// ë¶„ë¦¬ì¶• ë²¡í„° ê° ë°•ìŠ¤ì˜ ë†’ì´ì™€ ë„ˆë¹„, ê¹Šì´ ì´ 6ê°€ì§€
 			Vector3 Axis[6] = {};
 			Axis[0] = Vector3::Transform(arrCubeLocalPos[1], finalLeft);
 			Axis[1] = Vector3::Transform(arrCubeLocalPos[3], finalLeft);
@@ -323,9 +323,9 @@ namespace ya
 			Vector3 centerDir = vc;
 			for (size_t i = 0; i < 6; i++)
 			{
-				//ÇÏ³ªÀÇ ºĞ¸®ÃàÀ» ±âÁØÀ¸·Î »ï´Â´Ù.
-				//ºĞ¸®ÃàÀ» Ç¥ÁØÈ­ÇÏ°í, ÀÌ ´ÜÀ§º¤ÅÍ¿¡ ¸ğµç ºĞ¸®ÃàÀ» Åõ¿µ½ÃÅ² º¤ÅÍÀÇ ½ºÄ®¶óµéÀ» ±¸ÇÑ´Ù.
-				//ÀÌ ½ºÄ®¶óµéÀÇ ÇÕ°ú Áß½ÉÃà °Å¸®Â÷ º¤ÅÍÀÇ ³»Àû°ª(Åõ¿µ½ÃÅ² º¤ÅÍÀÇ ½ºÄ®¶ó)À» ºñ±³ÇÏ¿© Äİ¸®Àü ¿©ºÎ È®ÀÎ
+				//í•˜ë‚˜ì˜ ë¶„ë¦¬ì¶•ì„ ê¸°ì¤€ìœ¼ë¡œ ì‚¼ëŠ”ë‹¤.
+				//ë¶„ë¦¬ì¶•ì„ í‘œì¤€í™”í•˜ê³ , ì´ ë‹¨ìœ„ë²¡í„°ì— ëª¨ë“  ë¶„ë¦¬ì¶•ì„ íˆ¬ì˜ì‹œí‚¨ ë²¡í„°ì˜ ìŠ¤ì¹¼ë¼ë“¤ì„ êµ¬í•œë‹¤.
+				//ì´ ìŠ¤ì¹¼ë¼ë“¤ì˜ í•©ê³¼ ì¤‘ì‹¬ì¶• ê±°ë¦¬ì°¨ ë²¡í„°ì˜ ë‚´ì ê°’(íˆ¬ì˜ì‹œí‚¨ ë²¡í„°ì˜ ìŠ¤ì¹¼ë¼)ì„ ë¹„êµí•˜ì—¬ ì½œë¦¬ì „ ì—¬ë¶€ í™•ì¸
 				Vector3 vA = Axis[i];
 				vA.Normalize();
 
@@ -343,7 +343,7 @@ namespace ya
 
 			return true;
 		}
-		// ¼÷Á¦ Circle vs Cirlce
+		// ìˆ™ì œ Circle vs Cirlce
 		else
 			return false;
 	}
@@ -428,8 +428,6 @@ namespace ya
 	}
 	float CollisionManager::RayIntersect(ya::Ray ray, GameObject* colObj)
 	{
-		Vector3 aabb_min = Vector3(-0.5, -0.5, -0.5);
-		Vector3 aabb_max = Vector3(0.5, 0.5, 0.5);
 
 		Transform* tr = colObj->GetComponent<Transform>();
 		Collider2D* col = colObj->GetComponent<Collider2D>();
@@ -478,10 +476,10 @@ namespace ya
 
 				if (t1 < 0 && t2 < 0)
 					return -1;
-				// tMax Àº °¡Àå °¡±îÀÌÀÖ´Â "¸Õ" ±³Â÷
+				// tMax ì€ ê°€ì¥ ê°€ê¹Œì´ìˆëŠ” "ë¨¼" êµì°¨
 				if (t2 < tMax)
 					tMax = t2;
-				// tMin Àº °¡Àå ¸Ö¸®ÀÖ´Â "°¡±î¿î" ±³Â÷
+				// tMin ì€ ê°€ì¥ ë©€ë¦¬ìˆëŠ” "ê°€ê¹Œìš´" êµì°¨
 				if (t1 > tMin)
 					tMin = t1;
 
@@ -489,7 +487,16 @@ namespace ya
 					return -1;
 			}
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 <0 ||e2 >0 )
+					return -1;
+
+			}
 		}
 		//y
 		{
@@ -520,10 +527,10 @@ namespace ya
 
 				if (t1 < 0 && t2 < 0)
 					return -1;
-				// tMin Àº °¡Àå °¡±îÀÌÀÖ´Â "¸Õ" ±³Â÷
+				// tMin ì€ ê°€ì¥ ê°€ê¹Œì´ìˆëŠ” "ë¨¼" êµì°¨
 				if (t2 < tMax)
 					tMax = t2;
-				// tMin Àº °¡Àå ¸Ö¸®ÀÖ´Â "°¡±î¿î" ±³Â÷
+				// tMin ì€ ê°€ì¥ ë©€ë¦¬ìˆëŠ” "ê°€ê¹Œìš´" êµì°¨
 				if (t1 > tMin)
 					tMin = t1;
 
@@ -531,7 +538,15 @@ namespace ya
 					return -1;
 			}
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 < 0 || e2 > 0)
+					return -1;
+			}
 		}
 		//z
 		{
@@ -563,10 +578,10 @@ namespace ya
 
 				if (t1 < 0 && t2 < 0)
 					return -1;
-				// tMin Àº °¡Àå °¡±îÀÌÀÖ´Â "¸Õ" ±³Â÷
+				// tMin 
 				if (t2 < tMax)
 					tMax = t2;
-				// tMin Àº °¡Àå ¸Ö¸®ÀÖ´Â "°¡±î¿î" ±³Â÷
+				// tMin
 				if (t1 > tMin)
 					tMin = t1;
 
@@ -575,7 +590,15 @@ namespace ya
 			}
 
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 > 0 || e2 < 0)
+					return -1;
+			}
 		}
 		return tMin;
 	}
