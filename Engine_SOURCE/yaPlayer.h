@@ -20,6 +20,9 @@ namespace ya
 		void SetCamera(GameObject* camera) { mCamera = camera; }
 		GameObject* GetCamera() { return mCamera; }
 
+		void SetState(ePlayerState state) { mState = state; }
+		ePlayerState GetState() { return mState; }
+
 		void SetProsthetic(eProsthetics prosthetic) { mProsthetic = prosthetic; }
 		eProsthetics GetProsthetic() { return mProsthetic; }
 
@@ -33,6 +36,7 @@ namespace ya
 		GameObject* mCamera;
 
 		State state;
+		ePlayerState mState;
 		eProsthetics mProsthetic;
 
 		bool mbTESTAttack;
