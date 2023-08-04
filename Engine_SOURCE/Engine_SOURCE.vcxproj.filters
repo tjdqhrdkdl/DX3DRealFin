@@ -1,523 +1,555 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="yaMultiRenderTarget.cpp" />
-    <ClCompile Include="yaParticleShader.cpp" />
-    <ClCompile Include="yaParticleSystem.cpp" />
-    <ClCompile Include="yaWallScript.cpp" />
     <ClCompile Include="yaMath.cpp">
-      <Filter>Common\Math</Filter>
+      <Filter>Engine\Common\Math</Filter>
     </ClCompile>
     <ClCompile Include="yaEntity.cpp">
-      <Filter>Common</Filter>
+      <Filter>Engine\Common</Filter>
     </ClCompile>
     <ClCompile Include="yaEnums.cpp">
-      <Filter>Common</Filter>
+      <Filter>Engine\Common</Filter>
     </ClCompile>
     <ClCompile Include="yaAnimation.cpp">
-      <Filter>Component\Animator</Filter>
+      <Filter>Engine\Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="yaAnimator.cpp">
-      <Filter>Component\Animator</Filter>
+      <Filter>Engine\Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="yaAudioClip.cpp">
-      <Filter>Component\Audio</Filter>
+      <Filter>Engine\Component\Audio</Filter>
     </ClCompile>
     <ClCompile Include="yaAudioListener.cpp">
-      <Filter>Component\Audio</Filter>
+      <Filter>Engine\Component\Audio</Filter>
     </ClCompile>
     <ClCompile Include="yaCamera.cpp">
-      <Filter>Component\Camera</Filter>
+      <Filter>Engine\Component\Camera</Filter>
     </ClCompile>
     <ClCompile Include="yaCollider.cpp">
-      <Filter>Component\Collider</Filter>
+      <Filter>Engine\Component\Collider</Filter>
     </ClCompile>
     <ClCompile Include="yaCollisionManager.cpp">
-      <Filter>Component\Collider\Manager</Filter>
+      <Filter>Engine\Component\Collider\Manager</Filter>
     </ClCompile>
     <ClCompile Include="yaCollider2D.cpp">
-      <Filter>Component\Collider\2D</Filter>
+      <Filter>Engine\Component\Collider\2D</Filter>
     </ClCompile>
     <ClCompile Include="yaCollider3D.cpp">
-      <Filter>Component\Collider\3D</Filter>
+      <Filter>Engine\Component\Collider\3D</Filter>
     </ClCompile>
     <ClCompile Include="yaLight.cpp">
-      <Filter>Component\Light</Filter>
+      <Filter>Engine\Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="yaRigidbody.cpp">
-      <Filter>Component\Rigidbody</Filter>
+      <Filter>Engine\Component\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="yaMeshRenderer.cpp">
-      <Filter>Component\Renderer</Filter>
+      <Filter>Engine\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="yaSpriteRenderer.cpp">
-      <Filter>Component\Renderer</Filter>
+      <Filter>Engine\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="yaScript.cpp">
-      <Filter>Component\Script</Filter>
-    </ClCompile>
-    <ClCompile Include="yaCameraScript.cpp">
-      <Filter>Component\Script</Filter>
+      <Filter>Engine\Component\Script</Filter>
     </ClCompile>
     <ClCompile Include="yaMonsterScript.cpp">
-      <Filter>Component\Script\Monster</Filter>
+      <Filter>Engine\Component\Script\Monster</Filter>
     </ClCompile>
     <ClCompile Include="yaMonster.cpp">
-      <Filter>Component\Script\Contents</Filter>
+      <Filter>Contents\Contents</Filter>
     </ClCompile>
     <ClCompile Include="yaPlayer.cpp">
-      <Filter>Component\Script\Contents</Filter>
+      <Filter>Contents\Contents</Filter>
     </ClCompile>
     <ClCompile Include="yaPlayerScript.cpp">
-      <Filter>Component\Script\Player</Filter>
+      <Filter>Contents\Player</Filter>
     </ClCompile>
     <ClCompile Include="yaActionScript.cpp">
-      <Filter>Component\Script\Player</Filter>
+      <Filter>Contents\Player</Filter>
     </ClCompile>
     <ClCompile Include="yaGrappleHookScript.cpp">
-      <Filter>Component\Script\Player</Filter>
+      <Filter>Contents\Player</Filter>
     </ClCompile>
     <ClCompile Include="yaGroundScript.cpp">
-      <Filter>Component\Script\Ground</Filter>
+      <Filter>Contents\Ground</Filter>
     </ClCompile>
     <ClCompile Include="yaHookTargetScript.cpp">
-      <Filter>Component\Script\Ground</Filter>
+      <Filter>Contents\Ground</Filter>
     </ClCompile>
     <ClCompile Include="yaTransform.cpp">
-      <Filter>Component\Transform</Filter>
+      <Filter>Engine\Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="yaComponent.cpp">
-      <Filter>Component</Filter>
+      <Filter>Engine\Component</Filter>
     </ClCompile>
     <ClCompile Include="yaFontWrapper.cpp">
-      <Filter>FontWrapper</Filter>
+      <Filter>Engine\FontWrapper</Filter>
     </ClCompile>
     <ClCompile Include="yaInput.cpp">
-      <Filter>Input</Filter>
+      <Filter>Engine\Input</Filter>
     </ClCompile>
     <ClCompile Include="yaTime.cpp">
-      <Filter>Time</Filter>
+      <Filter>Engine\Time</Filter>
     </ClCompile>
     <ClCompile Include="MonsterBase.cpp">
-      <Filter>GameObject\Monster\Base</Filter>
+      <Filter>Contents\Monster\Base</Filter>
     </ClCompile>
     <ClCompile Include="yaApplication.cpp">
-      <Filter>High Level InterFace</Filter>
+      <Filter>Engine\High Level InterFace</Filter>
     </ClCompile>
     <ClCompile Include="yaBaseRenderer.cpp">
-      <Filter>Renderer</Filter>
+      <Filter>Engine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="yaGameObject.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>Engine\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="yaGraphicDevice_DX11.cpp">
-      <Filter>Graphics\API</Filter>
+      <Filter>Engine\Graphics\API</Filter>
     </ClCompile>
     <ClCompile Include="yaConstantBuffer.cpp">
-      <Filter>Graphics\Buffer</Filter>
+      <Filter>Engine\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaStructedBuffer.cpp">
-      <Filter>Graphics\Buffer</Filter>
+      <Filter>Engine\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaRenderer.cpp">
-      <Filter>Renderer</Filter>
+      <Filter>Engine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="yaScene.cpp">
-      <Filter>Scene\Base</Filter>
+      <Filter>Engine\Scene\Base</Filter>
     </ClCompile>
     <ClCompile Include="yaLayer.cpp">
-      <Filter>Scene\Layer</Filter>
+      <Filter>Engine\Scene\Layer</Filter>
     </ClCompile>
     <ClCompile Include="yaSceneManager.cpp">
-      <Filter>Scene\Manager</Filter>
+      <Filter>Engine\Scene\Manager</Filter>
     </ClCompile>
     <ClCompile Include="yaAudioSource.cpp">
-      <Filter>Resource\Audio</Filter>
+      <Filter>Engine\Resource\Audio</Filter>
     </ClCompile>
     <ClCompile Include="yaResources.cpp">
-      <Filter>Resource\Manager</Filter>
+      <Filter>Engine\Resource\Manager</Filter>
     </ClCompile>
     <ClCompile Include="yaMaterial.cpp">
-      <Filter>Resource\Material</Filter>
+      <Filter>Engine\Resource\Material</Filter>
     </ClCompile>
     <ClCompile Include="yaMesh.cpp">
-      <Filter>Resource\Mesh</Filter>
+      <Filter>Engine\Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="yaPrefab.cpp">
-      <Filter>Resource\Prefab</Filter>
+      <Filter>Engine\Resource\Prefab</Filter>
     </ClCompile>
     <ClCompile Include="yaGridScript.cpp">
-      <Filter>Resource\Script</Filter>
+      <Filter>Engine\Resource\Script</Filter>
     </ClCompile>
     <ClCompile Include="yaTexture.cpp">
-      <Filter>Resource\Texture</Filter>
+      <Filter>Engine\Resource\Texture</Filter>
     </ClCompile>
     <ClCompile Include="yaShader.cpp">
-      <Filter>Resource\Shader</Filter>
+      <Filter>Engine\Resource\Shader</Filter>
     </ClCompile>
     <ClCompile Include="yaComputeShader.cpp">
-      <Filter>Resource\Shader\CS\Base</Filter>
+      <Filter>Engine\Resource\Shader\CS\Base</Filter>
     </ClCompile>
     <ClCompile Include="yaPaintShader.cpp">
-      <Filter>Resource\Shader\CS</Filter>
+      <Filter>Engine\Resource\Shader\CS</Filter>
     </ClCompile>
     <ClCompile Include="yaResource.cpp">
-      <Filter>Resource</Filter>
+      <Filter>Engine\Resource</Filter>
     </ClCompile>
     <ClCompile Include="yaFmod.cpp">
-      <Filter>Component\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="yaPlayScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="yaTitleScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Engine\Component\Audio</Filter>
     </ClCompile>
     <ClCompile Include="yaSpearman.cpp">
-      <Filter>GameObject\Monster</Filter>
+      <Filter>Contents\Monster</Filter>
     </ClCompile>
     <ClCompile Include="yaState.cpp">
-      <Filter>State</Filter>
+      <Filter>Contents\State</Filter>
     </ClCompile>
-    <ClCompile Include="yaMoveScript.cpp" />
+    <ClCompile Include="yaMoveScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMultiRenderTarget.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="yaParticleShader.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="yaParticleSystem.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="yaCameraScript.cpp">
+      <Filter>Contents\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayScene.cpp">
+      <Filter>Contents\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="yaTitleScene.cpp">
+      <Filter>Contents\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="yaWallScript.cpp">
+      <Filter>Contents\Ground</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="yaMultiRenderTarget.h" />
-    <ClInclude Include="yaParticleShader.h" />
-    <ClInclude Include="yaParticleSystem.h" />
     <ClInclude Include="yaSekiroEnums.h" />
-    <ClInclude Include="yaWallScript.h" />
     <ClInclude Include="yaMath.h">
-      <Filter>Common\Math</Filter>
+      <Filter>Engine\Common\Math</Filter>
     </ClInclude>
     <ClInclude Include="CommonInclude.h">
-      <Filter>Common</Filter>
+      <Filter>Engine\Common</Filter>
     </ClInclude>
     <ClInclude Include="yaEngine.h">
-      <Filter>Common</Filter>
+      <Filter>Engine\Common</Filter>
     </ClInclude>
     <ClInclude Include="yaEntity.h">
-      <Filter>Common</Filter>
+      <Filter>Engine\Common</Filter>
     </ClInclude>
     <ClInclude Include="yaEnums.h">
-      <Filter>Common</Filter>
+      <Filter>Engine\Common</Filter>
     </ClInclude>
     <ClInclude Include="yaAnimation.h">
-      <Filter>Component\Animator</Filter>
+      <Filter>Engine\Component\Animator</Filter>
     </ClInclude>
     <ClInclude Include="yaAnimator.h">
-      <Filter>Component\Animator</Filter>
+      <Filter>Engine\Component\Animator</Filter>
     </ClInclude>
     <ClInclude Include="yaAudioClip.h">
-      <Filter>Component\Audio</Filter>
+      <Filter>Engine\Component\Audio</Filter>
     </ClInclude>
     <ClInclude Include="yaAudioListener.h">
-      <Filter>Component\Audio</Filter>
+      <Filter>Engine\Component\Audio</Filter>
     </ClInclude>
     <ClInclude Include="yaCamera.h">
-      <Filter>Component\Camera</Filter>
+      <Filter>Engine\Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="yaCollider.h">
-      <Filter>Component\Collider</Filter>
+      <Filter>Engine\Component\Collider</Filter>
     </ClInclude>
     <ClInclude Include="yaCollisionManager.h">
-      <Filter>Component\Collider\Manager</Filter>
+      <Filter>Engine\Component\Collider\Manager</Filter>
     </ClInclude>
     <ClInclude Include="yaCollider2D.h">
-      <Filter>Component\Collider\2D</Filter>
+      <Filter>Engine\Component\Collider\2D</Filter>
     </ClInclude>
     <ClInclude Include="yaCollider3D.h">
-      <Filter>Component\Collider\3D</Filter>
+      <Filter>Engine\Component\Collider\3D</Filter>
     </ClInclude>
     <ClInclude Include="yaLight.h">
-      <Filter>Component\Light</Filter>
+      <Filter>Engine\Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="yaRigidbody.h">
-      <Filter>Component\Rigidbody</Filter>
+      <Filter>Engine\Component\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="yaMeshRenderer.h">
-      <Filter>Component\Renderer</Filter>
+      <Filter>Engine\Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="yaSpriteRenderer.h">
-      <Filter>Component\Renderer</Filter>
+      <Filter>Engine\Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="yaScript.h">
-      <Filter>Component\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="yaCameraScript.h">
-      <Filter>Component\Script</Filter>
+      <Filter>Engine\Component\Script</Filter>
     </ClInclude>
     <ClInclude Include="yaMonsterScript.h">
-      <Filter>Component\Script\Monster</Filter>
+      <Filter>Engine\Component\Script\Monster</Filter>
     </ClInclude>
     <ClInclude Include="yaMonster.h">
-      <Filter>Component\Script\Contents</Filter>
+      <Filter>Contents\Contents</Filter>
     </ClInclude>
     <ClInclude Include="yaPlayer.h">
-      <Filter>Component\Script\Contents</Filter>
+      <Filter>Contents\Contents</Filter>
     </ClInclude>
     <ClInclude Include="yaPlayerScript.h">
-      <Filter>Component\Script\Player</Filter>
+      <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaActionScript.h">
-      <Filter>Component\Script\Player</Filter>
+      <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaGrappleHookScript.h">
-      <Filter>Component\Script\Player</Filter>
+      <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaGroundScript.h">
-      <Filter>Component\Script\Ground</Filter>
+      <Filter>Contents\Ground</Filter>
     </ClInclude>
     <ClInclude Include="yaHookTargetScript.h">
-      <Filter>Component\Script\Ground</Filter>
+      <Filter>Contents\Ground</Filter>
     </ClInclude>
     <ClInclude Include="yaTransform.h">
-      <Filter>Component\Transform</Filter>
+      <Filter>Engine\Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="yaComponent.h">
-      <Filter>Component</Filter>
+      <Filter>Engine\Component</Filter>
     </ClInclude>
     <ClInclude Include="yaFontWrapper.h">
-      <Filter>FontWrapper</Filter>
+      <Filter>Engine\FontWrapper</Filter>
     </ClInclude>
     <ClInclude Include="yaInput.h">
-      <Filter>Input</Filter>
+      <Filter>Engine\Input</Filter>
     </ClInclude>
     <ClInclude Include="yaTime.h">
-      <Filter>Time</Filter>
+      <Filter>Engine\Time</Filter>
     </ClInclude>
     <ClInclude Include="MonsterBase.h">
-      <Filter>GameObject\Monster\Base</Filter>
+      <Filter>Contents\Monster\Base</Filter>
     </ClInclude>
     <ClInclude Include="yaApplication.h">
-      <Filter>High Level InterFace</Filter>
+      <Filter>Engine\High Level InterFace</Filter>
     </ClInclude>
     <ClInclude Include="yaBaseRenderer.h">
-      <Filter>Renderer</Filter>
+      <Filter>Engine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="yaGameObject.h">
-      <Filter>GameObject</Filter>
+      <Filter>Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="yaObject.h">
-      <Filter>GameObject</Filter>
+      <Filter>Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="yaGraphicDevice_DX11.h">
-      <Filter>Graphics\API</Filter>
+      <Filter>Engine\Graphics\API</Filter>
     </ClInclude>
     <ClInclude Include="yaConstantBuffer.h">
-      <Filter>Graphics\Buffer</Filter>
+      <Filter>Engine\Graphics\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="yaStructedBuffer.h">
-      <Filter>Graphics\Buffer</Filter>
+      <Filter>Engine\Graphics\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="yaGraphics.h">
-      <Filter>Graphics</Filter>
+      <Filter>Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaRenderer.h">
-      <Filter>Renderer</Filter>
+      <Filter>Engine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="yaScene.h">
-      <Filter>Scene\Base</Filter>
+      <Filter>Engine\Scene\Base</Filter>
     </ClInclude>
     <ClInclude Include="yaLayer.h">
-      <Filter>Scene\Layer</Filter>
+      <Filter>Engine\Scene\Layer</Filter>
     </ClInclude>
     <ClInclude Include="yaSceneManager.h">
-      <Filter>Scene\Manager</Filter>
+      <Filter>Engine\Scene\Manager</Filter>
     </ClInclude>
     <ClInclude Include="yaAudioSource.h">
-      <Filter>Resource\Audio</Filter>
+      <Filter>Engine\Resource\Audio</Filter>
     </ClInclude>
     <ClInclude Include="yaResources.h">
-      <Filter>Resource\Manager</Filter>
+      <Filter>Engine\Resource\Manager</Filter>
     </ClInclude>
     <ClInclude Include="yaMaterial.h">
-      <Filter>Resource\Material</Filter>
+      <Filter>Engine\Resource\Material</Filter>
     </ClInclude>
     <ClInclude Include="yaMesh.h">
-      <Filter>Resource\Mesh</Filter>
+      <Filter>Engine\Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="yaPrefab.h">
-      <Filter>Resource\Prefab</Filter>
+      <Filter>Engine\Resource\Prefab</Filter>
     </ClInclude>
     <ClInclude Include="yaGridScript.h">
-      <Filter>Resource\Script</Filter>
+      <Filter>Engine\Resource\Script</Filter>
     </ClInclude>
     <ClInclude Include="yaTexture.h">
-      <Filter>Resource\Texture</Filter>
+      <Filter>Engine\Resource\Texture</Filter>
     </ClInclude>
     <ClInclude Include="yaShader.h">
-      <Filter>Resource\Shader</Filter>
+      <Filter>Engine\Resource\Shader</Filter>
     </ClInclude>
     <ClInclude Include="yaComputeShader.h">
-      <Filter>Resource\Shader\CS\Base</Filter>
+      <Filter>Engine\Resource\Shader\CS\Base</Filter>
     </ClInclude>
     <ClInclude Include="yaPaintShader.h">
-      <Filter>Resource\Shader\CS</Filter>
+      <Filter>Engine\Resource\Shader\CS</Filter>
     </ClInclude>
     <ClInclude Include="yaResource.h">
-      <Filter>Resource</Filter>
+      <Filter>Engine\Resource</Filter>
     </ClInclude>
     <ClInclude Include="yaFmod.h">
-      <Filter>Component\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="yaPlayScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="yaTitleScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Engine\Component\Audio</Filter>
     </ClInclude>
     <ClInclude Include="yaSpearman.h">
-      <Filter>GameObject\Monster</Filter>
+      <Filter>Contents\Monster</Filter>
     </ClInclude>
     <ClInclude Include="yaState.h">
-      <Filter>State</Filter>
+      <Filter>Contents\State</Filter>
     </ClInclude>
-    <ClInclude Include="yaMoveScript.h" />
+    <ClInclude Include="yaMoveScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMultiRenderTarget.h">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="yaParticleShader.h">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="yaParticleSystem.h">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="yaCameraScript.h">
+      <Filter>Contents\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayScene.h">
+      <Filter>Contents\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTitleScene.h">
+      <Filter>Contents\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="yaWallScript.h">
+      <Filter>Contents\Ground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Common">
-      <UniqueIdentifier>{0f1d2d51-7786-4b07-896b-3ebb5617e21d}</UniqueIdentifier>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{2e537f92-1acb-47e0-b985-09ffb8a05756}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{41be6699-d86f-49e5-8e45-7b42a73361b7}</UniqueIdentifier>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{99f62946-7c48-413b-a8eb-579be7df41b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FontWrapper">
-      <UniqueIdentifier>{7752b80e-6c10-47f5-ace5-c8ba2762ad71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{31f357ff-f1ae-4360-a346-7bfd2439cb21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Graphics">
-      <UniqueIdentifier>{bb133d81-909b-41ea-b03b-b7461611ad82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="High Level InterFace">
-      <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{1023752f-542e-4213-9b8c-2345f5e9c3b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{966af4a9-2d35-4108-b269-96746b981cc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{d31398f4-302c-45d2-8499-fde770cbdae2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{53012753-182a-4ded-8868-dcbe6387bf1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Time">
-      <UniqueIdentifier>{3c005be1-a06d-4704-b27e-eb1d9f4b5356}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common\Math">
-      <UniqueIdentifier>{0d8d4cf9-fdad-4ad9-8642-9ebda6cf20ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Animator">
-      <UniqueIdentifier>{5d76cce2-5794-4fb5-a017-c2a95ba0cbb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Audio">
-      <UniqueIdentifier>{9047b1a7-3859-418e-9512-ad04c9be6714}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Camera">
-      <UniqueIdentifier>{39981d61-dce9-488f-82b2-1ceeb4e65a04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Collider">
-      <UniqueIdentifier>{d5feb161-1d03-468c-8453-a3bb0745decf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Light">
-      <UniqueIdentifier>{ed4232ba-3bda-4d19-8d36-f64c02b5bfde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Renderer">
-      <UniqueIdentifier>{933cf111-55d1-4532-a7bb-a15f6050dcf2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Collider\2D">
-      <UniqueIdentifier>{cc47f08c-744c-46ef-a1c4-92e74cca63f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Collider\3D">
-      <UniqueIdentifier>{25465b7e-d4bb-47d7-a11a-0b57f774c5d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Collider\Manager">
-      <UniqueIdentifier>{5f698b56-40f6-4bd3-8c27-3d9003f9cf7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Rigidbody">
-      <UniqueIdentifier>{06ec0bcb-419b-4a46-b1a2-b9a647a15a74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Script">
-      <UniqueIdentifier>{02197a71-ea8c-4ec8-996d-fd9fb0b06738}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Transform">
-      <UniqueIdentifier>{217097e0-db2b-4e20-b9e8-61d3b1d3f3b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Script\Contents">
-      <UniqueIdentifier>{0153c38a-e1fa-44dc-a345-a32d90aa1650}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Script\Ground">
-      <UniqueIdentifier>{fd830d37-e4e7-4a1f-b161-8764418e152f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Script\Monster">
-      <UniqueIdentifier>{0b4fd915-c2f5-4e22-a2de-a8d1e45c4ad1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Script\Player">
-      <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Monster">
+    <Filter Include="Contents\Monster">
       <UniqueIdentifier>{b0e4b0fe-150d-441c-81fd-89bfaab77ce7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Monster\Base">
+    <Filter Include="Contents\Monster\Base">
       <UniqueIdentifier>{c3a5730a-0574-404c-9a51-67ed132a6f63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\API">
-      <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
+    <Filter Include="Contents\Contents">
+      <UniqueIdentifier>{0153c38a-e1fa-44dc-a345-a32d90aa1650}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\Buffer">
-      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
+    <Filter Include="Contents\Ground">
+      <UniqueIdentifier>{fd830d37-e4e7-4a1f-b161-8764418e152f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Base">
-      <UniqueIdentifier>{58f8760f-8987-4a61-8e49-0bb36005ccbf}</UniqueIdentifier>
+    <Filter Include="Contents\Player">
+      <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Layer">
-      <UniqueIdentifier>{5a835ebf-edb9-4d75-8210-4e7b46ecff73}</UniqueIdentifier>
+    <Filter Include="Contents\State">
+      <UniqueIdentifier>{62a651e5-4cd6-4a6f-918f-c2ff7ed4f805}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Manager">
-      <UniqueIdentifier>{a9b53643-d197-478b-ab4e-8678361d76e1}</UniqueIdentifier>
+    <Filter Include="Engine\Renderer">
+      <UniqueIdentifier>{966af4a9-2d35-4108-b269-96746b981cc3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Audio">
+    <Filter Include="Engine\Resource">
+      <UniqueIdentifier>{d31398f4-302c-45d2-8499-fde770cbdae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resource\Audio">
       <UniqueIdentifier>{813e1a5e-3adb-4534-8749-e2c10b02c693}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Manager">
+    <Filter Include="Engine\Resource\Manager">
       <UniqueIdentifier>{d86553a9-ad92-49e7-a40a-837f5cb69e77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Material">
+    <Filter Include="Engine\Resource\Material">
       <UniqueIdentifier>{9c62e7ec-d470-4857-bb40-e5e3b984a3e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Mesh">
+    <Filter Include="Engine\Resource\Mesh">
       <UniqueIdentifier>{fbc63a1b-82a5-4902-8d12-1bf7bc3cca93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Prefab">
+    <Filter Include="Engine\Resource\Prefab">
       <UniqueIdentifier>{e62cd377-c048-4207-a266-bdb8d12e5ef7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Script">
+    <Filter Include="Engine\Resource\Script">
       <UniqueIdentifier>{d176a71d-e0f0-4221-90f8-f4fc8da8b2c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Shader">
+    <Filter Include="Engine\Resource\Shader">
       <UniqueIdentifier>{d41d6288-5c48-4c51-847e-60956d78c9e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Texture">
-      <UniqueIdentifier>{576d07c2-fa63-4042-8008-8b118e3dafcf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\CS">
+    <Filter Include="Engine\Resource\Shader\CS">
       <UniqueIdentifier>{56c3ef5e-c32f-4370-b273-d60bfd14fc63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Shader\CS\Base">
+    <Filter Include="Engine\Resource\Shader\CS\Base">
       <UniqueIdentifier>{8d01e5eb-c6aa-4591-85d9-54226d59c5dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State">
-      <UniqueIdentifier>{62a651e5-4cd6-4a6f-918f-c2ff7ed4f805}</UniqueIdentifier>
+    <Filter Include="Engine\Resource\Texture">
+      <UniqueIdentifier>{576d07c2-fa63-4042-8008-8b118e3dafcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{53012753-182a-4ded-8868-dcbe6387bf1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Base">
+      <UniqueIdentifier>{58f8760f-8987-4a61-8e49-0bb36005ccbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Layer">
+      <UniqueIdentifier>{5a835ebf-edb9-4d75-8210-4e7b46ecff73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Manager">
+      <UniqueIdentifier>{a9b53643-d197-478b-ab4e-8678361d76e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Time">
+      <UniqueIdentifier>{3c005be1-a06d-4704-b27e-eb1d9f4b5356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input">
+      <UniqueIdentifier>{1023752f-542e-4213-9b8c-2345f5e9c3b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FontWrapper">
+      <UniqueIdentifier>{7752b80e-6c10-47f5-ace5-c8ba2762ad71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject">
+      <UniqueIdentifier>{31f357ff-f1ae-4360-a346-7bfd2439cb21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics">
+      <UniqueIdentifier>{bb133d81-909b-41ea-b03b-b7461611ad82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics\API">
+      <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics\Buffer">
+      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\High Level InterFace">
+      <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component">
+      <UniqueIdentifier>{41be6699-d86f-49e5-8e45-7b42a73361b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Animator">
+      <UniqueIdentifier>{5d76cce2-5794-4fb5-a017-c2a95ba0cbb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Audio">
+      <UniqueIdentifier>{9047b1a7-3859-418e-9512-ad04c9be6714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Camera">
+      <UniqueIdentifier>{39981d61-dce9-488f-82b2-1ceeb4e65a04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider">
+      <UniqueIdentifier>{d5feb161-1d03-468c-8453-a3bb0745decf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider\2D">
+      <UniqueIdentifier>{cc47f08c-744c-46ef-a1c4-92e74cca63f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider\3D">
+      <UniqueIdentifier>{25465b7e-d4bb-47d7-a11a-0b57f774c5d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider\Manager">
+      <UniqueIdentifier>{5f698b56-40f6-4bd3-8c27-3d9003f9cf7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Light">
+      <UniqueIdentifier>{ed4232ba-3bda-4d19-8d36-f64c02b5bfde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Renderer">
+      <UniqueIdentifier>{933cf111-55d1-4532-a7bb-a15f6050dcf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Rigidbody">
+      <UniqueIdentifier>{06ec0bcb-419b-4a46-b1a2-b9a647a15a74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Script">
+      <UniqueIdentifier>{02197a71-ea8c-4ec8-996d-fd9fb0b06738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Script\Monster">
+      <UniqueIdentifier>{0b4fd915-c2f5-4e22-a2de-a8d1e45c4ad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Transform">
+      <UniqueIdentifier>{217097e0-db2b-4e20-b9e8-61d3b1d3f3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common">
+      <UniqueIdentifier>{0f1d2d51-7786-4b07-896b-3ebb5617e21d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Math">
+      <UniqueIdentifier>{0d8d4cf9-fdad-4ad9-8642-9ebda6cf20ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Camera">
+      <UniqueIdentifier>{1a71a251-4aa0-4bb1-bba9-da18fd7252cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Scene">
+      <UniqueIdentifier>{c5ed46d7-aab9-4a27-aa1c-2ab0c73d7891}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">
-      <Filter>Common\Math</Filter>
+      <Filter>Engine\Common\Math</Filter>
     </None>
   </ItemGroup>
 </Project>
