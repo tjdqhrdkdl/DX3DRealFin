@@ -427,8 +427,6 @@ namespace ya
 	}
 	float CollisionManager::RayIntersect(ya::Ray ray, GameObject* colObj)
 	{
-		Vector3 aabb_min = Vector3(-0.5, -0.5, -0.5);
-		Vector3 aabb_max = Vector3(0.5, 0.5, 0.5);
 
 		Transform* tr = colObj->GetComponent<Transform>();
 		Collider2D* col = colObj->GetComponent<Collider2D>();
@@ -488,7 +486,16 @@ namespace ya
 					return -1;
 			}
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 <0 ||e2 >0 )
+					return -1;
+
+			}
 		}
 		//y
 		{
@@ -530,7 +537,15 @@ namespace ya
 					return -1;
 			}
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 < 0 || e2 > 0)
+					return -1;
+			}
 		}
 		//z
 		{
@@ -562,10 +577,12 @@ namespace ya
 
 				if (t1 < 0 && t2 < 0)
 					return -1;
+
 				// tMin 은 가장 가까이있는 "먼" 교차
 				if (t2 < tMax)
 					tMax = t2;
 				// tMin 은 가장 멀리있는 "가까운" 교차
+
 				if (t1 > tMin)
 					tMin = t1;
 
@@ -574,7 +591,15 @@ namespace ya
 			}
 
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 > 0 || e2 < 0)
+					return -1;
+			}
 		}
 		return tMin;
 	}
