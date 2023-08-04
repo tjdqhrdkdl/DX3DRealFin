@@ -42,20 +42,16 @@ namespace ya
 							else
 							{
 								//Def
-
-
 							}
 						}
 						else
 						{
-							//
-							player->SetWalk(true);
-
+							//Monster Hit
 						}
 					}
 					else
 					{
-						player->SetWalk(true);
+						//Monster Hit
 					}
 
 

@@ -1,27 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="yaComputeShader.cpp" />
-    <ClCompile Include="yaFmod.cpp" />
-    <ClCompile Include="yaGridScript.cpp" />
-    <ClCompile Include="yaLayer.cpp" />
-    <ClCompile Include="yaMaterial.cpp" />
-    <ClCompile Include="yaMesh.cpp" />
     <ClCompile Include="yaMultiRenderTarget.cpp" />
-    <ClCompile Include="yaPaintShader.cpp" />
     <ClCompile Include="yaParticleShader.cpp" />
     <ClCompile Include="yaParticleSystem.cpp" />
-    <ClCompile Include="yaPlayScene.cpp" />
-    <ClCompile Include="yaPrefab.cpp" />
-    <ClCompile Include="yaResource.cpp" />
-    <ClCompile Include="yaResources.cpp" />
-    <ClCompile Include="yaScene.cpp" />
-    <ClCompile Include="yaSceneManager.cpp" />
-    <ClCompile Include="yaShader.cpp" />
-    <ClCompile Include="yaState.cpp" />
-    <ClCompile Include="yaSpearman.cpp" />
-    <ClCompile Include="yaTexture.cpp" />
-    <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaWallScript.cpp" />
     <ClCompile Include="yaMath.cpp">
       <Filter>Common\Math</Filter>
@@ -42,9 +24,6 @@
       <Filter>Component\Audio</Filter>
     </ClCompile>
     <ClCompile Include="yaAudioListener.cpp">
-      <Filter>Component\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="yaAudioSource.cpp">
       <Filter>Component\Audio</Filter>
     </ClCompile>
     <ClCompile Include="yaCamera.cpp">
@@ -143,30 +122,69 @@
     <ClCompile Include="yaRenderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="yaScene.cpp">
+      <Filter>Scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaLayer.cpp">
+      <Filter>Scene\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSceneManager.cpp">
+      <Filter>Scene\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="yaAudioSource.cpp">
+      <Filter>Resource\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="yaResources.cpp">
+      <Filter>Resource\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMaterial.cpp">
+      <Filter>Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMesh.cpp">
+      <Filter>Resource\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPrefab.cpp">
+      <Filter>Resource\Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="yaGridScript.cpp">
+      <Filter>Resource\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="yaTexture.cpp">
+      <Filter>Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="yaShader.cpp">
+      <Filter>Resource\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="yaComputeShader.cpp">
+      <Filter>Resource\Shader\CS\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPaintShader.cpp">
+      <Filter>Resource\Shader\CS</Filter>
+    </ClCompile>
+    <ClCompile Include="yaResource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="yaFmod.cpp">
+      <Filter>Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="yaTitleScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSpearman.cpp">
+      <Filter>GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="yaComputeShader.h" />
-    <ClInclude Include="yaFmod.h" />
-    <ClInclude Include="yaGridScript.h" />
-    <ClInclude Include="yaLayer.h" />
-    <ClInclude Include="yaMaterial.h" />
-    <ClInclude Include="yaMesh.h" />
     <ClInclude Include="yaMultiRenderTarget.h" />
-    <ClInclude Include="yaPaintShader.h" />
     <ClInclude Include="yaParticleShader.h" />
     <ClInclude Include="yaParticleSystem.h" />
-    <ClInclude Include="yaPlayScene.h" />
-    <ClInclude Include="yaPrefab.h" />
-    <ClInclude Include="yaResource.h" />
-    <ClInclude Include="yaResources.h" />
-    <ClInclude Include="yaScene.h" />
-    <ClInclude Include="yaSceneManager.h" />
     <ClInclude Include="yaSekiroEnums.h" />
-    <ClInclude Include="yaShader.h" />
-    <ClInclude Include="yaState.h" />
-    <ClInclude Include="yaSpearman.h" />
-    <ClInclude Include="yaTexture.h" />
-    <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaWallScript.h" />
     <ClInclude Include="yaMath.h">
       <Filter>Common\Math</Filter>
@@ -193,9 +211,6 @@
       <Filter>Component\Audio</Filter>
     </ClInclude>
     <ClInclude Include="yaAudioListener.h">
-      <Filter>Component\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="yaAudioSource.h">
       <Filter>Component\Audio</Filter>
     </ClInclude>
     <ClInclude Include="yaCamera.h">
@@ -299,6 +314,63 @@
     </ClInclude>
     <ClInclude Include="yaRenderer.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="yaScene.h">
+      <Filter>Scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaLayer.h">
+      <Filter>Scene\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSceneManager.h">
+      <Filter>Scene\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="yaAudioSource.h">
+      <Filter>Resource\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="yaResources.h">
+      <Filter>Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMaterial.h">
+      <Filter>Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMesh.h">
+      <Filter>Resource\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPrefab.h">
+      <Filter>Resource\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="yaGridScript.h">
+      <Filter>Resource\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTexture.h">
+      <Filter>Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="yaShader.h">
+      <Filter>Resource\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="yaComputeShader.h">
+      <Filter>Resource\Shader\CS\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPaintShader.h">
+      <Filter>Resource\Shader\CS</Filter>
+    </ClInclude>
+    <ClInclude Include="yaResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="yaFmod.h">
+      <Filter>Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTitleScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSpearman.h">
+      <Filter>GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaState.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +478,39 @@
     </Filter>
     <Filter Include="Scene\Manager">
       <UniqueIdentifier>{a9b53643-d197-478b-ab4e-8678361d76e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Audio">
+      <UniqueIdentifier>{813e1a5e-3adb-4534-8749-e2c10b02c693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Manager">
+      <UniqueIdentifier>{d86553a9-ad92-49e7-a40a-837f5cb69e77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Material">
+      <UniqueIdentifier>{9c62e7ec-d470-4857-bb40-e5e3b984a3e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh">
+      <UniqueIdentifier>{fbc63a1b-82a5-4902-8d12-1bf7bc3cca93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Prefab">
+      <UniqueIdentifier>{e62cd377-c048-4207-a266-bdb8d12e5ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Script">
+      <UniqueIdentifier>{d176a71d-e0f0-4221-90f8-f4fc8da8b2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader">
+      <UniqueIdentifier>{d41d6288-5c48-4c51-847e-60956d78c9e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture">
+      <UniqueIdentifier>{576d07c2-fa63-4042-8008-8b118e3dafcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\CS">
+      <UniqueIdentifier>{56c3ef5e-c32f-4370-b273-d60bfd14fc63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\CS\Base">
+      <UniqueIdentifier>{8d01e5eb-c6aa-4591-85d9-54226d59c5dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{62a651e5-4cd6-4a6f-918f-c2ff7ed4f805}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
