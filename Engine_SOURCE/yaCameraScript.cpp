@@ -175,6 +175,7 @@ namespace ya
 			Vector3 dir = mDelayedTargetPos - mLockOnTarget->GetComponent<Transform>()->GetPosition();
 			dir.Normalize();
 			mChildPos = dir * mDistFromTarget;
+			mChildPos.y = mDistFromTarget * 0.3;
 		}
 	}
 }

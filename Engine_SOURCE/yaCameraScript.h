@@ -31,6 +31,8 @@ namespace ya
 	private:
 		GameObject* mPlayerTarget;
 		GameObject* mLockOnTarget;
+
+		GameObject* mTestTarget;
 		std::queue<Vector3> mQueDelayedTargetPos;
 		Vector3 mDelayedTargetPos;
 
