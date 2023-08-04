@@ -128,7 +128,7 @@ namespace ya
 			mCollisionMap.insert(std::make_pair(colliderID.id, false));
 			iter = mCollisionMap.find(colliderID.id);
 		}
-		
+
 		// 충돌체크를 해준다.
 		if (Intersect(left, right)) // 충돌을 한 상태
 		{
@@ -348,10 +348,9 @@ namespace ya
 			return false;
 	}
 
-	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers)
+	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 position, Vector3 direction, std::vector<eLayerType> layers)
 	{
 		Scene* scene = SceneManager::GetActiveScene();
-		Vector3 position = owner->GetComponent<Transform>()->GetPosition();
 		ya::Ray ray = ya::Ray(position, direction);
 
 		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
@@ -369,12 +368,12 @@ namespace ya
 				colObj = ret.obj;
 			}
 		}
-			
-			
 
-			
-		
-		
+
+
+
+
+
 		if (colObj != nullptr)
 		{
 			hit.isHit = true;
@@ -408,7 +407,7 @@ namespace ya
 				continue;
 			if (obj == owner)
 				continue;
-			
+
 			Matrix worldMat = tr->GetWorldMatrix();
 
 			Collider2D* collider = obj->GetComponent<Collider2D>();
@@ -419,7 +418,7 @@ namespace ya
 			float dist = RayIntersect(ray, obj);
 			if (dist < 0)
 				continue;
-			
+
 			if (dist < distMin)
 				distMin = dist; colObj = obj;
 		}
@@ -428,8 +427,6 @@ namespace ya
 	}
 	float CollisionManager::RayIntersect(ya::Ray ray, GameObject* colObj)
 	{
-		Vector3 aabb_min = Vector3(-0.5, -0.5, -0.5);
-		Vector3 aabb_max = Vector3(0.5, 0.5, 0.5);
 
 		Transform* tr = colObj->GetComponent<Transform>();
 		Collider2D* col = colObj->GetComponent<Collider2D>();
@@ -439,7 +436,7 @@ namespace ya
 		scale.x *= colScale.x;
 		scale.y *= colScale.y;
 		scale.z *= colScale.z;
-		
+
 		float tMin = 0.0f;
 		float tMax = 100000.0f;
 		float threshHold = 0.00000001;
@@ -453,7 +450,7 @@ namespace ya
 		{
 			Vector3 xaxis = tr->Right();
 			xaxis.Normalize();
-				
+
 			Vector3 xdeltaMax = boxWorldPosition + xaxis * scale.x / 2 - ray.position;
 			Vector3 xdeltaMin = boxWorldPosition - xaxis * scale.x / 2 - ray.position;
 
@@ -473,7 +470,7 @@ namespace ya
 					t2 = w; // swap t1 and t2
 				}
 
-				if (t1< 0)
+				if (t1 < 0)
 					t1 = 0;
 
 				if (t1 < 0 && t2 < 0)
@@ -489,7 +486,16 @@ namespace ya
 					return -1;
 			}
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 <0 ||e2 >0 )
+					return -1;
+
+			}
 		}
 		//y
 		{
@@ -531,14 +537,22 @@ namespace ya
 					return -1;
 			}
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 < 0 || e2 > 0)
+					return -1;
+			}
 		}
 		//z
 		{
 			Vector3 zaxis = tr->Forward();
 
 			zaxis.Normalize();
-				
+
 			Vector3 zdeltaMax = boxWorldPosition + zaxis * scale.z / 2 - ray.position;
 			Vector3 zdeltaMin = boxWorldPosition - zaxis * scale.z / 2 - ray.position;
 
@@ -563,10 +577,12 @@ namespace ya
 
 				if (t1 < 0 && t2 < 0)
 					return -1;
+
 				// tMin 은 가장 가까이있는 "먼" 교차
 				if (t2 < tMax)
 					tMax = t2;
 				// tMin 은 가장 멀리있는 "가까운" 교차
+
 				if (t1 > tMin)
 					tMin = t1;
 
@@ -575,7 +591,15 @@ namespace ya
 			}
 
 			else
-				return -1;
+			{
+				if (e2 > e1) { // if wrong order
+					float w = e1;
+					e1 = e2;
+					e2 = w; // swap t1 and t2
+				}
+				if (e1 > 0 || e2 < 0)
+					return -1;
+			}
 		}
 		return tMin;
 	}

@@ -127,6 +127,9 @@
     <ClCompile Include="MonsterBase.cpp">
       <Filter>GameObject\Monster\Base</Filter>
     </ClCompile>
+    <ClCompile Include="yaState.cpp" />
+    <ClCompile Include="yaMoveScript.cpp">
+      <Filter>Component\Script\Player</Filter>
     <ClCompile Include="yaApplication.cpp">
       <Filter>High Level InterFace</Filter>
     </ClCompile>
@@ -271,6 +274,9 @@
     <ClInclude Include="MonsterBase.h">
       <Filter>GameObject\Monster\Base</Filter>
     </ClInclude>
+    <ClInclude Include="yaState.h" />
+    <ClInclude Include="yaMoveScript.h">
+      <Filter>Component\Script\Player</Filter>
     <ClInclude Include="yaApplication.h">
       <Filter>High Level InterFace</Filter>
     </ClInclude>
