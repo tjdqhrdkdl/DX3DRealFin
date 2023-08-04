@@ -1,14 +1,21 @@
 #pragma once
 #include "yaScript.h"
 
-
 namespace ya
 {
-	class PlayerScript : public Script
+	class MoveScript : public Script
 	{
+		enum class eDirection
+		{
+			Forward,
+			Back,
+			Right,
+			Left,
+		};
+
 	public:
-		PlayerScript();
-		~PlayerScript();
+		MoveScript();
+		~MoveScript();
 
 		virtual void Initialize() override;
 		virtual void Update() override;
@@ -19,8 +26,7 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	private:
-
-		float TESTTime;
-
+		bool mbRotate;			// 진행하려는 방향과 플레이어의 forward를 맞춰주기 위해 회전 중인지 여부
+		eDirection mLastDir;	// 마지막에 입력받은 방향
 	};
 }

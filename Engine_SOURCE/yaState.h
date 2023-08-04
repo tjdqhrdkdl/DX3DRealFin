@@ -42,7 +42,7 @@ namespace ya
 
 	private:
 
-		enums::eSituation	mSituation;				//ì–´ë– í•œ ìƒíƒœì¸ì§€ 
+		enums::eSituation	mSituation;				//¾î¶°ÇÑ »óÅÂÀÎÁö 
 
 
 		float               mHp;
@@ -50,12 +50,12 @@ namespace ya
 
 		float               mSpeed;
 
-		float               mDeathBlowCount;		//ì¸ì‚´ ê²Œì´ì§€
+		float               mDeathBlowCount;		//ÀÎ»ì °ÔÀÌÁö
 		float               mMaxDeathBlowCount;       
 
-		float				mAlertnessCount;		//ê²½ë³´ ë ˆë²¨ (60ì´ìƒì´ë©´ ê²½ê³„, 80ì´ìƒì´ë©´ ì¶”ê²© 100ì´ìƒì´ë©´ ê³µê²©)
+		float				mAlertnessCount;		//°æº¸ ·¹º§ (60ÀÌ»óÀÌ¸é °æ°è, 80ÀÌ»óÀÌ¸é Ãß°İ 100ÀÌ»óÀÌ¸é °ø°İ)
 
-		bool				mbDeathBlow;			//ì¸ì‚´ ê°€ëŠ¥í•œ ìƒíƒœì¸ì§€ í™•ì¸
+		bool				mbDeathBlow;			//ÀÎ»ì °¡´ÉÇÑ »óÅÂÀÎÁö È®ÀÎ
 
 
 	};

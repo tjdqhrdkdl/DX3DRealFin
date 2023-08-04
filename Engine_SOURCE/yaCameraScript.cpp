@@ -15,7 +15,7 @@ namespace ya
 		, mThetaAxisY(1.57)
 		, mThetaAxisX(1.57)
 		, mDistFromTarget(40)
-		, mDelayTime(0.1f)
+		, mDelayTime(0.2f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
 		, mbMouseMove(true)
@@ -159,7 +159,7 @@ namespace ya
 		direction.Normalize();
 		std::vector<eLayerType> layers = {};
 		layers.push_back(eLayerType::Ground);
-		RayHit hit = CollisionManager::RayCast(mTarget, direction, layers);
+		RayHit hit = CollisionManager::RayCast(mTarget, mDelayedTargetPos, direction, layers);
 		if (hit.isHit)
 		{
 			int a = 0;

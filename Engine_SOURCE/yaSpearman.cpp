@@ -7,8 +7,8 @@ namespace ya
 	{
 
 		Transform* tr = GetComponent<Transform>();
-		// í”Œë ˆì´ì–´ì˜ forwardë¥¼ êµ¬ë¶„í•˜ê¸°ìœ„í•œ object
-		// í›„ì— mesh ì”Œìš°ë©´ ì—†ì•¨ ì˜ˆì •
+		// ÇÃ·¹ÀÌ¾îÀÇ forward¸¦ ±¸ºĞÇÏ±âÀ§ÇÑ object
+		// ÈÄ¿¡ mesh ¾º¿ì¸é ¾ø¾Ù ¿¹Á¤
 		GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
 		face->SetName(L"face");
 		Transform* faceTr = face->GetComponent<Transform>();
@@ -24,7 +24,7 @@ namespace ya
 
 		mTime = 0.f;
 		
-		//ëª¬ìŠ¤í„° í• ì¼ ìˆë‚˜
+		//¸ó½ºÅÍ ÇÒÀÏ ÀÖ³ª
 		MonsterBase::Initialize();
 	}
 
@@ -60,9 +60,9 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Battle:
 		{
-			//int random = RnadomNumber(1, 3);
+			int random = RnadomNumber(1, 3);
 
-			int random = 3;
+			//int random = 1;
 
 			if (random == 1)
 			{
@@ -93,7 +93,7 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Run:
 		{			
-			//ì˜¤ë¥¸ìª½ ë°©í–¥
+			//¿À¸¥ÂÊ ¹æÇâ
 			if (mRandomXY.x > mWlakFixPos.x)
 			{
 				if (monsterPos.x > mRandomFinPos.x)
@@ -104,7 +104,7 @@ namespace ya
 				rigi->AddForce(tr->Forward() * 70.f);
 
 			}
-			//ì™¼ìª½ ë°©í–¥
+			//¿ŞÂÊ ¹æÇâ
 			else if (mRandomXY.x <= mWlakFixPos.x)
 			{
 				if (monsterPos.x <= mRandomFinPos.x)

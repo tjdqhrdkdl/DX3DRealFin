@@ -44,11 +44,11 @@ namespace ya
 
 		mAccelation = mForce / mMass;
 
-		// ì†ë„ì— ê°€ì†ë„ë¥¼ ë”í•´ì¤€ë‹¤.
+		// ¼Óµµ¿¡ °¡¼Óµµ¸¦ ´õÇØÁØ´Ù.
 		mVelocity += (mAccelation * Time::DeltaTime());
 
 		if (mbGround)
-		{ // ë•…
+		{ // ¶¥
 			Vector3 gravity = mGravity;
 			gravity.Normalize();
 
@@ -56,11 +56,11 @@ namespace ya
 			mVelocity -= gravity * dot;
 		}
 		else
-		{ // ê³µì¤‘
+		{ // °øÁß
 			mVelocity += mGravity * Time::DeltaTime();
 		}
 
-		// ìµœëŒ€ ì†ë„ ì œí•œ
+		// ÃÖ´ë ¼Óµµ Á¦ÇÑ
 		Vector3 gravity = mGravity;
 		gravity.Normalize();
 		float dot = gravity.Dot(mVelocity);
@@ -81,24 +81,24 @@ namespace ya
 
 		mVelocity = gravity + sideVelocity;
 
-		// ë§ˆì°°ë ¥ ì¡°ê±´ : ì ìš©ëœ í˜ì´ ì—†ê³ , ì†ë„ê°€ 0ì´ ì•„ë‹ë•Œ
+		// ¸¶Âû·Â Á¶°Ç : Àû¿ëµÈ ÈûÀÌ ¾ø°í, ¼Óµµ°¡ 0ÀÌ ¾Æ´Ò¶§
 		if (!(mVelocity == Vector3::Zero))
 		{
-			// ì†ë„ì— ë°˜ëŒ€ ë°©í–¥
+			// ¼Óµµ¿¡ ¹İ´ë ¹æÇâ
 			Vector3 friction = -mVelocity;
 			friction.Normalize();
 			friction = friction * mFriction * mMass * Time::DeltaTime();
 
-			// ë§ˆì°°ë ¥ìœ¼ë¡œ ì¸í•œ ì†ë„ ê°ì†ŒëŸ‰ì´ í˜„ì¬ ì†ë„ë³´ë‹¤ ë” í° ê²½ìš°
+			// ¸¶Âû·ÂÀ¸·Î ÀÎÇÑ ¼Óµµ °¨¼Ò·®ÀÌ ÇöÀç ¼Óµµº¸´Ù ´õ Å« °æ¿ì
 			if (mVelocity.Length() < friction.Length())
-				// ì†ë„ë¥¼ 0 ë¡œ ë§Œë“ ë‹¤.
+				// ¼Óµµ¸¦ 0 ·Î ¸¸µç´Ù.
 				mVelocity = Vector3::Zero;
 			else
-				// ì†ë„ì—ì„œ ë§ˆì°°ë ¥ìœ¼ë¡œ ì¸í•œ ë°˜ëŒ€ë°©í–¥ìœ¼ë¡œ ì†ë„ë¥¼ ì°¨ê°í•œë‹¤.
+				// ¼Óµµ¿¡¼­ ¸¶Âû·ÂÀ¸·Î ÀÎÇÑ ¹İ´ë¹æÇâÀ¸·Î ¼Óµµ¸¦ Â÷°¨ÇÑ´Ù.
 				mVelocity += friction;
 		}
 
-		// ì†ë„ì— ë§ì¶° ë¬¼ì²´ë¥¼ ì´ë™ì‹œí‚¨ë‹¤.
+		// ¼Óµµ¿¡ ¸ÂÃç ¹°Ã¼¸¦ ÀÌµ¿½ÃÅ²´Ù.
 		Vector3 pos = tr->GetPosition();
 		pos += mVelocity * Time::DeltaTime();
 		tr->SetPosition(pos);

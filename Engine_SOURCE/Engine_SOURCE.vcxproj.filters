@@ -179,6 +179,7 @@
     <ClCompile Include="yaState.cpp">
       <Filter>State</Filter>
     </ClCompile>
+    <ClCompile Include="yaMoveScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMultiRenderTarget.h" />
@@ -372,6 +373,7 @@
     <ClInclude Include="yaState.h">
       <Filter>State</Filter>
     </ClInclude>
+    <ClInclude Include="yaMoveScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
