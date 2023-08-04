@@ -41,11 +41,13 @@ namespace ya
 
 
 		tr->SetPosition(pos);
-		if (mTarget != nullptr)
+		if (mPlayerTarget != nullptr)
 		{
 			TrackTarget();
 			MouseMove();
+			LockOn();
 			ObstacleDetection();
+		
 		}
 	}
 	void CameraScript::Render()
@@ -55,7 +57,7 @@ namespace ya
 	void CameraScript::TrackTarget()
 	{
 
-		Vector3 targetPos = mTarget->GetComponent<Transform>()->GetPosition();
+		Vector3 targetPos = mPlayerTarget->GetComponent<Transform>()->GetPosition();
 		mQueDelayedTargetPos.push(targetPos);
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 
@@ -159,11 +161,20 @@ namespace ya
 		direction.Normalize();
 		std::vector<eLayerType> layers = {};
 		layers.push_back(eLayerType::Ground);
-		RayHit hit = CollisionManager::RayCast(mTarget, mDelayedTargetPos, direction, layers);
+		RayHit hit = CollisionManager::RayCast(mPlayerTarget, mDelayedTargetPos, direction, layers);
 		if (hit.isHit)
 		{
 			int a = 0;
 			tr->SetPosition(hit.contact - direction);
+		}
+	}
+	void CameraScript::LockOn()
+	{
+		if (mLockOnTarget)
+		{
+			Vector3 dir = mDelayedTargetPos - mLockOnTarget->GetComponent<Transform>()->GetPosition();
+			dir.Normalize();
+			mChildPos = dir * mDistFromTarget;
 		}
 	}
 }

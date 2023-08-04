@@ -20,15 +20,17 @@ namespace ya
 		
 		void ObstacleDetection();
 
-		void SetTarget(GameObject* target) { mTarget = target; }
+		void SetTarget(GameObject* target) { mPlayerTarget = target; }
 
+		void LockOn();
 
-		void Sangsu() { ; }
+		void SetLockOnTarget(GameObject* target) { mLockOnTarget = target; }
 		  
 
 
 	private:
-		GameObject* mTarget;
+		GameObject* mPlayerTarget;
+		GameObject* mLockOnTarget;
 		std::queue<Vector3> mQueDelayedTargetPos;
 		Vector3 mDelayedTargetPos;
 

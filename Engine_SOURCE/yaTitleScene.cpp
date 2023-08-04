@@ -60,7 +60,7 @@ namespace ya
 		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
 		
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-		mr->SetMaterial(Resources::Find<Material>(L"DeferredMaterial"));
+		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 
 		camScript->SetTarget(player);
@@ -73,7 +73,7 @@ namespace ya
 		spearman->SetName(L"Spearman");
 		spearman->SetPlayerObject(player);
 		MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
-		spearmanmr->SetMaterial(Resources::Find<Material>(L"DeferredMaterial"));
+		spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
 		spearmancol->SetType(eColliderType::Box);
@@ -82,6 +82,7 @@ namespace ya
 		spearmanRigidbody->SetGround(false);
 		spearman->AddComponent<MonsterScript>();
 
+		camScript->SetLockOnTarget(spearman);
 
 		
 
@@ -93,7 +94,7 @@ namespace ya
 			groundTr->SetScale(Vector3(100.0f, 4.0f, 100.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"DeferredMaterial"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
@@ -109,7 +110,7 @@ namespace ya
 			groundTr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"DeferredMaterial"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			Collider2D* groundCollider = grappleGround->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
@@ -153,33 +154,33 @@ namespace ya
 			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		}
 
-		{
-			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
-			directionalLight->SetName(L"PointLight");
+		//{
+		//	GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
+		//	directionalLight->SetName(L"PointLight");
 
-			directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+		//	directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 
-			Light* lightComp = directionalLight->AddComponent<Light>();
-			lightComp->SetType(eLightType::Point);
-			lightComp->SetRadius(20.0f);
-			lightComp->SetDiffuse(Vector4(0.0f, 0.0f, 1.0f, 1.0f));
-			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
-		}
+		//	Light* lightComp = directionalLight->AddComponent<Light>();
+		//	lightComp->SetType(eLightType::Point);
+		//	lightComp->SetRadius(20.0f);
+		//	lightComp->SetDiffuse(Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+		//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+		//}
 
-		{
-			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
-			directionalLight->SetName(L"PointLight");
+		//{
+		//	GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
+		//	directionalLight->SetName(L"PointLight");
 
-			directionalLight->GetComponent<Transform>()->SetPosition(Vector3(-15.0f, 0.0f, 0.0f));
+		//	directionalLight->GetComponent<Transform>()->SetPosition(Vector3(-15.0f, 0.0f, 0.0f));
 
-			Light* lightComp = directionalLight->AddComponent<Light>();
-			lightComp->SetType(eLightType::Point);
-			lightComp->SetRadius(30.0f);
-			lightComp->SetDiffuse(Vector4(0.0f, 1.0f, 0.0f, 1.0f));
-			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
-		}
+		//	Light* lightComp = directionalLight->AddComponent<Light>();
+		//	lightComp->SetType(eLightType::Point);
+		//	lightComp->SetRadius(30.0f);
+		//	lightComp->SetDiffuse(Vector4(0.0f, 1.0f, 0.0f, 1.0f));
+		//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+		//}
 
 	
 		Scene::Initialize();
