@@ -42,47 +42,13 @@ namespace ya
 
 	void PlayerScript::Update()
 	{
-		ActionScript* action = GetOwner()->GetScript<ActionScript>();
-		action->SetSpeed(120.0f); // �Ŀ� �÷��̾� status�� ����
-
-		Transform* tr = GetOwner()->GetComponent<Transform>();
-		float speed = 120.0f; // 후에 플레이어 status로 변경
-
-		if (Input::GetKey(eKeyCode::L))
-		{
-			action->Move(tr->Right());
-		}
-		if (Input::GetKey(eKeyCode::J))
-		{
-			action->Move(-tr->Right());
-		}
-		if (Input::GetKey(eKeyCode::I))
-		{
-			action->Move(tr->Forward());
-		}
-		if (Input::GetKey(eKeyCode::K))
-		{
-			action->Move(-tr->Forward());
-		}
-
-		if (Input::GetKey(eKeyCode::SPACE))
-		{
-			action->Jump();
-		}
-
-		if (Input::GetKey(eKeyCode::O))
-		{
-			action->Rotate(tr->Up());
-		}
-		if (Input::GetKey(eKeyCode::U))
-		{
-			action->Rotate(-tr->Up());
-		}
-
 		if (Input::GetKey(eKeyCode::F))
 		{
 			GrappleHookScript* grap = GetOwner()->GetScript<GrappleHookScript>();
-			grap->GrappleHook();
+			if(grap != nullptr)
+			{
+				grap->GrappleHook();
+			}
 		}
 
 		// 테스트로 만든 공격 입니다 나중에 지울것
@@ -131,18 +97,6 @@ namespace ya
 	}
 
 	void PlayerScript::OnCollisionExit(Collider2D* collider)
-	{
-	}
-
-	void PlayerScript::Start()
-	{
-	}
-
-	void PlayerScript::Action()
-	{
-	}
-
-	void PlayerScript::End()
 	{
 	}
 

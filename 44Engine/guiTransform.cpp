@@ -7,7 +7,7 @@ namespace gui
 		: Component(eComponentType::Transform)
 	{
 		SetName("Transform");
-		SetSize(ImVec2(200.0f, 120.0f));
+		SetSize(ImVec2(200.0f, 200.0f));
 	}
 
 	Transform::~Transform()
@@ -28,6 +28,10 @@ namespace gui
 		mPosisition = tr->GetPosition();
 		mRotation = tr->GetRotation();
 		mScale = tr->GetScale();
+
+		mForward = tr->Forward();
+		mRight = tr->Right();
+		mUp = tr->Up();
 	}
 
 	void Transform::Update()
@@ -43,6 +47,17 @@ namespace gui
 		ImGui::Text("Scale"); ImGui::SameLine();
 		ImGui::InputFloat3("##Scale", (float*)&mScale);
 
+		ImGui::NewLine();
+
+		ImGui::Text("Forward"); ImGui::SameLine();
+		ImGui::InputFloat3("##Forward", (float*)&mForward);
+
+		ImGui::Text("Right"); ImGui::SameLine();
+		ImGui::InputFloat3("##Right", (float*)&mRight);
+
+		ImGui::Text("Up"); ImGui::SameLine();
+		ImGui::InputFloat3("##Up", (float*)&mUp);
+
 		if (GetTarget())
 		{
 			ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
@@ -50,6 +65,10 @@ namespace gui
 			tr->SetPosition(mPosisition);
 			tr->SetRotation(mRotation);
 			tr->SetScale(mScale);
+
+			tr->SetForward(mForward);
+			tr->SetRight(mRight);
+			tr->SetUp(mUp);
 		}
 	}
 
