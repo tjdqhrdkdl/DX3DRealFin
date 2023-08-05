@@ -618,7 +618,7 @@ namespace ya
 					e1 = e2;
 					e2 = w; // swap t1 and t2
 				}
-				if (e1 > 0 || e2 < 0)
+				if (e1 < 0 || e2 > 0)
 					return -1;
 			}
 		}
