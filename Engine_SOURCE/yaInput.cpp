@@ -17,7 +17,7 @@ namespace ya
 		//Special Key
 		VK_RETURN, VK_ESCAPE, VK_LSHIFT, VK_LMENU, VK_LCONTROL,
 		VK_SPACE, VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN,
-		VK_LBUTTON, VK_RBUTTON,
+		VK_LBUTTON, VK_RBUTTON, VK_MBUTTON,
 
 		//Num Pad
 		VK_NUMPAD0, VK_NUMPAD1, VK_NUMPAD2,
@@ -51,10 +51,10 @@ namespace ya
 			//KEY
 			for (UINT i = 0; i < (UINT)eKeyCode::END; ++i)
 			{
-				// ÇØ´çÅ°°¡ ÇöÀç ´­·ÁÀÖ´Ù.
+				// í•´ë‹¹í‚¤ê°€ í˜„ìž¬ ëˆŒë ¤ìžˆë‹¤.
 				if (GetAsyncKeyState(ASCII[i]) & 0x8000)
 				{
-					// ÀÌÀü ÇÁ·¹ÀÓ¿¡µµ ´­·Á ÀÖ¾ú´Ù.
+					// ì´ì „ í”„ë ˆìž„ì—ë„ ëˆŒë ¤ ìžˆì—ˆë‹¤.
 					if (mKeys[i].bPressed)
 						mKeys[i].eState = eKeyState::PRESSED;
 					else
@@ -62,12 +62,12 @@ namespace ya
 
 					mKeys[i].bPressed = true;
 				}
-				else // ÇØ´çÅ°°¡ ÇöÀç ¾È´­·ÁÀÖ´Ù.
+				else // í•´ë‹¹í‚¤ê°€ í˜„ìž¬ ì•ˆëˆŒë ¤ìžˆë‹¤.
 				{
-					// ÀÌÀü ÇÁ·¹ÀÓ¿¡´Â ´­·Á ÀÖ¾ú´Ù.
+					// ì´ì „ í”„ë ˆìž„ì—ëŠ” ëˆŒë ¤ ìžˆì—ˆë‹¤.
 					if (mKeys[i].bPressed)
 						mKeys[i].eState = eKeyState::UP;
-					else // ÀÌÀü ÇÁ·¹ÀÓ¿¡µµ ¾È´­·Á ÀÖ¾ú´Ù.
+					else // ì´ì „ í”„ë ˆìž„ì—ë„ ì•ˆëˆŒë ¤ ìžˆì—ˆë‹¤.
 						mKeys[i].eState = eKeyState::NONE;
 
 					mKeys[i].bPressed = false;
