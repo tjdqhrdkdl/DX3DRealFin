@@ -75,85 +75,81 @@ namespace ya
 	}
 	void CameraScript::MouseMove()
 	{
-		if (Input::GetKeyDown(eKeyCode::ESC))
+
+		//최초의 마우스 위치에 카메라가 영향받지 않도록.
+		if (!mbFirstInit)
 		{
-			mbMouseMove = !mbMouseMove;
+			SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
+			mbFirstInit = true;
 		}
-		if (mbMouseMove)
+
+
+		// 마우스의 이동 거리(픽셀) 측정 - 반영 - 마우스 위치 고정 
+		else
 		{
-			//최초의 마우스 위치에 카메라가 영향받지 않도록.
-			if (!mbFirstInit)
+			Vector2 mousePos = Input::GetMousePosition();
+			POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
+			ScreenToClient(application.GetHwnd(), &center);
+
+			Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
+			Transform* tr = GetOwner()->GetComponent<Transform>();
+
+			//디버깅시에 문제생기는 부분 막음.
+			if (Time::DeltaTime() < 0.1f)
 			{
-				SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
-				mbFirstInit = true;
+				//두번 계산해줄 것이다.
+				//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
+				//카메라 오브젝트의 회전을 바꿔준다.
+
+				//구 이동
+				mChildPos += 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+				mChildPos.Normalize();
+				mChildPos *= mDistFromTarget;
+
+
+				mChildPos += 60 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+				mChildPos.Normalize();
+				mChildPos *= mDistFromTarget;
+
+				//y축 이동 한계 지정
+				if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2)
+					mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2;
+				if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
+					mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
+
+
+				//회전
+				Vector3 pos = tr->GetPosition();
+				Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
+
+				Vector3 targetPos = mDelayedTargetPos;
+				Vector3 newForward = targetPos - pos;
+				newForward.Normalize();
+
+				Vector3 forward = newForward;
+
+				Vector3 right = UpVector.Cross(forward);
+				right.Normalize();
+
+				Vector3 up = forward.Cross(right);
+				up.Normalize();
+
+				tr->IsCamera(true);
+				tr->SetForward(forward);
+				tr->SetUp(up);
+				tr->SetRight(right);
+
+
+
+
 			}
 
 
-			// 마우스의 이동 거리(픽셀) 측정 - 반영 - 마우스 위치 고정 
-			else
-			{
-				Vector2 mousePos = Input::GetMousePosition();
-				POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
-				ScreenToClient(application.GetHwnd(), &center);
-
-				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
-				Transform* tr = GetOwner()->GetComponent<Transform>();
-
-				//디버깅시에 문제생기는 부분 막음.
-				if (Time::DeltaTime() < 0.1f)
-				{
-					//두번 계산해줄 것이다.
-					//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
-					//카메라 오브젝트의 회전을 바꿔준다.
-
-					//구 이동
-					mChildPos += 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
-					mChildPos.Normalize();
-					mChildPos *= mDistFromTarget;
-
-
-					mChildPos += 60 * tr->Up() * mouseMovement.y * Time::DeltaTime();
-					mChildPos.Normalize();
-					mChildPos *= mDistFromTarget;
-
-					//y축 이동 한계 지정
-					if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2)
-						mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2;
-					if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
-						mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
-
-
-					//회전
-					Vector3 pos = tr->GetPosition();
-					Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
-
-					Vector3 targetPos = mDelayedTargetPos;
-					Vector3 newForward = targetPos - pos;
-					newForward.Normalize();
-
-					Vector3 forward = newForward;
-
-					Vector3 right = UpVector.Cross(forward);
-					right.Normalize();
-
-					Vector3 up = forward.Cross(right);
-					up.Normalize();
-
-					tr->IsCamera(true);
-					tr->SetForward(forward);
-					tr->SetUp(up);
-					tr->SetRight(right);
-
-
-
-
-				}
-
-
-				SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
-			}
+			SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
 		}
+
 	}
+
 	void CameraScript::ObstacleDetection()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
@@ -168,14 +164,30 @@ namespace ya
 			tr->SetPosition(hit.contact - direction);
 		}
 	}
+
 	void CameraScript::LockOn()
 	{
+		if (Input::GetKeyDown(eKeyCode::ESC))
+			if (mLockOnTarget)
+				mTestTarget = mLockOnTarget, mLockOnTarget = nullptr;
+			else
+				mLockOnTarget = mTestTarget;
 		if (mLockOnTarget)
 		{
 			Vector3 dir = mDelayedTargetPos - mLockOnTarget->GetComponent<Transform>()->GetPosition();
 			dir.Normalize();
-			mChildPos = dir * mDistFromTarget;
-			mChildPos.y = mDistFromTarget * 0.3;
+			dir.y += 0.3;
+			dir.Normalize();
+			Vector3 dest = dir * mDistFromTarget;
+			Vector3 gap = dest - mChildPos;
+			Vector3 gapNormal = dest - mChildPos;
+			gapNormal.Normalize();
+			Vector3 move = 200 * gapNormal * Time::DeltaTime();
+			if (gap.Length() < move.Length())
+				return;
+			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
+			mChildPos.Normalize();
+			mChildPos *= mDistFromTarget;
 		}
 	}
 }
