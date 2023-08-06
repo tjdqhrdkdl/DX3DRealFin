@@ -12,6 +12,8 @@ namespace ya
 {
 	Player::Player()
 		: mCamera(nullptr)
+		, mState(ePlayerState::None)
+		, mProsthetic(eProsthetics::None)
 	{
 		SetName(L"Player");
 
