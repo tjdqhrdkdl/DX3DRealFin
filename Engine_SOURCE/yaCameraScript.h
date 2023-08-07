@@ -30,10 +30,8 @@ namespace ya
 
 	private:
 		GameObject* mPlayerTarget;
-		GameObject* mLockOnTarget;
-
-		GameObject* mTestTarget;
-
+		
+		
 		std::queue<Vector3> mQueDelayedTargetPos;
 		Vector3 mDelayedTargetPos;
 
@@ -47,5 +45,13 @@ namespace ya
 
 		bool mbFirstInit;
 		bool mbMouseMove;
+
+
+		//개발 도중에 사용하는 임시 변수
+		GameObject* mLockOnTarget;
+		GameObject* mTestTarget;
+
+
+
 	};
 }

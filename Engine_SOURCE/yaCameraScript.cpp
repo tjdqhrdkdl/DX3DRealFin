@@ -40,7 +40,7 @@ namespace ya
 		Vector3 pos = tr->GetPosition();
 
 
-		tr->SetPosition(pos);
+		
 		if (mPlayerTarget != nullptr)
 		{
 			TrackTarget();
@@ -66,10 +66,21 @@ namespace ya
 			mDelayTimeChecker += Time::DeltaTime();
 		else
 		{
+			//카메라 이동 로직
+			//카메라가 바라보는 타겟이 카메라의 right 방향으로 움직이면 카메라는 움직이지 않아야 한다.
 			Vector3 delayedPos = mQueDelayedTargetPos.front();
 			mQueDelayedTargetPos.pop();
+			//if (delayedPos != mDelayedTargetPos)
+			//	int a = 0;
+
+			//Vector3 change = delayedPos - mDelayedTargetPos;
+			//
+			//
+			//Vector3 scala = change.x * tr->Right() + change.y * tr->Up() + change.z * tr->Forward();
+			//delayedPos -= scala.x * tr->Right();
 			mDelayedTargetPos = delayedPos;
-			tr->SetPosition(delayedPos + mChildPos);
+
+			tr->SetPosition(mDelayedTargetPos + mChildPos);
 		}
 
 	}
