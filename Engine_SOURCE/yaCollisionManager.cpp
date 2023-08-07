@@ -376,9 +376,46 @@ namespace ya
 			hit.isHit = true;
 			hit.hitObj = colObj;
 			hit.contact = distMin * ray.direction + ray.position;
+			hit.length = distMin;
+
 		}
 		return hit;
 	}
+
+	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 position, Vector3 direction, float length, std::vector<eLayerType> layers)
+	{
+		Scene* scene = SceneManager::GetActiveScene();
+		ya::Ray ray = ya::Ray(position, direction);
+
+		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
+
+		float distMin = 10000000;
+		GameObject* colObj = nullptr;
+
+		eLayerType colType = owner->GetLayerType();
+		for (eLayerType layer : layers)
+		{
+			DistAndObj ret = LayerRayCollision(scene, layer, ray, owner);
+			if (ret.obj != nullptr && ret.dist < distMin)
+			{
+				distMin = ret.dist;
+				colObj = ret.obj;
+			}
+		}
+
+
+		if (colObj != nullptr && length > distMin)
+		{
+			hit.isHit = true;
+			hit.hitObj = colObj;
+			hit.contact = distMin * ray.direction + ray.position;
+			hit.length = distMin;
+		}
+		return hit;
+
+	}
+
+
 
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 position, Vector3 direction, std::vector<eLayerType> layers)
 	{
@@ -407,6 +444,7 @@ namespace ya
 			hit.isHit = true;
 			hit.hitObj = colObj;
 			hit.contact = distMin * ray.direction + ray.position;
+			hit.length = distMin;
 		}
 		return hit;
 	}
