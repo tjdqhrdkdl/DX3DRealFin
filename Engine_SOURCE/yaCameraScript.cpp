@@ -181,9 +181,9 @@ namespace ya
 	{
 		if (Input::GetKeyDown(eKeyCode::MBTN))
 			if (mLockOnTarget)
-				mTestTarget = mLockOnTarget, mLockOnTarget = nullptr;
+				mTestTarget = mLockOnTarget, mLockOnTarget = nullptr, mbLockOn = false;
 			else
-				mLockOnTarget = mTestTarget;
+				mLockOnTarget = mTestTarget, mbLockOn = true;
 		if (mLockOnTarget)
 		{
 			Vector3 dir = mDelayedTargetPos - mLockOnTarget->GetComponent<Transform>()->GetPosition();
