@@ -20,15 +20,18 @@ namespace ya
 		
 		void ObstacleDetection();
 
-		void SetTarget(GameObject* target) { mTarget = target; }
+		void SetTarget(GameObject* target) { mPlayerTarget = target; }
 
+		void LockOn();
 
-		void Sangsu() { ; }
+		void SetLockOnTarget(GameObject* target) { mLockOnTarget = target; }
 		  
 
 
 	private:
-		GameObject* mTarget;
+		GameObject* mPlayerTarget;
+		
+		
 		std::queue<Vector3> mQueDelayedTargetPos;
 		Vector3 mDelayedTargetPos;
 
@@ -42,5 +45,13 @@ namespace ya
 
 		bool mbFirstInit;
 		bool mbMouseMove;
+
+
+		//개발 도중에 사용하는 임시 변수
+		GameObject* mLockOnTarget;
+		GameObject* mTestTarget;
+
+
+
 	};
 }

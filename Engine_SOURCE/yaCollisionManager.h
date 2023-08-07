@@ -49,6 +49,7 @@ namespace ya
 		static void ColliderCollision(Collider2D* left, Collider2D* right);
 		static bool Intersect(Collider2D* left, Collider2D* right);
 
+		static RayHit RayCast(GameObject* owner,  Vector3 direction, std::vector<eLayerType> layers);
 		static RayHit RayCast(GameObject* owner,Vector3 position, Vector3 direction, std::vector<eLayerType> layers);
 		
 	private:

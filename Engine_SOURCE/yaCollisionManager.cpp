@@ -348,6 +348,38 @@ namespace ya
 			return false;
 	}
 
+	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers)
+	{
+		Scene* scene = SceneManager::GetActiveScene();
+		Vector3 position = owner->GetComponent<Transform>()->GetPosition();
+		ya::Ray ray = ya::Ray(position, direction);
+
+		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
+
+		float distMin = 10000000;
+		GameObject* colObj = nullptr;
+
+		eLayerType colType = owner->GetLayerType();
+		for (eLayerType layer : layers)
+		{
+			DistAndObj ret = LayerRayCollision(scene, layer, ray, owner);
+			if (ret.obj != nullptr && ret.dist < distMin)
+			{
+				distMin = ret.dist;
+				colObj = ret.obj;
+			}
+		}
+
+
+		if (colObj != nullptr)
+		{
+			hit.isHit = true;
+			hit.hitObj = colObj;
+			hit.contact = distMin * ray.direction + ray.position;
+		}
+		return hit;
+	}
+
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 position, Vector3 direction, std::vector<eLayerType> layers)
 	{
 		Scene* scene = SceneManager::GetActiveScene();
@@ -370,10 +402,6 @@ namespace ya
 		}
 
 
-
-
-
-
 		if (colObj != nullptr)
 		{
 			hit.isHit = true;
@@ -382,14 +410,7 @@ namespace ya
 		}
 		return hit;
 	}
-	//bool TestRayOBBIntersection(
-	//	Vector3 ray_origin,        // Ray origin, in world space
-	//	Vector3 ray_direction,     // Ray direction (NOT target position!), in world space. Must be normalize()'d.
-	//	Vector3 aabb_min,          // Minimum X,Y,Z coords of the mesh when not transformed at all.
-	//	Vector3 aabb_max,          // Maximum X,Y,Z coords. Often aabb_min*-1 if your mesh is centered, but it's not always the case.
-	//	glm::mat4 ModelMatrix,       // Transformation applied to the mesh (which will thus be also applied to its bounding box)
-	//	float& intersection_distance // Output : distance between ray_origin and the intersection with the OBB
-	//) {
+
 	DistAndObj CollisionManager::LayerRayCollision(Scene* scene, eLayerType objType, ya::Ray ray, GameObject* owner)
 	{
 		std::vector<GameObject*> objects = scene->GetGameObjects(objType);
@@ -597,7 +618,7 @@ namespace ya
 					e1 = e2;
 					e2 = w; // swap t1 and t2
 				}
-				if (e1 > 0 || e2 < 0)
+				if (e1 < 0 || e2 > 0)
 					return -1;
 			}
 		}

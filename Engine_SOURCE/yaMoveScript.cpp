@@ -73,7 +73,7 @@ namespace ya
 			else
 			{	// 진행하려는 방향과 player의 forward가 비슷해질 때 까지 회전한다. theta 각에 따라 회전 방향을 결정한다.
 				if (theta.y > 0.0f)
-					action->Rotate(Vector3(0.0f, 1.0f, 0.0f));
+					action->Rotate(Vector3(0.0f, 1.0f , 0.0f));
 				else
 					action->Rotate(Vector3(0.0f, -1.0f, 0.0f));
 			}
