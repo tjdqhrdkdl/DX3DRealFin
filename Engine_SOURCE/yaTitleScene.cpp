@@ -106,8 +106,8 @@ namespace ya
 				GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::LogBridge);
 				logbridge->SetName(L"LogBridge");
 				Transform* logbridgeTr = logbridge->GetComponent<Transform>();
-				logbridgeTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
-				logbridgeTr->SetScale(Vector3(2.0f, 2.0f, 50.0f));
+				logbridgeTr->SetPosition(Vector3(0.0f, -6.0f, 10.0f));
+				logbridgeTr->SetScale(Vector3(10.0f, 2.0f, 50.0f));
 				logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 				MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
 				logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
