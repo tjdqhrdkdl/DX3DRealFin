@@ -1,19 +1,25 @@
 #include "yaMoveScript.h"
 
 #include "yaInput.h"
+#include "yaTime.h"
 
 #include "yaPlayer.h"
 #include "yaTransform.h"
 #include "yaActionScript.h"
 
+
 namespace ya
 {
-	const float frontTheta = 2.0f; // 정면이라고 인식되는 최소 각도 차이
+	const float frontTheta = 4.0f; // 정면이라고 인식되는 최소 각도 차이
+	const float dashTimerMax = 0.2f;
 
 	MoveScript::MoveScript()
 		: Script()
 		, mbRotate(false)
 		, mLastDir(eDirection::Forward)
+		, mbDash(false)
+		, mDashSpeed(300.0f)
+		, mDashTimer(0.0f)
 	{
 	}
 
@@ -83,7 +89,10 @@ namespace ya
 			}
 			else							
 			{	// 진행하려는 방향과 각도 차이가 없으면 player의 forward 방향으로 이동시킨다.
-				action->Move(tr->Forward());
+				if(mbDash)
+					action->Move(tr->Forward(), mDashSpeed);
+				else
+					action->Move(tr->Forward());
 			}
 		}
 		if (Input::GetKey(eKeyCode::S))
@@ -96,7 +105,10 @@ namespace ya
 			}
 			else
 			{
-				action->Move(tr->Forward());
+				if (mbDash)
+					action->Move(tr->Forward(), mDashSpeed);
+				else
+					action->Move(tr->Forward());
 			}
 		}
 
@@ -110,7 +122,10 @@ namespace ya
 			}
 			else
 			{
-				action->Move(tr->Forward());
+				if (mbDash)
+					action->Move(tr->Forward(), mDashSpeed);
+				else
+					action->Move(tr->Forward());
 			}
 		}
 		if (Input::GetKey(eKeyCode::A))
@@ -123,13 +138,40 @@ namespace ya
 			}
 			else
 			{
-				action->Move(tr->Forward());
+				if (mbDash)
+					action->Move(tr->Forward(), mDashSpeed);
+				else
+					action->Move(tr->Forward());
 			}
 		}
 
 		if (Input::GetKey(eKeyCode::SPACE))
 		{
 			action->Jump();
+		}
+
+		if (Input::GetKey(eKeyCode::LSHIFT))
+		{
+			if (mDashTimer <= 0.0f)
+			{
+				mDashTimer = dashTimerMax;
+			}
+		}
+
+		if (Input::GetKeyDown(eKeyCode::LSHIFT))
+		{
+			mbDash = true;
+
+		}
+		if (Input::GetKeyUp(eKeyCode::LSHIFT))
+		{
+			mbDash = false;
+		}
+
+		if (mDashTimer > 0.0f)
+		{
+			action->Move(tr->Forward(), mDashSpeed);
+			mDashTimer -= Time::DeltaTime();
 		}
 	}
 

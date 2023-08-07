@@ -28,5 +28,9 @@ namespace ya
 	private:
 		bool mbRotate;			// 진행하려는 방향과 플레이어의 forward를 맞춰주기 위해 회전 중인지 여부
 		eDirection mLastDir;	// 마지막에 입력받은 방향
+
+		bool mbDash;
+		float mDashSpeed;
+		float mDashTimer;
 	};
 }
