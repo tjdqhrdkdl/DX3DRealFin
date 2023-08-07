@@ -15,7 +15,7 @@ namespace ya
 		: Script()
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
-		, mSpeed(120.0f)
+		, mSpeed(100.0f)
 		, mDirection(Vector3::Zero)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
@@ -72,13 +72,9 @@ namespace ya
 		}
 
 		if (speed > 0.0f)
-		{
-			mJumpForce = speed;
-		}
+			mRigidbody->AddForce(speed * dir);
 		else
-		{
 			mRigidbody->AddForce(mSpeed * dir);
-		}
 		
 	}
 
