@@ -24,7 +24,6 @@
 #include "yaGroundScript.h"
 #include "yaSpearman.h"
 #include "yaActionScript.h"
-#include "yaMoveScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaLogBridgeScript.h"

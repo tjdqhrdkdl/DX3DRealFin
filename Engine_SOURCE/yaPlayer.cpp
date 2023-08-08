@@ -1,11 +1,9 @@
 #include "yaPlayer.h"
 
 #include "yaPlayerScript.h"
-#include "yaActionScript.h"
-#include "yaMoveScript.h"
+#include "yaPlayerActionScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
-
 #include "yaRigidbody.h"
 
 namespace ya
@@ -25,8 +23,7 @@ namespace ya
 		playerRigidbody->SetGround(false);
 
 		AddComponent<PlayerScript>();
-		AddComponent<ActionScript>();
-		AddComponent<MoveScript>();
+		AddComponent<PlayerActionScript>();
 		AddComponent<GrappleHookScript>();
 	}
 
@@ -52,6 +49,19 @@ namespace ya
 	void Player::Render()
 	{
 		GameObject::Render();
+	}
+
+	/// <summary>
+	/// 플레이어 state의 bit flag on/off를 설정한다.
+	/// </summary>
+	/// <param name="state">on/off할 state</param>
+	/// <param name="on">on/off 여부 bool</param>
+	void Player::SetStateFlag(ePlayerState state, bool on)
+	{
+		if(on)
+			mStateFlag |= ((UINT)state);
+		else
+			mStateFlag &= ~((UINT)state);
 	}
 
 }

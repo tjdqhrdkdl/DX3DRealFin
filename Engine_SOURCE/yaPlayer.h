@@ -26,6 +26,8 @@ namespace ya
 		void SetProsthetic(eProsthetics prosthetic) { mProsthetic = prosthetic; }
 		eProsthetics GetProsthetic() { return mProsthetic; }
 
+		void SetStateFlag(ePlayerState state, bool on = true);
+		UINT GetStateFlag() { return mStateFlag; }
 
 		bool IsAttack() { return mbTESTAttack; }
 		void SetAttack(bool attack) { mbTESTAttack = attack; }
@@ -36,6 +38,7 @@ namespace ya
 		GameObject* mCamera;
 
 		State state;
+		UINT mStateFlag;
 		ePlayerState mState;
 		eProsthetics mProsthetic;
 

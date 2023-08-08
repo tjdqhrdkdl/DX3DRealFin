@@ -1,9 +1,12 @@
 #include "yaActionScript.h"
 
 #include "yaTime.h"
+#include "yaInput.h"
 
 #include "yaRigidbody.h"
 #include "yaTransform.h"
+
+#include "yaPlayer.h"
 
 #include <assert.h>
 
@@ -13,13 +16,13 @@ namespace ya
 
 	ActionScript::ActionScript()
 		: Script()
+		, mTarget(nullptr)
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
 		, mSpeed(100.0f)
 		, mDirection(Vector3::Zero)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
-		, mTarget(nullptr)
 	{
 	}
 	ActionScript::~ActionScript()
@@ -37,11 +40,6 @@ namespace ya
 	void ActionScript::Update()
 	{
 		assert(GetOwner() != nullptr);
-
-		if (mTransform == nullptr || mRigidbody == nullptr)
-		{
-			return;
-		}
 
 		if (mJumpTimer > 0.0f)
 		{
@@ -154,5 +152,8 @@ namespace ya
 	/// </summary>
 	void ActionScript::Parrying()
 	{
+		// 체간 증가
+
+		// 패링 이펙트 발생
 	}
 }
