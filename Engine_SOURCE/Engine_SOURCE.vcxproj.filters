@@ -166,9 +166,6 @@
     <ClCompile Include="yaState.cpp">
       <Filter>Contents\State</Filter>
     </ClCompile>
-    <ClCompile Include="yaMoveScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
     <ClCompile Include="yaMultiRenderTarget.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
@@ -189,6 +186,9 @@
     </ClCompile>
     <ClCompile Include="yaWallScript.cpp">
       <Filter>Contents\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerActionScript.cpp">
+      <Filter>Contents\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,9 +370,6 @@
     <ClInclude Include="yaState.h">
       <Filter>Contents\State</Filter>
     </ClInclude>
-    <ClInclude Include="yaMoveScript.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
     <ClInclude Include="yaMultiRenderTarget.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
@@ -393,6 +390,9 @@
     </ClInclude>
     <ClInclude Include="yaWallScript.h">
       <Filter>Contents\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerActionScript.h">
+      <Filter>Contents\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
