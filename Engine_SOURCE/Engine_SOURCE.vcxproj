@@ -189,6 +189,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaEngine.h" />
     <ClInclude Include="yaEntity.h" />
     <ClInclude Include="yaEnums.h" />
+    <ClInclude Include="yaFbxLoader.h" />
     <ClInclude Include="yaFmod.h" />
     <ClInclude Include="yaFontWrapper.h" />
     <ClInclude Include="yaGameObject.h" />
@@ -204,6 +205,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaMaterial.h" />
     <ClInclude Include="yaMath.h" />
     <ClInclude Include="yaMesh.h" />
+    <ClInclude Include="yaMeshData.h" />
     <ClInclude Include="yaMeshRenderer.h" />
     <ClInclude Include="yaMonster.h" />
     <ClInclude Include="yaMonsterScript.h" />
@@ -257,6 +259,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaConstantBuffer.cpp" />
     <ClCompile Include="yaEntity.cpp" />
     <ClCompile Include="yaEnums.cpp" />
+    <ClCompile Include="yaFbxLoader.cpp" />
     <ClCompile Include="yaFmod.cpp" />
     <ClCompile Include="yaFontWrapper.cpp" />
     <ClCompile Include="yaGameObject.cpp" />
@@ -271,6 +274,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaMaterial.cpp" />
     <ClCompile Include="yaMath.cpp" />
     <ClCompile Include="yaMesh.cpp" />
+    <ClCompile Include="yaMeshData.cpp" />
     <ClCompile Include="yaMeshRenderer.cpp" />
     <ClCompile Include="yaMonster.cpp" />
     <ClCompile Include="yaMonsterScript.cpp" />

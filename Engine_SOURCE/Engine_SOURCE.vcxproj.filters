@@ -190,6 +190,8 @@
     <ClCompile Include="yaWallScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="yaFbxLoader.cpp" />
+    <ClCompile Include="yaMeshData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaSekiroEnums.h" />
@@ -394,6 +396,8 @@
     <ClInclude Include="yaWallScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="yaFbxLoader.h" />
+    <ClInclude Include="yaMeshData.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
