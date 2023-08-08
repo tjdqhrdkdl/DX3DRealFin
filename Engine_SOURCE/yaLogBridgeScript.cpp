@@ -57,11 +57,11 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 	Vector3 xPos = colTransform->Right() * scale / 2.f;
 	Vector3 zPos = colTransform->Forward() * scale / 2.f;
 
-
-	Vector3 front = pos + zPos;
-	Vector3 right = pos + xPos;
-	Vector3 back = pos - zPos;
-	Vector3 left = pos - xPos;
+	// 방향좀 이상함
+	Vector3 front = pos - zPos;
+	Vector3 right = pos - xPos;
+	Vector3 back = pos + zPos;
+	Vector3 left = pos + xPos;
 
 	RayHit multiHit[4] = {};
 
@@ -74,15 +74,19 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 	{
 		if (!multiHit[i].isHit)
 		{
-			Vector3 frontDirection = Vector3(0.f, -0.5f, 1.f);
+			//Vector3 frontDirection = Vector3(0.f, -0.5f, 1.f);
+			//frontDirection.Normalize();
+
+			Vector3 frontDirection = colTransform->Forward();
+			frontDirection += Vector3(0.f, -0.5f, 0.f);
 			frontDirection.Normalize();
 
 			RayHit distCheck = CollisionManager::RayCast(colObj, pos, frontDirection, layers);
 
-			float distance = distCheck.contact.Length() - pos.Length();
+			float distance = distCheck.length;//distCheck.contact.Length() - pos.Length();
 			distance = abs(distance);
 
-			if (distCheck.isHit)
+			if (distance <= scale.z / 2.f)
 			{
 				Vector3 velocity = colRigidbody->GetVelocity();
 				Vector3 pos = colTransform->GetPosition();
