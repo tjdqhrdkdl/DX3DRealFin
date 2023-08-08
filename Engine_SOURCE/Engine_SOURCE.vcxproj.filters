@@ -190,6 +190,9 @@
     <ClCompile Include="yaWallScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="yaLogBridgeScript.cpp">
+      <Filter>Contents\Ground</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaSekiroEnums.h" />
@@ -392,6 +395,9 @@
       <Filter>Contents\Scene</Filter>
     </ClInclude>
     <ClInclude Include="yaWallScript.h">
+      <Filter>Contents\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
   </ItemGroup>
