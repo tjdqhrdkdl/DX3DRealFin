@@ -198,6 +198,23 @@ namespace ya
 		tr->SetRotation(Vec3(0.0f, rot.y + monDirection.y, 0.0f));
 	}
 
+	bool MonsterBase::WalkToPlayer(float range)
+	{
+		Transform* tr = GetComponent<Transform>();
+		Rigidbody* rigi = GetComponent<Rigidbody>();
+
+		if (NavigationPlayer(range))
+		{
+			return true;
+		}
+		else
+		{
+			TurnToPlayer();
+			rigi->AddForce(tr->Forward() * 70.f);
+			return false;
+		}
+	}
+
 	void MonsterBase::MonsterRotation(Vector3 target_point)
 	{
 		Transform* tr = GetComponent<Transform>();
@@ -274,10 +291,13 @@ namespace ya
 
 	}
 
-	int MonsterBase::RnadomNumber(int ieast, int Max)
+	int MonsterBase::RandomNumber(int ieast, int Max)
 	{
-		int result = (rand() % Max - ieast + 1) + ieast;
-
+		int result = 0;
+		result = (rand() % Max - ieast + 1) + ieast;
+		if (result == 0)
+			result = RandomNumber(ieast, Max);
+		
 		return result;
 	}
 

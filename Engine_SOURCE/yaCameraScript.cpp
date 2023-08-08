@@ -4,6 +4,7 @@
 #include "yaInput.h"
 #include "yaTime.h"
 #include "yaCollisionManager.h"
+#include "yaApplication.h"
 
 extern ya::Application application;
 
