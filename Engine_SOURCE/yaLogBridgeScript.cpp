@@ -74,13 +74,13 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 	{
 		if (!multiHit[i].isHit)
 		{
-			Vector3 frontDirection = Vector3(0.f, -1.f, 1.f);
+			Vector3 frontDirection = Vector3(0.f, -0.5f, 1.f);
 			frontDirection.Normalize();
+
 			RayHit distCheck = CollisionManager::RayCast(colObj, pos, frontDirection, layers);
 
 			float distance = distCheck.contact.Length() - pos.Length();
 			distance = abs(distance);
-			
 
 			if (distCheck.isHit)
 			{
