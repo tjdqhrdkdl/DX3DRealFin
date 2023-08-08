@@ -23,11 +23,12 @@
 #include "yaGroundScript.h"
 #include "yaSpearman.h"
 #include "yaActionScript.h"
-#include "yaMoveScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
+#include "yaLogBridgeScript.h"
 
 #include "yaSpearman.h"
+#include "yaMusketeerman.h"
 #include "yaMonsterScript.h"
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
@@ -67,23 +68,42 @@ namespace ya
 		player->SetCamera(cameraObj);
 
 
-		Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
-		spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-		spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		spearman->SetName(L"Spearman");
-		spearman->SetPlayerObject(player);
-		MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
-		spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-		Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
-		spearmancol->SetType(eColliderType::Box);
-		spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
-		Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
-		spearmanRigidbody->SetGround(false);
-		spearman->AddComponent<MonsterScript>();
+		//{
+		//	Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
+		//	spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+		//	spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		//	spearman->SetName(L"Spearman");
+		//	spearman->SetPlayerObject(player);
+		//	MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
+		//	spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+		//	spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		//	Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
+		//	spearmancol->SetType(eColliderType::Box);
+		//	spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+		//	Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
+		//	spearmanRigidbody->SetGround(false);
+		//	spearman->AddComponent<MonsterScript>();
 
-		camScript->SetLockOnTarget(spearman);
-		FbxLoader::Initialize();
+		//	camScript->SetLockOnTarget(spearman);
+		//}
+
+
+		{
+			Musketeerman* musketeerman = object::Instantiate<Musketeerman>(eLayerType::Monster);
+			musketeerman->GetComponent<Transform>()->SetPosition(Vector3(-5.0f, 0.0f, 15.0f));
+			musketeerman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+			musketeerman->SetName(L"Musketeerman");
+			musketeerman->SetPlayerObject(player);
+			MeshRenderer* musketeermanmr = musketeerman->AddComponent<MeshRenderer>();
+			musketeermanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+			musketeermanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			Collider2D* musketeermancol = musketeerman->AddComponent <Collider2D>();
+			musketeermancol->SetType(eColliderType::Box);
+			musketeermancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+			Rigidbody* spearmanRigidbody = musketeerman->AddComponent<Rigidbody>();
+			spearmanRigidbody->SetGround(false);
+
+		}
 		
 
 		{
@@ -133,11 +153,30 @@ namespace ya
 			}
 		}
 
+		{
+				GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
+				logbridge->SetName(L"LogBridge");
+				Transform* logbridgeTr = logbridge->GetComponent<Transform>();
+				logbridgeTr->SetPosition(Vector3(0.0f, -6.0f, 10.0f));
+				logbridgeTr->SetScale(Vector3(10.0f, 2.0f, 50.0f));
+				logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+				MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
+				logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+				logbridgeRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+				Collider2D* logbridgeCollider = logbridge->AddComponent<Collider2D>();
+				logbridgeCollider->SetType(eColliderType::Box);
+				logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+				logbridge->AddComponent<LogBridgeScript>();
+		}
+
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
+
 
 
 		{

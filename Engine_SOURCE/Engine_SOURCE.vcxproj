@@ -52,6 +52,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -206,6 +207,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaInput.h" />
     <ClInclude Include="yaLayer.h" />
     <ClInclude Include="yaLight.h" />
+    <ClInclude Include="yaLogBridgeScript.h" />
     <ClInclude Include="yaMaterial.h" />
     <ClInclude Include="yaMath.h" />
     <ClInclude Include="yaMesh.h" />
@@ -213,13 +215,16 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaMeshRenderer.h" />
     <ClInclude Include="yaMonster.h" />
     <ClInclude Include="yaMonsterScript.h" />
-    <ClInclude Include="yaMoveScript.h" />
     <ClInclude Include="yaMultiRenderTarget.h" />
+    <ClInclude Include="yaMusketeerman.h" />
+    <ClInclude Include="yaMusketeerman_Almost.h" />
+    <ClInclude Include="yaMusketeerman_Shooting.h" />
     <ClInclude Include="yaObject.h" />
     <ClInclude Include="yaPaintShader.h" />
     <ClInclude Include="yaParticleShader.h" />
     <ClInclude Include="yaParticleSystem.h" />
     <ClInclude Include="yaPlayer.h" />
+    <ClInclude Include="yaPlayerActionScript.h" />
     <ClInclude Include="yaPlayerScript.h" />
     <ClInclude Include="yaPlayScene.h" />
     <ClInclude Include="yaPrefab.h" />
@@ -232,6 +237,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaScript.h" />
     <ClInclude Include="yaSekiroEnums.h" />
     <ClInclude Include="yaShader.h" />
+    <ClInclude Include="yaSpearman_Sting.h" />
     <ClInclude Include="yaState.h" />
     <ClInclude Include="yaSpearman.h" />
     <ClInclude Include="yaSpriteRenderer.h" />
@@ -275,6 +281,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaInput.cpp" />
     <ClCompile Include="yaLayer.cpp" />
     <ClCompile Include="yaLight.cpp" />
+    <ClCompile Include="yaLogBridgeScript.cpp" />
     <ClCompile Include="yaMaterial.cpp" />
     <ClCompile Include="yaMath.cpp" />
     <ClCompile Include="yaMesh.cpp" />
@@ -282,12 +289,15 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaMeshRenderer.cpp" />
     <ClCompile Include="yaMonster.cpp" />
     <ClCompile Include="yaMonsterScript.cpp" />
-    <ClCompile Include="yaMoveScript.cpp" />
     <ClCompile Include="yaMultiRenderTarget.cpp" />
+    <ClCompile Include="yaMusketeerman.cpp" />
+    <ClCompile Include="yaMusketeerman_Almost.cpp" />
+    <ClCompile Include="yaMusketeerman_Shooting.cpp" />
     <ClCompile Include="yaPaintShader.cpp" />
     <ClCompile Include="yaParticleShader.cpp" />
     <ClCompile Include="yaParticleSystem.cpp" />
     <ClCompile Include="yaPlayer.cpp" />
+    <ClCompile Include="yaPlayerActionScript.cpp" />
     <ClCompile Include="yaPlayerScript.cpp" />
     <ClCompile Include="yaPlayScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />
@@ -299,6 +309,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaSceneManager.cpp" />
     <ClCompile Include="yaScript.cpp" />
     <ClCompile Include="yaShader.cpp" />
+    <ClCompile Include="yaSpearman_Sting.cpp" />
     <ClCompile Include="yaState.cpp" />
     <ClCompile Include="yaSpearman.cpp" />
     <ClCompile Include="yaSpriteRenderer.cpp" />

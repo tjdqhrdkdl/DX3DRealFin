@@ -8,6 +8,7 @@
 #include "yaObject.h"
 #include "yaResources.h"
 #include "yaMeshRenderer.h"
+#include "yaCollider2D.h"
 
 
 #include <time.h>
@@ -36,9 +37,10 @@ namespace ya
         bool NavigationPlayer(float range);
         void MonsterRotation(Vector3 target_point);
         void TurnToPlayer();
+        bool WalkToPlayer(float range);
         void AlertnessLevel();
 
-        int RnadomNumber(int ieast, int Max);
+        int RandomNumber(int ieast, int Max);
 
 
 

@@ -4,6 +4,7 @@
 #include "yaGraphics.h"
 
 
+
 #include <fbxsdk.h>
 
 #ifdef _DEBUG
@@ -11,6 +12,7 @@
 #else 
 #pragma comment(lib, "..\\External\\fbx\\lib\\Release\\libfbxsdk-md.lib") 
 #endif
+
 
 //#ifdef _DEBUG
 //#pragma comment(lib, "..\\External\\fbx\\lib\\Debug\\libxml2-md.lib") 

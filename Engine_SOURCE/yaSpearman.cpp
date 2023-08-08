@@ -1,5 +1,5 @@
 #include "yaSpearman.h"
-
+#include "yaSpearman_Sting.h"
 
 namespace ya
 {
@@ -22,7 +22,7 @@ namespace ya
 		CreateMonsterState();
 		SetSituation(enums::eSituation::None);
 
-
+		mAttackRange = 8.0f;
 		mTime = 0.f;
 		
 		//몬스터 할일 있나
@@ -32,6 +32,7 @@ namespace ya
 
 	void Spearman::FixedUpdate()
 	{
+
 		Transform* tr = GetComponent<Transform>();
 		Rigidbody* rigi = GetComponent<Rigidbody>();
 		Vec3 rot = tr->GetRotation();
@@ -39,7 +40,7 @@ namespace ya
 		Vec3 playerPos = GetPlayerPos();
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
-		
+
 
 		switch (GetSituation())
 		{
@@ -61,15 +62,14 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Battle:
 		{
-			int random = RnadomNumber(1, 3);
+			//int random = RandomNumber(1, 3);
 
-			//int random = 1;
+			int random = 3;
 
 			if (random == 1)
-			{
-				SetSituation(enums::eSituation::None);
-				mRandomXY.x = RnadomNumber((int)(monsterPos.x - 4), (int)(monsterPos.x + 4));
-				mRandomXY.y = RnadomNumber((int)(monsterPos.z - 4), (int)(monsterPos.z + 4));
+			{				
+				mRandomXY.x = RandomNumber((int)(monsterPos.x - 4), (int)(monsterPos.x + 4));
+				mRandomXY.y = RandomNumber((int)(monsterPos.z - 4), (int)(monsterPos.z + 4));
 				
 				
 				mRandomFinPos.x = mRandomXY.x;
@@ -141,13 +141,21 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Attack:
 		{
+			//어택 상태일때 
 			mTime += Time::DeltaTime();
 			if(mTime >= 1.0f)
-			{
-				SetSituation(enums::eSituation::None);
+			{				
 				mTime = 0.f;
 			}
-			rigi->AddForce(tr->Forward() * 70.f);
+
+			if (WalkToPlayer(2.0f))
+			{
+				TurnToPlayer();
+				Attack_sting();
+				SetSituation(enums::eSituation::None);
+			}
+			
+			
 		}
 			break;
 		case ya::enums::eSituation::Sit:
@@ -160,8 +168,8 @@ namespace ya
 		
 
 
-
 		GameObject::FixedUpdate();
+		
 	}
 
 	void Spearman::Render()
@@ -170,6 +178,29 @@ namespace ya
 
 
 		MonsterBase::Render();
+	}
+
+	void Spearman::Attack_sting()
+	{
+
+		Spearman_Sting* attack = object::Instantiate<Spearman_Sting>(eLayerType::Monster);
+
+		Transform* tr = GetComponent<Transform>();
+		Vec3 rot = tr->GetRotation();
+
+		Transform* attacktr = attack->GetComponent<Transform>();
+
+
+		attacktr->SetPosition(tr->GetPosition() + tr->Forward() * mAttackRange);
+		attacktr->SetScale(Vec3(3.0f, 2.0f, 4.0f));
+		attacktr->SetRotation(rot);
+
+		Collider2D* attackcol = attack->AddComponent<Collider2D>();
+		attackcol->SetType(eColliderType::Box);
+		attackcol->SetSize(Vector3(3.0, 2.0f, 4.0f));
+
+	
+
 	}
 
 }

@@ -15,7 +15,10 @@ namespace ya
 		virtual void Render() override;	
 		
 		void SetTarget(GameObject* target) { mPlayerTarget = target; }
+
+		GameObject* GetLockOnTarget() { return mLockOnTarget; }
 		void SetLockOnTarget(GameObject* target) { mLockOnTarget = target; mbLockOn = true; }
+
 		bool IsLockOn() { return mbLockOn; }
 
 	private:
