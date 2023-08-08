@@ -203,13 +203,13 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaInput.h" />
     <ClInclude Include="yaLayer.h" />
     <ClInclude Include="yaLight.h" />
+    <ClInclude Include="yaLogBridgeScript.h" />
     <ClInclude Include="yaMaterial.h" />
     <ClInclude Include="yaMath.h" />
     <ClInclude Include="yaMesh.h" />
     <ClInclude Include="yaMeshRenderer.h" />
     <ClInclude Include="yaMonster.h" />
     <ClInclude Include="yaMonsterScript.h" />
-    <ClInclude Include="yaMoveScript.h" />
     <ClInclude Include="yaMultiRenderTarget.h" />
     <ClInclude Include="yaMusketeerman.h" />
     <ClInclude Include="yaMusketeerman_Almost.h" />
@@ -219,6 +219,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaParticleShader.h" />
     <ClInclude Include="yaParticleSystem.h" />
     <ClInclude Include="yaPlayer.h" />
+    <ClInclude Include="yaPlayerActionScript.h" />
     <ClInclude Include="yaPlayerScript.h" />
     <ClInclude Include="yaPlayScene.h" />
     <ClInclude Include="yaPrefab.h" />
@@ -275,13 +276,13 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaInput.cpp" />
     <ClCompile Include="yaLayer.cpp" />
     <ClCompile Include="yaLight.cpp" />
+    <ClCompile Include="yaLogBridgeScript.cpp" />
     <ClCompile Include="yaMaterial.cpp" />
     <ClCompile Include="yaMath.cpp" />
     <ClCompile Include="yaMesh.cpp" />
     <ClCompile Include="yaMeshRenderer.cpp" />
     <ClCompile Include="yaMonster.cpp" />
     <ClCompile Include="yaMonsterScript.cpp" />
-    <ClCompile Include="yaMoveScript.cpp" />
     <ClCompile Include="yaMultiRenderTarget.cpp" />
     <ClCompile Include="yaMusketeerman.cpp" />
     <ClCompile Include="yaMusketeerman_Almost.cpp" />
@@ -290,6 +291,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaParticleShader.cpp" />
     <ClCompile Include="yaParticleSystem.cpp" />
     <ClCompile Include="yaPlayer.cpp" />
+    <ClCompile Include="yaPlayerActionScript.cpp" />
     <ClCompile Include="yaPlayerScript.cpp" />
     <ClCompile Include="yaPlayScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />

@@ -24,9 +24,9 @@
 #include "yaGroundScript.h"
 #include "yaSpearman.h"
 #include "yaActionScript.h"
-#include "yaMoveScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
+#include "yaLogBridgeScript.h"
 
 #include "yaSpearman.h"
 #include "yaMusketeerman.h"
@@ -153,11 +153,30 @@ namespace ya
 			}
 		}
 
+		{
+				GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
+				logbridge->SetName(L"LogBridge");
+				Transform* logbridgeTr = logbridge->GetComponent<Transform>();
+				logbridgeTr->SetPosition(Vector3(0.0f, -6.0f, 10.0f));
+				logbridgeTr->SetScale(Vector3(10.0f, 2.0f, 50.0f));
+				logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+				MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
+				logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+				logbridgeRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+				Collider2D* logbridgeCollider = logbridge->AddComponent<Collider2D>();
+				logbridgeCollider->SetType(eColliderType::Box);
+				logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+				logbridge->AddComponent<LogBridgeScript>();
+		}
+
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
+
 
 
 		{

@@ -23,14 +23,14 @@ namespace ya
 		Vector3 GetDirection() const { return mDirection; }
 
 	public:
-		void Move(const Vector3 dir, float speed = -1.0f);
+		void Move(const Vector3 dir, float force = -1.0f);
 		void Rotate(const Vector3 dir, float speed = -1.0f);
 		void Jump(float force = -1.0f);
 		void Attack();
 		void Deflect();
 		void Parrying();
 
-	private:
+	protected:
 		GameObject* mTarget;
 
 		class Transform* mTransform;
@@ -39,6 +39,7 @@ namespace ya
 		float mSpeed;
 		Vector3 mDirection;
 
+	private:
 		float mJumpTimer;
 		float mJumpForce;
 	};
