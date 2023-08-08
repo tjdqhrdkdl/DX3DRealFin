@@ -4,6 +4,7 @@
 #include "yaInput.h"
 #include "yaTime.h"
 #include "yaCollisionManager.h"
+#include "yaApplication.h"
 
 extern ya::Application application;
 
@@ -106,6 +107,26 @@ namespace ya
 			mDelayedTargetPos = delayedPos;
 
 			tr->SetPosition(mDelayedTargetPos + mChildPos);
+
+			Vector3 pos = tr->GetPosition();
+			Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
+
+			Vector3 targetPos = mDelayedTargetPos;
+			Vector3 newForward = targetPos - pos;
+			newForward.Normalize();
+
+			Vector3 forward = newForward;
+
+			Vector3 right = UpVector.Cross(forward);
+			right.Normalize();
+
+			Vector3 up = forward.Cross(right);
+			up.Normalize();
+
+			tr->IsCamera(true);
+			tr->SetForward(forward);
+			tr->SetUp(up);
+			tr->SetRight(right);
 		}
 
 	}
@@ -162,25 +183,7 @@ namespace ya
 				}
 			}
 			//회전
-			Vector3 pos = tr->GetPosition();
-			Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
 
-			Vector3 targetPos = mDelayedTargetPos;
-			Vector3 newForward = targetPos - pos;
-			newForward.Normalize();
-
-			Vector3 forward = newForward;
-
-			Vector3 right = UpVector.Cross(forward);
-			right.Normalize();
-
-			Vector3 up = forward.Cross(right);
-			up.Normalize();
-
-			tr->IsCamera(true);
-			tr->SetForward(forward);
-			tr->SetUp(up);
-			tr->SetRight(right);
 
 			SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
 		}

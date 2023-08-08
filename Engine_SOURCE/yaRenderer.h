@@ -42,8 +42,6 @@ namespace ya::renderer
 		UINT usedNormal;
 		UINT usedSpecular;
 
-
-		UINT padd0;
 		UINT padd1;
 	};
 

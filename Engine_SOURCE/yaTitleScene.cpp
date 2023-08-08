@@ -54,90 +54,90 @@ namespace ya
 		mainCamera = cameraComp;
 
 
-		//Player* player = object::Instantiate<Player>(eLayerType::Player);
-		//player->GetComponent<Transform>()->SetPosition(Vector3(-13.0f, 0.0f, -10.0f));
-		//player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		////player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
-		//
-		//MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-		//mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		//mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+		Player* player = object::Instantiate<Player>(eLayerType::Player);
+		player->GetComponent<Transform>()->SetPosition(Vector3(-13.0f, 0.0f, -10.0f));
+		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
+		
+		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 
-		//camScript->SetTarget(player);
-		//player->SetCamera(cameraObj);
+		camScript->SetTarget(player);
+		player->SetCamera(cameraObj);
 
 
-		//Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
-		//spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-		//spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		//spearman->SetName(L"Spearman");
-		//spearman->SetPlayerObject(player);
-		//MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
-		//spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		//spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-		//Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
-		//spearmancol->SetType(eColliderType::Box);
-		//spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
-		//Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
-		//spearmanRigidbody->SetGround(false);
-		//spearman->AddComponent<MonsterScript>();
+		Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
+		spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+		spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		spearman->SetName(L"Spearman");
+		spearman->SetPlayerObject(player);
+		MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
+		spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+		Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
+		spearmancol->SetType(eColliderType::Box);
+		spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+		Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
+		spearmanRigidbody->SetGround(false);
+		spearman->AddComponent<MonsterScript>();
 
-		//camScript->SetLockOnTarget(spearman);
-		//FbxLoader::Initialize();
-		//
+		camScript->SetLockOnTarget(spearman);
+		FbxLoader::Initialize();
+		
 
-		//{
-		//	GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
-		//	ground->SetName(L"Ground");
-		//	Transform* groundTr = ground->GetComponent<Transform>();
-		//	groundTr->SetPosition(Vector3(0.0f, -10.0f, 10.0f));
-		//	groundTr->SetScale(Vector3(100.0f, 4.0f, 100.0f));
-		//	groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-		//	MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-		//	groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		//	groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-		//	Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-		//	groundCollider->SetType(eColliderType::Box);
-		//	groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-		//	ground->AddComponent<GroundScript>();
-		//}
+		{
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground->SetName(L"Ground");
+			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, -10.0f, 10.0f));
+			groundTr->SetScale(Vector3(100.0f, 4.0f, 100.0f));
+			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			ground->AddComponent<GroundScript>();
+		}
 
-		//{
-		//	GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
-		//	grappleGround->SetName(L"grapple target");
-		//	Transform* groundTr = grappleGround->GetComponent<Transform>();
-		//	groundTr->SetPosition(Vector3(0.0f, 7.0f, 0.0f));
-		//	groundTr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
-		//	groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-		//	MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
-		//	groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		//	groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-		//	Collider2D* groundCollider = grappleGround->AddComponent<Collider2D>();
-		//	groundCollider->SetType(eColliderType::Box);
-		//	groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-		//	grappleGround->AddComponent<GroundScript>();
+		{
+			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
+			grappleGround->SetName(L"grapple target");
+			Transform* groundTr = grappleGround->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, 7.0f, 0.0f));
+			groundTr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
+			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = grappleGround->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			grappleGround->AddComponent<GroundScript>();
 
-		//	GrappleHookScript* action = player->GetScript<GrappleHookScript>();
-		//	action->SetGrappleHookTarget(grappleGround);
+			GrappleHookScript* action = player->GetScript<GrappleHookScript>();
+			action->SetGrappleHookTarget(grappleGround);
 
-		//	{
-		//		GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground);
-		//		hookTarget->SetName(L"grapple target");
-		//		Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
-		//		hookTargetTr->SetPosition(Vector3(0.0f, 12.0f, 0.0f));
-		//		hookTargetTr->SetScale(Vector3(4.0f, 20.0f, 4.0f));
-		//		Collider2D* hookTargetCollider = hookTarget->AddComponent<Collider2D>();
-		//		hookTargetCollider->SetType(eColliderType::Box);
-		//		hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-		//		hookTarget->AddComponent<HookTargetScript>();
-		//	}
-		//}
+			{
+				GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground);
+				hookTarget->SetName(L"grapple target");
+				Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
+				hookTargetTr->SetPosition(Vector3(0.0f, 12.0f, 0.0f));
+				hookTargetTr->SetScale(Vector3(4.0f, 20.0f, 4.0f));
+				Collider2D* hookTargetCollider = hookTarget->AddComponent<Collider2D>();
+				hookTargetCollider->SetType(eColliderType::Box);
+				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+				hookTarget->AddComponent<HookTargetScript>();
+			}
+		}
 
-		//CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
-		//CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
-		//CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
-		//CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
 
 		{

@@ -136,6 +136,10 @@
       <Command>copy "$(SolutionDir)fmodL.dll" "$(SolutionDir)\x64\Debug\"
 copy "$(SolutionDir)FW1FontWrapperL.dll" "$(SolutionDir)\x64\Debug\"</Command>
     </PreBuildEvent>
+    <Lib>
+      <AdditionalDependencies>libfbxsdk-md.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External\fbx\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
