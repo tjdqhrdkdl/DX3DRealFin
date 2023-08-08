@@ -189,6 +189,8 @@
     </ClCompile>
     <ClCompile Include="yaPlayerActionScript.cpp">
       <Filter>Contents\Player</Filter>
+    <ClCompile Include="yaLogBridgeScript.cpp">
+      <Filter>Contents\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,6 +395,8 @@
     </ClInclude>
     <ClInclude Include="yaPlayerActionScript.h">
       <Filter>Contents\Player</Filter>
+    <ClInclude Include="yaLogBridgeScript.h">
+      <Filter>Contents\Ground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
