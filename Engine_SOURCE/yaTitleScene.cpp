@@ -102,6 +102,22 @@ namespace ya
 			ground->AddComponent<GroundScript>();
 		}
 
+		//{
+		//		GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::LogBridge);
+		//		logbridge->SetName(L"LogBridge");
+		//		Transform* logbridgeTr = logbridge->GetComponent<Transform>();
+		//		logbridgeTr->SetPosition(Vector3(0.0f, -6.0f, 10.0f));
+		//		logbridgeTr->SetScale(Vector3(10.0f, 2.0f, 50.0f));
+		//		logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+		//		MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
+		//		logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+		//		logbridgeRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		//		Collider2D* logbridgeCollider = logbridge->AddComponent<Collider2D>();
+		//		logbridgeCollider->SetType(eColliderType::Box);
+		//		logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+		//		logbridge->AddComponent<LogBridgeScript>();
+		//}
+
 		{
 			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
 			grappleGround->SetName(L"grapple target");
@@ -138,6 +154,8 @@ namespace ya
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
 
 		{
