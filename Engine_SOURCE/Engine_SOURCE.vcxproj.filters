@@ -160,9 +160,6 @@
     <ClCompile Include="yaFmod.cpp">
       <Filter>Engine\Component\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="yaSpearman.cpp">
-      <Filter>Contents\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="yaState.cpp">
       <Filter>Contents\State</Filter>
     </ClCompile>
@@ -187,11 +184,23 @@
     <ClCompile Include="yaWallScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerActionScript.cpp">
-      <Filter>Contents\Player</Filter>
-	</ClCompile>
-    <ClCompile Include="yaLogBridgeScript.cpp">
-      <Filter>Contents\Ground</Filter>
+    <ClCompile Include="yaFbxLoader.cpp">
+      <Filter>Engine\Resource\FbxLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSpearman.cpp">
+      <Filter>Contents\Monster\Spearman</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSpearman_Sting.cpp">
+      <Filter>Contents\Monster\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMusketeerman.cpp">
+      <Filter>Contents\Monster\Musketeerman</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMusketeerman_Almost.cpp">
+      <Filter>Contents\Monster\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMusketeerman_Shooting.cpp">
+      <Filter>Contents\Monster\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,9 +376,6 @@
     <ClInclude Include="yaFmod.h">
       <Filter>Engine\Component\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="yaSpearman.h">
-      <Filter>Contents\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="yaState.h">
       <Filter>Contents\State</Filter>
     </ClInclude>
@@ -394,6 +400,23 @@
     <ClInclude Include="yaWallScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="yaFbxLoader.h">
+      <Filter>Engine\Resource\FbxLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSpearman.h">
+      <Filter>Contents\Monster\Spearman</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSpearman_Sting.h">
+      <Filter>Contents\Monster\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMusketeerman.h">
+      <Filter>Contents\Monster\Musketeerman</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMusketeerman_Almost.h">
+      <Filter>Contents\Monster\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMusketeerman_Shooting.h">
+      <Filter>Contents\Monster\Attack</Filter>
     <ClInclude Include="yaPlayerActionScript.h">
       <Filter>Contents\Player</Filter>
 	</ClInclude>
@@ -551,6 +574,18 @@
     </Filter>
     <Filter Include="Contents\Scene">
       <UniqueIdentifier>{c5ed46d7-aab9-4a27-aa1c-2ab0c73d7891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resource\FbxLoader">
+      <UniqueIdentifier>{e67fd783-9dd6-43ad-a3e6-53602667ccc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\Spearman">
+      <UniqueIdentifier>{afcd2e4b-ab7d-4f73-89d8-1c28d841c4d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\Attack">
+      <UniqueIdentifier>{5283ac8b-2cf8-4c08-96bd-4df3af8f7500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\Musketeerman">
+      <UniqueIdentifier>{351c027e-06f9-4c40-85e6-15e96efeb633}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
