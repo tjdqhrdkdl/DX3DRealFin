@@ -47,7 +47,7 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 	direction.Normalize();
 
 	std::vector<eLayerType> layers = {};
-	layers.push_back(eLayerType::LogBridge);
+	layers.push_back(eLayerType::Logbridge);
 
 	Vector3 scale = colTransform->GetScale();
 
