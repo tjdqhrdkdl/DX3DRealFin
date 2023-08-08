@@ -417,6 +417,7 @@
     </ClInclude>
     <ClInclude Include="yaMusketeerman_Shooting.h">
       <Filter>Contents\Monster\Attack</Filter>
+	</ClInclude>
     <ClInclude Include="yaPlayerActionScript.h">
       <Filter>Contents\Player</Filter>
 	</ClInclude>
