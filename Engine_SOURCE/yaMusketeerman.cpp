@@ -140,7 +140,7 @@ namespace ya
 	void Musketeerman::Attack_Shooting()
 	{
 
-		Musketeerman_Shooting* attack = object::Instantiate<Musketeerman_Shooting>(eLayerType::Monster);
+		Musketeerman_Shooting* attack = object::Instantiate<Musketeerman_Shooting>(eLayerType::MonsterProjectile);
 
 		Transform* tr = GetComponent<Transform>();
 		Vec3 rot = tr->GetRotation();

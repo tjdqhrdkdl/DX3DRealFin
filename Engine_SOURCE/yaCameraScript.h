@@ -26,6 +26,7 @@ namespace ya
 		void TrackTarget();
 		void MouseMove();
 		void LockOn();
+		void SetLockOnTarget();
 		void ObstacleDetection();
 
 
