@@ -75,6 +75,7 @@ namespace ya
 			TrackTarget();
 			MouseMove();
 			LockOn();
+			MoveToDestination();
 			ObstacleDetection();
 		
 		}
@@ -234,6 +235,8 @@ namespace ya
 			mChildPos.Normalize();
 			mChildPos *= mDistFromTarget;
 
+
+
 			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
 			float monPlDist = monPlDiff.Length();
 			if(monPlDist > lockOnDistanceMax)
@@ -301,6 +304,33 @@ namespace ya
 				mLockOnTarget = mon;
 				mbLockOn = true;
 			}
+		}
+
+		if (!mbLockOn)
+		{
+			Vector3 dest = -(plTr->Forward()) + Vector3(0, 0.5, 0);
+			dest.Normalize();
+			dest *= mDistFromTarget;
+			SetDestination(dest);
+		}
+
+	}
+	void CameraScript::MoveToDestination()
+	{
+		if (mbDestination)
+		{
+			Vector3 gap = mDestination - mChildPos;
+			Vector3 gapNormal = mDestination - mChildPos;
+			gapNormal.Normalize();
+			Vector3 move = 200 * gapNormal * Time::DeltaTime();
+			if (gap.Length() < move.Length())
+			{
+				mbDestination = false;
+				return;
+			}
+			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
+			mChildPos.Normalize();
+			mChildPos *= mDistFromTarget;
 		}
 	}
 }

@@ -12,12 +12,15 @@ namespace ya
 
 		virtual void Initialize() override;
 		virtual void Update() override;
-		virtual void Render() override;	
-		
+		virtual void Render() override;
+
 		void SetTarget(GameObject* target) { mPlayerTarget = target; }
 
 		GameObject* GetLockOnTarget() { return mLockOnTarget; }
 		void SetLockOnTarget(GameObject* target) { mLockOnTarget = target; mbLockOn = true; }
+
+		void SetDestination(Vector3 dest) { mbDestination = true, mDestination = dest; }
+		void SetDestinationFree() { mbDestination = false; }
 
 		bool IsLockOn() { return mbLockOn; }
 
@@ -27,6 +30,7 @@ namespace ya
 		void MouseMove();
 		void LockOn();
 		void SetLockOnTarget();
+		void MoveToDestination();
 		void ObstacleDetection();
 
 
@@ -54,7 +58,9 @@ namespace ya
 		bool mbLockOn;
 
 
-
+		//개발중 변수
+		bool mbDestination;
+		Vector3 mDestination;
 
 	};
 }
