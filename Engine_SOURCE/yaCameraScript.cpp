@@ -221,7 +221,7 @@ namespace ya
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 dir = mDelayedTargetPos - monPos;
 			dir.Normalize();
-			dir.y += 0.3;
+			dir.y = 0.3;
 			dir.Normalize();
 			Vector3 dest = dir * mDistFromTarget;
 			Vector3 gap = dest - mChildPos;
