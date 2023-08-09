@@ -200,7 +200,6 @@ namespace ya
 				logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 				logbridge->AddComponent<LogBridgeScript>();
 		}*/
-
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
