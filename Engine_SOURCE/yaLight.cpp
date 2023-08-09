@@ -74,9 +74,9 @@ namespace ya
 		cb->Bind(eShaderStage::PS);
 
 
-		mVolumeMesh->BindBuffer();
+		mVolumeMesh->BindBuffer(0);
 		material->Bind();
-		mVolumeMesh->Render();
+		mVolumeMesh->Render(0);
 	}
 	void Light::SetType(eLightType type)
 	{

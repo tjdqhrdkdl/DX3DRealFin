@@ -1,5 +1,5 @@
 #include "yaSpearman.h"
-
+#include "yaSpearman_Sting.h"
 
 namespace ya
 {
@@ -7,30 +7,32 @@ namespace ya
 	{
 
 		Transform* tr = GetComponent<Transform>();
-		// ÇÃ·¹ÀÌ¾îÀÇ forward¸¦ ±¸ºĞÇÏ±âÀ§ÇÑ object
-		// ÈÄ¿¡ mesh ¾º¿ì¸é ¾ø¾Ù ¿¹Á¤
+		// í”Œë ˆì´ì–´ì˜ forwardë¥¼ êµ¬ë¶„í•˜ê¸°ìœ„í•œ object
+		// í›„ì— mesh ì”Œìš°ë©´ ì—†ì•¨ ì˜ˆì •
 		GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
 		face->SetName(L"face");
 		Transform* faceTr = face->GetComponent<Transform>();
 		faceTr->SetPosition(Vector3(0.0f, 0.5f, 0.5f));
 		faceTr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
 		MeshRenderer* faceRenderer = face->AddComponent<MeshRenderer>();
-		faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		faceRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+
 
 		CreateMonsterState();
 		SetSituation(enums::eSituation::None);
 
-
+		mAttackRange = 8.0f;
 		mTime = 0.f;
 		
-		//¸ó½ºÅÍ ÇÒÀÏ ÀÖ³ª
+		//ëª¬ìŠ¤í„° í• ì¼ ìˆë‚˜
 		MonsterBase::Initialize();
 	}
 
 
 	void Spearman::FixedUpdate()
 	{
+
 		Transform* tr = GetComponent<Transform>();
 		Rigidbody* rigi = GetComponent<Rigidbody>();
 		Vec3 rot = tr->GetRotation();
@@ -38,7 +40,7 @@ namespace ya
 		Vec3 playerPos = GetPlayerPos();
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
-		
+
 
 		switch (GetSituation())
 		{
@@ -60,15 +62,14 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Battle:
 		{
-			int random = RnadomNumber(1, 3);
+			//int random = RandomNumber(1, 3);
 
-			//int random = 1;
+			int random = 3;
 
 			if (random == 1)
-			{
-				SetSituation(enums::eSituation::None);
-				mRandomXY.x = RnadomNumber((int)(monsterPos.x - 4), (int)(monsterPos.x + 4));
-				mRandomXY.y = RnadomNumber((int)(monsterPos.z - 4), (int)(monsterPos.z + 4));
+			{				
+				mRandomXY.x = RandomNumber((int)(monsterPos.x - 4), (int)(monsterPos.x + 4));
+				mRandomXY.y = RandomNumber((int)(monsterPos.z - 4), (int)(monsterPos.z + 4));
 				
 				
 				mRandomFinPos.x = mRandomXY.x;
@@ -93,7 +94,7 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Run:
 		{			
-			//¿À¸¥ÂÊ ¹æÇâ
+			//ì˜¤ë¥¸ìª½ ë°©í–¥
 			if (mRandomXY.x > mWlakFixPos.x)
 			{
 				if (monsterPos.x > mRandomFinPos.x)
@@ -104,7 +105,7 @@ namespace ya
 				rigi->AddForce(tr->Forward() * 70.f);
 
 			}
-			//¿ŞÂÊ ¹æÇâ
+			//ì™¼ìª½ ë°©í–¥
 			else if (mRandomXY.x <= mWlakFixPos.x)
 			{
 				if (monsterPos.x <= mRandomFinPos.x)
@@ -140,13 +141,21 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Attack:
 		{
+			//ì–´íƒ ìƒíƒœì¼ë•Œ 
 			mTime += Time::DeltaTime();
 			if(mTime >= 1.0f)
-			{
-				SetSituation(enums::eSituation::None);
+			{				
 				mTime = 0.f;
 			}
-			rigi->AddForce(tr->Forward() * 70.f);
+
+			if (WalkToPlayer(2.0f))
+			{
+				TurnToPlayer();
+				Attack_sting();
+				SetSituation(enums::eSituation::None);
+			}
+			
+			
 		}
 			break;
 		case ya::enums::eSituation::Sit:
@@ -159,8 +168,8 @@ namespace ya
 		
 
 
-
 		GameObject::FixedUpdate();
+		
 	}
 
 	void Spearman::Render()
@@ -169,6 +178,29 @@ namespace ya
 
 
 		MonsterBase::Render();
+	}
+
+	void Spearman::Attack_sting()
+	{
+
+		Spearman_Sting* attack = object::Instantiate<Spearman_Sting>(eLayerType::Monster);
+
+		Transform* tr = GetComponent<Transform>();
+		Vec3 rot = tr->GetRotation();
+
+		Transform* attacktr = attack->GetComponent<Transform>();
+
+
+		attacktr->SetPosition(tr->GetPosition() + tr->Forward() * mAttackRange);
+		attacktr->SetScale(Vec3(3.0f, 2.0f, 4.0f));
+		attacktr->SetRotation(rot);
+
+		Collider2D* attackcol = attack->AddComponent<Collider2D>();
+		attackcol->SetType(eColliderType::Box);
+		attackcol->SetSize(Vector3(3.0, 2.0f, 4.0f));
+
+	
+
 	}
 
 }

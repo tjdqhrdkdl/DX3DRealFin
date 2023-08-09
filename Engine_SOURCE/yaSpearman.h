@@ -1,6 +1,7 @@
 #pragma once
 #include "MonsterBase.h"
 
+
 namespace ya
 {
     class Spearman :
@@ -17,14 +18,17 @@ namespace ya
 
     public:
 
-\
-        bool IsParrying() { return mbParrying; }
 
+        void Attack_sting();
+
+        bool IsParrying() { return mbParrying; }
+        
 
 
     private:
 
         float                   mTime;
+        float                   mAttackRange;
         Vec3                    mRandomXY;
         Vec3                    mRandomFinPos;
         Vec3                    mWlakFixPos;
