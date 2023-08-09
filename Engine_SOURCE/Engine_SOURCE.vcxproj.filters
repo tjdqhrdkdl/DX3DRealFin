@@ -175,6 +175,9 @@
     <ClCompile Include="yaWallScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="yaPlayerActionScript.cpp">
+      <Filter>Contents\Player</Filter>
+	</ClCompile>
     <ClCompile Include="yaFbxLoader.cpp">
       <Filter>Engine\Resource\FbxLoader</Filter>
     </ClCompile>
@@ -419,7 +422,7 @@
     </ClInclude>
     <ClInclude Include="yaPlayerActionScript.h">
       <Filter>Contents\Player</Filter>
-    </ClInclude>
+	</ClInclude>
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
