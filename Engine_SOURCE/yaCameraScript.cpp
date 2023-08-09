@@ -12,6 +12,7 @@ extern ya::Application application;
 namespace ya
 {
 	const float lockOnDistanceMax = 150.0f;
+	const float lockOnNearDistance = 50.0f;
 
 	CameraScript::CameraScript()
 		: Script()
@@ -162,12 +163,12 @@ namespace ya
 					//카메라 오브젝트의 회전을 바꿔준다.
 
 					//구 이동
-					mChildPos += 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+					mChildPos -= 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 					mChildPos.Normalize();
 					mChildPos *= mDistFromTarget;
 
 
-					mChildPos += 60 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+					mChildPos -= 30 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 					mChildPos.Normalize();
 					mChildPos *= mDistFromTarget;
 
@@ -215,7 +216,7 @@ namespace ya
 				mLockOnTarget = nullptr, mbLockOn = false;
 			else
 				SetLockOnTarget();
-		if (mLockOnTarget)
+		if (mbLockOn)
 		{
 			Vector3 dir = mDelayedTargetPos - mLockOnTarget->GetComponent<Transform>()->GetPosition();
 			dir.Normalize();
@@ -249,10 +250,14 @@ namespace ya
 		std::vector<GameObject*> mons =  scene->GetGameObjects(eLayerType::Monster);
 		float minDist = 10000000;
 		Transform* tr = GetOwner()->GetComponent<Transform>();
+		Vector3 pos = tr->GetPosition();
+		Transform* plTr = mPlayerTarget->GetComponent<Transform>();
+		Vector3 plPos = plTr->GetPosition();
 		for (GameObject* mon : mons)
 		{
 			Transform* monTr = mon->GetComponent<Transform>();
-			Vector3 dif = monTr->GetPosition() - tr->GetPosition();
+			Vector3 monPos = monTr->GetPosition();
+			Vector3 dif = monPos - pos;
 			float dist = dif.Length();
 			
 			// 락온이 가능한 최대거리를 벗어나는지 체크
@@ -279,9 +284,12 @@ namespace ya
 				continue;
 
 			// 위 조건을 만족하면서, 더 적절한 오브젝트가 있는지 체크   (현재는 더 가까운 것이 더 적절하다.)
-			if (dist < minDist)
+
+			Vector3 plMonDistVec = monPos - plPos;
+			float plMonDist = plMonDistVec.Length();
+			if (plMonDist < minDist)
 			{
-				minDist = dist;
+				minDist = plMonDist;
 				mLockOnTarget = mon;
 				mbLockOn = true;
 			}

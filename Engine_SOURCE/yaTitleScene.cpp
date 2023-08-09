@@ -104,6 +104,38 @@ namespace ya
 			spearmanRigidbody->SetGround(false);
 
 		}
+		{
+			Musketeerman* musketeerman = object::Instantiate<Musketeerman>(eLayerType::Monster);
+			musketeerman->GetComponent<Transform>()->SetPosition(Vector3(-5.0f, 0.0f, 50.0f));
+			musketeerman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+			musketeerman->SetName(L"Musketeerman");
+			musketeerman->SetPlayerObject(player);
+			MeshRenderer* musketeermanmr = musketeerman->AddComponent<MeshRenderer>();
+			musketeermanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			musketeermanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* musketeermancol = musketeerman->AddComponent <Collider2D>();
+			musketeermancol->SetType(eColliderType::Box);
+			musketeermancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+			Rigidbody* spearmanRigidbody = musketeerman->AddComponent<Rigidbody>();
+			spearmanRigidbody->SetGround(false);
+
+		}
+		{
+			Musketeerman* musketeerman = object::Instantiate<Musketeerman>(eLayerType::Monster);
+			musketeerman->GetComponent<Transform>()->SetPosition(Vector3(15.0f, 0.0f, 15.0f));
+			musketeerman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+			musketeerman->SetName(L"Musketeerman");
+			musketeerman->SetPlayerObject(player);
+			MeshRenderer* musketeermanmr = musketeerman->AddComponent<MeshRenderer>();
+			musketeermanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			musketeermanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* musketeermancol = musketeerman->AddComponent <Collider2D>();
+			musketeermancol->SetType(eColliderType::Box);
+			musketeermancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+			Rigidbody* spearmanRigidbody = musketeerman->AddComponent<Rigidbody>();
+			spearmanRigidbody->SetGround(false);
+
+		}
 		
 
 		{
