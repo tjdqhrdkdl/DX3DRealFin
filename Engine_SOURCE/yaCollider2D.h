@@ -33,6 +33,9 @@ namespace ya
 		Vector3 GetSize() { return mSize; }
 		eColliderType GetColliderType() { return mType; }
 
+		void Active(bool active) { mbActive = active; };
+		bool IsActive() { return mbActive; }
+
 	private:
 		static UINT ColliderNumber;
 		UINT mID;
@@ -44,5 +47,6 @@ namespace ya
 		Vector3 mPosition;
 		float mRadius;
 		bool mbTrigger;
+		bool mbActive;
 	};
 }

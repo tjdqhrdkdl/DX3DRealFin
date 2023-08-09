@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="yaMath.cpp">
@@ -189,6 +189,7 @@
     </ClCompile>
     <ClCompile Include="yaPlayerActionScript.cpp">
       <Filter>Contents\Player</Filter>
+	</ClCompile>
     <ClCompile Include="yaLogBridgeScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
@@ -395,6 +396,7 @@
     </ClInclude>
     <ClInclude Include="yaPlayerActionScript.h">
       <Filter>Contents\Player</Filter>
+	</ClInclude>
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>

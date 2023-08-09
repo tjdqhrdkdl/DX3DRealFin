@@ -22,42 +22,53 @@ namespace ya
 		float GetHP() { return mHp; }
 		float GetMaxHP() { return mMaxHp; }
 		float GetSpeed() { return mSpeed; }
+		float GetAttack() { return mAttack; }
 		float GetDeathBlowCount() { return mDeathBlowCount; }
 		float GetMaxDeathBlowCount() { return mMaxDeathBlowCount; }
 		float GetAlertnessCount() { return mAlertnessCount; }
 		bool IsDeathBlow() { return mbDeathBlow; }
 
-
 		void SetSituation(enums::eSituation situation) { mSituation = situation; }
-		void SetHp(float hp) { mHp =+ hp; }
-		void SetMaxHP(float maxhp) { mMaxHp =+ maxhp; }
+		void SetHp(float hp) { mHp = hp; }
+		void SetMaxHP(float maxhp) { mMaxHp = maxhp; }
 		void SetSpeed(float speed) { mSpeed = speed; }
-		void SetDeathBlowCount(float blowcount) { mDeathBlowCount =+ blowcount; }
-		void SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount =+ maxblowcount; }
+		void SetDeathBlowCount(float blowcount) { mDeathBlowCount = blowcount; }
+		void SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount = maxblowcount; }
 		void SetAlertnessCount(float count) { mAlertnessCount =+ count; }
 		void SetDeathBlow(bool deathblow) { mbDeathBlow = deathblow; }
 
-
+		void AddHp(float hp) { mHp += hp; }
+		void AddPosture(float posture) { mPosture += posture; }
+		void AddDeathBlow(float deathblow) { mDeathBlowCount += deathblow; }
 
 
 	private:
 
-		enums::eSituation	mSituation;				//¾î¶°ÇÑ »óÅÂÀÎÁö 
+		enums::eSituation	mSituation;				//ì–´ë– í•œ ìƒíƒœì¸ì§€ 
 
-
+		// HP
 		float               mHp;
 		float               mMaxHp;
 
+		// ì²´ê°„ê²Œì´ì§€
+		float				mPosture;
+		float				mPostureMax;
+
+		// íšŒìƒ êµ¬ìŠ¬
+		int					mResurrectionCount;
+		int					mResurrectionCountMax;
+
+		// Status
+		float				mAttack;
 		float               mSpeed;
 
-		float               mDeathBlowCount;		//ÀÎ»ì °ÔÀÌÁö
-		float               mMaxDeathBlowCount;       
+		// ì¸ì‚´ ê²Œì´ì§€
+		bool				mbDeathBlow;			//ì¸ì‚´ ê°€ëŠ¥í•œ ìƒíƒœì¸ì§€ í™•ì¸
+		float               mDeathBlowCount;		//ì¸ì‚´ ê²Œì´ì§€
+		float               mMaxDeathBlowCount;
 
-		float				mAlertnessCount;		//°æº¸ ·¹º§ (60ÀÌ»óÀÌ¸é °æ°è, 80ÀÌ»óÀÌ¸é Ãß°İ 100ÀÌ»óÀÌ¸é °ø°İ)
-
-		bool				mbDeathBlow;			//ÀÎ»ì °¡´ÉÇÑ »óÅÂÀÎÁö È®ÀÎ
-
-
+		// ê²½ë³´ ë ˆë²¨
+		float				mAlertnessCount;		//ê²½ë³´ ë ˆë²¨ (60ì´ìƒì´ë©´ ê²½ê³„, 80ì´ìƒì´ë©´ ì¶”ê²© 100ì´ìƒì´ë©´ ê³µê²©)
 	};
 
 }
