@@ -68,24 +68,24 @@ namespace ya
 		player->SetCamera(cameraObj);
 
 
-		//{
-		//	Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
-		//	spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-		//	spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		//	spearman->SetName(L"Spearman");
-		//	spearman->SetPlayerObject(player);
-		//	MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
-		//	spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
-		//	spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		//	Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
-		//	spearmancol->SetType(eColliderType::Box);
-		//	spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
-		//	Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
-		//	spearmanRigidbody->SetGround(false);
-		//	spearman->AddComponent<MonsterScript>();
+		{
+			Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
+			spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+			spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+			spearman->SetName(L"Spearman");
+			spearman->SetPlayerObject(player);
+			MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
+			spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+			spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
+			spearmancol->SetType(eColliderType::Box);
+			spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+			Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
+			spearmanRigidbody->SetGround(false);
+			spearman->AddComponent<MonsterScript>();
 
-		//	camScript->SetLockOnTarget(spearman);
-		//}
+			camScript->SetLockOnTarget(spearman);
+		}
 
 
 		{
@@ -103,6 +103,7 @@ namespace ya
 			Rigidbody* spearmanRigidbody = musketeerman->AddComponent<Rigidbody>();
 			spearmanRigidbody->SetGround(false);
 
+			camScript->SetLockOnTarget(musketeerman);
 		}
 		
 

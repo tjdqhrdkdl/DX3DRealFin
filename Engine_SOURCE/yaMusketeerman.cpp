@@ -60,7 +60,8 @@ namespace ya
 			}
 			else if (NavigationPlayer(5.5f))
 			{
-				//SetSituation(enums::eSituation::Run);				
+				TurnToPlayer();
+				SetSituation(enums::eSituation::Run);				
 			}		
 
 			else
@@ -74,6 +75,13 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Run:
 		{
+			mTime += Time::DeltaTime();
+			if (mTime >= 0.4f)
+			{
+				mTime = 0.f;
+				SetSituation(enums::eSituation::None);
+			}
+			rigi->AddForce((tr->Forward() * -1) * 100.f);
 
 		}
 			break;
