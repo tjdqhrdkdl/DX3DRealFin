@@ -98,7 +98,7 @@
       <Filter>Engine\High Level InterFace</Filter>
     </ClCompile>
     <ClCompile Include="yaBaseRenderer.cpp">
-      <Filter>Engine\Renderer</Filter>
+      <Filter>Engine\Resource\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="yaGameObject.cpp">
       <Filter>Engine\GameObject</Filter>
@@ -113,7 +113,7 @@
       <Filter>Engine\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaRenderer.cpp">
-      <Filter>Engine\Renderer</Filter>
+      <Filter>Engine\Resource\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="yaScene.cpp">
       <Filter>Engine\Scene\Base</Filter>
@@ -202,6 +202,7 @@
     <ClCompile Include="yaMusketeerman_Shooting.cpp">
       <Filter>Contents\Monster\Attack</Filter>
     </ClCompile>
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaSekiroEnums.h" />
@@ -308,7 +309,7 @@
       <Filter>Engine\High Level InterFace</Filter>
     </ClInclude>
     <ClInclude Include="yaBaseRenderer.h">
-      <Filter>Engine\Renderer</Filter>
+      <Filter>Engine\Resource\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="yaGameObject.h">
       <Filter>Engine\GameObject</Filter>
@@ -329,7 +330,7 @@
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaRenderer.h">
-      <Filter>Engine\Renderer</Filter>
+      <Filter>Engine\Resource\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="yaScene.h">
       <Filter>Engine\Scene\Base</Filter>
@@ -449,9 +450,6 @@
     </Filter>
     <Filter Include="Contents\State">
       <UniqueIdentifier>{62a651e5-4cd6-4a6f-918f-c2ff7ed4f805}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Renderer">
-      <UniqueIdentifier>{966af4a9-2d35-4108-b269-96746b981cc3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Resource">
       <UniqueIdentifier>{d31398f4-302c-45d2-8499-fde770cbdae2}</UniqueIdentifier>

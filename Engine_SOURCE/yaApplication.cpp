@@ -86,6 +86,7 @@ namespace ya
 	{
 		Resources::deleteTest();
 		Fmod::Release();
+		FbxLoader::Release();
 		FontWrapper::Release();
 	}
 

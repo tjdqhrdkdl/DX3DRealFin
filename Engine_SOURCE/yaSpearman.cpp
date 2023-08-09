@@ -15,8 +15,9 @@ namespace ya
 		faceTr->SetPosition(Vector3(0.0f, 0.5f, 0.5f));
 		faceTr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
 		MeshRenderer* faceRenderer = face->AddComponent<MeshRenderer>();
-		faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		faceRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+
 
 		CreateMonsterState();
 		SetSituation(enums::eSituation::None);

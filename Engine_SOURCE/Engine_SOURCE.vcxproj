@@ -137,6 +137,10 @@
       <Command>copy "$(SolutionDir)fmodL.dll" "$(SolutionDir)\x64\Debug\"
 copy "$(SolutionDir)FW1FontWrapperL.dll" "$(SolutionDir)\x64\Debug\"</Command>
     </PreBuildEvent>
+    <Lib>
+      <AdditionalDependencies>libfbxsdk-md.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External\fbx\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -207,6 +211,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaMaterial.h" />
     <ClInclude Include="yaMath.h" />
     <ClInclude Include="yaMesh.h" />
+    <ClInclude Include="yaMeshData.h" />
     <ClInclude Include="yaMeshRenderer.h" />
     <ClInclude Include="yaMonster.h" />
     <ClInclude Include="yaMonsterScript.h" />
@@ -280,6 +285,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaMaterial.cpp" />
     <ClCompile Include="yaMath.cpp" />
     <ClCompile Include="yaMesh.cpp" />
+    <ClCompile Include="yaMeshData.cpp" />
     <ClCompile Include="yaMeshRenderer.cpp" />
     <ClCompile Include="yaMonster.cpp" />
     <ClCompile Include="yaMonsterScript.cpp" />
