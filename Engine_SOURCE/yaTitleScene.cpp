@@ -19,19 +19,19 @@
 #include "yaLight.h"
 #include "yaPaintShader.h"
 #include "yaParticleSystem.h"
-//#include "yaFBXLoader.h"
 #include "yaRigidbody.h"
 #include "yaGroundScript.h"
 #include "yaSpearman.h"
 #include "yaActionScript.h"
-#include "yaMoveScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaLogBridgeScript.h"
 
 #include "yaSpearman.h"
+#include "yaMusketeerman.h"
 #include "yaMonsterScript.h"
-
+#include "yaFbxLoader.h"
+#include "yaMeshData.h"
 namespace ya
 {
 	TitleScene::TitleScene()
@@ -46,7 +46,7 @@ namespace ya
 		// Main Camera Game Object
 		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera);
 		cameraObj->SetName(L"MainCamera");
-		cameraObj->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -20.0f));
+		cameraObj->GetComponent<Transform>()->SetPosition(Vector3(20.0f, .0f, -500.0f));
 		Camera* cameraComp = cameraObj->AddComponent<Camera>();
 		cameraComp->SetProjectionType(Camera::eProjectionType::Perspective);
 		//cameraComp->RegisterCameraInRenderer();
@@ -61,30 +61,49 @@ namespace ya
 		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
 		
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);
 
 
-		Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
-		spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-		spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		spearman->SetName(L"Spearman");
-		spearman->SetPlayerObject(player);
-		MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
-		spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
-		spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
-		spearmancol->SetType(eColliderType::Box);
-		spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
-		Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
-		spearmanRigidbody->SetGround(false);
-		spearman->AddComponent<MonsterScript>();
+		//{
+		//	Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
+		//	spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+		//	spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		//	spearman->SetName(L"Spearman");
+		//	spearman->SetPlayerObject(player);
+		//	MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
+		//	spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
+		//	spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		//	Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
+		//	spearmancol->SetType(eColliderType::Box);
+		//	spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+		//	Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
+		//	spearmanRigidbody->SetGround(false);
+		//	spearman->AddComponent<MonsterScript>();
 
-		camScript->SetLockOnTarget(spearman);
+		//	camScript->SetLockOnTarget(spearman);
+		//}
 
+
+		{
+			Musketeerman* musketeerman = object::Instantiate<Musketeerman>(eLayerType::Monster);
+			musketeerman->GetComponent<Transform>()->SetPosition(Vector3(-5.0f, 0.0f, 15.0f));
+			musketeerman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+			musketeerman->SetName(L"Musketeerman");
+			musketeerman->SetPlayerObject(player);
+			MeshRenderer* musketeermanmr = musketeerman->AddComponent<MeshRenderer>();
+			musketeermanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			musketeermanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* musketeermancol = musketeerman->AddComponent <Collider2D>();
+			musketeermancol->SetType(eColliderType::Box);
+			musketeermancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+			Rigidbody* spearmanRigidbody = musketeerman->AddComponent<Rigidbody>();
+			spearmanRigidbody->SetGround(false);
+
+		}
 		
 
 		{
@@ -95,8 +114,8 @@ namespace ya
 			groundTr->SetScale(Vector3(100.0f, 4.0f, 100.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
@@ -111,8 +130,8 @@ namespace ya
 			groundTr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			Collider2D* groundCollider = grappleGround->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
@@ -201,7 +220,14 @@ namespace ya
 		//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
+		//{
+		//	MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\House.fbx");
 
+		//	GameObject* player = meshData->Instantiate();
+		//	player->SetName(L"House");
+		//	Transform* tr = player->GetComponent<Transform>();
+		//	tr->SetRotation(Vector3(0, 0, 0));
+		//}
 	
 		Scene::Initialize();
 	}

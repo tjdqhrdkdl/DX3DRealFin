@@ -40,27 +40,25 @@ namespace gui
 		mDebugObjects[(UINT)eColliderType::Rect] = new DebugObject();
 		ya::MeshRenderer* renderer
 			= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<ya::MeshRenderer>();
-
-		renderer->SetMaterial(material);
 		renderer->SetMesh(rectMesh);
+		renderer->SetMaterial(material, 0);
 
 		std::shared_ptr<ya::Mesh> circleMesh = ya::Resources::Find<ya::Mesh>(L"CircleMesh");
 
 		mDebugObjects[(UINT)eColliderType::Circle] = new DebugObject();
 		renderer
 			= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<ya::MeshRenderer>();
-
-		renderer->SetMaterial(material);
 		renderer->SetMesh(circleMesh);
+		renderer->SetMaterial(material, 0);
 
 		std::shared_ptr<ya::Mesh> cubeMesh = ya::Resources::Find<ya::Mesh>(L"CubeMesh");
 
 		mDebugObjects[(UINT)eColliderType::Box] = new DebugObject();
 		renderer
 			= mDebugObjects[(UINT)eColliderType::Box]->AddComponent<ya::MeshRenderer>();
-
-		renderer->SetMaterial(material);
 		renderer->SetMesh(cubeMesh);
+
+		renderer->SetMaterial(material, 0);
 
 		//그리드 이쪽으로 옮겨줘야 한다.
 		// Grid Object
