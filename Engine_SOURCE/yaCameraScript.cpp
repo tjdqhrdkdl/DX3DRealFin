@@ -193,15 +193,15 @@ namespace ya
 	void CameraScript::ObstacleDetection()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 direction = tr->GetPosition() - mDelayedTargetPos;
+		Vector3 direction =  mChildPos;
 		direction.Normalize();
 		std::vector<eLayerType> layers = {};
 		layers.push_back(eLayerType::Ground);
 		RayHit hit = CollisionManager::RayCast(mPlayerTarget, mDelayedTargetPos, direction, layers);
 		if (hit.isHit)
 		{
-			int a = 0;
-			tr->SetPosition(hit.contact - direction);
+			if(hit.length < mDistFromTarget)
+				mChildPos = direction * hit.length - direction;
 		}
 	}
 

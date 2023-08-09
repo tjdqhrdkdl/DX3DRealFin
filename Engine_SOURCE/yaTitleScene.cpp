@@ -111,7 +111,7 @@ namespace ya
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(0.0f, -10.0f, 10.0f));
-			groundTr->SetScale(Vector3(100.0f, 4.0f, 100.0f));
+			groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -153,7 +153,7 @@ namespace ya
 			}
 		}
 
-		{
+	/*	{
 				GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
 				logbridge->SetName(L"LogBridge");
 				Transform* logbridgeTr = logbridge->GetComponent<Transform>();
@@ -167,7 +167,7 @@ namespace ya
 				logbridgeCollider->SetType(eColliderType::Box);
 				logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 				logbridge->AddComponent<LogBridgeScript>();
-		}
+		}*/
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);

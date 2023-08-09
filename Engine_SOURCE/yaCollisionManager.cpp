@@ -475,7 +475,7 @@ namespace ya
 			worldMat *= colMatrix;
 
 			float dist = RayIntersect(ray, obj);
-			if (dist < 0)
+			if (dist <= 0)
 				continue;
 
 			if (dist < distMin)
