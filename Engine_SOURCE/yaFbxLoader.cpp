@@ -744,8 +744,8 @@ namespace ya
 	}
 	void FbxLoader::Release()
 	{
-		mManager->Destroy();
-		mScene->Destroy();
+		//mManager->Destroy();
+		//mScene->Destroy();
 		//mImporter->Destroy();
 
 		//for (Bone* bone : mBones)

@@ -5,11 +5,14 @@
 #include "yaTime.h"
 #include "yaCollisionManager.h"
 #include "yaApplication.h"
+#include "yaSceneManager.h"
 
 extern ya::Application application;
 
 namespace ya
 {
+	const float lockOnDistanceMax = 80.0f;
+
 	CameraScript::CameraScript()
 		: Script()
 		, mChildPos(Vector3(0, 0, -40))
@@ -159,12 +162,12 @@ namespace ya
 					//카메라 오브젝트의 회전을 바꿔준다.
 
 					//구 이동
-					mChildPos += 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+					mChildPos -= 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 					mChildPos.Normalize();
 					mChildPos *= mDistFromTarget;
 
 
-					mChildPos += 60 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+					mChildPos -= 30 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 					mChildPos.Normalize();
 					mChildPos *= mDistFromTarget;
 
@@ -193,28 +196,30 @@ namespace ya
 	void CameraScript::ObstacleDetection()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 direction = tr->GetPosition() - mDelayedTargetPos;
+		Vector3 direction =  mChildPos;
 		direction.Normalize();
 		std::vector<eLayerType> layers = {};
 		layers.push_back(eLayerType::Ground);
 		RayHit hit = CollisionManager::RayCast(mPlayerTarget, mDelayedTargetPos, direction, layers);
 		if (hit.isHit)
 		{
-			int a = 0;
-			tr->SetPosition(hit.contact - direction);
+			if(hit.length < mDistFromTarget)
+				mChildPos = direction * hit.length - direction;
 		}
 	}
 
 	void CameraScript::LockOn()
 	{
 		if (Input::GetKeyDown(eKeyCode::MBTN))
-			if (mLockOnTarget)
-				mTestTarget = mLockOnTarget, mLockOnTarget = nullptr, mbLockOn = false;
+			if (mbLockOn)
+				mLockOnTarget = nullptr, mbLockOn = false;
 			else
-				mLockOnTarget = mTestTarget, mbLockOn = true;
-		if (mLockOnTarget)
+				SetLockOnTarget();
+		if (mbLockOn)
 		{
-			Vector3 dir = mDelayedTargetPos - mLockOnTarget->GetComponent<Transform>()->GetPosition();
+			Transform* monTr = mLockOnTarget->GetComponent<Transform>();
+			Vector3 monPos = monTr->GetPosition();
+			Vector3 dir = mDelayedTargetPos - monPos;
 			dir.Normalize();
 			dir.y += 0.3;
 			dir.Normalize();
@@ -228,6 +233,74 @@ namespace ya
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
 			mChildPos.Normalize();
 			mChildPos *= mDistFromTarget;
+
+			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
+			float monPlDist = monPlDiff.Length();
+			if(monPlDist > lockOnDistanceMax)
+				mLockOnTarget = nullptr, mbLockOn = false;
+			
+		}
+
+
+	}
+	void CameraScript::SetLockOnTarget()
+	{
+		//락온 타겟을 정해줘야함.
+		//mbtn 클릭하면 락온 대상 탐색
+		//탐색 성공시 락온 타겟으로 설정, 락온상태 설정 
+		//탐색 실패시 락온상태 off , 락온 타겟 null
+		//락온 탐색에 고려해야하는 부분 -> 카메라 포워드와 목표물의 각도 / 거리 / 장애물.
+		//장애물을 고려할때, 사실 일부분만 보여도 락온이 되던데. 레이를 여러방 쏴야하나??
+		//락온 대상이 장애물 등에 완전히 가려지거나 너무 멀어지면 락온이 풀려야한다.
+
+		Scene* scene =  SceneManager::GetActiveScene();
+		std::vector<GameObject*> mons =  scene->GetGameObjects(eLayerType::Monster);
+		float minDist = 10000000;
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		Vector3 pos = tr->GetPosition();
+		Transform* plTr = mPlayerTarget->GetComponent<Transform>();
+		Vector3 plPos = plTr->GetPosition();
+		for (GameObject* mon : mons)
+		{
+			Transform* monTr = mon->GetComponent<Transform>();
+			Vector3 monPos = monTr->GetPosition();
+			Vector3 monCamDiff = monPos - pos;
+			Vector3 monPlDiff = monPos - plPos;
+			float dist = monPlDiff.Length();
+			
+			// 락온이 가능한 최대거리를 벗어나는지 체크
+			if (dist > lockOnDistanceMax)
+				continue;
+
+			// 카메라 포워드와 각도 체크  (이 각도가 문제임. 각도의 적정수준이 필요할듯)
+			Quaternion rot = Quaternion::FromToRotation(tr->Forward(), monCamDiff);
+			Vector3 theta = rot.ToEuler();
+			if (fabsf(theta.x) > XM_PIDIV2 * 1/ 2)
+				continue;
+			if (fabsf(theta.y) > XM_PIDIV2 * 1/ 2)
+				continue;
+			//if (fabsf(theta.z) > XM_PI * 2 / 3)
+			//	continue;
+			
+			// 카메라와 몬스터 사이에 장애물(시야에 가려지는지) 체크   (아마 레이를 몇개 더쏴서 확인해야할듯 ?)
+			//Vector3 dir = -monCamDiff;
+			//dir.Normalize();
+			//std::vector<eLayerType> layers = {};
+			//layers.push_back(eLayerType::Ground);
+			//RayHit hit = CollisionManager::RayCast(mon, dir, layers);
+			//if (hit.isHit)
+			//	continue;
+
+			// 위 조건을 만족하면서, 더 적절한 오브젝트가 있는지 체크   (현재는 더 가까운 것이 더 적절하다.)
+
+			Vector3 plMonDistVec = monPos - plPos;
+			float plMonDist = plMonDistVec.Length();
+			if (plMonDist < minDist)
+			{
+				minDist = plMonDist;
+				mLockOnTarget = mon;
+				mbLockOn = true;
+			}
 		}
 	}
 }
