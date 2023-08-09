@@ -11,7 +11,7 @@ extern ya::Application application;
 
 namespace ya
 {
-	const float lockOnDistanceMax = 150.0f;
+	const float lockOnDistanceMax = 80.0f;
 
 	CameraScript::CameraScript()
 		: Script()
@@ -162,12 +162,12 @@ namespace ya
 					//카메라 오브젝트의 회전을 바꿔준다.
 
 					//구 이동
-					mChildPos += 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+					mChildPos -= 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 					mChildPos.Normalize();
 					mChildPos *= mDistFromTarget;
 
 
-					mChildPos += 60 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+					mChildPos -= 30 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 					mChildPos.Normalize();
 					mChildPos *= mDistFromTarget;
 
@@ -215,9 +215,11 @@ namespace ya
 				mLockOnTarget = nullptr, mbLockOn = false;
 			else
 				SetLockOnTarget();
-		if (mLockOnTarget)
+		if (mbLockOn)
 		{
-			Vector3 dir = mDelayedTargetPos - mLockOnTarget->GetComponent<Transform>()->GetPosition();
+			Transform* monTr = mLockOnTarget->GetComponent<Transform>();
+			Vector3 monPos = monTr->GetPosition();
+			Vector3 dir = mDelayedTargetPos - monPos;
 			dir.Normalize();
 			dir.y += 0.3;
 			dir.Normalize();
@@ -231,6 +233,12 @@ namespace ya
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
 			mChildPos.Normalize();
 			mChildPos *= mDistFromTarget;
+
+			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
+			float monPlDist = monPlDiff.Length();
+			if(monPlDist > lockOnDistanceMax)
+				mLockOnTarget = nullptr, mbLockOn = false;
+			
 		}
 
 
@@ -249,18 +257,23 @@ namespace ya
 		std::vector<GameObject*> mons =  scene->GetGameObjects(eLayerType::Monster);
 		float minDist = 10000000;
 		Transform* tr = GetOwner()->GetComponent<Transform>();
+		Vector3 pos = tr->GetPosition();
+		Transform* plTr = mPlayerTarget->GetComponent<Transform>();
+		Vector3 plPos = plTr->GetPosition();
 		for (GameObject* mon : mons)
 		{
 			Transform* monTr = mon->GetComponent<Transform>();
-			Vector3 dif = monTr->GetPosition() - tr->GetPosition();
-			float dist = dif.Length();
+			Vector3 monPos = monTr->GetPosition();
+			Vector3 monCamDiff = monPos - pos;
+			Vector3 monPlDiff = monPos - plPos;
+			float dist = monPlDiff.Length();
 			
 			// 락온이 가능한 최대거리를 벗어나는지 체크
 			if (dist > lockOnDistanceMax)
 				continue;
 
 			// 카메라 포워드와 각도 체크  (이 각도가 문제임. 각도의 적정수준이 필요할듯)
-			Quaternion rot = Quaternion::FromToRotation(tr->Forward(), dif);
+			Quaternion rot = Quaternion::FromToRotation(tr->Forward(), monCamDiff);
 			Vector3 theta = rot.ToEuler();
 			if (fabsf(theta.x) > XM_PIDIV2 * 1/ 2)
 				continue;
@@ -270,18 +283,21 @@ namespace ya
 			//	continue;
 			
 			// 카메라와 몬스터 사이에 장애물(시야에 가려지는지) 체크   (아마 레이를 몇개 더쏴서 확인해야할듯 ?)
-			Vector3 dir = -dif;
-			dir.Normalize();
-			std::vector<eLayerType> layers = {};
-			layers.push_back(eLayerType::Ground);
-			RayHit hit = CollisionManager::RayCast(mon, dir, layers);
-			if (hit.isHit)
-				continue;
+			//Vector3 dir = -monCamDiff;
+			//dir.Normalize();
+			//std::vector<eLayerType> layers = {};
+			//layers.push_back(eLayerType::Ground);
+			//RayHit hit = CollisionManager::RayCast(mon, dir, layers);
+			//if (hit.isHit)
+			//	continue;
 
 			// 위 조건을 만족하면서, 더 적절한 오브젝트가 있는지 체크   (현재는 더 가까운 것이 더 적절하다.)
-			if (dist < minDist)
+
+			Vector3 plMonDistVec = monPos - plPos;
+			float plMonDist = plMonDistVec.Length();
+			if (plMonDist < minDist)
 			{
-				minDist = dist;
+				minDist = plMonDist;
 				mLockOnTarget = mon;
 				mbLockOn = true;
 			}

@@ -118,7 +118,7 @@ namespace ya
 
 	void Musketeerman::Attack_Almost()
 	{
-		Musketeerman_Almost* attack = object::Instantiate<Musketeerman_Almost>(eLayerType::Monster);
+		Musketeerman_Almost* attack = object::Instantiate<Musketeerman_Almost>(eLayerType::MonsterProjectile);
 
 		Transform* tr = GetComponent<Transform>();
 		Vec3 rot = tr->GetRotation();
