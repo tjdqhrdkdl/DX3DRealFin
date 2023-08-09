@@ -95,8 +95,8 @@ namespace ya
 			musketeerman->SetName(L"Musketeerman");
 			musketeerman->SetPlayerObject(player);
 			MeshRenderer* musketeermanmr = musketeerman->AddComponent<MeshRenderer>();
-			musketeermanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			musketeermanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			musketeermanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			Collider2D* musketeermancol = musketeerman->AddComponent <Collider2D>();
 			musketeermancol->SetType(eColliderType::Box);
 			musketeermancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
@@ -161,8 +161,8 @@ namespace ya
 				logbridgeTr->SetScale(Vector3(10.0f, 2.0f, 50.0f));
 				logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 				MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
-				logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 				logbridgeRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+				logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"),0);
 				Collider2D* logbridgeCollider = logbridge->AddComponent<Collider2D>();
 				logbridgeCollider->SetType(eColliderType::Box);
 				logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
@@ -220,14 +220,14 @@ namespace ya
 		//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
-		{
-			MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\House.fbx");
+		//{
+		//	MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\House.fbx");
 
-			GameObject* player = meshData->Instantiate();
-			player->SetName(L"House");
-			Transform* tr = player->GetComponent<Transform>();
-			tr->SetRotation(Vector3(0, 0, 0));
-		}
+		//	GameObject* player = meshData->Instantiate();
+		//	player->SetName(L"House");
+		//	Transform* tr = player->GetComponent<Transform>();
+		//	tr->SetRotation(Vector3(0, 0, 0));
+		//}
 	
 		Scene::Initialize();
 	}
