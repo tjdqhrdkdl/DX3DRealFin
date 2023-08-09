@@ -270,13 +270,13 @@ namespace ya
 			//	continue;
 			
 			// 카메라와 몬스터 사이에 장애물(시야에 가려지는지) 체크   (아마 레이를 몇개 더쏴서 확인해야할듯 ?)
-			//Vector3 dir = dif;
-			//dir.Normalize();
-			//std::vector<eLayerType> layers = {};
-			//layers.push_back(eLayerType::Ground);
-			//RayHit hit = CollisionManager::RayCast(mon, dir, layers);
-			//if (hit.isHit)
-			//	continue;
+			Vector3 dir = -dif;
+			dir.Normalize();
+			std::vector<eLayerType> layers = {};
+			layers.push_back(eLayerType::Ground);
+			RayHit hit = CollisionManager::RayCast(mon, dir, layers);
+			if (hit.isHit)
+				continue;
 
 			// 위 조건을 만족하면서, 더 적절한 오브젝트가 있는지 체크   (현재는 더 가까운 것이 더 적절하다.)
 			if (dist < minDist)
