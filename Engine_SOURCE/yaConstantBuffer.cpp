@@ -16,8 +16,8 @@ namespace ya::graphics
 
 	bool ConstantBuffer::Create(size_t size)
 	{
-		// ªÛºˆ πˆ∆€
-		desc.ByteWidth = size;
+		// ÏÉÅÏàò Î≤ÑÌçº
+		desc.ByteWidth = (UINT)size;
 		desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
 		desc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
 		desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;

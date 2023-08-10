@@ -88,7 +88,7 @@
     <ClCompile Include="yaTime.cpp">
       <Filter>Engine\Time</Filter>
     </ClCompile>
-    <ClCompile Include="MonsterBase.cpp">
+    <ClCompile Include="yaMonsterBase.cpp">
       <Filter>Contents\Monster\Base</Filter>
     </ClCompile>
     <ClCompile Include="yaApplication.cpp">
@@ -104,7 +104,6 @@
       <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaStructedBuffer.cpp">
-      <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaScene.cpp">
       <Filter>Engine\Scene\Base</Filter>
@@ -196,6 +195,7 @@
     <ClCompile Include="yaMusketeerman_Shooting.cpp">
       <Filter>Contents\Monster\Attack</Filter>
     </ClCompile>
+
     <ClCompile Include="yaMeshData.cpp">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClCompile>
@@ -312,7 +312,7 @@
     <ClInclude Include="yaTime.h">
       <Filter>Engine\Time</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterBase.h">
+    <ClInclude Include="yaMonsterBase.h">
       <Filter>Contents\Monster\Base</Filter>
     </ClInclude>
     <ClInclude Include="yaApplication.h">
@@ -334,7 +334,6 @@
       <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="yaGraphics.h">
-      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaScene.h">
       <Filter>Engine\Scene\Base</Filter>
@@ -425,7 +424,7 @@
     </ClInclude>
     <ClInclude Include="yaPlayerActionScript.h">
       <Filter>Contents\Player</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
@@ -599,6 +598,7 @@
     <Filter Include="Contents\Monster\Musketeerman">
       <UniqueIdentifier>{351c027e-06f9-4c40-85e6-15e96efeb633}</UniqueIdentifier>
     </Filter>
+
     <Filter Include="Engine\Resource\MeshData">
       <UniqueIdentifier>{fd8e181e-ebdf-45da-bced-b6ac6b6fd068}</UniqueIdentifier>
     </Filter>

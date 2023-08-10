@@ -101,6 +101,7 @@ namespace ya::enums
 		Defense,		//막기
 		Attack,			//공격
 		Sit,			//휴식
+		Groggy,			//스턴 상태
 		Death,			
 		End,
 	};

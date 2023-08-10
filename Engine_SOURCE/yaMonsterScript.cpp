@@ -41,21 +41,21 @@ namespace ya
 							}
 							else
 							{
-								//Def
-
-
+								//Def 성공 체간 게이지만 약간 올려주면 됨.
+								spearman->SetDeathBlowCount(3.0f);
+								spearman->SetDeathBlowonoff(false);
 							}
 						}
 						else
 						{
-							//
-							player->SetWalk(true);
-
+							float test = spearman->GetHP();
+							spearman->SetHp(-4.0f);
 						}
 					}
 					else
 					{
-						player->SetWalk(true);
+						float test = spearman->GetHP();
+						spearman->SetHp(-4.0f);
 					}
 
 

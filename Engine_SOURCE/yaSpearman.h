@@ -1,5 +1,5 @@
 #pragma once
-#include "MonsterBase.h"
+#include "yaMonsterBase.h"
 
 
 namespace ya
@@ -34,6 +34,10 @@ namespace ya
         Vec3                    mWlakFixPos;
         
         bool                    mbParrying;
+
+
+        //지울거에요 안씀
+        class Transform* TEST;
 
 
     };

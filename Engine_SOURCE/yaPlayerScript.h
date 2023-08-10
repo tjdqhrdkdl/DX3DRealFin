@@ -2,6 +2,7 @@
 #include "yaScript.h"
 
 
+
 namespace ya
 {
 	class PlayerScript : public Script
