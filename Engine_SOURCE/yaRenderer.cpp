@@ -1047,7 +1047,7 @@ namespace ya::renderer
 		delete lightsBuffer;
 		lightsBuffer = nullptr;
 
-		for (size_t i = 0; i < 7; i++)
+		for (size_t i = 0; i < 8; i++)
 		{
 			if (renderTargets[i] == nullptr)
 			{

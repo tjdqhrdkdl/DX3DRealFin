@@ -98,13 +98,13 @@
       <Filter>Engine\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="yaGraphicDevice_DX11.cpp">
-      <Filter>Engine\Graphics\API</Filter>
+      <Filter>Engine\FontWrapper\Graphics\API</Filter>
     </ClCompile>
     <ClCompile Include="yaConstantBuffer.cpp">
-      <Filter>Engine\Graphics\Buffer</Filter>
+      <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaStructedBuffer.cpp">
-      <Filter>Engine\Graphics\Buffer</Filter>
+      <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaScene.cpp">
       <Filter>Engine\Scene\Base</Filter>
@@ -155,13 +155,13 @@
       <Filter>Contents\State</Filter>
     </ClCompile>
     <ClCompile Include="yaMultiRenderTarget.cpp">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="yaParticleShader.cpp">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="yaParticleSystem.cpp">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="yaCameraScript.cpp">
       <Filter>Contents\Camera</Filter>
@@ -319,16 +319,16 @@
       <Filter>Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="yaGraphicDevice_DX11.h">
-      <Filter>Engine\Graphics\API</Filter>
+      <Filter>Engine\FontWrapper\Graphics\API</Filter>
     </ClInclude>
     <ClInclude Include="yaConstantBuffer.h">
-      <Filter>Engine\Graphics\Buffer</Filter>
+      <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="yaStructedBuffer.h">
-      <Filter>Engine\Graphics\Buffer</Filter>
+      <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="yaGraphics.h">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaScene.h">
       <Filter>Engine\Scene\Base</Filter>
@@ -379,13 +379,13 @@
       <Filter>Contents\State</Filter>
     </ClInclude>
     <ClInclude Include="yaMultiRenderTarget.h">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaParticleShader.h">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaParticleSystem.h">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaCameraScript.h">
       <Filter>Contents\Camera</Filter>
@@ -521,15 +521,6 @@
     <Filter Include="Engine\GameObject">
       <UniqueIdentifier>{31f357ff-f1ae-4360-a346-7bfd2439cb21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Graphics">
-      <UniqueIdentifier>{bb133d81-909b-41ea-b03b-b7461611ad82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Graphics\API">
-      <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Graphics\Buffer">
-      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\High Level InterFace">
       <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
     </Filter>
@@ -604,6 +595,15 @@
     </Filter>
     <Filter Include="Engine\Renderer">
       <UniqueIdentifier>{a7953651-a9ac-4dca-9258-c876e4d62829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FontWrapper\Graphics">
+      <UniqueIdentifier>{bb133d81-909b-41ea-b03b-b7461611ad82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FontWrapper\Graphics\API">
+      <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FontWrapper\Graphics\Buffer">
+      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

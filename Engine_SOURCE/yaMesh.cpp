@@ -19,82 +19,87 @@ namespace ya
 
 	}
 
-	std::shared_ptr<Mesh> Mesh::CreateFromContainer(FbxLoader* loader)
+	std::vector<std::shared_ptr<Mesh>> Mesh::CreateFromContainer(FbxLoader* loader)
 	{
-		const Container& container = loader->GetContainer(0);
-
-		UINT iVtxCount = (UINT)container.positions.size();
-		D3D11_BUFFER_DESC tVtxDesc = {};
-
-		tVtxDesc.ByteWidth = sizeof(graphics::Vertex) * iVtxCount;
-		tVtxDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-		tVtxDesc.Usage = D3D11_USAGE_DEFAULT;
-		if (D3D11_USAGE_DYNAMIC == tVtxDesc.Usage)
-			tVtxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-		D3D11_SUBRESOURCE_DATA tSub = {};
-		tSub.pSysMem = malloc(tVtxDesc.ByteWidth);
-
-		graphics::Vertex* pSys = (graphics::Vertex*)tSub.pSysMem;
-		for (UINT i = 0; i < iVtxCount; ++i)
+		std::vector<std::shared_ptr<Mesh>> ret = {};
+		for (size_t i = 0; i < loader->GetContainerCount(); i++)
 		{
-			pSys[i].pos = Vector4(container.positions[i].x
-				, container.positions[i].y
-				, container.positions[i].z, 1.0f);
-			pSys[i].uv = container.uv[i];
-			pSys[i].color = Vector4(1.f, 0.f, 1.f, 1.f);
-			pSys[i].normal = container.normals[i];
-			pSys[i].tangent = container.tangents[i];
-			pSys[i].biNormal = container.binormals[i];
-			//pSys[i].vWeights = container->vecWeights[i];
-			//pSys[i].vIndices = container->vecIndices[i];
-		}
+			const Container& container = loader->GetContainer(i);
 
-		Microsoft::WRL::ComPtr<ID3D11Buffer> pVB = NULL;
-		if (FAILED(GetDevice()->CreateBuffer(&tVtxDesc, &tSub, pVB.GetAddressOf())))
-		{
-			return NULL;
-		}
+			UINT iVtxCount = (UINT)container.positions.size();
+			D3D11_BUFFER_DESC tVtxDesc = {};
 
-		std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>();
-		pMesh->mVertexBuffer = pVB;
-		pMesh->mVtxCount = iVtxCount;
-		pMesh->mVBDesc = tVtxDesc;
-		pMesh->pVtxSysMem = pSys;
+			tVtxDesc.ByteWidth = sizeof(graphics::Vertex) * iVtxCount;
+			tVtxDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
-		// 인덱스 정보
-		UINT iIdxBufferCount = (UINT)container.indices.size();
-		D3D11_BUFFER_DESC tIdxDesc = {};
+			tVtxDesc.Usage = D3D11_USAGE_DEFAULT;
+			if (D3D11_USAGE_DYNAMIC == tVtxDesc.Usage)
+				tVtxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-		for (UINT i = 0; i < iIdxBufferCount; ++i)
-		{
-			tIdxDesc.ByteWidth = (UINT)container.indices[i].size() * sizeof(UINT); // Index Format 이 R32_UINT 이기 때문
-			tIdxDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-			tIdxDesc.Usage = D3D11_USAGE_DEFAULT;
-			if (D3D11_USAGE_DYNAMIC == tIdxDesc.Usage)
-				tIdxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			D3D11_SUBRESOURCE_DATA tSub = {};
+			tSub.pSysMem = malloc(tVtxDesc.ByteWidth);
 
-			void* pSysMem = malloc(tIdxDesc.ByteWidth);
-			memcpy(pSysMem, container.indices[i].data(), tIdxDesc.ByteWidth);
-			tSub.pSysMem = pSysMem;
-
-			Microsoft::WRL::ComPtr<ID3D11Buffer> pIB = nullptr;
-			if (FAILED(GetDevice()->CreateBuffer(&tIdxDesc, &tSub, pIB.GetAddressOf())))
+			graphics::Vertex* pSys = (graphics::Vertex*)tSub.pSysMem;
+			for (UINT i = 0; i < iVtxCount; ++i)
 			{
-				return NULL;
+				pSys[i].pos = Vector4(container.positions[i].x
+					, container.positions[i].y
+					, container.positions[i].z, 1.0f);
+				pSys[i].uv = container.uv[i];
+				pSys[i].color = Vector4(1.f, 0.f, 1.f, 1.f);
+				pSys[i].normal = container.normals[i];
+				pSys[i].tangent = container.tangents[i];
+				pSys[i].biNormal = container.binormals[i];
+				//pSys[i].vWeights = container->vecWeights[i];
+				//pSys[i].vIndices = container->vecIndices[i];
 			}
 
-			IndexInfo info = {};
-			info.desc = tIdxDesc;
-			info.indexCount = (UINT)container.indices[i].size();
-			info.pIdxSysMem = pSysMem;
-			info.buffer = pIB;
+			Microsoft::WRL::ComPtr<ID3D11Buffer> pVB = NULL;
+			if (FAILED(GetDevice()->CreateBuffer(&tVtxDesc, &tSub, pVB.GetAddressOf())))
+			{
+				assert("버텍스 버퍼 생성 실패");
+			}
 
-			pMesh->mIndexInfos.push_back(info);
+			std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>();
+			pMesh->mVertexBuffer = pVB;
+			pMesh->mVtxCount = iVtxCount;
+			pMesh->mVBDesc = tVtxDesc;
+			pMesh->pVtxSysMem = pSys;
+
+			// 인덱스 정보
+			UINT iIdxBufferCount = (UINT)container.indices.size();
+			D3D11_BUFFER_DESC tIdxDesc = {};
+
+			for (UINT i = 0; i < iIdxBufferCount; ++i)
+			{
+				tIdxDesc.ByteWidth = (UINT)container.indices[i].size() * sizeof(UINT); // Index Format 이 R32_UINT 이기 때문
+				tIdxDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+				tIdxDesc.Usage = D3D11_USAGE_DEFAULT;
+				if (D3D11_USAGE_DYNAMIC == tIdxDesc.Usage)
+					tIdxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+				void* pSysMem = malloc(tIdxDesc.ByteWidth);
+				memcpy(pSysMem, container.indices[i].data(), tIdxDesc.ByteWidth);
+				tSub.pSysMem = pSysMem;
+
+				Microsoft::WRL::ComPtr<ID3D11Buffer> pIB = nullptr;
+				if (FAILED(GetDevice()->CreateBuffer(&tIdxDesc, &tSub, pIB.GetAddressOf())))
+				{
+					assert("인덱스 버퍼 생성 실패");
+				}
+
+				IndexInfo info = {};
+				info.desc = tIdxDesc;
+				info.indexCount = (UINT)container.indices[i].size();
+				info.pIdxSysMem = pSysMem;
+				info.buffer = pIB;
+
+				pMesh->mIndexInfos.push_back(info);
+			}
+			ret.push_back(pMesh);
 		}
-
-		return pMesh;
+		
+		return ret;
 	}
 
 	HRESULT Mesh::Load(const std::wstring& path)

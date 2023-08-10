@@ -381,6 +381,8 @@ namespace ya
 					//path_dest = GetRelativePath(CPathMgr::GetInst()->GetContentPath(), path_dest);
 					//CResMgr::GetInst()->Load<CTexture>(path_dest, path_dest);
 					std::wstring texPath = L"fbx\\Texture\\";
+					if (path_filename == L"")
+						continue;
 					texPath += path_filename;
 					Resources::Load<Texture>(path_filename, texPath);
 
@@ -634,7 +636,7 @@ namespace ya
 				fWeights[i] = (float)(*iter)[i].weight;
 				fIndices[i] = (float)(*iter)[i].boneIdx;
 			}
-
+			Vector4 zero = Vector4::Zero;
 			memcpy(&_pContainer->skiningWeights[iVtxIdx], fWeights, sizeof(Vector4));
 			memcpy(&_pContainer->skiningIndices[iVtxIdx], fIndices, sizeof(Vector4));
 		}

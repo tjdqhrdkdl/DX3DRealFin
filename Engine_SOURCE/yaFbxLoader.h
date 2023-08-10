@@ -67,6 +67,9 @@ namespace ya
 			uv.resize(size);
 			indices.resize(size);
 			weightAndIndices.resize(size);
+
+			skiningWeights.resize(size);
+				skiningIndices.resize(size);
 		}
 	};
 
