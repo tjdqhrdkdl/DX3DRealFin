@@ -64,6 +64,8 @@ namespace ya
 						continue;
 					if (left->GetComponent<Collider2D>() == nullptr)
 						continue;
+					if (!left->GetComponent<Collider2D>()->IsActive())
+						continue;
 
 					for (size_t k = i; k < rights.size(); k++)
 					{
@@ -72,6 +74,8 @@ namespace ya
 						if (right->GetState() != GameObject::Active)
 							continue;
 						if (right->GetComponent<Collider2D>() == nullptr)
+							continue;
+						if (!right->GetComponent<Collider2D>()->IsActive())
 							continue;
 						if (left == right)
 							continue;
@@ -475,7 +479,7 @@ namespace ya
 			worldMat *= colMatrix;
 
 			float dist = RayIntersect(ray, obj);
-			if (dist < 0)
+			if (dist <= 0)
 				continue;
 
 			if (dist < distMin)

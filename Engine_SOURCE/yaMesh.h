@@ -19,7 +19,7 @@ namespace ya
 		Mesh();
 		virtual ~Mesh();
 
-		static std::shared_ptr<Mesh> CreateFromContainer(FbxLoader* loader);
+		static std::vector<std::shared_ptr<Mesh>> CreateFromContainer(FbxLoader* loader);
 		virtual HRESULT Load(const std::wstring& path) override;
 
 		bool CreateVertexBuffer(void* data, UINT count);

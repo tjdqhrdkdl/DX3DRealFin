@@ -17,8 +17,9 @@ namespace ya::enums
 		Ground,
 		Logbridge,
 		Monster,
+		MonsterProjectile,
 		Player,
-
+		PlayerProjectile,
 		Particle,
 		PostProcess,
 		UI,

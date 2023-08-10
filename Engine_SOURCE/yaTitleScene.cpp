@@ -48,7 +48,7 @@ namespace ya
 		// Main Camera Game Object
 		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera);
 		cameraObj->SetName(L"MainCamera");
-		cameraObj->GetComponent<Transform>()->SetPosition(Vector3(20.0f, .0f, -500.0f));
+		cameraObj->GetComponent<Transform>()->SetPosition(Vector3(20.0f, .0f, -80.0f));
 		Camera* cameraComp = cameraObj->AddComponent<Camera>();
 		cameraComp->SetProjectionType(Camera::eProjectionType::Perspective);
 		//cameraComp->RegisterCameraInRenderer();
@@ -128,6 +128,7 @@ namespace ya
 		//}
 
 
+
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground");
@@ -174,6 +175,7 @@ namespace ya
 				hookTarget->AddComponent<HookTargetScript>();
 			}
 		}*/
+
 
 		//{
 		//		GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
@@ -242,14 +244,15 @@ namespace ya
 		//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
-		//{
-		//	MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\House.fbx");
+		{
+			MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\m11.fbx");
 
-		//	GameObject* player = meshData->Instantiate();
-		//	player->SetName(L"House");
-		//	Transform* tr = player->GetComponent<Transform>();
-		//	tr->SetRotation(Vector3(0, 0, 0));
-		//}
+			MeshObject* object = meshData->Instantiate(eLayerType::Ground);
+			Transform* tr = object->GetComponent<Transform>();
+			tr->SetPosition(Vector3(300, 500, 2000));
+			tr->SetRotation(Vector3(-90, 0, 0));
+			tr->SetScale(Vector3(10, 10, 10));
+		}
 	
 		Scene::Initialize();
 	}

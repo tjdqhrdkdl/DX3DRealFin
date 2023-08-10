@@ -80,7 +80,10 @@ namespace ya
 			return mKeys[static_cast<UINT>(keyCode)].eState == eKeyState::UP;
 		}
 
-		
+		static __forceinline bool GetKeyNone(eKeyCode keyCode)
+		{
+			return mKeys[static_cast<UINT>(keyCode)].eState == eKeyState::NONE;
+		}
 
 	private:
 		Input() = delete;

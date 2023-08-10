@@ -58,9 +58,6 @@
     <ClCompile Include="yaMonster.cpp">
       <Filter>Contents\Contents</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayer.cpp">
-      <Filter>Contents\Contents</Filter>
-    </ClCompile>
     <ClCompile Include="yaPlayerScript.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
@@ -101,13 +98,12 @@
       <Filter>Engine\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="yaGraphicDevice_DX11.cpp">
-      <Filter>Engine\Graphics\API</Filter>
+      <Filter>Engine\FontWrapper\Graphics\API</Filter>
     </ClCompile>
     <ClCompile Include="yaConstantBuffer.cpp">
-      <Filter>Engine\Graphics\Buffer</Filter>
+      <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaStructedBuffer.cpp">
-      <Filter>Engine\Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="yaScene.cpp">
       <Filter>Engine\Scene\Base</Filter>
@@ -158,13 +154,13 @@
       <Filter>Contents\State</Filter>
     </ClCompile>
     <ClCompile Include="yaMultiRenderTarget.cpp">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="yaParticleShader.cpp">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="yaParticleSystem.cpp">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="yaCameraScript.cpp">
       <Filter>Contents\Camera</Filter>
@@ -178,6 +174,9 @@
     <ClCompile Include="yaWallScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="yaPlayerActionScript.cpp">
+      <Filter>Contents\Player</Filter>
+	</ClCompile>
     <ClCompile Include="yaFbxLoader.cpp">
       <Filter>Engine\Resource\FbxLoader</Filter>
     </ClCompile>
@@ -196,17 +195,30 @@
     <ClCompile Include="yaMusketeerman_Shooting.cpp">
       <Filter>Contents\Monster\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="yaBaseRenderer.cpp" />
-    <ClCompile Include="yaLogBridgeScript.cpp" />
-    <ClCompile Include="yaMeshData.cpp" />
-    <ClCompile Include="yaPlayerActionScript.cpp" />
-    <ClCompile Include="yaRenderer.cpp" />
-    <ClCompile Include="yaSwordsman.cpp">
-      <Filter>Contents\Monster\Swordsman</Filter>
+
+    <ClCompile Include="yaMeshData.cpp">
+      <Filter>Engine\Resource\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBaseRenderer.cpp">
+      <Filter>Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="yaLogBridgeScript.cpp">
+      <Filter>Contents\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerActionScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaRenderer.cpp">
+      <Filter>Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayer.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMeshObject.cpp">
+      <Filter>Engine\Resource\MeshData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="yaSekiroEnums.h" />
     <ClInclude Include="yaMath.h">
       <Filter>Engine\Common\Math</Filter>
     </ClInclude>
@@ -270,9 +282,6 @@
     <ClInclude Include="yaMonster.h">
       <Filter>Contents\Contents</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayer.h">
-      <Filter>Contents\Contents</Filter>
-    </ClInclude>
     <ClInclude Include="yaPlayerScript.h">
       <Filter>Contents\Player</Filter>
     </ClInclude>
@@ -316,16 +325,15 @@
       <Filter>Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="yaGraphicDevice_DX11.h">
-      <Filter>Engine\Graphics\API</Filter>
+      <Filter>Engine\FontWrapper\Graphics\API</Filter>
     </ClInclude>
     <ClInclude Include="yaConstantBuffer.h">
-      <Filter>Engine\Graphics\Buffer</Filter>
+      <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="yaStructedBuffer.h">
-      <Filter>Engine\Graphics\Buffer</Filter>
+      <Filter>Engine\FontWrapper\Graphics\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="yaGraphics.h">
-      <Filter>Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaScene.h">
       <Filter>Engine\Scene\Base</Filter>
@@ -376,13 +384,13 @@
       <Filter>Contents\State</Filter>
     </ClInclude>
     <ClInclude Include="yaMultiRenderTarget.h">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaParticleShader.h">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaParticleSystem.h">
-      <Filter>Engine\Graphics</Filter>
+      <Filter>Engine\FontWrapper\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaCameraScript.h">
       <Filter>Contents\Camera</Filter>
@@ -420,11 +428,23 @@
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
-    <ClInclude Include="yaBaseRenderer.h" />
-    <ClInclude Include="yaMeshData.h" />
-    <ClInclude Include="yaRenderer.h" />
-    <ClInclude Include="yaSwordsman.h">
-      <Filter>Contents\Monster\Swordsman</Filter>
+    <ClInclude Include="yaMeshData.h">
+      <Filter>Engine\Resource\MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBaseRenderer.h">
+      <Filter>Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="yaRenderer.h">
+      <Filter>Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayer.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMeshObject.h">
+      <Filter>Engine\Resource\MeshData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,15 +529,6 @@
     <Filter Include="Engine\GameObject">
       <UniqueIdentifier>{31f357ff-f1ae-4360-a346-7bfd2439cb21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Graphics">
-      <UniqueIdentifier>{bb133d81-909b-41ea-b03b-b7461611ad82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Graphics\API">
-      <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Graphics\Buffer">
-      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\High Level InterFace">
       <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
     </Filter>
@@ -587,8 +598,21 @@
     <Filter Include="Contents\Monster\Musketeerman">
       <UniqueIdentifier>{351c027e-06f9-4c40-85e6-15e96efeb633}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\Monster\Swordsman">
-      <UniqueIdentifier>{dacc8e74-def5-445a-a26c-2ec4d855704d}</UniqueIdentifier>
+
+    <Filter Include="Engine\Resource\MeshData">
+      <UniqueIdentifier>{fd8e181e-ebdf-45da-bced-b6ac6b6fd068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Renderer">
+      <UniqueIdentifier>{a7953651-a9ac-4dca-9258-c876e4d62829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FontWrapper\Graphics">
+      <UniqueIdentifier>{bb133d81-909b-41ea-b03b-b7461611ad82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FontWrapper\Graphics\API">
+      <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FontWrapper\Graphics\Buffer">
+      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
