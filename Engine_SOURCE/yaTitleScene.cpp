@@ -254,7 +254,11 @@ namespace ya
 		{
 			MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\m11.fbx");
 
-			meshData->Instantiate();
+			MeshObject* object = meshData->Instantiate(eLayerType::Ground);
+			Transform* tr = object->GetComponent<Transform>();
+			tr->SetPosition(Vector3(0, 200, 0));
+			tr->SetRotation(Vector3(-90, 0, 0));
+			tr->SetScale(Vector3(10, 10, 10));
 		}
 	
 		Scene::Initialize();

@@ -211,6 +211,9 @@
     <ClCompile Include="yaPlayer.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
+    <ClCompile Include="yaMeshObject.cpp">
+      <Filter>Engine\Resource\MeshData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -437,6 +440,9 @@
     </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMeshObject.h">
+      <Filter>Engine\Resource\MeshData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

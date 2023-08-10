@@ -1,6 +1,7 @@
 #pragma once
 #include "yaResource.h"
 #include "yaMaterial.h"
+#include "yaMeshObject.h"
 #include "yaMesh.h"
 
 
@@ -17,7 +18,7 @@ namespace ya
 		virtual void Save(const std::wstring& path);
 		virtual HRESULT Load(const std::wstring& path) { return S_OK; }
 
-		std::vector<GameObject*> Instantiate();
+		MeshObject* Instantiate(eLayerType type);
 
 
 	private:
