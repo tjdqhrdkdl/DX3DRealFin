@@ -4,7 +4,7 @@
 #include "yaResources.h"
 #include "yaObject.h"
 #include "yaMeshRenderer.h"
-
+#include "yaMeshObject.h"
 namespace ya
 {
 	MeshData::MeshData()
@@ -66,14 +66,17 @@ namespace ya
 	void MeshData::Save(const std::wstring& path)
 	{
 	}
-	std::vector<GameObject*> MeshData::Instantiate()
+	MeshObject* MeshData::Instantiate(eLayerType type)
 	{
 
 		std::vector<GameObject*> ret = {};
+		std::wstring name = std::filesystem::path(mFullPath).stem();
+		MeshObject* meshObject = object::Instantiate<MeshObject>(type);
+		meshObject->SetName(name + L".All");
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{
-			GameObject* gameObj = object::Instantiate<GameObject>(eLayerType::Player);
-			gameObj->SetName(mFullPath + std::to_wstring(i));
+			GameObject* gameObj = object::Instantiate<GameObject>(type);
+			gameObj->SetName(name +L"." + std::to_wstring(i));
 			MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
 			mr->SetMesh(mMeshes[i]);
 
@@ -81,10 +84,9 @@ namespace ya
 			{
 				mr->SetMaterial(mMaterialsVec[i][k], k);
 			}
-			ret.push_back(gameObj);
+			meshObject->PushBackObject(gameObj);
 		}
 
-
-		return ret;
+		return meshObject;
 	}
 }
