@@ -40,42 +40,43 @@ namespace ya
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 
-		//Vector3 pos = tr->GetPosition();
+		Vector3 pos = tr->GetPosition();
 
-		//if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
-		//{
-		//	pos += 100.0f * tr->Right() * Time::DeltaTime();
-		//}
-		//else if (Input::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
-		//{
-		//	pos += 100.0f * -tr->Right() * Time::DeltaTime();
-		//}
-		//else if (Input::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
-		//{
-		//	pos += 100.0f * tr->Forward() * Time::DeltaTime();
-		//}
-		//else if (Input::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
-		//{
-		//	pos += 100.0f * -tr->Forward() * Time::DeltaTime();
-		//}
-		//else if (Input::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
-		//{
-		//	pos += 100.0f * tr->Up() * Time::DeltaTime();
-		//}
-		//else if (Input::GetKeyState(eKeyCode::E) == eKeyState::PRESSED)
-		//{
-		//	pos += 100.0f * -tr->Up() * Time::DeltaTime();
-		//}
+		if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
+		{
+			pos += 1000.0f * tr->Right() * Time::DeltaTime();
+		}
+		else if (Input::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
+		{
+			pos += 1000.0f * -tr->Right() * Time::DeltaTime();
+		}
+		else if (Input::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
+		{
+			pos += 1000.0f * tr->Forward() * Time::DeltaTime();
+		}
+		else if (Input::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
+		{
+			pos += 1000.0f * -tr->Forward() * Time::DeltaTime();
+		}
+		else if (Input::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
+		{
+			pos += 1000.0f * tr->Up() * Time::DeltaTime();
+		}
+		else if (Input::GetKeyState(eKeyCode::E) == eKeyState::PRESSED)
+		{
+			pos += 1000.0f * -tr->Up() * Time::DeltaTime();
+		}
 
-		//tr->SetPosition(pos);
+		tr->SetPosition(pos);
 
 		
 		if (mPlayerTarget != nullptr)
 		{
-			TrackTarget();
-			MouseMove();
-			LockOn();
-			ObstacleDetection();
+			//TrackTarget();
+			//MouseMove();
+			//LockOn();
+			//MoveToDestination();
+			//ObstacleDetection();
 		
 		}
 	}
@@ -221,7 +222,7 @@ namespace ya
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 dir = mDelayedTargetPos - monPos;
 			dir.Normalize();
-			dir.y += 0.3;
+			dir.y = 0.3;
 			dir.Normalize();
 			Vector3 dest = dir * mDistFromTarget;
 			Vector3 gap = dest - mChildPos;
@@ -233,6 +234,8 @@ namespace ya
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
 			mChildPos.Normalize();
 			mChildPos *= mDistFromTarget;
+
+
 
 			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
 			float monPlDist = monPlDiff.Length();
@@ -301,6 +304,33 @@ namespace ya
 				mLockOnTarget = mon;
 				mbLockOn = true;
 			}
+		}
+
+		if (!mbLockOn)
+		{
+			Vector3 dest = -(plTr->Forward()) + Vector3(0, 0.5, 0);
+			dest.Normalize();
+			dest *= mDistFromTarget;
+			SetDestination(dest);
+		}
+
+	}
+	void CameraScript::MoveToDestination()
+	{
+		if (mbDestination)
+		{
+			Vector3 gap = mDestination - mChildPos;
+			Vector3 gapNormal = mDestination - mChildPos;
+			gapNormal.Normalize();
+			Vector3 move = 200 * gapNormal * Time::DeltaTime();
+			if (gap.Length() < move.Length())
+			{
+				mbDestination = false;
+				return;
+			}
+			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
+			mChildPos.Normalize();
+			mChildPos *= mDistFromTarget;
 		}
 	}
 }

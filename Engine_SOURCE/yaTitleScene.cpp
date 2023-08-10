@@ -251,14 +251,15 @@ namespace ya
 		//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
-		//{
-		//	MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\House.fbx");
+		{
+			MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\m11.fbx");
 
-		//	GameObject* player = meshData->Instantiate();
-		//	player->SetName(L"House");
-		//	Transform* tr = player->GetComponent<Transform>();
-		//	tr->SetRotation(Vector3(0, 0, 0));
-		//}
+			MeshObject* object = meshData->Instantiate(eLayerType::Ground);
+			Transform* tr = object->GetComponent<Transform>();
+			tr->SetPosition(Vector3(300, 500, 2000));
+			tr->SetRotation(Vector3(-90, 0, 0));
+			tr->SetScale(Vector3(10, 10, 10));
+		}
 	
 		Scene::Initialize();
 	}
