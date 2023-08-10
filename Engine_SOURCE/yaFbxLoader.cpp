@@ -19,7 +19,7 @@ namespace ya
 	{
 		mManager = fbxsdk::FbxManager::Create();
 		fbxsdk::FbxIOSettings* ioSettings
-			= fbxsdk::FbxIOSettings::Create(mManager, IOSROOT);
+		= fbxsdk::FbxIOSettings::Create(mManager, IOSROOT);
 		mManager->SetIOSettings(ioSettings);
 		mScene = fbxsdk::FbxScene::Create(mManager, "");
 		mImporter = fbxsdk::FbxImporter::Create(mManager, "");
@@ -744,8 +744,9 @@ namespace ya
 	}
 	void FbxLoader::Release()
 	{
-		mManager->Destroy();
-		mScene->Destroy();
+		
+		//mManager->Destroy();
+		//mScene->Destroy();
 		//mImporter->Destroy();
 
 		//for (Bone* bone : mBones)

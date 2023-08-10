@@ -26,23 +26,27 @@ namespace ya
 		float GetMaxDeathBlowCount() { return mMaxDeathBlowCount; }
 		float GetAlertnessCount() { return mAlertnessCount; }
 		bool IsDeathBlow() { return mbDeathBlow; }
+		bool IsStartBlow() { return mbStartBlow; }
+		bool IsDeathBlowOnOff() { return mbDeathBlowOnOff; }
 
 
 		void SetSituation(enums::eSituation situation) { mSituation = situation; }
-		void SetHp(float hp) { mHp =+ hp; }
-		void SetMaxHP(float maxhp) { mMaxHp =+ maxhp; }
+		void SetHp(float hp);
+		void SetMaxHP(float maxhp) { mMaxHp += maxhp; }
 		void SetSpeed(float speed) { mSpeed = speed; }
-		void SetDeathBlowCount(float blowcount) { mDeathBlowCount =+ blowcount; }
+		void SetDeathBlowCount(float blowcount);
 		void SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount =+ maxblowcount; }
-		void SetAlertnessCount(float count) { mAlertnessCount =+ count; }
+		void SetAlertnessCount(float count) { mAlertnessCount += count; }
 		void SetDeathBlow(bool deathblow) { mbDeathBlow = deathblow; }
+		void SetStartBlow(bool blow) { mbStartBlow = blow; }
+		void SetDeathBlowonoff(bool onoff) { mbDeathBlowOnOff = onoff; }
 
 
 
 
 	private:
 
-		enums::eSituation	mSituation;				//¾î¶°ÇÑ »óÅÂÀÎÁö 
+		enums::eSituation	mSituation;				//ì–´ë– í•œ ìƒíƒœì¸ì§€ 
 
 
 		float               mHp;
@@ -50,13 +54,16 @@ namespace ya
 
 		float               mSpeed;
 
-		float               mDeathBlowCount;		//ÀÎ»ì °ÔÀÌÁö
-		float               mMaxDeathBlowCount;       
+		
 
-		float				mAlertnessCount;		//°æº¸ ·¹º§ (60ÀÌ»óÀÌ¸é °æ°è, 80ÀÌ»óÀÌ¸é Ãß°İ 100ÀÌ»óÀÌ¸é °ø°İ)
+		float               mDeathBlowCount;				//ì¸ì‚´ ê²Œì´ì§€
+		float               mMaxDeathBlowCount;				//
 
-		bool				mbDeathBlow;			//ÀÎ»ì °¡´ÉÇÑ »óÅÂÀÎÁö È®ÀÎ
+		float				mAlertnessCount;				//ê²½ë³´ ë ˆë²¨ (60ì´ìƒì´ë©´ ê²½ê³„, 80ì´ìƒì´ë©´ ì¶”ê²© 100ì´ìƒì´ë©´ ê³µê²©)
 
+		bool				mbDeathBlow;					//ì¸ì‚´ ê°€ëŠ¥í•œ ìƒíƒœì¸ì§€ í™•ì¸
+		bool				mbStartBlow;					//ì²« ì•”ì‚´ ê°€ëŠ¥í•œ ìƒíƒœ
+		bool                mbDeathBlowOnOff;				//ì¸ì‚´ ìƒíƒœì—ì„œ ëª‡ì´ˆ ë’¤ì— í’€ì–´ì¤„ì§€
 
 	};
 

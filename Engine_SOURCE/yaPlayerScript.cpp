@@ -11,6 +11,14 @@
 #include "yaRigidbody.h"
 #include "yaActionScript.h"
 #include "yaGrappleHookScript.h"
+#include "yaMusketeerman.h"
+#include "yaSpearman.h"
+#include "yaSwordsman.h"
+
+
+#include "yaSceneManager.h"
+#include "yaScene.h"
+
 
 namespace ya
 {
@@ -93,6 +101,23 @@ namespace ya
 
 	void PlayerScript::OnCollisionEnter(Collider2D* collider)
 	{
+		//Scene* test = SceneManager::GetActiveScene();
+		//test->GetGameObjects(enums::eLayerType::Monster);
+
+		
+		if (dynamic_cast<MonsterBase*>(collider->GetOwner()))
+		{
+
+		}
+		if (dynamic_cast<Spearman*>(collider->GetOwner()))
+		{
+		
+		}
+		if (dynamic_cast<Swordsman*>(collider->GetOwner()))
+		{
+		
+		}
+
 	}
 
 	void PlayerScript::OnCollisionStay(Collider2D* collider)
