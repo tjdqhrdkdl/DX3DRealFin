@@ -176,7 +176,7 @@
     </ClCompile>
     <ClCompile Include="yaPlayerActionScript.cpp">
       <Filter>Contents\Player</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="yaFbxLoader.cpp">
       <Filter>Engine\Resource\FbxLoader</Filter>
     </ClCompile>
@@ -195,7 +195,6 @@
     <ClCompile Include="yaMusketeerman_Shooting.cpp">
       <Filter>Contents\Monster\Attack</Filter>
     </ClCompile>
-
     <ClCompile Include="yaMeshData.cpp">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClCompile>
@@ -217,6 +216,7 @@
     <ClCompile Include="yaMeshObject.cpp">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClCompile>
+    <ClCompile Include="yaSwordsman.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -446,6 +446,7 @@
     <ClInclude Include="yaMeshObject.h">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClInclude>
+    <ClInclude Include="yaSwordsman.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -598,7 +599,6 @@
     <Filter Include="Contents\Monster\Musketeerman">
       <UniqueIdentifier>{351c027e-06f9-4c40-85e6-15e96efeb633}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="Engine\Resource\MeshData">
       <UniqueIdentifier>{fd8e181e-ebdf-45da-bced-b6ac6b6fd068}</UniqueIdentifier>
     </Filter>
