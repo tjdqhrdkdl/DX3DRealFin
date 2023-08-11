@@ -33,7 +33,6 @@
 
 #include "yaCrouchObjectScript.h"
 
-
 #include "yaMonsterScript.h"
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
@@ -184,12 +183,12 @@ namespace ya
 			ground1Tr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
 			ground1Tr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = grappleGround1->AddComponent<MeshRenderer>();
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			Collider2D* groundCollider = grappleGround1->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			grappleGround1->AddComponent<GroundScript>();
+
 
 			{
 				GameObject* hookTarget1 = object::Instantiate<GameObject>(eLayerType::Hook);
@@ -205,19 +204,15 @@ namespace ya
 		}
 
 		{
-			GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
-			logbridge->SetName(L"LogBridge");
-			Transform* logbridgeTr = logbridge->GetComponent<Transform>();
-			logbridgeTr->SetPosition(Vector3(0.0f, -6.0f, 10.0f));
-			logbridgeTr->SetScale(Vector3(10.0f, 2.0f, 50.0f));
-			logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
-			logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"));
-			logbridgeRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			Collider2D* logbridgeCollider = logbridge->AddComponent<Collider2D>();
-			logbridgeCollider->SetType(eColliderType::Box);
-			logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			logbridge->AddComponent<LogBridgeScript>();
+			GameObject* grappleGround1 = object::Instantiate<GameObject>(eLayerType::Ground);
+			grappleGround1->SetName(L"crouch object");
+			Transform* ground1Tr = grappleGround1->GetComponent<Transform>();
+			ground1Tr->SetPosition(Vector3(60.0f, 0.0f, 60.0f));
+			ground1Tr->SetScale(Vector3(40.0f, 20.0f, 40.0f));
+			Collider2D* groundCollider = grappleGround1->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			grappleGround1->AddComponent<CrouchObjectScript>();
 		}
 
 		//{
