@@ -199,7 +199,7 @@ namespace ya
 				Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
 				hookTargetCollider->SetType(eColliderType::Box);
 				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-				hookTarget->AddComponent<HookTargetScript>();
+				hookTarget1->AddComponent<HookTargetScript>();
 			}
 		}
 
