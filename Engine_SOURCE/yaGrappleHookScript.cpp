@@ -4,8 +4,16 @@
 
 #include "yaRigidbody.h"
 #include "yaTransform.h"
+#include "yaCollisionManager.h"
 
 #include <assert.h>
+
+
+#include "yaPlayer.h"
+#include "yaApplication.h"
+#include "yaInput.h"
+
+extern ya::Application application;
 
 namespace ya
 {
@@ -17,6 +25,7 @@ namespace ya
 		, mDistance(0.0f)
 		, mCurrentDistance(0.0f)
 		, mbGrappleHook(false)
+
 	{
 	}
 	GrappleHookScript::~GrappleHookScript()
@@ -28,6 +37,32 @@ namespace ya
 
 	void GrappleHookScript::Update()
 	{
+		Player* player = dynamic_cast<Player*>(GetOwner());
+
+		GameObject* camera = player->GetCamera();
+		Transform* cameraTr = camera->GetComponent<Transform>();
+		Vector3 cameraPos = cameraTr->GetPosition();
+
+
+		// find hook target
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		Vector3 pos = tr->GetPosition();
+		std::vector<eLayerType> layers;
+		layers.push_back(eLayerType::Hook);
+		RayHit hit = CollisionManager::RayCast(camera, cameraPos, cameraTr->Forward(), layers);
+		//RayHit hit = CollisionManager::RayCast(GetOwner(), pos, tr->Forward(), layers);
+
+		GrappleHookScript* action = player->GetScript<GrappleHookScript>();
+		if (hit.isHit)
+		{
+			action->SetGrappleHookTarget(hit.hitObj);
+		}
+		else
+		{
+			action->SetGrappleHookTarget(nullptr);
+		}
+
+
 		if (mbGrappleHook)
 		{
 			if (mCurrentDistance > 4.0f)
@@ -60,6 +95,12 @@ namespace ya
 
 	void GrappleHookScript::Render()
 	{
+		if (mGrappleHookTarget != nullptr)
+		{
+			wchar_t szFloat[50] = {};
+			swprintf_s(szFloat, 50, L"target on");
+			TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
+		}
 	}
 
 	void GrappleHookScript::GrappleHook()
@@ -76,12 +117,12 @@ namespace ya
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		Vector3 pos = tr->GetPosition();
-		
-		// °Å¸® ±¸ÇÏ±â
+
+		// ê±°ë¦¬ êµ¬í•˜ê¸°
 		mDistance = pos.Distance(pos, mHookTargetPosition);
 		mCurrentDistance = mDistance;
 
-		// ¹æÇâ ±¸ÇÏ±â
+		// ë°©í–¥ êµ¬í•˜ê¸°
 		Vector3 dir = mHookTargetPosition - pos;
 		dir.Normalize();
 		mDirection = dir;
