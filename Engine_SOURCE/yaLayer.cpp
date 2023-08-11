@@ -4,7 +4,7 @@
 
 namespace ya
 {
-	// z°ª Á¤·Ä ÀÛ¼ºÁß
+	// zê°’ ì •ë ¬ ì‘ì„±ì¤‘
 	//static bool CompareGameObjectByZAxis(GameObject* a, GameObject* b)
 	//{
 	//	Transform* aTr = a->GetComponent<Transform>();
@@ -41,8 +41,10 @@ namespace ya
 
 	void Layer::Update()
 	{
-		for (GameObject* obj : mGameObjects)
+		for (int i = 0; i < mGameObjects.size(); i++)
 		{
+			GameObject* obj = mGameObjects[i];
+
 			if (obj == nullptr)
 				continue;
 			if (obj->GetState() != GameObject::eState::Active)
@@ -54,8 +56,12 @@ namespace ya
 
 	void Layer::FixedUpdate()
 	{
-		for (GameObject* obj : mGameObjects)
+
+		for (int i = 0; i < mGameObjects.size(); i++)
 		{
+			GameObject* obj = mGameObjects[i];
+
+
 			if (obj == nullptr)
 				continue;
 			if (obj->GetState() != GameObject::eState::Active)
@@ -64,6 +70,9 @@ namespace ya
 			obj->FixedUpdate();
 		}
 
+
+
+
 		// sort z axis
 		//std::vector<GameObject*> mGameObjects;
 		//std::sort(mGameObjects.begin(), mGameObjects.end(), CompareGameObjectByZAxis);
@@ -71,8 +80,10 @@ namespace ya
 
 	void Layer::Render()
 	{
-		for (GameObject* obj : mGameObjects)
+		for (int i = 0; i < mGameObjects.size(); i++)
 		{
+			GameObject* obj = mGameObjects[i];
+
 			if (obj == nullptr)
 				continue;
 			if (obj->GetState() != GameObject::eState::Active)
@@ -85,7 +96,7 @@ namespace ya
 	void Layer::Destroy()
 	{
 		std::set<GameObject*> deleteObjects;
-		// »èÁ¦ÇÒ ¿ÀºêÁ§Æ®µéÀ» ÀüºÎ Ã£¾Æ¿Â´Ù.
+		// ì‚­ì œí•  ì˜¤ë¸Œì íŠ¸ë“¤ì„ ì „ë¶€ ì°¾ì•„ì˜¨ë‹¤.
 		for (GameObject* gameObj : mGameObjects)
 		{
 			if (gameObj->GetState() == GameObject::eState::Dead)
@@ -94,7 +105,7 @@ namespace ya
 			}
 		}
 
-		// Áö¿ö¾ßÇÒ ¿ÀºêÁ§Æ®µé °ÔÀÓ ¿ÀºêÁ§Æ® ¸ğÀ½¾È¿¡¼­ »èÁ¦
+		// ì§€ì›Œì•¼í•  ì˜¤ë¸Œì íŠ¸ë“¤ ê²Œì„ ì˜¤ë¸Œì íŠ¸ ëª¨ìŒì•ˆì—ì„œ ì‚­ì œ
 		for (GameObjectIter iter = mGameObjects.begin()
 			; iter != mGameObjects.end()
 			; )
@@ -112,7 +123,7 @@ namespace ya
 			}
 		}
 
-		// »èÁ¦ÇÒ ¿ÀºêÁ§Æ®µéÀ» ½ÇÁ¦ ·¥(¸Ş¸ğ¸®)¿¡¼­ »èÁ¦
+		// ì‚­ì œí•  ì˜¤ë¸Œì íŠ¸ë“¤ì„ ì‹¤ì œ ë¨(ë©”ëª¨ë¦¬)ì—ì„œ ì‚­ì œ
 		for (GameObject* gameObj : deleteObjects)
 		{
 			delete gameObj;

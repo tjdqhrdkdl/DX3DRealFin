@@ -84,9 +84,9 @@ namespace ya
 		std::shared_ptr<Material> mergeMaterial = Resources::Find<Material>(L"MergeMaterial");
 		std::shared_ptr<Mesh> rectMesh = Resources::Find<Mesh>(L"RectMesh");
 
-		rectMesh->BindBuffer();
+		rectMesh->BindBuffer(0);
 		mergeMaterial->Bind();
-		rectMesh->Render();
+		rectMesh->Render(0);
 
 		// Foward render
 		renderOpaque();
@@ -242,9 +242,8 @@ namespace ya
 		if (renderer == nullptr)
 			return;
 
-		std::shared_ptr<Material> material = renderer->GetMaterial();
-		//if (material == nullptr)
-		//	continue;
+		std::shared_ptr<Material> material = renderer->GetMaterial(0);
+
 
 		eRenderingMode mode = material->GetRenderingMode();
 

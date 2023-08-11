@@ -65,7 +65,7 @@ namespace ya
 
 	void Application::Destroy()
 	{
-
+		SceneManager::Destroy();
 	}
 
 	// Running main engine loop
@@ -86,6 +86,7 @@ namespace ya
 	{
 		Resources::deleteTest();
 		Fmod::Release();
+		FbxLoader::Release();
 		FontWrapper::Release();
 	}
 

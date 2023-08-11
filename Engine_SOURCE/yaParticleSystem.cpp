@@ -44,9 +44,9 @@ namespace ya
 		std::shared_ptr<Mesh> point = Resources::Find<Mesh>(L"PointMesh");
 		SetMesh(point);
 
-		// Material ¼¼ÆÃ
+		// Material ì„¸íŒ…
 		std::shared_ptr<Material> material = Resources::Find<Material>(L"ParticleMaterial");
-		SetMaterial(material);
+		SetMaterial(material, 0);
 
 		std::shared_ptr<Texture> tex = Resources::Find<Texture>(L"CartoonSmoke");
 		material->SetTexture(eTextureSlot::Albedo, tex);
@@ -77,9 +77,9 @@ namespace ya
 
 	void ParticleSystem::FixedUpdate()
 	{
-		//ÆÄÆ¼Å¬ »ı¼º ½Ã°£
+		//íŒŒí‹°í´ ìƒì„± ì‹œê°„
 		float aliveTime = 1.0f / mFrequency;
-		//´©Àû½Ã°£
+		//ëˆ„ì ì‹œê°„
 		mTime += Time::DeltaTime();
 		if (aliveTime < mTime)
 		{
@@ -123,7 +123,7 @@ namespace ya
 		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 		mBuffer->BindSRV(eShaderStage::GS, 15);
 
-		GetMaterial()->Bind();
+		GetMaterial(0)->Bind();
 		GetMesh()->RenderInstanced(mMaxParticles);
 
 		mBuffer->Clear();

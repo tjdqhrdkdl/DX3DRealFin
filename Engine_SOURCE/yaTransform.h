@@ -24,9 +24,17 @@ namespace ya
 		Vector3 GetRotation() { return mRotation; };
 		Vector3 GetScale() { return mScale; };
 
+		Vector3 GetSubPosition() { return mSubPosition; };
+		Vector3 GetSubRotation() { return mSubRotation; };
+		Vector3 GetSubScale()	 { return mSubScale; };
+
 		void SetPosition(Vector3 position) { mPosition = position; };
 		void SetRotation(Vector3 degree) { mRotation = degree; };
 		void SetScale(Vector3 scale) { mScale = scale; };
+
+		void SetSubPosition(Vector3 position) { mSubPosition = position; };
+		void SetSubRotation(Vector3 degree) { mSubRotation = degree; };
+		void SetSubScale(Vector3 scale) { mSubScale = scale; };
 
 		Vector3 Forward() { return mForward; }
 		Vector3 Right() { return mRight; }
@@ -54,5 +62,9 @@ namespace ya
 		Matrix mMatRotation;
 
 		Matrix mWorld;
+
+		Vector3 mSubPosition;
+		Vector3 mSubRotation;
+		Vector3 mSubScale;
 	};
 }
