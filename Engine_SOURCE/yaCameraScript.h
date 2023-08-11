@@ -61,6 +61,6 @@ namespace ya
 		//개발중 변수
 		bool mbDestination;
 		Vector3 mDestination;
-
+		bool mbSelfCameraMoveMode;
 	};
 }
