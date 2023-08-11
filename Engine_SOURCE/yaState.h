@@ -75,6 +75,8 @@ namespace ya
 		float               mDeathBlowCount;		//인살 게이지
 		float               mMaxDeathBlowCount;
 
+		bool				mbDeathBlowOnOff;
+		bool				mbStartBlow;
 
 		// 경보 레벨
 		float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)
