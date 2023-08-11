@@ -185,7 +185,6 @@ namespace ya
 			MeshRenderer* groundRenderer = grappleGround1->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-
 			Collider2D* groundCollider = grappleGround1->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
@@ -213,7 +212,7 @@ namespace ya
 				logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 				MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
 				logbridgeRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-				logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"),0);
+				logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 				Collider2D* logbridgeCollider = logbridge->AddComponent<Collider2D>();
 				logbridgeCollider->SetType(eColliderType::Box);
 				logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
