@@ -433,7 +433,7 @@
     </ClInclude>
     <ClInclude Include="yaCrouchObjectScript.h">
       <Filter>Contents\Ground</Filter>
-      </ClCompile>
+	</ClInclude>
     <ClInclude Include="yaMeshData.h">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClInclude>
