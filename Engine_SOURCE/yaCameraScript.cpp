@@ -23,6 +23,7 @@ namespace ya
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
 		, mbMouseMove(true)
+		, mbSelfCameraMoveMode(false)
 	{
 	}
 
@@ -38,46 +39,57 @@ namespace ya
 
 	void CameraScript::Update()
 	{
-		Transform* tr = GetOwner()->GetComponent<Transform>();
+		if (Input::GetKeyDown(eKeyCode::ESC))
+			mbMouseMove = !mbMouseMove;
 
-		Vector3 pos = tr->GetPosition();
-
-		if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
-		{
-			pos += 1000.0f * tr->Right() * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
-		{
-			pos += 1000.0f * -tr->Right() * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
-		{
-			pos += 1000.0f * tr->Forward() * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
-		{
-			pos += 1000.0f * -tr->Forward() * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
-		{
-			pos += 1000.0f * tr->Up() * Time::DeltaTime();
-		}
-		else if (Input::GetKeyState(eKeyCode::E) == eKeyState::PRESSED)
-		{
-			pos += 1000.0f * -tr->Up() * Time::DeltaTime();
-		}
-
-		tr->SetPosition(pos);
-
+		if (Input::GetKeyDown(eKeyCode::T))
+			mbSelfCameraMoveMode = !mbSelfCameraMoveMode;
 		
-		if (mPlayerTarget != nullptr)
+		if (mbSelfCameraMoveMode)
 		{
-			//TrackTarget();
-			//MouseMove();
-			//LockOn();
-			//MoveToDestination();
-			//ObstacleDetection();
-		
+			Transform* tr = GetOwner()->GetComponent<Transform>();
+
+			Vector3 pos = tr->GetPosition();
+
+			if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
+			{
+				pos += 1000.0f * tr->Right() * Time::DeltaTime();
+			}
+			else if (Input::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
+			{
+				pos += 1000.0f * -tr->Right() * Time::DeltaTime();
+			}
+			else if (Input::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
+			{
+				pos += 1000.0f * tr->Forward() * Time::DeltaTime();
+			}
+			else if (Input::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
+			{
+				pos += 1000.0f * -tr->Forward() * Time::DeltaTime();
+			}
+			else if (Input::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
+			{
+				pos += 1000.0f * tr->Up() * Time::DeltaTime();
+			}
+			else if (Input::GetKeyState(eKeyCode::E) == eKeyState::PRESSED)
+			{
+				pos += 1000.0f * -tr->Up() * Time::DeltaTime();
+			}
+
+			tr->SetPosition(pos);
+		}
+
+		else
+		{
+			if (mPlayerTarget != nullptr)
+			{
+				TrackTarget();
+				MouseMove();
+				LockOn();
+				MoveToDestination();
+				ObstacleDetection();
+
+			}
 		}
 	}
 	void CameraScript::Render()
@@ -136,62 +148,63 @@ namespace ya
 	}
 	void CameraScript::MouseMove()
 	{
-
-		//최초의 마우스 위치에 카메라가 영향받지 않도록.
-		if (!mbFirstInit)
+		if (mbMouseMove)
 		{
-			SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
-			mbFirstInit = true;
-		}
-
-
-		// 마우스의 이동 거리(픽셀) 측정 - 반영 - 마우스 위치 고정 
-		else
-		{
-			Vector2 mousePos = Input::GetMousePosition();
-			POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
-			ScreenToClient(application.GetHwnd(), &center);
-
-			Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
-			Transform* tr = GetOwner()->GetComponent<Transform>();
-			if(mLockOnTarget == nullptr)
-			{			//디버깅시에 문제생기는 부분 막음.
-				if (Time::DeltaTime() < 0.1f)
-				{
-					//두번 계산해줄 것이다.
-					//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
-					//카메라 오브젝트의 회전을 바꿔준다.
-
-					//구 이동
-					mChildPos -= 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
-					mChildPos.Normalize();
-					mChildPos *= mDistFromTarget;
-
-
-					mChildPos -= 30 * tr->Up() * mouseMovement.y * Time::DeltaTime();
-					mChildPos.Normalize();
-					mChildPos *= mDistFromTarget;
-
-					//y축 이동 한계 지정
-					if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2)
-						mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2;
-					if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
-						mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
-
-
-
-
-
-
-
-				}
+			//최초의 마우스 위치에 카메라가 영향받지 않도록.
+			if (!mbFirstInit)
+			{
+				SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
+				mbFirstInit = true;
 			}
-			//회전
 
 
-			SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
+			// 마우스의 이동 거리(픽셀) 측정 - 반영 - 마우스 위치 고정 
+			else
+			{
+				Vector2 mousePos = Input::GetMousePosition();
+				POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
+				ScreenToClient(application.GetHwnd(), &center);
+
+				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
+				Transform* tr = GetOwner()->GetComponent<Transform>();
+				if (mLockOnTarget == nullptr)
+				{			//디버깅시에 문제생기는 부분 막음.
+					if (Time::DeltaTime() < 0.1f)
+					{
+						//두번 계산해줄 것이다.
+						//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
+						//카메라 오브젝트의 회전을 바꿔준다.
+
+						//구 이동
+						mChildPos -= 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+						mChildPos.Normalize();
+						mChildPos *= mDistFromTarget;
+
+
+						mChildPos -= 30 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+						mChildPos.Normalize();
+						mChildPos *= mDistFromTarget;
+
+						//y축 이동 한계 지정
+						if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2)
+							mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2;
+						if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
+							mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
+
+
+
+
+
+
+
+					}
+				}
+				//회전
+
+
+				SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
+			}
 		}
-
 	}
 
 	void CameraScript::ObstacleDetection()
