@@ -32,6 +32,7 @@
 #include "yaSwordsman.h"
 
 #include "yaCrouchObjectScript.h"
+
 #include "yaMonsterScript.h"
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
@@ -63,7 +64,7 @@ namespace ya
 		player->GetComponent<Transform>()->SetPosition(Vector3(-13.0f, 0.0f, -10.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
-		
+
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -130,7 +131,6 @@ namespace ya
 		//}
 
 
-
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground");
@@ -147,7 +147,7 @@ namespace ya
 			ground->AddComponent<GroundScript>();
 		}
 
-		/*{
+		{
 			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
 			grappleGround->SetName(L"grapple target");
 			Transform* groundTr = grappleGround->GetComponent<Transform>();
@@ -163,7 +163,7 @@ namespace ya
 			grappleGround->AddComponent<GroundScript>();
 
 			{
-				GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground);
+				GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Hook);
 				hookTarget->SetName(L"hook target");
 				Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
 				hookTargetTr->SetPosition(Vector3(-20.0f, 5.0f, -20.0f));
@@ -173,7 +173,7 @@ namespace ya
 				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 				hookTarget->AddComponent<HookTargetScript>();
 			}
-		}*/
+		}
 
 		{
 			GameObject* grappleGround1 = object::Instantiate<GameObject>(eLayerType::Ground);
@@ -188,7 +188,19 @@ namespace ya
 			Collider2D* groundCollider = grappleGround1->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			grappleGround1->AddComponent<GroundScript>();
+
+
+			{
+				GameObject* hookTarget1 = object::Instantiate<GameObject>(eLayerType::Hook);
+				hookTarget1->SetName(L"Hook target2");
+				Transform* hookTargetTr = hookTarget1->GetComponent<Transform>();
+				hookTargetTr->SetPosition(Vector3(-40.0f, 5.0f, -20.0f));
+				hookTargetTr->SetScale(Vector3(4.0f, 30.0f, 4.0f));
+				Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
+				hookTargetCollider->SetType(eColliderType::Box);
+				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+				hookTarget->AddComponent<HookTargetScript>();
+			}
 		}
 
 		{
@@ -202,23 +214,6 @@ namespace ya
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			grappleGround1->AddComponent<CrouchObjectScript>();
 		}
-
-		{
-				GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
-				logbridge->SetName(L"LogBridge");
-				Transform* logbridgeTr = logbridge->GetComponent<Transform>();
-				logbridgeTr->SetPosition(Vector3(0.0f, -6.0f, 10.0f));
-				logbridgeTr->SetScale(Vector3(10.0f, 2.0f, 50.0f));
-				logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-				MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
-				logbridgeRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-				logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-				Collider2D* logbridgeCollider = logbridge->AddComponent<Collider2D>();
-				logbridgeCollider->SetType(eColliderType::Box);
-				logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-				logbridge->AddComponent<LogBridgeScript>();
-		}
-
 
 		//{
 		//		GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
@@ -234,7 +229,6 @@ namespace ya
 		//		logbridgeCollider->SetType(eColliderType::Box);
 		//		logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		//		logbridge->AddComponent<LogBridgeScript>();
-		//}
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
@@ -296,7 +290,7 @@ namespace ya
 			tr->SetRotation(Vector3(-90, 0, 0));
 			tr->SetScale(Vector3(10, 10, 10));
 		}
-	
+
 		Scene::Initialize();
 	}
 	void TitleScene::Update()

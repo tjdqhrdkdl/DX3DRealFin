@@ -1,9 +1,4 @@
 #pragma once
-class GroundScript
-{
-};
-
-#pragma once
 #include "yaScript.h"
 
 
