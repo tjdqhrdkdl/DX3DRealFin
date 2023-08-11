@@ -67,7 +67,7 @@ float4 main(VSOut In) : SV_Target
     
     
     LightColor lightColor = (LightColor) 0.0f;
-    for (int i = 0; i < numberOfLight; i++)
+    for (int i = 0; i < numberOfLight; i++) 
     {
         CalculateLight3D(In.ViewPos, vNormal, i, lightColor);
     }

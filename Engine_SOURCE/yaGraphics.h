@@ -29,7 +29,15 @@ namespace ya::graphics
 		Enabled,
 		GPU,
 	};
-
+	struct Vertex
+	{
+		Vector4 pos;
+		Vector4 color;
+		Vector2 uv;
+		Vector3 tangent;
+		Vector3 biNormal;
+		Vector3 normal;
+	};
 	enum class eShaderStage
 	{
 		VS,
@@ -158,15 +166,23 @@ namespace ya::graphics
 		DiffuseLightTarget,
 		SpecularLightTarget,
 
-		CubeT8,
-		CubeT9,
+		Specular,
 
-		Array2DT10,
-		Array2DT11,
+		//CubeT8,
+		//CubeT9,
+
+		//Array2DT10,
+		//Array2DT11,
 
 		End,
 	};
-
+	struct MaterialColr
+	{
+		Vector4 diffuseColor;
+		Vector4 specularColor;
+		Vector4 AmbientColor;
+		Vector4 EmessiveColor;
+	};
 	struct DebugMesh
 	{
 		enums::eColliderType type;

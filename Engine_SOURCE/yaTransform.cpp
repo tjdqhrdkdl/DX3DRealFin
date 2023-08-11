@@ -13,6 +13,9 @@ namespace ya
 		, mRotation(Vector3::Zero)
 		, mPosition(Vector3::One)
 		, mParent(nullptr)
+		, mSubPosition(Vector3::Zero)
+		, mSubRotation(Vector3::Zero)
+		, mSubScale(Vector3::One)
 	{
 		
 	}
@@ -39,7 +42,8 @@ namespace ya
 		
 
 		// 크기 변환 행렬
-		Matrix scale = Matrix::CreateScale(mScale);
+		Vector3 finalScale = mScale * mSubScale;
+		Matrix scale = Matrix::CreateScale(finalScale);
 		mMatScale = scale;
 
 
@@ -47,10 +51,10 @@ namespace ya
 		// 회전 변환 행렬
 		Matrix rotation;
 
-
-		Vector3 radian(mRotation.x * (XM_PI / 180)
-			, mRotation.y * (XM_PI / 180)
-			, mRotation.z * (XM_PI / 180));
+		Vector3 finalRotation = mRotation + mSubRotation;
+		Vector3 radian(finalRotation.x * (XM_PI / 180)
+			, finalRotation.y * (XM_PI / 180)
+			, finalRotation.z * (XM_PI / 180));
 
 		float theta;
 
@@ -65,7 +69,8 @@ namespace ya
 
 		// 이동 변환 행렬
 		Matrix position;
-		position.Translation(mPosition);
+		Vector3 finalPosition = mPosition + mSubPosition;
+		position.Translation(finalPosition);
 
 		mMatTranslation = position;
 

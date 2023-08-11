@@ -18,8 +18,9 @@ namespace ya::enums
 		Logbridge,
 		Hook,
 		Monster,
+		MonsterProjectile,
 		Player,
-
+		PlayerProjectile,
 		Particle,
 		PostProcess,
 		UI,
@@ -101,6 +102,7 @@ namespace ya::enums
 		Defense,		//막기
 		Attack,			//공격
 		Sit,			//휴식
+		Groggy,			//스턴 상태
 		Death,			
 		End,
 	};
