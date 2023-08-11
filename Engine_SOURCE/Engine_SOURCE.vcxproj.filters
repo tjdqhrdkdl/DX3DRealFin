@@ -52,9 +52,6 @@
     <ClCompile Include="yaScript.cpp">
       <Filter>Engine\Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="yaMonsterScript.cpp">
-      <Filter>Engine\Component\Script\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="yaMonster.cpp">
       <Filter>Contents\Contents</Filter>
     </ClCompile>
@@ -205,6 +202,12 @@
     <ClCompile Include="yaLogBridgeScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="yaMonsterScript.cpp">
+      <Filter>Contents\Monster\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="yaCrouchObjectScript.cpp">
+      <Filter>Contents\Ground</Filter>
+      </ClCompile>
     <ClCompile Include="yaPlayerActionScript.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
@@ -275,9 +278,6 @@
     </ClInclude>
     <ClInclude Include="yaScript.h">
       <Filter>Engine\Component\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="yaMonsterScript.h">
-      <Filter>Engine\Component\Script\Monster</Filter>
     </ClInclude>
     <ClInclude Include="yaMonster.h">
       <Filter>Contents\Contents</Filter>
@@ -428,6 +428,12 @@
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="yaMonsterScript.h">
+      <Filter>Contents\Monster\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="yaCrouchObjectScript.h">
+      <Filter>Contents\Ground</Filter>
+      </ClCompile>
     <ClInclude Include="yaMeshData.h">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClInclude>
@@ -568,9 +574,6 @@
     <Filter Include="Engine\Component\Script">
       <UniqueIdentifier>{02197a71-ea8c-4ec8-996d-fd9fb0b06738}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Component\Script\Monster">
-      <UniqueIdentifier>{0b4fd915-c2f5-4e22-a2de-a8d1e45c4ad1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Component\Transform">
       <UniqueIdentifier>{217097e0-db2b-4e20-b9e8-61d3b1d3f3b6}</UniqueIdentifier>
     </Filter>
@@ -586,6 +589,9 @@
     <Filter Include="Contents\Scene">
       <UniqueIdentifier>{c5ed46d7-aab9-4a27-aa1c-2ab0c73d7891}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Monster\Script">
+      <UniqueIdentifier>{7c1f7815-7c8d-4a02-a18a-cd5a3c91c1c3}</UniqueIdentifier>
+      </Filter>
     <Filter Include="Engine\Resource\FbxLoader">
       <UniqueIdentifier>{e67fd783-9dd6-43ad-a3e6-53602667ccc1}</UniqueIdentifier>
     </Filter>

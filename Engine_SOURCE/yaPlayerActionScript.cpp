@@ -35,7 +35,7 @@ namespace ya
 
 	void PlayerActionScript::Update()
 	{
-		//Player* player = dynamic_cast<Player*>(GetOwner());
+		Player* player = dynamic_cast<Player*>(GetOwner());
 		
 		Walk();
 		Run();
@@ -43,6 +43,15 @@ namespace ya
 		if (Input::GetKey(eKeyCode::SPACE))
 		{
 			Jump();
+		}
+
+		if (Input::GetKeyDown(eKeyCode::Q))
+		{
+			int flag = player->GetStateFlag() & (UINT)ePlayerState::Crouch;
+			if(flag == 0)
+				player->SetStateFlag(ePlayerState::Crouch, true);
+			else
+				player->SetStateFlag(ePlayerState::Crouch, false);
 		}
 
 		ActionScript::Update();
