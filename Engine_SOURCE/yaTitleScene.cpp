@@ -282,7 +282,7 @@ namespace ya
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
 		{
-			MeshData* meshData = MeshData::LoadFromFbx(L"Map\\Mesh\\m11_911010.fbx");
+			MeshData* meshData = MeshData::LoadFromFbx(L"Map\\Mesh\\object.fbx");
 
 			MeshObject* object = meshData->Instantiate(eLayerType::Ground);
 			Transform* tr = object->GetComponent<Transform>();

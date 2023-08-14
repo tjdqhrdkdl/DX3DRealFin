@@ -434,7 +434,7 @@ namespace ya
 				pMaterial->SetKey(strKey);
 				pMaterial->SetPath(strPath + L".mtrl");
 
-				//std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"DefferdShader");
+				//std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"DeferredShader");
 				std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"BasicShader");
 				pMaterial->SetShader(defferdShader);
 
@@ -459,7 +459,7 @@ namespace ya
 					, mContainers[i].materials[j].color.AmbientColor
 					, mContainers[i].materials[j].color.EmessiveColor);
 
-				//pMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
+				//pMaterial->SetRenderingMode(eRenderingMode::DeferredOpaque);
 				pMaterial->SetRenderingMode(eRenderingMode::Opaque);
 				Resources::Insert<Material>(pMaterial->GetKey(), pMaterial);
 			}
