@@ -34,7 +34,10 @@ namespace ya
 		if (!mImporter->Initialize(strPath.c_str(), -1, mManager->GetIOSettings()))
 			return false;
 
-		mImporter->Import(mScene);
+		std::filesystem::path parentPath = strPath;
+		parentPath = parentPath.parent_path().parent_path();
+		
+			mImporter->Import(mScene);
 
 		mScene->GetGlobalSettings().SetAxisSystem(fbxsdk::FbxAxisSystem::Max);
 
@@ -56,7 +59,7 @@ namespace ya
 		mImporter->Destroy();
 
 		// 필요한 텍스쳐 로드
-		LoadTexture();
+		LoadTexture(parentPath.wstring());
 
 		// 필요한 메테리얼 생성
 		CreateMaterial();
@@ -229,7 +232,8 @@ namespace ya
 	{
 		int iBinormalCnt = _pMesh->GetElementBinormalCount();
 		if (1 != iBinormalCnt)
-			assert(NULL); // 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
+			;
+			// 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
 
 		// 종법선 data 의 시작 주소
 		fbxsdk::FbxGeometryElementBinormal* pBinormal = _pMesh->GetElementBinormal();
@@ -343,11 +347,10 @@ namespace ya
 
 		return std::wstring(strName.begin(), strName.end());
 	}
-	void FbxLoader::LoadTexture()
+	void FbxLoader::LoadTexture(const std::wstring& filePath)
 	{
 		// 텍스처 로드
-		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
-		std::filesystem::path path_fbx_texture = parentPath.wstring() + L"\\Resources\\fbx\\Texture\\";
+		std::filesystem::path path_fbx_texture = filePath + L"\\Texture\\";
 
 		//std::filesystem::path path_fbx_texture = path_content.wstring() + L"texture\\FBXTexture\\";
 		//if (false == exists(path_fbx_texture))
@@ -358,6 +361,12 @@ namespace ya
 		std::filesystem::path path_origin;
 		std::filesystem::path path_filename;
 		std::filesystem::path path_dest;
+		std::wstring parentPath = std::filesystem::current_path().parent_path().wstring();
+		std::wstring cfilePath = filePath;
+
+		size_t eraseDest = parentPath.length() + std::wstring(L"\\Resources\\").length();
+		cfilePath.erase(0, eraseDest);
+		std::wstring texPath = cfilePath + L"\\Texture\\";
 
 		for (UINT i = 0; i < mContainers.size(); ++i)
 		{
@@ -380,12 +389,12 @@ namespace ya
 					}
 
 					//path_dest = GetRelativePath(CPathMgr::GetInst()->GetContentPath(), path_dest);
-					//CResMgr::GetInst()->Load<CTexture>(path_dest, path_dest);
-					std::wstring texPath = L"fbx\\Texture\\";
+					//CResMgr::GetInst()->Load<CTexture>(path_dest, path_dest
+					std::wstring::size_type n = 0;
+
 					if (path_filename == L"")
 						continue;
-					texPath += path_filename;
-					Resources::Load<Texture>(path_filename, texPath);
+					Resources::Load<Texture>(path_filename, texPath + path_filename.wstring());
 
 					switch (k)
 					{
