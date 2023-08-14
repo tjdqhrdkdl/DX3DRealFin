@@ -116,7 +116,7 @@ namespace ya
 		static Vector4 GetMtrlData(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName);
 		static std::wstring GetMtrlTextureName(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty);
 
-		static void LoadTexture();
+		static void LoadTexture(const std::wstring& filePath);
 		static void CreateMaterial();
 
 		// Animation
