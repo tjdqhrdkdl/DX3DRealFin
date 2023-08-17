@@ -104,7 +104,6 @@ void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout Lig
 
         
         
-        
         //OutColor.rgb = (OutColor.rgb * lightAttribute.color.diffuse.rgb * intensity
         //            + lightAttribute.color.specular.rgb * fSpecPow * 1.0f
         //            + (OutColor.xyz * lightAttribute.color.ambient.rgb));
