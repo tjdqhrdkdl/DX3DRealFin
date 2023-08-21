@@ -33,6 +33,8 @@ namespace ya
 		std::wstring diffuse;
 		std::wstring normal;
 		std::wstring specular;
+
+		bool alpha;
 	};
 
 	struct WeightAndIndices

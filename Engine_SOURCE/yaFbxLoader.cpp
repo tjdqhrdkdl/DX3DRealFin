@@ -15,6 +15,18 @@ namespace ya
 	fbxsdk::FbxArray<fbxsdk::FbxString*> FbxLoader::mAnimationNames = {};
 	std::vector<AnimationClip*> FbxLoader::mAnimationClips = {};
 
+	bool HasAlphaBlending(FbxSurfaceMaterial* material) {
+		FbxInt alphaBlend = 0;
+
+		FbxProperty prop = material->FindProperty("AlphaBlend");
+		if (prop.IsValid()) {
+
+			return true;
+
+		}
+
+		return false;
+	}
 	void FbxLoader::Initialize()
 	{
 		mManager = fbxsdk::FbxManager::Create();
@@ -188,7 +200,10 @@ namespace ya
 		materialInfo.color.EmessiveColor = GetMtrlData(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sEmissive
 			, fbxsdk::FbxSurfaceMaterial::sEmissiveFactor);
-
+		// Alpha
+		if (HasAlphaBlending(_pMtrlSur))
+			materialInfo.alpha = true;
+		
 		// Texture Name
 		materialInfo.diffuse = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sDiffuse);
 		materialInfo.normal = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sNormalMap);
@@ -460,7 +475,10 @@ namespace ya
 					, mContainers[i].materials[j].color.EmessiveColor);
 
 				//pMaterial->SetRenderingMode(eRenderingMode::DeferredOpaque);
-				pMaterial->SetRenderingMode(eRenderingMode::Opaque);
+				if (mContainers[i].materials[j].alpha == true)
+					pMaterial->SetRenderingMode(eRenderingMode::Transparent);
+				else
+					pMaterial->SetRenderingMode(eRenderingMode::Opaque);
 				Resources::Insert<Material>(pMaterial->GetKey(), pMaterial);
 			}
 		}
