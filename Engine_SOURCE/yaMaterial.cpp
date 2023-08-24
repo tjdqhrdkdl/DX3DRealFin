@@ -5,6 +5,7 @@ namespace ya::graphics
     Material::Material()
         : Resource(eResourceType::Material)
         , mMode(eRenderingMode::Opaque)
+        , mbAnimaion(false)
     {
 
     }
@@ -74,6 +75,8 @@ namespace ya::graphics
         if (mTexture[(UINT)eTextureSlot::Specular])
             mCB.usedSpecular = 1;
 
+        if (mbAnimaion)
+            mCB.usedAnimation = 1;
 
         ConstantBuffer* pCB = renderer::constantBuffers[(UINT)eCBType::Material];
         pCB->SetData(&mCB);

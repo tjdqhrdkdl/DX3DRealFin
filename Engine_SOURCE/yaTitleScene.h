@@ -18,5 +18,7 @@ namespace ya
 		virtual void OnExit() override;
 
 	private:
+		//for test
+		class MeshData* mMeshData;
 	};
 }

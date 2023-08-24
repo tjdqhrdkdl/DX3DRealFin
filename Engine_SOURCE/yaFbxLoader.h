@@ -100,12 +100,14 @@ namespace ya
 		fbxsdk::FbxTime::EMode mode;
 	};
 
+	Matrix GetMatrixFromFbxMatrix(fbxsdk::FbxAMatrix& _mat);
 
 	class FbxLoader
 	{
 	public:
 		static void Initialize();
 		static bool  LoadFbx(const std::wstring& path);
+		static bool  LoadAnimationFbx(const std::wstring& path);
 		static void LoadMeshDataFromNode(fbxsdk::FbxNode* node);
 		static void LoadMesh(fbxsdk::FbxMesh* _pFbxMesh);
 		static void LoadMaterial(fbxsdk::FbxSurfaceMaterial* _pMtrlSur);
@@ -133,6 +135,8 @@ namespace ya
 		static void LoadOffsetMatrix(fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform, int _iBoneIdx, Container* _pContainer);
 		static void LoadKeyframeTransform(fbxsdk::FbxNode* _pNode, fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform
 			, int _iBoneIdx, Container* _pContainer);
+		static void LoadAnimationKeyframeTransform(fbxsdk::FbxNode* _pRootNode, fbxsdk::FbxNode* _pCurNode, const fbxsdk::FbxAMatrix& _matNodeTransform
+			, int _iBoneIdx);
 		static int FindBoneIndex(std::string _strBoneName);
 		static fbxsdk::FbxAMatrix GetTransform(fbxsdk::FbxNode* _pNode);
 
@@ -142,6 +146,7 @@ namespace ya
 		static const Container& GetContainer(int idx) { return mContainers[idx]; }
 		static std::vector<Bone*>& GetBones() { return mBones; }
 		static std::vector<AnimationClip*>& GetAnimClip() { return mAnimationClips; }
+		static std::vector<BoneAnimationClip*>& GetBoneAnimClip() { return mBoneAnimationClips; }
 
 
 	private:
@@ -155,5 +160,6 @@ namespace ya
 		static std::vector<Bone*> mBones;
 		static fbxsdk::FbxArray<fbxsdk::FbxString*> mAnimationNames;
 		static std::vector<AnimationClip*> mAnimationClips;
+		static std::vector<BoneAnimationClip*> mBoneAnimationClips;
 	};
 }

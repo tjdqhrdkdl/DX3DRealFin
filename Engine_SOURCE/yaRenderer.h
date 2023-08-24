@@ -19,12 +19,16 @@ namespace ya::renderer
 {
 	struct Vertex
 	{
+
 		Vector4 pos;
 		Vector4 color;
 		Vector2 uv;
 		Vector3 tangent;
 		Vector3 biNormal;
 		Vector3 normal;
+
+		Vector4 weight;
+		Vector4 Indices;
 	};
 
 	CBUFFER(TransformCB, CBSLOT_TRANSFORM)
@@ -41,8 +45,12 @@ namespace ya::renderer
 		UINT usedAlbedo;
 		UINT usedNormal;
 		UINT usedSpecular;
+		UINT usedAnimation;
 
-		UINT padd1;
+		UINT usedBoneus;
+		int pad;
+		int pad1;
+		int pad2;
 	};
 
 	CBUFFER(GridCB, CBSLOT_GRID)
@@ -90,6 +98,14 @@ namespace ya::renderer
 	{
 		Vector4 noiseSize;
 		float noiseTime;
+	};
+
+	CBUFFER(BoneAnimationCB, CBSLOT_BONEANIMATION)
+	{
+		UINT boneCount;
+		UINT frameIdx;
+		UINT nextFrameIdx;
+		float frameRatio;
 	};
 
 

@@ -7,6 +7,9 @@ struct VSIn
     float3 Tangent : TANGENT;
     float3 Normal : NORMAL;
     float3 BiNormal : BINORMAL;
+    
+    float4 Weights : BLENDWEIGHT;
+    float4 Indices : BLENDINDICES;
 };
 
 struct VSOut
@@ -24,7 +27,11 @@ struct VSOut
 VSOut main(VSIn In)
 {
     VSOut OUT = (VSOut)0.0f;
-
+    
+    if (usedAnimation == 1)
+    {
+        Skinning(In.Position.xyz, In.Tangent, In.BiNormal, In.Normal, In.Weights, In.Indices, 0);
+    }
     float4 worldPosition = mul(In.Position, world);  
     float4 viewPosition = mul(worldPosition, view);
     float4 ProjPosition = mul(viewPosition, projection);

@@ -221,6 +221,15 @@
     <ClCompile Include="yaParticleSystem.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="yaAnimationData.cpp">
+      <Filter>Engine\Resource\MeshData\AnimationData</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBoneAnimator.cpp">
+      <Filter>Engine\Component\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBoneShader.cpp">
+      <Filter>Engine\Resource\Shader\CS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -455,6 +464,15 @@
     <ClInclude Include="yaParticleShader.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="yaAnimationData.h">
+      <Filter>Engine\Resource\MeshData\AnimationData</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBoneAnimator.h">
+      <Filter>Engine\Component\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBoneShader.h">
+      <Filter>Engine\Resource\Shader\CS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -538,9 +556,6 @@
     <Filter Include="Engine\GameObject">
       <UniqueIdentifier>{31f357ff-f1ae-4360-a346-7bfd2439cb21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\High Level InterFace">
-      <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Component">
       <UniqueIdentifier>{41be6699-d86f-49e5-8e45-7b42a73361b7}</UniqueIdentifier>
     </Filter>
@@ -621,6 +636,12 @@
     </Filter>
     <Filter Include="Engine\Graphics\API">
       <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resource\MeshData\AnimationData">
+      <UniqueIdentifier>{3e5bd15e-d277-4a9d-b321-43728e90724f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\High Level InterFace">
+      <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

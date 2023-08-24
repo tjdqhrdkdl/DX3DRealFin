@@ -39,6 +39,7 @@ namespace ya::enums
 		MeshRenderer,
 		SpriteRenderer,
 		Animator,
+		BoneAnimator,
 		ParticleSystem,
 		AudioListener,
 		AudioSource,
@@ -54,6 +55,7 @@ namespace ya::enums
 		Mesh,
 		Texture,
 		Material,
+		Animation,
 		Sound,
 		/*Font,*/
 		Prefab,

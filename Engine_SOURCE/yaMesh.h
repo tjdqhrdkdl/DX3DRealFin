@@ -2,6 +2,7 @@
 #include "yaGraphics.h"
 #include "yaResource.h"
 #include "yaFbxLoader.h"
+#include "yaStructedBuffer.h"
 
 namespace ya
 {
@@ -13,6 +14,7 @@ namespace ya
 		void* pIdxSysMem;
 	};
 
+	class MeshData;
 	class Mesh : public Resource
 	{
 	public:
@@ -31,6 +33,9 @@ namespace ya
 		UINT GetSubSetCount() { return (UINT)mIndexInfos.size(); }
 		graphics::Vertex* GetVtxSysMem() { return (graphics::Vertex*)pVtxSysMem; }
 
+		void SetParentMeshData(MeshData* meshData) { mParentMeshData = meshData; }
+		MeshData* GetParentMeshData() { return mParentMeshData; }
+
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
 		D3D11_BUFFER_DESC mVBDesc;
@@ -38,5 +43,7 @@ namespace ya
 		void* pVtxSysMem;
 
 		std::vector<IndexInfo> mIndexInfos;
+
+		MeshData* mParentMeshData;
 	};
 }
