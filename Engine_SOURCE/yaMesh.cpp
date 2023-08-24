@@ -50,8 +50,8 @@ namespace ya
 				pSys[i].normal = container.normals[i];
 				pSys[i].tangent = container.tangents[i];
 				pSys[i].biNormal = container.binormals[i];
-				//pSys[i].vWeights = container->vecWeights[i];
-				//pSys[i].vIndices = container->vecIndices[i];
+				pSys[i].weight = container.skiningWeights[i];
+				pSys[i].Indices = container.skiningIndices[i];
 			}
 
 			Microsoft::WRL::ComPtr<ID3D11Buffer> pVB = NULL;
@@ -97,8 +97,10 @@ namespace ya
 				pMesh->mIndexInfos.push_back(info);
 			}
 			ret.push_back(pMesh);
+
 		}
-		
+
+
 		return ret;
 	}
 

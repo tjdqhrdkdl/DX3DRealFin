@@ -2,8 +2,10 @@
 #include "yaBaseRenderer.h"
 #include "yaParticleShader.h"
 
-namespace ya
+
+namespace ya::graphics
 {
+
 	enum class eSimulationSpace
 	{
 		Local,
@@ -40,6 +42,6 @@ namespace ya
 
 		float mStartSpeed;
 		float mTime;
-		float mElapsedTime; //´©Àû½Ã°£
+		float mElapsedTime; //ëˆ„ì ì‹œê°„
 	};
 }

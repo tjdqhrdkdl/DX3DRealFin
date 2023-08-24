@@ -4,7 +4,7 @@
 #include "Sampler.hlsli"
 //#include "ConstantBuffer.hlsli"
 #include "Blur.hlsli"
-
+#include "BoneAnimation.hlsli"
 
 float4 decode(float _value)
 {

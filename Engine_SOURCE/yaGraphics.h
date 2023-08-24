@@ -19,6 +19,7 @@
 #define CBSLOT_NUMBEROFLIGHT	4
 #define CBSLOT_PARTICLESYSTEM	5
 #define CBSLOT_NOISE			6
+#define CBSLOT_BONEANIMATION	7
 
 using namespace ya::math;
 namespace ya::graphics
@@ -37,6 +38,9 @@ namespace ya::graphics
 		Vector3 tangent;
 		Vector3 biNormal;
 		Vector3 normal;
+
+		Vector4 weight;
+		Vector4 Indices;
 	};
 	enum class eShaderStage
 	{
@@ -135,6 +139,7 @@ namespace ya::graphics
 		Light,
 		ParticleSystem,
 		Noise,
+		Bone,
 		End,
 	};
 
@@ -224,5 +229,47 @@ namespace ya::graphics
 	struct ParticleShared
 	{
 		UINT activeCount;
+	};
+
+	///Animation 3D
+	struct BoneFrameTransform
+	{
+		Vector4 translate;
+		Vector4 scale;
+		Vector4 rotation;
+	};
+
+	struct BoneKeyFrame
+	{
+		double time;
+		int frame;
+		Vector3 translate;
+		Vector3 scale;
+		Vector4 rotation;
+	};
+
+	struct BoneMatrix
+	{
+		std::wstring name;
+		int depth;
+		int parentIdx;
+		Matrix offset;
+		Matrix bone;
+		std::vector<std::vector< BoneKeyFrame>> keyFrames;
+	};
+
+	struct BoneAnimationClip
+	{
+		std::wstring name;
+		int startFrame;
+		int endFrame;
+		int frameLength;
+
+		double startTime;
+		double endTime;
+		double timeLength;
+		float updateTime;
+		//fbxsdk::FbxTime::EMode mode;
+		UINT mode;
 	};
 }

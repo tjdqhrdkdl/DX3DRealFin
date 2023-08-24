@@ -34,8 +34,10 @@
 #include "yaCrouchObjectScript.h"
 
 #include "yaMonsterScript.h"
+
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
+#include "yaAnimationData.h"
 
 namespace ya
 {
@@ -282,13 +284,12 @@ namespace ya
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
 		{
-			MeshData* meshData = MeshData::LoadFromFbx(L"Map\\Mesh\\object.fbx");
+			mMeshData = MeshData::LoadFromFbx(L"Monster\\Spearman\\Mesh\\c1020.fbx");
 
-			MeshObject* object = meshData->Instantiate(eLayerType::Ground);
-			Transform* tr = object->GetComponent<Transform>();
-			tr->SetPosition(Vector3(300, 500, 2000));
-			tr->SetRotation(Vector3(-90, 0, 0));
-			tr->SetScale(Vector3(10, 10, 10));
+			AnimationData* animData2 = AnimationData::LoadFromFbx(mMeshData, L"Monster\\\Boss_tenzen\\Animation\\oioiioioi.fbx", L"attack2");
+
+			AnimationData* animData1 = AnimationData::LoadFromFbx(mMeshData, L"Monster\\\Boss_tenzen\\Animation\\dance.fbx", L"attack1");
+			mMeshData->Instantiate(eLayerType::Monster);
 		}
 
 		Scene::Initialize();
@@ -297,7 +298,13 @@ namespace ya
 	{
 		if (Input::GetKeyDown(eKeyCode::N))
 		{
-			SceneManager::LoadScene(eSceneType::Play);
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack1");
+		}
+		if (Input::GetKeyDown(eKeyCode::M))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack2");
 		}
 
 		Scene::Update();
