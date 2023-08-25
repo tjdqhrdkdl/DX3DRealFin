@@ -37,7 +37,7 @@
 
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
-#include "yaAnimationData.h"
+
 
 namespace ya
 {
@@ -286,10 +286,16 @@ namespace ya
 		{
 			mMeshData = MeshData::LoadFromFbx(L"Monster\\Spearman\\Mesh\\c1020.fbx");
 
-			AnimationData* animData2 = AnimationData::LoadFromFbx(mMeshData, L"Monster\\\Boss_tenzen\\Animation\\oioiioioi.fbx", L"attack2");
 
-			AnimationData* animData1 = AnimationData::LoadFromFbx(mMeshData, L"Monster\\\Boss_tenzen\\Animation\\dance.fbx", L"attack1");
+			mMeshData->LoadAnimationFromFbx(L"Monster\\\Boss_tenzen\\Animation\\oioiioioi.fbx", L"attack2");
+			mMeshData->LoadAnimationFromFbx(L"Monster\\\Boss_tenzen\\Animation\\dance.fbx", L"attack1");
+
 			mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+			mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
+
 		}
 
 		Scene::Initialize();
@@ -300,6 +306,7 @@ namespace ya
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
 			mMeshData->Play(L"attack1");
+			
 		}
 		if (Input::GetKeyDown(eKeyCode::M))
 		{

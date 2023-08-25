@@ -48,9 +48,15 @@ namespace ya
 		mCurrentTime = 0.0f;
 		mAnimationUpdateTime[mCurrentClip] += Time::DeltaTime();
 
+		Events* events = FindEvents(mAnimationClips->at(mCurrentClip).name);
+
 		if (mAnimationUpdateTime[mCurrentClip] >= mAnimationClips->at(mCurrentClip).timeLength)
 		{
+			//애니메이션 종료 + 루프 돎
 			mAnimationUpdateTime[mCurrentClip] = 0.f;
+			if (events)
+				events->mCompleteEvent();
+			
 		}
 
 		mCurrentTime = mAnimationClips->at(mCurrentClip).startTime + mAnimationUpdateTime[mCurrentClip];
@@ -63,7 +69,11 @@ namespace ya
 		if (mFrameIdx >= mAnimationClips->at(mCurrentClip).frameLength - 1)
 			mNextFrameIdx = mFrameIdx;	// 끝이면 현재 인덱스를 유지
 		else
+		{
 			mNextFrameIdx = mFrameIdx + 1;
+			if (events->mFrameEvents[mNextFrameIdx].mEvent)
+				events->mFrameEvents[mNextFrameIdx].mEvent();
+		}
 
 		// 프레임간의 시간에 따른 비율을 구해준다.
 		mRatio = (float)(dFrameIdx - (double)mFrameIdx);
@@ -111,12 +121,25 @@ namespace ya
 
 	void BoneAnimator::Play(const std::wstring& animName)
 	{
+		//예외처리
 		if (mAnimationNameAndIndexMap.find(animName) == mAnimationNameAndIndexMap.end())
 			assert(L"존재하지 않는 애니메이션을 Play 중입니다.");
 
+
+		//기존 애니메이션 정리
 		mAnimationUpdateTime[mCurrentClip] = 0;
 
+		Events* events = nullptr;
+		events = FindEvents(mAnimationClips->at(mCurrentClip).name);
+
+		if (events)
+			events->mEndEvent();
+		//새로운 애니메이션으로 변경
 		mCurrentClip = mAnimationNameAndIndexMap[animName];
+		events = FindEvents(mAnimationClips->at(mCurrentClip).name);
+
+		if (events)
+			events->mStartEvent();
 	}
 
 	void BoneAnimator::CheckBone()
@@ -138,7 +161,26 @@ namespace ya
 		{
 			mAnimationNameAndIndexMap.insert(std::pair(clips->at(i).name, i));
 			mAnimationUpdateTime[i] = 0;
+
+			Events* events = new Events();
+			events->mFrameEvents.resize(clips->at(i).endFrame);
+			mEvents.insert(std::make_pair(clips->at(i).name, events));
 		}
+
+
+	}
+
+	BoneAnimator::Events* BoneAnimator::FindEvents(const std::wstring& name)
+	{
+		std::map<std::wstring, Events*>::iterator iter
+			= mEvents.find(name);
+
+		if (iter == mEvents.end())
+		{
+			return nullptr;
+		}
+
+		return iter->second;
 	}
 
 	void BoneAnimator::ClearData()
@@ -157,6 +199,32 @@ namespace ya
 
 			pMtrl->SetAnimation(false); // Animation Mesh 알리기
 		}
+	}
+
+
+	std::function<void()>& BoneAnimator::GetStartEvent(const std::wstring& name)
+	{
+		Events* events = FindEvents(name);
+
+		return events->mStartEvent.mEvent;
+	}
+	std::function<void()>& BoneAnimator::GetCompleteEvent(const std::wstring& name)
+	{
+		Events* events = FindEvents(name);
+
+		return events->mCompleteEvent.mEvent;
+	}
+	std::function<void()>& BoneAnimator::GetEndEvent(const std::wstring& name)
+	{
+		Events* events = FindEvents(name);
+
+		return events->mEndEvent.mEvent;
+	}
+	std::function<void()>& BoneAnimator::GetFrameEvent(const std::wstring& name, UINT index)
+	{
+		Events* events = FindEvents(name);
+
+		return events->mFrameEvents[index].mEvent;
 	}
 
 }
