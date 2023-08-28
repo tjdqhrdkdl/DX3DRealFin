@@ -294,6 +294,7 @@ namespace ya
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+
 			
 			//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
 
@@ -308,7 +309,6 @@ namespace ya
 			//mMeshData->Load(L"Monster\\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");
 			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000401.fbx", L"attack2");
 			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
-
 
 		}
 
