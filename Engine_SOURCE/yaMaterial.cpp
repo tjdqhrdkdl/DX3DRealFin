@@ -97,7 +97,7 @@ namespace ya::graphics
 
     HRESULT Material::Load(const std::wstring& filename, FILE* file)
     {
-
+        
         wchar_t buff[256] = {};
         UINT nameSize = 0;
         fread(&nameSize, sizeof(UINT), 1, file);
@@ -111,16 +111,19 @@ namespace ya::graphics
         std::wstring path = buff;
         SetPath(buff);
 
+
         // 해당 정보들 저장 해주어야 한다.
         //std::shared_ptr<Shader> mShader;
         key = L"";
         path = L"";
-        ZeroMemory(buff, 256);
+        ZeroMemory(buff, 256);        
 
         nameSize = 0;
         fread(&nameSize, sizeof(UINT), 1, file);
         fread(buff, sizeof(wchar_t), nameSize, file);
         key = buff;
+
+        ZeroMemory(buff, 256);
 
         pathSize = 0;
         fread(&pathSize, sizeof(UINT), 1, file);
@@ -144,10 +147,14 @@ namespace ya::graphics
             key = L"";
             path = L"";
 
+            ZeroMemory(buff, 256);
+
             nameSize = 0;
             fread(&nameSize, sizeof(UINT), 1, file);
             fread(buff, sizeof(wchar_t), nameSize, file);
             key = buff;
+
+            ZeroMemory(buff, 256);
 
             pathSize = 0;
             fread(&pathSize, sizeof(UINT), 1, file);
@@ -158,6 +165,7 @@ namespace ya::graphics
             std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
 
             mTexture[i] = Resources::Load<Texture>(key, path);
+            
         }
 
         ////BoneAnimationCB mBoneCB;

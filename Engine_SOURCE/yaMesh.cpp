@@ -203,24 +203,41 @@ namespace ya
 		//fread(&mVtxCount, sizeof(UINT), 1, file);			
 
 		// 정점정보 저장
+		//int byteSize = 0;
+		//fread(&byteSize, sizeof(int), 1, file);
+		//pVtxSysMem = (graphics::Vertex*)malloc(byteSize);		
+		//fread(pVtxSysMem, 1, byteSize, file);
+		//
+		//
+		//mVBDesc.ByteWidth = byteSize;
+		//mVBDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		//mVBDesc.Usage = D3D11_USAGE_DEFAULT;
+
+		//D3D11_SUBRESOURCE_DATA tSub = {};
+		//tSub.pSysMem = malloc(mVBDesc.ByteWidth);
+
+		////graphics::Vertex* pSys = (graphics::Vertex*)tSub.pSysMem;		
+
+		//if (FAILED(GetDevice()->CreateBuffer(&mVBDesc, &tSub, mVertexBuffer.GetAddressOf())))
+		//	return S_FALSE;
+		
+
 		int byteSize = 0;
 		fread(&byteSize, sizeof(int), 1, file);
-		pVtxSysMem = (graphics::Vertex*)malloc(byteSize);		
+		pVtxSysMem = (graphics::Vertex*)malloc(byteSize);
 		fread(pVtxSysMem, 1, byteSize, file);
-		
-		
-		mVBDesc.ByteWidth = byteSize;
-		mVBDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		mVBDesc.Usage = D3D11_USAGE_DEFAULT;
 
-		D3D11_SUBRESOURCE_DATA tSub = {};
-		tSub.pSysMem = malloc(mVBDesc.ByteWidth);
+		D3D11_BUFFER_DESC desc = {};
+		desc.ByteWidth = byteSize;
+		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		desc.Usage = D3D11_USAGE_DEFAULT;
 
-		//graphics::Vertex* pSys = (graphics::Vertex*)tSub.pSysMem;		
+		D3D11_SUBRESOURCE_DATA data = {};
+		data.pSysMem = pVtxSysMem;
 
-		if (FAILED(GetDevice()->CreateBuffer(&mVBDesc, &tSub, mVertexBuffer.GetAddressOf())))
+		if (FAILED(GetDevice()->CreateBuffer(&desc, &data, mVertexBuffer.GetAddressOf())))
 			return S_FALSE;
-		
+
 
 
 		// 인덱스 정보 

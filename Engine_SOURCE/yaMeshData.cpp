@@ -178,6 +178,8 @@ namespace ya
 	void MeshData::LoadAnimationFromFbx(const std::wstring& path, const std::wstring& name)
 	{
 
+		MeshData* meshData = new MeshData();
+
 		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
 		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
 
@@ -274,12 +276,14 @@ namespace ya
 			, eSRVType::SRV, vecFrameTrans.data(), false);
 		PushBackBoneFrameData(boneFrameData);
 
+
+		meshData->AnimationSave(path);
+
 		loader.Release();
 	}
 
 	HRESULT MeshData::Save(const std::wstring& path, FILE* file)
-	{
-		
+	{	
 
 		std::string strPath(path.begin(), path.end());
 
@@ -328,6 +332,8 @@ namespace ya
 					std::wstring matkey = mMaterialsVec[j][k]->GetKey();
 					SaveWString(matkey, file);
 					mMaterialsVec[j][k]->Save(name, file);
+					eRenderingMode renderingmode = mMaterialsVec[j][k]->GetRenderingMode();
+					fwrite(&renderingmode, sizeof(eRenderingMode), 1, file);
 				}
 			}
 		}
@@ -398,7 +404,9 @@ namespace ya
 					LoadWString(matName, file);
 					Resources::Insert<Material>(matName, mMaterialsVec[j][k]);
 					mMaterialsVec[j][k]->Load(name, file);
-					mMaterialsVec[j][k]->SetRenderingMode(eRenderingMode::Opaque);
+					eRenderingMode renderingmode;
+					fread(&renderingmode, sizeof(eRenderingMode), 1, file);
+					mMaterialsVec[j][k]->SetRenderingMode(renderingmode);
 				}				
 			}
 		}		
@@ -417,7 +425,9 @@ namespace ya
 
 	HRESULT MeshData::AnimationSave(const std::wstring& path, FILE* file)
 	{
-		return E_NOTIMPL;
+
+
+		return S_OK;
 	}
 
 	HRESULT MeshData::AnimationLoad(const std::wstring& path, FILE* file)

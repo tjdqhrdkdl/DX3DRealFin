@@ -285,10 +285,10 @@ namespace ya
 		//}
 		{
 
-			//mMeshData = MeshData::LoadFromFbx(L"House\\Mesh\\House.fbx");
-			//mMeshData->Instantiate(eLayerType::Monster);
+			mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
 
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
+			mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
+			mMeshData->Instantiate(eLayerType::Monster);
 			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003015.fbx", L"attack1");
 
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
@@ -302,9 +302,13 @@ namespace ya
 			//newMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
 			//GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
 
-			MeshData* newMeshData = new MeshData();
-			newMeshData->Load(L"House\\MeshData\\House.meshdata");
-			GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData = new MeshData();
+
+			//MeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
+			//mMeshData->Load(L"Monster\\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000401.fbx", L"attack2");
+			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
+
 
 		}
 
