@@ -24,6 +24,7 @@ namespace ya
 
 		bool IsLockOn() { return mbLockOn; }
 
+
 	private:
 
 		void TrackTarget();
