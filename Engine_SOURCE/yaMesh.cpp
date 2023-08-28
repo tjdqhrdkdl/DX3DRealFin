@@ -107,29 +107,8 @@ namespace ya
 
 	HRESULT Mesh::Save(const std::wstring& name, FILE* file)
 	{	
-		//UINT vtxcount = mVtxCount;
-		//fwrite(&vtxcount, sizeof(UINT), 1, file);
-
-	
-		//int byteSize = mVBDesc.ByteWidth;
-		//fwrite(&byteSize, sizeof(int), 1, file);
-		//fwrite(pVtxSysMem, byteSize, 1, file);
-
-		//// 인덱스 정보 
-		//UINT materialCount = mIndexInfos.size();
-		//fwrite(&materialCount, sizeof(int), 1, file);
-
-		////mIndexInfos
-		//UINT idxBufferSize = 0;
-		//for (size_t i = 0; i < materialCount; i++)
-		//{
-		//	fwrite(&mIndexInfos[i], sizeof(IndexInfo), 1, file);
-		//	fwrite(mIndexInfos[i].pIdxSysMem
-		//		, mIndexInfos[i].indexCount * sizeof(UINT), 1, file);
-		//}
-
-		//UINT vtxcount = mVtxCount;
-		//fwrite(&vtxcount, sizeof(UINT), 1, file);
+		UINT vtxcount = mVtxCount;
+		fwrite(&vtxcount, sizeof(UINT), 1, file);
 
 		int byteSize = mVBDesc.ByteWidth;
 		fwrite(&byteSize, sizeof(int), 1, file);
@@ -198,29 +177,9 @@ namespace ya
 	}
 
 	HRESULT Mesh::Load(const std::wstring& name, FILE* file)
-	{
-				
-		//fread(&mVtxCount, sizeof(UINT), 1, file);			
+	{	
 
-		// 정점정보 저장
-		//int byteSize = 0;
-		//fread(&byteSize, sizeof(int), 1, file);
-		//pVtxSysMem = (graphics::Vertex*)malloc(byteSize);		
-		//fread(pVtxSysMem, 1, byteSize, file);
-		//
-		//
-		//mVBDesc.ByteWidth = byteSize;
-		//mVBDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		//mVBDesc.Usage = D3D11_USAGE_DEFAULT;
-
-		//D3D11_SUBRESOURCE_DATA tSub = {};
-		//tSub.pSysMem = malloc(mVBDesc.ByteWidth);
-
-		////graphics::Vertex* pSys = (graphics::Vertex*)tSub.pSysMem;		
-
-		//if (FAILED(GetDevice()->CreateBuffer(&mVBDesc, &tSub, mVertexBuffer.GetAddressOf())))
-		//	return S_FALSE;
-		
+		fread(&mVtxCount, sizeof(UINT), 1, file);
 
 		int byteSize = 0;
 		fread(&byteSize, sizeof(int), 1, file);

@@ -48,7 +48,6 @@ namespace ya
 			Resources::Insert(name, mesh);
 
 			// 메테리얼 가져오기
-
 			std::vector<std::shared_ptr<Material>> materials = {};
 			for (size_t k = 0; k < loader.GetContainer(i).materials.size(); k++)
 				{
@@ -157,6 +156,7 @@ namespace ya
 				}*/
 			}
 
+			//메시 데이터 당 한개씩만 있으면 된다.
 			meshData->mBoneOffset = new graphics::StructedBuffer();
 			meshData->mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
 			meshData->mBoneOffset->GetSize();
@@ -187,9 +187,10 @@ namespace ya
 		loader.Initialize();
 		loader.LoadAnimationFbx(fullPath);
 
-
+		//애니메이션 데이터의 본
 		std::vector<Bone*>& vecBone = loader.GetBones();
 		UINT iFrameCount = 0;
+		//메쉬 데이터에 저장된 본
 		std::vector<BoneMatrix>* meshBones = GetBones();
 		UINT animCount = GetAnimationClipCount();
 		SetAnimationClipCount(animCount + 1);
@@ -219,7 +220,6 @@ namespace ya
 						tKeyframe.rotation.w = (float)vecBone[i]->keyFrames[k].transform.GetQ().mData[3];
 
 						meshBones->at(j).keyFrames[animCount].push_back(tKeyframe);
-
 
 					}
 					break;
@@ -271,6 +271,8 @@ namespace ya
 			}
 		}
 
+
+		//애니메이션당 한개.
 		graphics::StructedBuffer* boneFrameData = new graphics::StructedBuffer();
 		boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)meshBones->size() * iFrameCount
 			, eSRVType::SRV, vecFrameTrans.data(), false);
@@ -336,6 +338,19 @@ namespace ya
 					fwrite(&renderingmode, sizeof(eRenderingMode), 1, file);
 				}
 			}
+		}
+
+		bool AniMesh = IsAnimMesh();
+		fwrite(&AniMesh, sizeof(bool), 1, file);
+
+		if (IsAnimMesh())
+		{
+			for (size_t i = 0; i < mBones.size(); ++i)
+			{
+				Matrix boneoffsetMatrix = mBones[i].offset;
+				fwrite(&boneoffsetMatrix, sizeof(Matrix), 1, file);
+			}
+
 		}
 
 
@@ -409,9 +424,28 @@ namespace ya
 					mMaterialsVec[j][k]->SetRenderingMode(renderingmode);
 				}				
 			}
-		}		
+		}	
+
+		bool AniMesh;
+		fread(&AniMesh, sizeof(bool), 1, file);
+
+		if (AniMesh)
+		{
+			for (size_t i = 0; i < mBones.size(); ++i)
+			{
+				Matrix boneoffsetMatrix;
+				fread(&boneoffsetMatrix, sizeof(Matrix), 1, file);
+
+				mBones[i].offset = boneoffsetMatrix;
+			}
+
+		}
+
+
 
 		fclose(file);
+
+
 
 		
 		meshData->mMeshes = mMeshes;
@@ -425,6 +459,48 @@ namespace ya
 
 	HRESULT MeshData::AnimationSave(const std::wstring& path, FILE* file)
 	{
+		std::string strPath(path.begin(), path.end());
+
+		std::filesystem::path CurparentPath = std::filesystem::current_path().parent_path();
+		CurparentPath += L"\\Resources\\";
+
+		std::filesystem::path parentPath = strPath;
+		parentPath = parentPath.parent_path().parent_path();
+		parentPath += L"\\AnimationData\\";
+
+		CurparentPath += parentPath;
+
+		std::wstring name = std::filesystem::path(path).stem();
+		name += L".animationdata";
+
+		CurparentPath += name;
+
+		std::wstring fullPath = CurparentPath;
+
+		file = nullptr;
+		_wfopen_s(&file, fullPath.c_str(), L"wb");
+		if (file == nullptr)
+			return S_FALSE;
+
+
+		//본 사이즈 저장
+		UINT boneSize = mBones.size();
+		fwrite(&boneSize, sizeof(UINT), 1, file);
+
+		//애니메이션 클립 카운트 저장 1개의 fbx당 애니메이션 개수
+		fwrite(&mAnimationClipCount, sizeof(UINT), 1, file);
+
+		UINT boneFrameDataVector = mBoneFrameDataVector.size();
+		fwrite(&boneFrameDataVector, sizeof(UINT), 1, file);
+
+		
+
+
+
+
+
+
+		fclose(file);
 
 
 		return S_OK;
