@@ -10,7 +10,8 @@ namespace ya
 		Resource(eResourceType type);
 		virtual ~Resource();
 
-		virtual HRESULT Load(const std::wstring& path) = 0;
+		virtual HRESULT Save(const std::wstring& path, FILE* file = nullptr) { return S_OK; };
+		virtual HRESULT Load(const std::wstring& path, FILE* file = nullptr) = 0;
 
 		const std::wstring& GetKey() { return mKey; }
 		const std::wstring& GetPath() { return mPath; }

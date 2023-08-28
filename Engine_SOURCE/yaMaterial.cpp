@@ -1,4 +1,5 @@
 #include "yaMaterial.h"
+#include "yaResources.h"
 
 namespace ya::graphics
 {
@@ -15,13 +16,181 @@ namespace ya::graphics
 
     }
 
-    HRESULT Material::Load(const std::wstring& path)
-    {
+    HRESULT Material::Save(const std::wstring& path, FILE* file)
+    {      
 
+        std::wstring fullPath = path;
+        std::wstring key = GetKey();
+
+        UINT nameSize = key.size();
+        fwrite(&nameSize, sizeof(UINT), 1, file);
+        fwrite(key.c_str(), key.size() * sizeof(wchar_t), 1, file);
+
+        UINT pathSize = fullPath.size();
+        fwrite(&pathSize, sizeof(UINT), 1, file);
+        fwrite(fullPath.c_str(), fullPath.size() * sizeof(wchar_t), 1, file);
+
+        // 해당 정보들 저장 해주어야 한다.
+        //std::shared_ptr<Shader> mShader;
+        key = mShader->GetKey();
+        fullPath = mShader->GetPath();
+        //fullPath = L"..\\SHADER_SOURCE\\";
+
+
+        nameSize = key.size();
+        fwrite(&nameSize, sizeof(UINT), 1, file);
+        fwrite(key.c_str(), key.size() * sizeof(wchar_t), 1, file);
+
+        pathSize = fullPath.size();
+        fwrite(&pathSize, sizeof(UINT), 1, file);
+        fwrite(fullPath.c_str(), fullPath.size() * sizeof(wchar_t), 1, file);
+
+
+        //std::shared_ptr<Texture> mTexture[(UINT)eTextureSlot::End];
+        for (size_t i = 0; i < (UINT)eTextureSlot::End; i++)
+        {
+            if (mTexture[i] == nullptr)
+            {
+                int j = 0;
+                fwrite(&j, sizeof(int), 1, file);
+
+                continue;
+            }
+            else
+            {
+                int j = 1;
+                fwrite(&j, sizeof(int), 1, file);
+            }
+
+            key = mTexture[i]->GetKey();
+            fullPath = mTexture[i]->GetPath();
+
+            nameSize = key.size();
+            fwrite(&nameSize, sizeof(UINT), 1, file);
+            fwrite(key.c_str(), key.size() * sizeof(wchar_t), 1, file);
+
+            pathSize = fullPath.size();
+            fwrite(&pathSize, sizeof(UINT), 1, file);
+            fwrite(fullPath.c_str(), fullPath.size() * sizeof(wchar_t), 1, file);
+        }
+
+        ////BoneAnimationCB mBoneCB;
+        //fwrite(&mBoneCB.boneCount, sizeof(UINT), 1, file);
+
+        //if (mBoneCB.boneCount <= 0)
+        //    return S_OK;
+
+        //fwrite(&mBoneCB.frameIdx, sizeof(UINT), 1, file);
+        //fwrite(&mBoneCB.nextFrameIdx, sizeof(UINT), 1, file);
+        //fwrite(&mBoneCB.frameRatio, sizeof(float), 1, file);
+
+        //eRenderingMode mMode;
+        fwrite(&mMode, sizeof(UINT), 1, file);
+        fwrite(&mDiffuseColor, sizeof(Vector4), 1, file);
+        fwrite(&mSpecularColor, sizeof(Vector4), 1, file);
+        fwrite(&mAmbientColor, sizeof(Vector4), 1, file);
+        fwrite(&mEmissiveColor, sizeof(Vector4), 1, file);
+        fwrite(&mbAnimaion, sizeof(bool), 1, file);
+
+        return S_OK;
+    }
+
+    HRESULT Material::Load(const std::wstring& filename, FILE* file)
+    {
+        
+        wchar_t buff[256] = {};
+        UINT nameSize = 0;
+        fread(&nameSize, sizeof(UINT), 1, file);
+        fread(buff, sizeof(wchar_t), nameSize, file);
+        std::wstring key = buff;
+        SetKey(key);
+
+        UINT pathSize = 0;
+        fread(&pathSize, sizeof(UINT), 1, file);
+        fread(buff, sizeof(wchar_t), pathSize, file);
+        std::wstring path = buff;
+        SetPath(buff);
+
+
+        // 해당 정보들 저장 해주어야 한다.
+        //std::shared_ptr<Shader> mShader;
+        key = L"";
+        path = L"";
+        ZeroMemory(buff, 256);        
+
+        nameSize = 0;
+        fread(&nameSize, sizeof(UINT), 1, file);
+        fread(buff, sizeof(wchar_t), nameSize, file);
+        key = buff;
+
+        ZeroMemory(buff, 256);
+
+        pathSize = 0;
+        fread(&pathSize, sizeof(UINT), 1, file);
+        fread(buff, sizeof(wchar_t), pathSize, file);
+        path = buff;
+
+        // 구조 바뀌어야 한다.
+        //path = L"..\\SHADER_SOURCE\\BasicShader";
+
+        mShader = Resources::Find<Shader>(key);
+
+        //std::shared_ptr<Texture> mTexture[(UINT)eTextureSlot::End];
+        for (size_t i = 0; i < (UINT)eTextureSlot::End; i++)
+        {
+            int j = -1;
+            fread(&j, sizeof(int), 1, file);
+
+            if (j == 0)
+                continue;
+
+            key = L"";
+            path = L"";
+
+            ZeroMemory(buff, 256);
+
+            nameSize = 0;
+            fread(&nameSize, sizeof(UINT), 1, file);
+            fread(buff, sizeof(wchar_t), nameSize, file);
+            key = buff;
+
+            ZeroMemory(buff, 256);
+
+            pathSize = 0;
+            fread(&pathSize, sizeof(UINT), 1, file);
+            fread(buff, sizeof(wchar_t), pathSize, file);
+            path = buff;
+
+            std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
+            std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
+
+            mTexture[i] = Resources::Load<Texture>(key, path);
+            
+        }
+
+        ////BoneAnimationCB mBoneCB;
+        //fread(&mBoneCB.boneCount, sizeof(UINT), 1, file);
+
+        //if (mBoneCB.boneCount <= 0)
+        //    return S_OK;
+
+        //fread(&mBoneCB.frameIdx, sizeof(UINT), 1, file);
+        //fread(&mBoneCB.nextFrameIdx, sizeof(UINT), 1, file);
+        //fread(&mBoneCB.frameRatio, sizeof(float), 1, file);
+
+        //eRenderingMode mMode;
+        fread(&mMode, sizeof(UINT), 1, file);
+        fread(&mDiffuseColor, sizeof(Vector4), 1, file);
+        fread(&mSpecularColor, sizeof(Vector4), 1, file);
+        fread(&mAmbientColor, sizeof(Vector4), 1, file);
+        fread(&mEmissiveColor, sizeof(Vector4), 1, file);
+        fread(&mbAnimaion, sizeof(bool), 1, file);
 
 
         return E_NOTIMPL;
     }
+
+
 
     void Material::SetData(eGPUParam param, void* data)
     {

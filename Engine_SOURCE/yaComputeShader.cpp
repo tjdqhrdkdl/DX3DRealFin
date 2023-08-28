@@ -33,7 +33,7 @@ namespace ya::graphics
 	ComputeShader::~ComputeShader()
 	{
 	}
-	HRESULT ComputeShader::Load(const std::wstring& path)
+	HRESULT ComputeShader::Load(const std::wstring& path, FILE* file)
 	{
 		return E_NOTIMPL;
 	}

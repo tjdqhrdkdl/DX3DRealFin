@@ -111,10 +111,10 @@ namespace ya
 
 			//Death
 
-			if (GetSituation() == enums::eSituation::Death)
-			{
-				this->Death();
-			}
+			//if (GetSituation() == enums::eSituation::Death)
+			//{
+			//	this->Death();
+			//}
 
 		}
 

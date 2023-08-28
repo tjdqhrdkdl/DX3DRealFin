@@ -50,12 +50,23 @@ namespace ya
 						{
 							float test = spearman->GetHP();
 							spearman->SetHp(-4.0f);
+
+							if (spearman->GetHP() <= 0.0f)
+							{
+								spearman->Death();
+							}
+
 						}
 					}
 					else
 					{
 						float test = spearman->GetHP();
 						spearman->SetHp(-4.0f);
+
+						if (spearman->GetHP() <= 0.0f)
+						{
+							spearman->Death();
+						}
 					}
 
 
