@@ -6,7 +6,7 @@
 #include "yaPaintShader.h"
 #include "yaParticleShader.h"
 #include "yaApplication.h"
-
+#include "yaBoneShader.h"
 extern ya::Application application;
 
 namespace ya::renderer
@@ -25,7 +25,7 @@ namespace ya::renderer
 	std::vector<DebugMesh> debugMeshes;
 	std::vector<Light*> lights;
 	std::vector<LightAttribute> lightAttributes;
-	StructedBuffer* lightsBuffer = nullptr;
+	ya::graphics::StructedBuffer* lightsBuffer = nullptr;
 
 	std::shared_ptr<Texture> postProcessTexture = nullptr;
 
@@ -447,10 +447,10 @@ namespace ya::renderer
 			indexes.push_back(iBottomIdx - (i + 1));
 		}
 
-		std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
-		Resources::Insert<Mesh>(L"SphereMesh", sphereMesh);
-		sphereMesh->CreateVertexBuffer(sphereVtx.data(), sphereVtx.size());
-		sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
+		//std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
+		//Resources::Insert<Mesh>(L"SphereMesh", sphereMesh);
+		//sphereMesh->CreateVertexBuffer(sphereVtx.data(), sphereVtx.size());
+		//sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
 		#pragma endregion
 	}
@@ -571,12 +571,17 @@ namespace ya::renderer
 
 		Resources::Insert<Shader>(L"MergeShader", MergeShader);
 #pragma endregion
+
+		//Compute
+		std::shared_ptr<BoneShader> computeShader = std::make_shared<BoneShader>();
+		computeShader->Create(L"BoneAnimationCS.hlsl", "CS_Animation3D");
+		Resources::Insert<BoneShader>(L"BoneComputeShader", computeShader);
 	}
 
 	void SetUpState()
 	{
 		#pragma region Input layout
-		D3D11_INPUT_ELEMENT_DESC arrLayoutDesc[6] = {};
+		D3D11_INPUT_ELEMENT_DESC arrLayoutDesc[8] = {};
 
 		arrLayoutDesc[0].AlignedByteOffset = 0;
 		arrLayoutDesc[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -620,6 +625,19 @@ namespace ya::renderer
 		arrLayoutDesc[5].SemanticName = "NORMAL";
 		arrLayoutDesc[5].SemanticIndex = 0;
 
+		arrLayoutDesc[6].AlignedByteOffset = 76;
+		arrLayoutDesc[6].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		arrLayoutDesc[6].InputSlot = 0;
+		arrLayoutDesc[6].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		arrLayoutDesc[6].SemanticName = "BLENDWEIGHT";
+		arrLayoutDesc[6].SemanticIndex = 0;
+
+		arrLayoutDesc[7].AlignedByteOffset = 92;
+		arrLayoutDesc[7].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		arrLayoutDesc[7].InputSlot = 0;
+		arrLayoutDesc[7].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		arrLayoutDesc[7].SemanticName = "BLENDINDICES";
+		arrLayoutDesc[7].SemanticIndex = 0;
 		//Vector3 tangent;
 		//Vector3 biNormal;
 		//Vector3 normal;
@@ -669,13 +687,13 @@ namespace ya::renderer
 			, postProcessShader->GetInputLayoutAddressOf());
 
 		std::shared_ptr<Shader> basicShader = Resources::Find<Shader>(L"BasicShader");
-		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
 			, basicShader->GetVSBlobBufferPointer()
 			, basicShader->GetVSBlobBufferSize()
 			, basicShader->GetInputLayoutAddressOf());
 
 		std::shared_ptr<Shader> deferredShader = Resources::Find<Shader>(L"DeferredShader");
-		GetDevice()->CreateInputLayout(arrLayoutDesc, 6
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
 			, deferredShader->GetVSBlobBufferPointer()
 			, deferredShader->GetVSBlobBufferSize()
 			, deferredShader->GetInputLayoutAddressOf());
@@ -852,9 +870,12 @@ namespace ya::renderer
 		constantBuffers[(UINT)eCBType::Noise] = new ConstantBuffer(eCBType::Noise);
 		constantBuffers[(UINT)eCBType::Noise]->Create(sizeof(NoiseCB));
 
+		constantBuffers[(UINT)eCBType::Bone] = new ConstantBuffer(eCBType::Bone);
+		constantBuffers[(UINT)eCBType::Bone]->Create(sizeof(BoneAnimationCB));
+
 #pragma endregion
 		#pragma region STRUCTED BUFFER
-		lightsBuffer = new StructedBuffer();
+		lightsBuffer = new graphics::StructedBuffer();
 		lightsBuffer->Create(sizeof(LightAttribute), 128, eSRVType::SRV, nullptr, true);
 #pragma endregion
 	}
@@ -1047,7 +1068,7 @@ namespace ya::renderer
 		delete lightsBuffer;
 		lightsBuffer = nullptr;
 
-		for (size_t i = 0; i < 8; i++)
+		for (size_t i = 0; i < (UINT)eRTType::End; i++)
 		{
 			if (renderTargets[i] == nullptr)
 			{

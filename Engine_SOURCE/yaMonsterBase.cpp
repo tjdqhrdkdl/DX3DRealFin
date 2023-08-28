@@ -111,10 +111,10 @@ namespace ya
 
 			//Death
 
-			if (GetSituation() == enums::eSituation::Death)
-			{
-				this->Death();
-			}
+			//if (GetSituation() == enums::eSituation::Death)
+			//{
+			//	this->Death();
+			//}
 
 		}
 
@@ -358,6 +358,8 @@ namespace ya
 	int MonsterBase::RandomNumber(int ieast, int Max)
 	{
 		int result = 0;
+		if (Max == 0)
+			return 1;
 		result = (rand() % Max - ieast + 1) + ieast;
 		if (result == 0)
 			result = RandomNumber(ieast, Max);

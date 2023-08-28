@@ -14,7 +14,8 @@ namespace ya::graphics
 		Material();
 		virtual ~Material();
 
-		virtual HRESULT Load(const std::wstring& path) override;
+		virtual HRESULT Save(const std::wstring& path, FILE* file = nullptr) override;
+		virtual HRESULT Load(const std::wstring& filename, FILE* file = nullptr) override;
 
 		void SetData(eGPUParam param, void* data);
 		void Bind();
@@ -35,6 +36,7 @@ namespace ya::graphics
 			mAmbientColor = _vAmb;
 			mEmissiveColor = _vEmis;
 		}
+		void SetAnimation(bool enable) { mbAnimaion = enable; }
 
 	private:
 		std::shared_ptr<Shader> mShader;
@@ -46,6 +48,8 @@ namespace ya::graphics
 		Vector4 mSpecularColor;
 		Vector4 mAmbientColor;
 		Vector4 mEmissiveColor;
+		bool mbAnimaion;
+
 	};
 }
 

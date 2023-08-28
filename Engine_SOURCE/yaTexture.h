@@ -24,7 +24,7 @@ namespace ya::graphics
 
 		bool Create(UINT width, UINT height, DXGI_FORMAT format, UINT bindFlag);
 		bool Create(Microsoft::WRL::ComPtr<ID3D11Texture2D> texture);
-		virtual HRESULT Load(const std::wstring& path) override;
+		virtual HRESULT Load(const std::wstring& path, FILE* file = nullptr) override;
 		void LoadFile(const std::wstring& name);
 		void InitializeResource();
 		void BindShaderResource(eShaderStage stage, UINT slot);

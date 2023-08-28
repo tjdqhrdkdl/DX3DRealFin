@@ -20,7 +20,7 @@ namespace ya
 		AudioClip();
 		~AudioClip();
 
-		virtual HRESULT Load(const std::wstring& path) override;
+		virtual HRESULT Load(const std::wstring& path, FILE* file = nullptr) override;
 
 		void Play();
 		void Stop();

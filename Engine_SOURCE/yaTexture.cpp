@@ -147,7 +147,7 @@ namespace ya::graphics
 	}
 
 	//test.cpp
-	HRESULT Texture::Load(const std::wstring& name)
+	HRESULT Texture::Load(const std::wstring& name, FILE* file)
 	{
 		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
 		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + name;

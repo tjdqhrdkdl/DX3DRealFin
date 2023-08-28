@@ -14,7 +14,35 @@ namespace ya
 	std::vector<Bone*> FbxLoader::mBones = {};
 	fbxsdk::FbxArray<fbxsdk::FbxString*> FbxLoader::mAnimationNames = {};
 	std::vector<AnimationClip*> FbxLoader::mAnimationClips = {};
+	std::vector<BoneAnimationClip*> FbxLoader::mBoneAnimationClips = {};
 
+
+	
+
+	Matrix GetMatrixFromFbxMatrix(fbxsdk::FbxAMatrix& _mat)
+	{
+		Matrix mat;
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				mat.m[i][j] = (float)_mat.Get(i, j);
+			}
+		}
+		return mat;
+	}
+	bool HasAlphaBlending(FbxSurfaceMaterial* material) {
+		FbxInt alphaBlend = 0;
+
+		FbxProperty prop = material->FindProperty("AlphaBlend");
+		if (prop.IsValid()) {
+
+			return true;
+			
+		}
+
+		return false;
+	}
 	void FbxLoader::Initialize()
 	{
 		mManager = fbxsdk::FbxManager::Create();
@@ -34,7 +62,10 @@ namespace ya
 		if (!mImporter->Initialize(strPath.c_str(), -1, mManager->GetIOSettings()))
 			return false;
 
-		mImporter->Import(mScene);
+		std::filesystem::path parentPath = strPath;
+		parentPath = parentPath.parent_path().parent_path();
+		
+			mImporter->Import(mScene);
 
 		mScene->GetGlobalSettings().SetAxisSystem(fbxsdk::FbxAxisSystem::Max);
 
@@ -56,7 +87,7 @@ namespace ya
 		mImporter->Destroy();
 
 		// 필요한 텍스쳐 로드
-		LoadTexture();
+		LoadTexture(parentPath.wstring());
 
 		// 필요한 메테리얼 생성
 		CreateMaterial();
@@ -64,10 +95,43 @@ namespace ya
 		return true;
 	}
 
+	bool FbxLoader::LoadAnimationFbx(const std::wstring& path)
+	{
+		mContainers.clear();
+
+		std::string strPath(path.begin(), path.end());
+
+		if (!mImporter->Initialize(strPath.c_str(), -1, mManager->GetIOSettings()))
+			return false;
+
+		std::filesystem::path parentPath = strPath;
+		parentPath = parentPath.parent_path().parent_path();
+
+		mImporter->Import(mScene);
+
+		mScene->GetGlobalSettings().SetAxisSystem(fbxsdk::FbxAxisSystem::Max);
+		// Animation 이름정보 
+		mScene->FillAnimStackNameArray(mAnimationNames);
+
+		// Animation Clip 정보
+		LoadAnimationClip();
+
+		// Bone 정보 읽기
+		LoadSkeleton(mScene->GetRootNode());
+
+
+
+
+		mImporter->Destroy();
+		
+		return true;
+	}
+
 	void FbxLoader::LoadMeshDataFromNode(fbxsdk::FbxNode* node)
 	{
 		// 노드의 메쉬정보 읽기
 		fbxsdk::FbxNodeAttribute* nodeAttribute = node->GetNodeAttribute();
+		fbxsdk::FbxAMatrix globalMatrix = node->EvaluateGlobalTransform();
 
 		if (nodeAttribute && fbxsdk::FbxNodeAttribute::eMesh == nodeAttribute->GetAttributeType())
 		{
@@ -185,7 +249,10 @@ namespace ya
 		materialInfo.color.EmessiveColor = GetMtrlData(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sEmissive
 			, fbxsdk::FbxSurfaceMaterial::sEmissiveFactor);
-
+		// Alpha
+		if (HasAlphaBlending(_pMtrlSur))
+			materialInfo.alpha = true;
+		
 		// Texture Name
 		materialInfo.diffuse = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sDiffuse);
 		materialInfo.normal = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sNormalMap);
@@ -197,7 +264,8 @@ namespace ya
 	{
 		int iTangentCnt = _pMesh->GetElementTangentCount();
 		if (1 != iTangentCnt)
-			assert(NULL); // 정점 1개가 포함하는 탄젠트 정보가 2개 이상이다.
+			;
+		//assert(NULL); // 정점 1개가 포함하는 탄젠트 정보가 2개 이상이다.
 
 		// 탄젠트 data 의 시작 주소
 		fbxsdk::FbxGeometryElementTangent* pTangent = _pMesh->GetElementTangent();
@@ -228,7 +296,8 @@ namespace ya
 	{
 		int iBinormalCnt = _pMesh->GetElementBinormalCount();
 		if (1 != iBinormalCnt)
-			assert(NULL); // 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
+			;
+			// 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
 
 		// 종법선 data 의 시작 주소
 		fbxsdk::FbxGeometryElementBinormal* pBinormal = _pMesh->GetElementBinormal();
@@ -342,11 +411,10 @@ namespace ya
 
 		return std::wstring(strName.begin(), strName.end());
 	}
-	void FbxLoader::LoadTexture()
+	void FbxLoader::LoadTexture(const std::wstring& filePath)
 	{
 		// 텍스처 로드
-		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
-		std::filesystem::path path_fbx_texture = parentPath.wstring() + L"\\Resources\\fbx\\Texture\\";
+		std::filesystem::path path_fbx_texture = filePath + L"\\Texture\\";
 
 		//std::filesystem::path path_fbx_texture = path_content.wstring() + L"texture\\FBXTexture\\";
 		//if (false == exists(path_fbx_texture))
@@ -357,6 +425,12 @@ namespace ya
 		std::filesystem::path path_origin;
 		std::filesystem::path path_filename;
 		std::filesystem::path path_dest;
+		std::wstring parentPath = std::filesystem::current_path().parent_path().wstring();
+		std::wstring cfilePath = filePath;
+
+		size_t eraseDest = parentPath.length() + std::wstring(L"\\Resources\\").length();
+		cfilePath.erase(0, eraseDest);
+		std::wstring texPath = cfilePath + L"\\Texture\\";
 
 		for (UINT i = 0; i < mContainers.size(); ++i)
 		{
@@ -379,12 +453,12 @@ namespace ya
 					}
 
 					//path_dest = GetRelativePath(CPathMgr::GetInst()->GetContentPath(), path_dest);
-					//CResMgr::GetInst()->Load<CTexture>(path_dest, path_dest);
-					std::wstring texPath = L"fbx\\Texture\\";
+					//CResMgr::GetInst()->Load<CTexture>(path_dest, path_dest
+					std::wstring::size_type n = 0;
+
 					if (path_filename == L"")
 						continue;
-					texPath += path_filename;
-					Resources::Load<Texture>(path_filename, texPath);
+					Resources::Load<Texture>(path_filename, texPath + path_filename.wstring());
 
 					switch (k)
 					{
@@ -424,7 +498,7 @@ namespace ya
 				pMaterial->SetKey(strKey);
 				pMaterial->SetPath(strPath + L".mtrl");
 
-				//std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"DefferdShader");
+				//std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"DeferredShader");
 				std::shared_ptr<Shader> defferdShader = Resources::Find<Shader>(L"BasicShader");
 				pMaterial->SetShader(defferdShader);
 
@@ -449,8 +523,11 @@ namespace ya
 					, mContainers[i].materials[j].color.AmbientColor
 					, mContainers[i].materials[j].color.EmessiveColor);
 
-				//pMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
-				pMaterial->SetRenderingMode(eRenderingMode::Opaque);
+				//pMaterial->SetRenderingMode(eRenderingMode::DeferredOpaque);
+				if (mContainers[i].materials[j].alpha == true)
+					pMaterial->SetRenderingMode(eRenderingMode::Transparent);
+				else
+					pMaterial->SetRenderingMode(eRenderingMode::Opaque);
 				Resources::Insert<Material>(pMaterial->GetKey(), pMaterial);
 			}
 		}
@@ -467,6 +544,8 @@ namespace ya
 
 		if (pAttr && pAttr->GetAttributeType() == fbxsdk::FbxNodeAttribute::eSkeleton)
 		{
+			FbxNode* rootNode = mScene->GetRootNode();
+			FbxAMatrix matNodeTransform = GetTransform(rootNode);
 			Bone* pBone = new Bone;
 
 			std::string strBoneName = _pNode->GetName();
@@ -474,8 +553,10 @@ namespace ya
 			pBone->name = std::wstring(strBoneName.begin(), strBoneName.end());
 			pBone->depth = _iDepth++;
 			pBone->parentIdx = _iParentIdx;
-
+		
 			mBones.push_back(pBone);
+			LoadAnimationKeyframeTransform(rootNode, _pNode, matNodeTransform, mBones.size()-1);
+
 		}
 
 		int iChildCount = _pNode->GetChildCount();
@@ -515,6 +596,7 @@ namespace ya
 				- pAnimClip->startTime.GetFrameCount(pAnimClip->mode);
 
 			mAnimationClips.push_back(pAnimClip);
+
 		}
 	}
 	void FbxLoader::Triangulate(fbxsdk::FbxNode* _pNode)
@@ -531,7 +613,7 @@ namespace ya
 		}
 
 		int iChildCount = _pNode->GetChildCount();
-
+		
 		for (int i = 0; i < iChildCount; ++i)
 		{
 			Triangulate(_pNode->GetChild(i));
@@ -541,7 +623,7 @@ namespace ya
 	{
 		// Animation Data 로드할 필요가 없음
 		int iSkinCount = _pMesh->GetDeformerCount(fbxsdk::FbxDeformer::eSkin);
-		if (iSkinCount <= 0 || mAnimationClips.empty())
+		if (iSkinCount <= 0)
 			return;
 
 		_pContainer->bAnimation = true;
@@ -688,7 +770,7 @@ namespace ya
 	void FbxLoader::LoadKeyframeTransform(fbxsdk::FbxNode* _pNode, fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform, int _iBoneIdx, Container* _pContainer)
 	{
 		if (mAnimationClips.empty())
-			return;
+			return;/*
 
 		fbxsdk::FbxVector4	v1 = { 1, 0, 0, 0 };
 		fbxsdk::FbxVector4	v2 = { 0, 0, 1, 0 };
@@ -721,6 +803,47 @@ namespace ya
 			tFrame.time = tTime.GetSecondDouble();
 			tFrame.transform = matCurTrans;
 
+			mBones[_iBoneIdx]->keyFrames.push_back(tFrame);*/
+		//}
+	}
+	void FbxLoader::LoadAnimationKeyframeTransform(fbxsdk::FbxNode* _pRootNode, fbxsdk::FbxNode* _pCurNode, const fbxsdk::FbxAMatrix& _matNodeTransform, int _iBoneIdx)
+	{
+
+		if (mAnimationClips.empty())
+			return;
+
+		fbxsdk::FbxVector4	v1 = { 1, 0, 0, 0 };
+		fbxsdk::FbxVector4	v2 = { 0, 0, 1, 0 };
+		fbxsdk::FbxVector4	v3 = { 0, 1, 0, 0 };
+		fbxsdk::FbxVector4	v4 = { 0, 0, 0, 1 };
+		fbxsdk::FbxAMatrix	matReflect;
+		matReflect.mData[0] = v1;
+		matReflect.mData[1] = v2;
+		matReflect.mData[2] = v3;
+		matReflect.mData[3] = v4;
+
+		//mBones[_iBoneIdx]->boneMatrix = _matNodeTransform;
+
+		fbxsdk::FbxTime::EMode eTimeMode = mScene->GetGlobalSettings().GetTimeMode();
+
+		fbxsdk::FbxLongLong llStartFrame = mAnimationClips[0]->startTime.GetFrameCount(eTimeMode);
+		fbxsdk::FbxLongLong llEndFrame = mAnimationClips[0]->endTime.GetFrameCount(eTimeMode);
+
+		
+		for (fbxsdk::FbxLongLong i = llStartFrame; i < llEndFrame; ++i)
+		{
+			KeyFrame tFrame = {};
+			fbxsdk::FbxTime   tTime = 0;
+
+			tTime.SetFrame(i, eTimeMode);
+
+			fbxsdk::FbxAMatrix matFromNode = _pRootNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
+			fbxsdk::FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCurNode->EvaluateGlobalTransform(tTime);
+			matCurTrans = matReflect * matCurTrans * matReflect;
+
+			tFrame.time = tTime.GetSecondDouble();
+			tFrame.transform = matCurTrans;
+
 			mBones[_iBoneIdx]->keyFrames.push_back(tFrame);
 		}
 	}
@@ -747,26 +870,20 @@ namespace ya
 	void FbxLoader::Release()
 	{
 
-		//mManager->Destroy();
-		//mScene->Destroy();
-		//mImporter->Destroy();
+		mManager->Destroy();
 
-		//for (Bone* bone : mBones)
-		//{
-		//	delete bone;
-		//	bone = nullptr;
-		//}
-
-		//for (fbxsdk::FbxString* bone : mAnimationNames)
-		//{
-		//	delete bone;
-		//	bone = nullptr;
-		//}
-
-		//for (AnimationClip* clip : mAnimationClips)
-		//{
-		//	delete clip;
-		//	clip = nullptr;
-		//}
+		for (Bone* bone : mBones)
+		{
+			delete bone;
+			bone = nullptr;
+		}
+		mBones.clear();
+		for (AnimationClip* clip : mAnimationClips)
+		{
+			delete clip;
+			clip = nullptr;
+		}
+		mAnimationClips.clear();
+		mAnimationNames.Clear();
 	}
 }

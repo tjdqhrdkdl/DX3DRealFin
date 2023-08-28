@@ -11,7 +11,7 @@ namespace ya::graphics
 		ComputeShader();
 		~ComputeShader();
 
-		virtual HRESULT Load(const std::wstring& path) override;
+		virtual HRESULT Load(const std::wstring& path, FILE* file = nullptr) override;
 
 		bool Create(const std::wstring& file, const std::string& funcName);
 		void OnExcute();

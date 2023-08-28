@@ -53,27 +53,27 @@ namespace ya
 
 			if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
 			{
-				pos += 1000.0f * tr->Right() * Time::DeltaTime();
+				pos += 100.0f * tr->Right() * Time::DeltaTime();
 			}
 			else if (Input::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
 			{
-				pos += 1000.0f * -tr->Right() * Time::DeltaTime();
+				pos += 100.0f * -tr->Right() * Time::DeltaTime();
 			}
 			else if (Input::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
 			{
-				pos += 1000.0f * tr->Forward() * Time::DeltaTime();
+				pos += 100.0f * tr->Forward() * Time::DeltaTime();
 			}
 			else if (Input::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
 			{
-				pos += 1000.0f * -tr->Forward() * Time::DeltaTime();
+				pos += 100.0f * -tr->Forward() * Time::DeltaTime();
 			}
 			else if (Input::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
 			{
-				pos += 1000.0f * tr->Up() * Time::DeltaTime();
+				pos += 100.0f * tr->Up() * Time::DeltaTime();
 			}
 			else if (Input::GetKeyState(eKeyCode::E) == eKeyState::PRESSED)
 			{
-				pos += 1000.0f * -tr->Up() * Time::DeltaTime();
+				pos += 100.0f * -tr->Up() * Time::DeltaTime();
 			}
 
 			tr->SetPosition(pos);

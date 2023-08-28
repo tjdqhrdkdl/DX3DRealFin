@@ -34,8 +34,10 @@
 //#include "yaCrouchObjectScript.h"
 
 #include "yaMonsterScript.h"
+
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
+
 
 namespace ya
 {
@@ -200,7 +202,6 @@ namespace ya
 				Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
 				hookTargetCollider->SetType(eColliderType::Box);
 				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-<<<<<<< HEAD
 				hookTarget1->AddComponent<HookTargetScript>();
 			}
 
@@ -213,10 +214,7 @@ namespace ya
 				Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
 				hookTargetCollider->SetType(eColliderType::Box);
 				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-				//hookTarget->AddComponent<HookTargetScript>();
-=======
-				hookTarget->AddComponent<HookTargetScript>();
->>>>>>> 4deaceaa9030fb6d17294b0f49ded3ec8bac90a3
+				hookTarget1->AddComponent<HookTargetScript>();
 			}
 		}
 
@@ -299,13 +297,32 @@ namespace ya
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
 		{
-			MeshData* meshData = MeshData::LoadFromFbx(L"fbx\\m11.fbx");
 
-			MeshObject* object = meshData->Instantiate(eLayerType::Ground);
-			Transform* tr = object->GetComponent<Transform>();
-			tr->SetPosition(Vector3(300, 500, 2000));
-			tr->SetRotation(Vector3(-90, 0, 0));
-			tr->SetScale(Vector3(10, 10, 10));
+			mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
+
+			mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
+			mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003015.fbx", L"attack1");
+
+			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+			
+			//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
+
+
+			//MeshData* newMeshData = new MeshData();
+			//newMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			//GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
+
+			//mMeshData = new MeshData();
+
+			//MeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
+			//mMeshData->Load(L"Monster\\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000401.fbx", L"attack2");
+			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
+
+
 		}
 
 		Scene::Initialize();
@@ -314,7 +331,14 @@ namespace ya
 	{
 		if (Input::GetKeyDown(eKeyCode::N))
 		{
-			SceneManager::LoadScene(eSceneType::Play);
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack1");
+			
+		}
+		if (Input::GetKeyDown(eKeyCode::M))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack2");
 		}
 
 		Scene::Update();
