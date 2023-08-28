@@ -17,6 +17,9 @@ namespace ya
 	}
 	MeshData::~MeshData()
 	{
+		
+
+
 	}
 	MeshData* MeshData::LoadFromFbx(const std::wstring& path)
 	{
@@ -49,9 +52,10 @@ namespace ya
 			std::vector<std::shared_ptr<Material>> materials = {};
 			for (size_t k = 0; k < loader.GetContainer(i).materials.size(); k++)
 				{
+				size_t test = loader.GetContainer(i).materials.size();
 					std::shared_ptr<Material> material
 						= Resources::Find<Material>(loader.GetContainer(i).materials[k].name);
-
+					std::wstring wtest = loader.GetContainer(i).materials[k].name;
 					materials.push_back(material);
 				}
 			materialsVec.push_back(materials);
@@ -123,6 +127,8 @@ namespace ya
 		meshData->mAnimClip = animClip;
 		meshData->mBones = bones;
 
+
+
 		// Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
 		if (meshData->IsAnimMesh())
 		{
@@ -159,6 +165,11 @@ namespace ya
 			//	, eSRVType::SRV, vecFrameTrans.data(), false);
 		}
 
+		//std::wstring name = std::filesystem::path(fullPath).stem();
+		//name += L".mesh" + std::to_wstring(i);
+		
+	
+		meshData->Save(path);
 
 		loader.Release();
 		return meshData;
@@ -266,9 +277,155 @@ namespace ya
 		loader.Release();
 	}
 
-	void MeshData::Save(const std::wstring& path)
+	HRESULT MeshData::Save(const std::wstring& path, FILE* file)
 	{
+		
+
+		std::string strPath(path.begin(), path.end());
+
+		std::filesystem::path CurparentPath = std::filesystem::current_path().parent_path();
+		CurparentPath += L"\\Resources\\";
+
+		std::filesystem::path parentPath = strPath;
+		parentPath = parentPath.parent_path().parent_path();		
+		parentPath += L"\\MeshData\\";
+
+		CurparentPath += parentPath;
+
+		std::wstring name = std::filesystem::path(path).stem();
+		name += L".meshdata";
+
+		CurparentPath += name;
+		
+		std::wstring fullPath = CurparentPath;
+
+		file = nullptr;
+		_wfopen_s(&file, fullPath.c_str(), L"wb");
+		if (file == nullptr)
+			return S_FALSE;
+
+
+		//메쉬 개수 저장
+		UINT meshCount = mMeshes.size();
+		fwrite(&meshCount, sizeof(UINT), 1, file);		
+
+		for (size_t i = 0; i < mMeshes.size(); i++)
+		{			
+			mMeshes[i]->Save(name, file);
+
+			//메테리얼 개수 저장
+			UINT  mMaterial_ICount = mMaterialsVec.size();
+			fwrite(&mMaterial_ICount, sizeof(UINT), 1, file);
+
+			for (size_t j = 0; j < mMaterialsVec.size(); j++)
+			{
+				UINT  mMaterial_JCount = mMaterialsVec[j].size();
+				fwrite(&mMaterial_JCount, sizeof(UINT), 1, file);
+
+				for (size_t k = 0; k < mMaterialsVec[j].size(); k++)
+				{
+					std::wstring matName = mMaterialsVec[j][k]->GetName();
+					std::wstring matkey = mMaterialsVec[j][k]->GetKey();
+					SaveWString(matkey, file);
+					mMaterialsVec[j][k]->Save(name, file);
+				}
+			}
+		}
+
+
+		
+
+		fclose(file);
+
+		return S_OK;	
+
 	}
+
+	HRESULT MeshData::Load(const std::wstring& path, FILE* file)
+	{
+		std::string strPath(path.begin(), path.end());
+
+		std::filesystem::path CurparentPath = std::filesystem::current_path().parent_path();
+		CurparentPath += L"\\Resources\\";
+
+		std::filesystem::path parentPath = strPath;		
+
+		CurparentPath += parentPath;
+
+		std::wstring name = std::filesystem::path(path).stem();
+		name += L".meshdata";
+
+		file = nullptr;
+		_wfopen_s(&file, CurparentPath.c_str(), L"rb");
+		if (file == nullptr)
+			return S_FALSE;
+
+
+		UINT meshSize = 0;
+		fread(&meshSize, sizeof(UINT), 1, file);	
+
+		mMeshes.resize(meshSize);
+
+		MeshData* meshData = new MeshData();
+		std::vector<std::vector<std::shared_ptr<Material>>>  materialsVec = {};
+
+		for (size_t i = 0; i < meshSize; i++)
+		{
+			mMeshes[i] = std::make_shared<Mesh>();
+			mMeshes[i]->SetParentMeshData(meshData);
+			mMeshes[i]->Load(name, file);
+
+			std::wstring name = std::filesystem::path(path).stem();
+			name += L".mesh" + std::to_wstring(i);
+			Resources::Insert(name, mMeshes[i]);
+
+
+			UINT matICount = 0;
+			fread(&matICount, sizeof(UINT), 1, file);
+
+			mMaterialsVec.resize(matICount);
+
+			for (size_t j = 0; j < mMaterialsVec.size(); j++)
+			{
+				UINT matJCount = 0;
+				fread(&matJCount, sizeof(UINT), 1, file);
+
+				mMaterialsVec[j].resize(matJCount);
+				for (size_t k = 0; k < mMaterialsVec[j].size(); k++)
+				{
+					std::wstring matName;
+					mMaterialsVec[j][k] = std::make_shared<Material>();					
+					LoadWString(matName, file);
+					Resources::Insert<Material>(matName, mMaterialsVec[j][k]);
+					mMaterialsVec[j][k]->Load(name, file);
+					mMaterialsVec[j][k]->SetRenderingMode(eRenderingMode::Opaque);
+				}				
+			}
+		}		
+
+		fclose(file);
+
+		
+		meshData->mMeshes = mMeshes;
+		meshData->mMaterialsVec = mMaterialsVec;
+		meshData->mFullPath = CurparentPath;
+
+		
+
+		return S_OK;
+	}
+
+	HRESULT MeshData::AnimationSave(const std::wstring& path, FILE* file)
+	{
+		return E_NOTIMPL;
+	}
+
+	HRESULT MeshData::AnimationLoad(const std::wstring& path, FILE* file)
+	{
+		return E_NOTIMPL;
+	}
+
+
 	MeshObject* MeshData::Instantiate(eLayerType type)
 	{
 
@@ -326,5 +483,23 @@ namespace ya
 	std::function<void()>& MeshData::GetAnimationFrameEvent(const std::wstring& name, UINT index)
 	{
 		return mRepresentBoneAnimator->GetFrameEvent(name, index);
+	}
+
+
+	void MeshData::SaveWString(const std::wstring& _str, FILE* _pFile)
+	{
+		size_t iLen = _str.length();
+		fwrite(&iLen, sizeof(size_t), 1, _pFile);
+		fwrite(_str.c_str(), sizeof(wchar_t), iLen, _pFile);
+
+	}
+	void MeshData::LoadWString(std::wstring& _str, FILE* _pFile)
+	{
+		size_t iLen = 0;
+		fread(&iLen, sizeof(size_t), 1, _pFile);
+
+		wchar_t szBuff[256] = {};
+		fread(szBuff, sizeof(wchar_t), iLen, _pFile);
+		_str = szBuff;
 	}
 }

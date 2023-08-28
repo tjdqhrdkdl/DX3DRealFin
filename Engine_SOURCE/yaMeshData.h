@@ -17,8 +17,13 @@ namespace ya
 		
 		void LoadAnimationFromFbx(const std::wstring& path, const std::wstring& name);
 
-		virtual void Save(const std::wstring& path);
-		virtual HRESULT Load(const std::wstring& path) { return S_OK; }
+		virtual HRESULT Save(const std::wstring& path, FILE* file = nullptr);
+		virtual HRESULT Load(const std::wstring& path, FILE* file = nullptr);
+
+		virtual HRESULT AnimationSave(const std::wstring& path, FILE* file = nullptr);
+		virtual HRESULT AnimationLoad(const std::wstring& path, FILE* file = nullptr);
+
+
 		bool IsAnimMesh() { return !mBones.empty(); }
 
 		MeshObject* Instantiate(eLayerType type);
@@ -35,18 +40,28 @@ namespace ya
 		std::vector<graphics::StructedBuffer*> GetBoneFrameData() { return mBoneFrameDataVector; }
 		graphics::StructedBuffer* GetBoneOffset() { return mBoneOffset; }
 
-	private:
+		//Save --------- public
 		std::vector<BoneMatrix>* GetBones() { return &mBones; }
 		std::vector<BoneAnimationClip> GetAnimClips() { return mAnimClip; }
+
+		std::vector<std::shared_ptr<Mesh>> GetMeshs() { return mMeshes; }
+
+		std::vector<std::vector<std::shared_ptr<Material>>> GetMaterialsVec() { return mMaterialsVec; }
+
 		void PushBackAnimClip(BoneAnimationClip& clip) { mAnimClip.push_back(clip); }
 
 		void PushBackBoneFrameData(graphics::StructedBuffer* buffer) { mBoneFrameDataVector.push_back(buffer); }
 
 		void SetBoneOffset(graphics::StructedBuffer* buffer) { mBoneOffset = buffer; }
 
-
 		void SetAnimationClipCount(UINT num) { mAnimationClipCount = num; }
 		UINT GetAnimationClipCount() { return mAnimationClipCount; }
+
+
+		void SaveWString(const std::wstring& _str, FILE* _pFile);
+		void LoadWString(std::wstring& _str, FILE* _pFile);
+
+
 	private:
 		std::vector<std::shared_ptr<Mesh>>  mMeshes;
 		std::vector<std::vector<std::shared_ptr<Material>>> mMaterialsVec;
