@@ -225,6 +225,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaScene.h" />
     <ClInclude Include="yaSceneManager.h" />
     <ClInclude Include="yaScript.h" />
+    <ClInclude Include="yaSekiroCommon.h" />
     <ClInclude Include="yaSekiroEnums.h" />
     <ClInclude Include="yaShader.h" />
     <ClInclude Include="yaState.h" />

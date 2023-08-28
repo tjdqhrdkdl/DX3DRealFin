@@ -189,13 +189,12 @@
     </ClCompile>
     <ClCompile Include="yaPlayerActionScript.cpp">
       <Filter>Contents\Player</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="yaLogBridgeScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="yaSekiroEnums.h" />
     <ClInclude Include="yaMath.h">
       <Filter>Engine\Common\Math</Filter>
     </ClInclude>
@@ -396,9 +395,15 @@
     </ClInclude>
     <ClInclude Include="yaPlayerActionScript.h">
       <Filter>Contents\Player</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Contents\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroCommon.h">
+      <Filter>Contents\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -551,6 +556,9 @@
     </Filter>
     <Filter Include="Contents\Scene">
       <UniqueIdentifier>{c5ed46d7-aab9-4a27-aa1c-2ab0c73d7891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Common">
+      <UniqueIdentifier>{a113a912-36e8-4cf5-9e8c-1c2921fcdb26}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
