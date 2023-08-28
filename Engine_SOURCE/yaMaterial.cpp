@@ -16,9 +16,9 @@ namespace ya::graphics
 
     HRESULT Material::Load(const std::wstring& path)
     {
-        
-        
-        
+
+
+
         return E_NOTIMPL;
     }
 
@@ -57,8 +57,6 @@ namespace ya::graphics
             if (mTexture[i] == nullptr)
                 continue;
 
-
-
             mTexture[i]->BindShaderResource(eShaderStage::VS, i);
             mTexture[i]->BindShaderResource(eShaderStage::HS, i);
             mTexture[i]->BindShaderResource(eShaderStage::DS, i);
@@ -67,11 +65,15 @@ namespace ya::graphics
             mTexture[i]->BindShaderResource(eShaderStage::CS, i);
         }
 
-        if(mTexture[(UINT)eTextureSlot::Albedo])
+        if (mTexture[(UINT)eTextureSlot::Albedo])
             mCB.usedAlbedo = 1;
 
         if (mTexture[(UINT)eTextureSlot::Normal])
             mCB.usedNormal = 1;
+
+        if (mTexture[(UINT)eTextureSlot::Specular])
+            mCB.usedSpecular = 1;
+
 
         ConstantBuffer* pCB = renderer::constantBuffers[(UINT)eCBType::Material];
         pCB->SetData(&mCB);

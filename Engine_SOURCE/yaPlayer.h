@@ -34,6 +34,9 @@ namespace ya
 		bool IsWalk() { return mbTESTWalk; }
 		void SetWalk(bool walk) { mbTESTWalk = walk; }
 
+		bool IsStealth() { return mbStealth; }
+		void SetStealth(bool stealth) { mbStealth = stealth; }
+
 	private:
 		GameObject* mCamera;
 
@@ -41,6 +44,8 @@ namespace ya
 		UINT mStateFlag;
 		ePlayerState mState;
 		eProsthetics mProsthetic;
+
+		bool mbStealth;	// 은신
 
 		bool mbTESTAttack;
 		bool mbTESTWalk;

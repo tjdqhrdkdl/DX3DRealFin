@@ -3,6 +3,7 @@
 #include "yaPlayerScript.h"
 #include "yaPlayer.h"
 #include "yaSpearman.h"
+#include "yaMonsterBase.h"
 
 
 

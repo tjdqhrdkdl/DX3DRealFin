@@ -1,5 +1,6 @@
 #pragma once
-#include "MonsterBase.h"
+#include "yaMonsterBase.h"
+
 
 namespace ya
 {
@@ -17,19 +18,26 @@ namespace ya
 
     public:
 
-\
-        bool IsParrying() { return mbParrying; }
 
+        void Attack_sting();
+
+        bool IsParrying() { return mbParrying; }
+        
 
 
     private:
 
         float                   mTime;
+        float                   mAttackRange;
         Vec3                    mRandomXY;
         Vec3                    mRandomFinPos;
         Vec3                    mWlakFixPos;
         
         bool                    mbParrying;
+
+
+        //지울거에요 안씀
+        class Transform* TEST;
 
 
     };
