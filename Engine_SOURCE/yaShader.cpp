@@ -21,7 +21,7 @@ namespace ya
 
 	}
 
-	HRESULT Shader::Load(const std::wstring& path)
+	HRESULT Shader::Load(const std::wstring& path, FILE* file)
 	{
 		return E_NOTIMPL;
 	}

@@ -284,17 +284,31 @@ namespace ya
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
 		{
-			mMeshData = MeshData::LoadFromFbx(L"Monster\\Spearman\\Mesh\\c1020.fbx");
 
+			mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
 
-			mMeshData->LoadAnimationFromFbx(L"Monster\\\Boss_tenzen\\Animation\\oioiioioi.fbx", L"attack2");
-			mMeshData->LoadAnimationFromFbx(L"Monster\\\Boss_tenzen\\Animation\\dance.fbx", L"attack1");
-
+			mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
 			mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003015.fbx", L"attack1");
+
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
-			mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
+			
+			//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
+
+
+			//MeshData* newMeshData = new MeshData();
+			//newMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			//GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
+
+			//mMeshData = new MeshData();
+
+			//MeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
+			//mMeshData->Load(L"Monster\\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000401.fbx", L"attack2");
+			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
+
 
 		}
 
