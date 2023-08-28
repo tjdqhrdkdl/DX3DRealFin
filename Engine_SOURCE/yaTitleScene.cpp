@@ -288,14 +288,13 @@ namespace ya
 
 
 			mMeshData->LoadAnimationFromFbx(L"Monster\\\Boss_tenzen\\Animation\\oioiioioi.fbx", L"attack2");
-			mMeshData->LoadAnimationFromFbx(L"Monster\\\Boss_tenzen\\Animation\\dance.fbx", L"attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\Boss_tenzen\\Animation\\dance.fbx", L"attack1");
 
 			mMeshData->Instantiate(eLayerType::Monster);
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
-			mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
-
+			//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
 		}
 
 		Scene::Initialize();

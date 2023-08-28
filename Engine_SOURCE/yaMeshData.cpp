@@ -17,13 +17,20 @@ namespace ya
 	}
 	MeshData::~MeshData()
 	{
+		for (size_t i = 0; i < mBoneFrameDataVector.size(); i++)
+		{
+			delete mBoneFrameDataVector[i];
+		}
+		delete mBoneOffset;
+		
+
 	}
-	MeshData* MeshData::LoadFromFbx(const std::wstring& path)
+	std::shared_ptr<MeshData> MeshData::LoadFromFbx(const std::wstring& path)
 	{
 		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
 		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
 		
-		MeshData* meshData = new MeshData();
+		std::shared_ptr<MeshData> meshSharedPtr = std::make_shared<MeshData>();
 
 		FbxLoader loader;
 		loader.Initialize();
@@ -37,7 +44,7 @@ namespace ya
 		for (size_t i = 0; i < meshes.size(); i++)
 		{
 			mesh = meshes[i];
-			mesh->SetParentMeshData(meshData);
+			mesh->SetParentMeshData(meshSharedPtr.get());
 			// 리소스에 넣어주기
 			
 			std::wstring name = std::filesystem::path(fullPath).stem();
@@ -117,23 +124,23 @@ namespace ya
 			animClip.push_back(tClip);
 		}
 
-		meshData->mMeshes = meshes;
-		meshData->mMaterialsVec = materialsVec;
-		meshData->mFullPath = fullPath;
-		meshData->mAnimClip = animClip;
-		meshData->mBones = bones;
+		meshSharedPtr->mMeshes = meshes;
+		meshSharedPtr->mMaterialsVec = materialsVec;
+		meshSharedPtr->mFullPath = fullPath;
+		meshSharedPtr->mAnimClip = animClip;
+		meshSharedPtr->mBones = bones;
 
 		// Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
-		if (meshData->IsAnimMesh())
+		if (meshSharedPtr->IsAnimMesh())
 		{
 			// BoneOffet 행렬
 			std::vector<Matrix> vecOffset;
 			//std::vector<BoneFrameTransform> vecFrameTrans;
 			//vecFrameTrans.resize((UINT)meshData->mBones.size() * iFrameCount);
 
-			for (size_t i = 0; i < meshData->mBones.size(); ++i)
+			for (size_t i = 0; i < meshSharedPtr->mBones.size(); ++i)
 			{
-				vecOffset.push_back(meshData->mBones[i].offset);
+				vecOffset.push_back(meshSharedPtr->mBones[i].offset);
 
 	/*			for (size_t j = 0; j < meshData->mBones[i].keyFrames.size(); ++j)
 				{
@@ -151,17 +158,21 @@ namespace ya
 				}*/
 			}
 
-			meshData->mBoneOffset = new graphics::StructedBuffer();
-			meshData->mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
-			meshData->mBoneOffset->GetSize();
+			meshSharedPtr->mBoneOffset = new graphics::StructedBuffer();
+			meshSharedPtr->mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
+			meshSharedPtr->mBoneOffset->GetSize();
 			//meshData->mBoneFrameData = new StructedBuffer();
 			//meshData->mBoneFrameData->Create(sizeof(BoneFrameTransform), (UINT)vecOffset.size() * iFrameCount
 			//	, eSRVType::SRV, vecFrameTrans.data(), false);
 		}
+		const std::wstring meshDataName
+			= std::filesystem::path(fullPath).stem();
 
+
+		Resources::Insert(meshDataName, meshSharedPtr);
 
 		loader.Release();
-		return meshData;
+		return meshSharedPtr;
 	}
 
 	void MeshData::LoadAnimationFromFbx(const std::wstring& path, const std::wstring& name)

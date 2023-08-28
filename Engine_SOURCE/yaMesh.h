@@ -11,7 +11,7 @@ namespace ya
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
 		D3D11_BUFFER_DESC desc;
 		UINT indexCount;
-		void* pIdxSysMem;
+		void* pIdxSysMem;	
 	};
 
 	class MeshData;

@@ -13,7 +13,7 @@ namespace ya
 		MeshData();
 		~MeshData();
 
-		static MeshData* LoadFromFbx(const std::wstring& path);
+		static std::shared_ptr<MeshData> LoadFromFbx(const std::wstring& path);
 		
 		void LoadAnimationFromFbx(const std::wstring& path, const std::wstring& name);
 
@@ -47,6 +47,8 @@ namespace ya
 
 		void SetAnimationClipCount(UINT num) { mAnimationClipCount = num; }
 		UINT GetAnimationClipCount() { return mAnimationClipCount; }
+
+
 	private:
 		std::vector<std::shared_ptr<Mesh>>  mMeshes;
 		std::vector<std::vector<std::shared_ptr<Material>>> mMaterialsVec;
