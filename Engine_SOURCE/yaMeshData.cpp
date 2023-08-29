@@ -255,7 +255,7 @@ namespace ya
 		// Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
 		std::vector<BoneFrameTransform> vecFrameTrans;
 		vecFrameTrans.resize((UINT)meshBones->size() * iFrameCount);
-
+		
 		for (size_t i = 0; i < meshBones->size(); ++i)
 		{
 
@@ -271,7 +271,7 @@ namespace ya
 						, meshBones->at(i).keyFrames[animCount][j].scale.y
 						, meshBones->at(i).keyFrames[animCount][j].scale.z, 0.f)
 					, meshBones->at(i).keyFrames[animCount][j].rotation
-				};
+				};				
 			}
 		}
 
@@ -285,6 +285,7 @@ namespace ya
 		
 		AnimationSave(path);
 
+		
 		loader.Release();
 	}
 
@@ -493,15 +494,8 @@ namespace ya
 		UINT boneSize = mBones.size();
 		fwrite(&boneSize, sizeof(UINT), 1, file);
 
-		//애니메이션 클립 카운트 저장 1개의 fbx당 애니메이션 개수
-		fwrite(&mAnimationClipCount, sizeof(UINT), 1, file);
-
-
-		UINT boneFrameDataVector = mBoneFrameDataVector.size();
-		fwrite(&boneFrameDataVector, sizeof(UINT), 1, file);
-
-
-		for (size_t i = 0; i < mAnimationClipCount; i++)
+		
+		for (size_t i = 0; i < 1; i++)
 		{
 			SaveWString(mAnimClip[i].name, file);		
 			fwrite(&mAnimClip[i].startTime, sizeof(double), 1, file);
@@ -523,7 +517,7 @@ namespace ya
 			fwrite(&mBones[i].offset, sizeof(Matrix), 1, file);
 						
 
-			for (size_t j = 0; j < boneFrameDataVector; j++)
+			for (size_t j = 0; j < 1; j++)
 			{				
 
 				UINT boneKeyFramesSize = mBones[i].keyFrames[j].size();
@@ -538,6 +532,18 @@ namespace ya
 				}
 			}
 		}
+		
+		
+		//UINT boneFrameTransformSize = mBonesFrameTransforms.size();
+		//fwrite(&boneFrameTransformSize, sizeof(UINT), 1, file);
+
+		//for (size_t i = 0; i < boneFrameTransformSize; i++)
+		//{
+		//	fwrite(&mBonesFrameTransforms[i].rotation, sizeof(Vector4), 1, file);
+		//	fwrite(&mBonesFrameTransforms[i].scale, sizeof(Vector4), 1, file);
+		//	fwrite(&mBonesFrameTransforms[i].translate, sizeof(Vector4), 1, file);
+		//}
+
 
 		fclose(file);
 
@@ -550,7 +556,7 @@ namespace ya
 		mBones;
 		mBoneFrameDataVector;
 		mBoneOffset;
-		mAnimationClipCount;
+		mAnimationClipCount = 1;
 		mRepresentBoneAnimator;
 
 		int a = 0;
@@ -589,17 +595,10 @@ namespace ya
 		UINT boneSize = 0;
 		fread(&boneSize, sizeof(UINT), 1, file);
 
-		//애니메이션 클립 카운트 저장 1개의 fbx당 애니메이션 개수
-		mAnimationClipCount = 0;
-		fread(&mAnimationClipCount, sizeof(UINT), 1, file);
-
-
-		UINT boneFrameDataVector = 0;
-		fread(&boneFrameDataVector, sizeof(UINT), 1, file);	
 		
 
-		mAnimClip.resize(mAnimationClipCount);
-		for (size_t i = 0; i < mAnimationClipCount; i++)
+		mAnimClip.resize(1);
+		for (size_t i = 0; i < 1; i++)
 		{
 			LoadWString(mAnimClip[i].name, file);
 
@@ -629,8 +628,8 @@ namespace ya
 
 
 			//boneFrameDataVector = max(frameCount, boneFrameDataVector);
-			mBones[i].keyFrames.resize(boneFrameDataVector);
-			for (size_t j = 0; j < boneFrameDataVector; j++)
+			mBones[i].keyFrames.resize(1);
+			for (size_t j = 0; j < 1; j++)
 			{				
 
 				UINT boneKeyFramesSize;
@@ -643,6 +642,7 @@ namespace ya
 					fread(&mBones[i].keyFrames[j][k].translate, sizeof(Vector3), 1, file);
 					fread(&mBones[i].keyFrames[j][k].scale, sizeof(Vector3), 1, file);
 					fread(&mBones[i].keyFrames[j][k].rotation, sizeof(Vector4), 1, file);
+
 				}
 			}
 
@@ -651,16 +651,50 @@ namespace ya
 			
 		}
 
+		//UINT boneFrameTransformSize;
+		//fread(&boneFrameTransformSize, sizeof(UINT), 1, file);
+		//mBonesFrameTransforms.resize(boneFrameTransformSize);
+
+		//for (size_t i = 0; i < boneFrameTransformSize; i++)
+		//{
+		//	fread(&mBonesFrameTransforms[i].rotation, sizeof(Vector4), 1, file);
+		//	fread(&mBonesFrameTransforms[i].scale, sizeof(Vector4), 1, file);
+		//	fread(&mBonesFrameTransforms[i].translate, sizeof(Vector4), 1, file);
+		//}
+
+
 
 		fclose(file);
+
 
 		std::vector<BoneFrameTransform> vecFrameTrans;
 		vecFrameTrans.resize((UINT)mBones.size() * iFrameCount);
 
+		for (size_t i = 0; i < mBones.size(); ++i)
+		{
+
+			for (size_t j = 0; j < mBones[i].keyFrames[0].size(); ++j)
+			{
+				vecFrameTrans[(UINT)mBones.size() * j + i]
+					= BoneFrameTransform
+				{
+					Vector4(mBones[i].keyFrames[0][j].translate.x
+						, mBones[i].keyFrames[0][j].translate.y
+						, mBones[i].keyFrames[0][j].translate.z, 0.f)
+					, Vector4(mBones[i].keyFrames[0][j].scale.x
+						, mBones[i].keyFrames[0][j].scale.y
+						, mBones[i].keyFrames[0][j].scale.z, 0.f)
+					, mBones[i].keyFrames[0][j].rotation
+				};
+			}
+		}
+
+
+		
 		graphics::StructedBuffer* boneFrameData = new graphics::StructedBuffer();
 		boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * iFrameCount
 			, eSRVType::SRV, vecFrameTrans.data(), false);
-		PushBackBoneFrameData(boneFrameData);		
+		PushBackBoneFrameData(boneFrameData);	
 
 
 		mMeshes;
@@ -672,7 +706,7 @@ namespace ya
 		mBones;
 		mBoneFrameDataVector;
 		mBoneOffset;
-		mAnimationClipCount;
+		mAnimationClipCount = 1;
 		mRepresentBoneAnimator;
 
 		int a = 0;
