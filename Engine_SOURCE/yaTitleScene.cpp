@@ -150,6 +150,23 @@ namespace ya
 		}
 
 		{
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground->SetName(L"Ground1");
+			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
+			groundTr->SetScale(Vector3(50.0f, 10.0f, 10.0f));
+			groundTr->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			ground->AddComponent<GroundScript>();
+		}
+
+
+		{
 			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
 			grappleGround->SetName(L"grapple target");
 			Transform* groundTr = grappleGround->GetComponent<Transform>();
@@ -286,10 +303,18 @@ namespace ya
 		{
 
 			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
-
 			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
 			//mMeshData->Instantiate(eLayerType::Monster);
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003015.fbx", L"attack1");
+
+			mMeshData = new MeshData();
+			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");
+			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\a000_000402.animationdata");
+			mMeshData->Instantiate(eLayerType::Monster);
+			
+
+
+
+
 
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
@@ -306,9 +331,8 @@ namespace ya
 
 
 			//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinalMesh_Join.fbx");
-			//MeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
 			//mMeshData->Load(L"Map\\MeshData\\FinalMesh_Join.meshdata");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000401.fbx", L"attack2");
+			//
 			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
 
 

@@ -120,13 +120,18 @@ namespace ya
 			animClip.push_back(tClip);
 		}
 
+		//meshData->mMeshes = meshes;
+		//meshData->mMaterialsVec = materialsVec;
+		//meshData->mFullPath = fullPath;
+		//meshData->mAnimClip = animClip;
+		//meshData->mBones = bones;
+		
+	
 		meshData->mMeshes = meshes;
 		meshData->mMaterialsVec = materialsVec;
 		meshData->mFullPath = fullPath;
 		meshData->mAnimClip = animClip;
 		meshData->mBones = bones;
-
-
 
 		// Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
 		if (meshData->IsAnimMesh())
@@ -178,7 +183,7 @@ namespace ya
 	void MeshData::LoadAnimationFromFbx(const std::wstring& path, const std::wstring& name)
 	{
 
-		MeshData* meshData = new MeshData();
+		
 
 		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
 		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
@@ -226,7 +231,6 @@ namespace ya
 				}
 			}
 			iFrameCount = max(iFrameCount, (UINT)meshBones->at(j).keyFrames[animCount].size());
-
 		}
 
 		std::vector<AnimationClip*>& vecAnimClip = loader.GetAnimClip();
@@ -278,8 +282,8 @@ namespace ya
 			, eSRVType::SRV, vecFrameTrans.data(), false);
 		PushBackBoneFrameData(boneFrameData);
 
-
-		meshData->AnimationSave(path);
+		
+		AnimationSave(path);
 
 		loader.Release();
 	}
@@ -345,16 +349,16 @@ namespace ya
 
 		if (IsAnimMesh())
 		{
+			UINT boneSize = mBones.size();
+			fwrite(&boneSize, sizeof(UINT), 1, file);
+
 			for (size_t i = 0; i < mBones.size(); ++i)
 			{
+				
 				Matrix boneoffsetMatrix = mBones[i].offset;
 				fwrite(&boneoffsetMatrix, sizeof(Matrix), 1, file);
 			}
-
-		}
-
-
-		
+		}		
 
 		fclose(file);
 
@@ -387,13 +391,13 @@ namespace ya
 
 		mMeshes.resize(meshSize);
 
-		MeshData* meshData = new MeshData();
+		//MeshData* meshData = new MeshData();
 		std::vector<std::vector<std::shared_ptr<Material>>>  materialsVec = {};
 
 		for (size_t i = 0; i < meshSize; i++)
 		{
 			mMeshes[i] = std::make_shared<Mesh>();
-			mMeshes[i]->SetParentMeshData(meshData);
+			//mMeshes[i]->SetParentMeshData(meshData);
 			mMeshes[i]->Load(name, file);
 
 			std::wstring name = std::filesystem::path(path).stem();
@@ -431,6 +435,10 @@ namespace ya
 
 		if (AniMesh)
 		{
+			UINT boneSize;
+			fread(&boneSize, sizeof(UINT), 1, file);
+			mBones.resize(boneSize);
+
 			for (size_t i = 0; i < mBones.size(); ++i)
 			{
 				Matrix boneoffsetMatrix;
@@ -439,18 +447,16 @@ namespace ya
 				mBones[i].offset = boneoffsetMatrix;
 			}
 
+			mBoneOffset = new graphics::StructedBuffer();
+			mBoneOffset->Create(sizeof(Matrix), (UINT)mBones.size(), eSRVType::SRV, mBones.data(), false);
+			mBoneOffset->GetSize();
 		}
-
-
 
 		fclose(file);
 
-
-
-		
-		meshData->mMeshes = mMeshes;
-		meshData->mMaterialsVec = mMaterialsVec;
-		meshData->mFullPath = CurparentPath;
+						
+			
+		mFullPath = CurparentPath;
 
 		
 
@@ -490,17 +496,64 @@ namespace ya
 		//애니메이션 클립 카운트 저장 1개의 fbx당 애니메이션 개수
 		fwrite(&mAnimationClipCount, sizeof(UINT), 1, file);
 
+
 		UINT boneFrameDataVector = mBoneFrameDataVector.size();
 		fwrite(&boneFrameDataVector, sizeof(UINT), 1, file);
 
+
+		for (size_t i = 0; i < mAnimationClipCount; i++)
+		{
+			SaveWString(mAnimClip[i].name, file);		
+			fwrite(&mAnimClip[i].startTime, sizeof(double), 1, file);
+			fwrite(&mAnimClip[i].endTime, sizeof(double), 1, file);
+			fwrite(&mAnimClip[i].timeLength, sizeof(double), 1, file);
+			fwrite(&mAnimClip[i].mode, sizeof(int), 1, file);
+			fwrite(&mAnimClip[i].updateTime, sizeof(float), 1, file);
+			fwrite(&mAnimClip[i].startFrame, sizeof(int), 1, file);
+			fwrite(&mAnimClip[i].endFrame, sizeof(int), 1, file);
+			fwrite(&mAnimClip[i].frameLength, sizeof(int), 1, file);
+		}
 		
+		for (size_t i = 0; i < boneSize; i++)
+		{
+			SaveWString(mBones[i].name, file);
+			fwrite(&mBones[i].depth, sizeof(int), 1, file);
+			fwrite(&mBones[i].parentIdx, sizeof(int), 1, file);
+			fwrite(&mBones[i].bone, sizeof(Matrix), 1, file);
+			fwrite(&mBones[i].offset, sizeof(Matrix), 1, file);
+						
 
+			for (size_t j = 0; j < boneFrameDataVector; j++)
+			{				
 
-
-
-
+				UINT boneKeyFramesSize = mBones[i].keyFrames[j].size();
+				fwrite(&boneKeyFramesSize, sizeof(UINT), 1, file);
+				for (size_t k = 0; k < boneKeyFramesSize; k++)
+				{	
+					fwrite(&mBones[i].keyFrames[j][k].time, sizeof(double), 1, file);
+					fwrite(&mBones[i].keyFrames[j][k].frame, sizeof(int), 1, file);
+					fwrite(&mBones[i].keyFrames[j][k].translate, sizeof(Vector3), 1, file);
+					fwrite(&mBones[i].keyFrames[j][k].scale, sizeof(Vector3), 1, file);
+					fwrite(&mBones[i].keyFrames[j][k].rotation, sizeof(Vector4), 1, file);
+				}
+			}
+		}
 
 		fclose(file);
+
+		mMeshes;
+		mMaterialsVec;
+		mChildObjects;
+		mFullPath;
+
+		mAnimClip;
+		mBones;
+		mBoneFrameDataVector;
+		mBoneOffset;
+		mAnimationClipCount;
+		mRepresentBoneAnimator;
+
+		int a = 0;
 
 
 		return S_OK;
@@ -508,7 +561,123 @@ namespace ya
 
 	HRESULT MeshData::AnimationLoad(const std::wstring& path, FILE* file)
 	{
-		return E_NOTIMPL;
+
+		std::string strPath(path.begin(), path.end());
+
+		std::filesystem::path CurparentPath = std::filesystem::current_path().parent_path();
+		CurparentPath += L"\\Resources\\";
+
+		std::filesystem::path parentPath = strPath;
+		parentPath = parentPath.parent_path().parent_path();
+		parentPath += L"\\AnimationData\\";
+
+		CurparentPath += parentPath;
+
+		std::wstring name = std::filesystem::path(path).stem();
+		name += L".animationdata";
+
+		CurparentPath += name;
+
+		std::wstring fullPath = CurparentPath;
+
+		file = nullptr;
+		_wfopen_s(&file, fullPath.c_str(), L"rb");
+		if (file == nullptr)
+			return S_FALSE;
+
+		//본 사이즈 
+		UINT boneSize = 0;
+		fread(&boneSize, sizeof(UINT), 1, file);
+
+		//애니메이션 클립 카운트 저장 1개의 fbx당 애니메이션 개수
+		mAnimationClipCount = 0;
+		fread(&mAnimationClipCount, sizeof(UINT), 1, file);
+
+
+		UINT boneFrameDataVector = 0;
+		fread(&boneFrameDataVector, sizeof(UINT), 1, file);	
+		
+
+		mAnimClip.resize(mAnimationClipCount);
+		for (size_t i = 0; i < mAnimationClipCount; i++)
+		{
+			LoadWString(mAnimClip[i].name, file);
+
+			fread(&mAnimClip[i].startTime, sizeof(double), 1, file);
+			fread(&mAnimClip[i].endTime, sizeof(double), 1, file);
+			fread(&mAnimClip[i].timeLength, sizeof(double), 1, file);
+			fread(&mAnimClip[i].mode, sizeof(int), 1, file);
+			fread(&mAnimClip[i].updateTime, sizeof(float), 1, file);
+			fread(&mAnimClip[i].startFrame, sizeof(int), 1, file);
+			fread(&mAnimClip[i].endFrame, sizeof(int), 1, file);
+			fread(&mAnimClip[i].frameLength, sizeof(int), 1, file);			
+		}
+
+
+		// 본정보들 전부 저장
+		mBones.resize(boneSize);		
+		UINT iFrameCount = 0;
+		for (size_t i = 0; i < boneSize; i++)
+		{
+
+			LoadWString(mBones[i].name, file);
+			fread(&mBones[i].depth, sizeof(int), 1, file);
+			fread(&mBones[i].parentIdx, sizeof(int), 1, file);
+			fread(&mBones[i].bone, sizeof(Matrix), 1, file);
+			fread(&mBones[i].offset, sizeof(Matrix), 1, file);
+
+
+
+			//boneFrameDataVector = max(frameCount, boneFrameDataVector);
+			mBones[i].keyFrames.resize(boneFrameDataVector);
+			for (size_t j = 0; j < boneFrameDataVector; j++)
+			{				
+
+				UINT boneKeyFramesSize;
+				fread(&boneKeyFramesSize, sizeof(UINT), 1, file);
+				mBones[i].keyFrames[j].resize(boneKeyFramesSize);
+				for (UINT k = 0; k < boneKeyFramesSize; k++)
+				{
+					fread(&mBones[i].keyFrames[j][k].time, sizeof(double), 1, file);
+					fread(&mBones[i].keyFrames[j][k].frame, sizeof(int), 1, file);
+					fread(&mBones[i].keyFrames[j][k].translate, sizeof(Vector3), 1, file);
+					fread(&mBones[i].keyFrames[j][k].scale, sizeof(Vector3), 1, file);
+					fread(&mBones[i].keyFrames[j][k].rotation, sizeof(Vector4), 1, file);
+				}
+			}
+
+			//iFrameCount = max(iFrameCount, (UINT)mBones[i].keyFrames[mAnimationClipCount].size());
+			iFrameCount = max(iFrameCount, (UINT)mBones[i].keyFrames[0].size());
+			
+		}
+
+
+		fclose(file);
+
+		std::vector<BoneFrameTransform> vecFrameTrans;
+		vecFrameTrans.resize((UINT)mBones.size() * iFrameCount);
+
+		graphics::StructedBuffer* boneFrameData = new graphics::StructedBuffer();
+		boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * iFrameCount
+			, eSRVType::SRV, vecFrameTrans.data(), false);
+		PushBackBoneFrameData(boneFrameData);		
+
+
+		mMeshes;
+		mMaterialsVec;
+		mChildObjects;
+		mFullPath;
+
+		mAnimClip;
+		mBones;
+		mBoneFrameDataVector;
+		mBoneOffset;
+		mAnimationClipCount;
+		mRepresentBoneAnimator;
+
+		int a = 0;
+		
+		return S_OK;
 	}
 
 
@@ -525,6 +694,7 @@ namespace ya
 			gameObj->SetName(name +L"." + std::to_wstring(i));
 			MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
 			mr->SetMesh(mMeshes[i]);
+			mMeshes[i]->SetParentMeshData(this);
 
 			for (size_t k = 0; k < mMaterialsVec[i].size(); k++)
 			{
