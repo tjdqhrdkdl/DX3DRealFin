@@ -642,17 +642,19 @@ namespace ya
 		fclose(file);
 
 
-		std::vector<BoneFrameTransform> vecFrameTrans;
-		vecFrameTrans.resize((UINT)mBones.size() * iFrameCount);
+		std::vector<std::vector<BoneFrameTransform>> vecFrameTrans;
+		vecFrameTrans.resize(mAnimationClipCount);
+
+		
 
 		for (size_t i = 0; i < mBones.size(); ++i)
 		{
 			for (size_t k = 0; k < mAnimationClipCount; k++)
 			{
-
+				vecFrameTrans[k].resize((UINT)mBones.size() * iFrameCount);
 				for (size_t j = 0; j < mBones[i].keyFrames[k].size(); ++j)
 				{
-					vecFrameTrans[(UINT)mBones.size() * j + i]
+					vecFrameTrans[k][(UINT)mBones.size() * j + i]
 						= BoneFrameTransform
 					{
 						Vector4(mBones[i].keyFrames[k][j].translate.x
@@ -667,12 +669,19 @@ namespace ya
 			}
 		}
 
+		for (size_t i = 0; i < mAnimationClipCount; i++)
+		{
+			graphics::StructedBuffer* boneFrameData = new graphics::StructedBuffer();
+			boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * iFrameCount
+				, eSRVType::SRV, vecFrameTrans[i].data(), false);
+			PushBackBoneFrameData(boneFrameData);
+		}
+		
+	
 
 		
-		graphics::StructedBuffer* boneFrameData = new graphics::StructedBuffer();
-		boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * iFrameCount
-			, eSRVType::SRV, vecFrameTrans.data(), false);
-		PushBackBoneFrameData(boneFrameData);	
+
+		int a = 0;
 
 		
 		return S_OK;

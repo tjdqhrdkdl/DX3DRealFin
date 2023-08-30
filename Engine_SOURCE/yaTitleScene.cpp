@@ -302,19 +302,21 @@ namespace ya
 		//}
 		{
 
-			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack1");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000411.fbx", L"attack2");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003050.fbx", L"attack3");
-			//mMeshData->AnimationSave(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003050.fbx", L"attack3");
+			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\1700.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000200.fbx", L"attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
+			//mMeshData->AnimationSave(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\Samurai.fbx", L"SpearMan");
 			//mMeshData->Instantiate(eLayerType::Monster);
 
 
 
 
 			mMeshData = new MeshData();
-			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");
-			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\a000_003050.animationdata", L"attack3");
+			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata", L"SpearMan");
 			
 			mMeshData->Instantiate(eLayerType::Monster);
 			
@@ -349,21 +351,30 @@ namespace ya
 	}
 	void TitleScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::N))
+		if (Input::GetKeyDown(eKeyCode::Y))
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
-			mMeshData->Play(L"attack1");
-			
+			mMeshData->Play(L"attack1");			
 		}
-		if (Input::GetKeyDown(eKeyCode::M))
+		if (Input::GetKeyDown(eKeyCode::U))
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
 			mMeshData->Play(L"attack2");
 		}
-		if (Input::GetKeyDown(eKeyCode::B))
+		if (Input::GetKeyDown(eKeyCode::I))
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
 			mMeshData->Play(L"attack3");
+		}
+		if (Input::GetKeyDown(eKeyCode::O))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack4");
+		}
+		if (Input::GetKeyDown(eKeyCode::P))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack5");
 		}
 
 		Scene::Update();
