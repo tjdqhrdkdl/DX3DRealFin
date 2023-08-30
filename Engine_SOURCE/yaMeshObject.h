@@ -15,6 +15,8 @@ namespace ya
 
 		void PushBackObject(GameObject* obj) { mGameObjects.push_back(obj); }
 		void SetObjectsVector(std::vector<GameObject*> vec) { mGameObjects = vec; }
+
+		void SetParent();
 	private:
 		std::vector<GameObject*> mGameObjects;
 	};

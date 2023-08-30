@@ -232,7 +232,7 @@ namespace ya
 			for (size_t i = 0; i < 4; i++)
 				Axis[i].z = 0.0f;
 
-			Vector3 vc = leftTr->GetPosition() - rightTr->GetPosition();
+			Vector3 vc = leftTr->GetFinalPosition() - rightTr->GetFinalPosition();
 			vc.z = 0.0f;
 
 			Vector3 centerDir = vc;
@@ -355,7 +355,7 @@ namespace ya
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers)
 	{
 		Scene* scene = SceneManager::GetActiveScene();
-		Vector3 position = owner->GetComponent<Transform>()->GetPosition();
+		Vector3 position = owner->GetComponent<Transform>()->GetFinalPosition();
 		ya::Ray ray = ya::Ray(position, direction);
 
 		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
@@ -494,7 +494,7 @@ namespace ya
 		Transform* tr = colObj->GetComponent<Transform>();
 		Collider2D* col = colObj->GetComponent<Collider2D>();
 		Matrix worldMatrix = tr->GetWorldMatrix();
-		Vector3 scale = tr->GetScale();
+		Vector3 scale = tr->GetFinalScale();
 		Vector3 colScale = col->GetSize();
 		scale.x *= colScale.x;
 		scale.y *= colScale.y;

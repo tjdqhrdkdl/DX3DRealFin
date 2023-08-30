@@ -69,6 +69,11 @@ namespace ya
 		std::function<void()>& GetEndEvent(const std::wstring& name);
 		std::function<void()>& GetFrameEvent(const std::wstring& name, UINT index);
 
+		int GetCurrentClipIdx() { return mCurrentClip; }
+		int GetCurrentFrameIdx() { return mFrameIdx; }
+
+		int GetAnimationIdxByName(const std::wstring& name) { if (mAnimationNameAndIndexMap.find(name) == mAnimationNameAndIndexMap.end()) return -1; else return mAnimationNameAndIndexMap[name]; }
+
 	private:
 		const std::vector<BoneMatrix>* mBones;
 		const std::vector<BoneAnimationClip>* mAnimationClips;

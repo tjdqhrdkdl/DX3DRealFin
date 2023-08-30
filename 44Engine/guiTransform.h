@@ -21,6 +21,8 @@ namespace gui
 		ya::math::Vector3 mForward;
 		ya::math::Vector3 mRight;
 		ya::math::Vector3 mUp;
+
+		ya::math::Vector3 mColliderCenter;
 	};
 
 }

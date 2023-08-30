@@ -123,7 +123,7 @@ namespace ya
 	{
 		//예외처리
 		if (mAnimationNameAndIndexMap.find(animName) == mAnimationNameAndIndexMap.end())
-			assert(L"존재하지 않는 애니메이션을 Play 중입니다.");
+			assert(NULL);
 
 
 		//기존 애니메이션 정리
@@ -134,10 +134,13 @@ namespace ya
 
 		if (events)
 			events->mEndEvent();
+
 		//새로운 애니메이션으로 변경
 		mCurrentClip = mAnimationNameAndIndexMap[animName];
+		mFrameIdx = 0;
+		
 		events = FindEvents(mAnimationClips->at(mCurrentClip).name);
-
+		
 		if (events)
 			events->mStartEvent();
 	}

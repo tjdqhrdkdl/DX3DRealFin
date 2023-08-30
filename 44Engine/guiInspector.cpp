@@ -26,7 +26,7 @@ namespace gui
 		mComponents[(UINT)eComponentType::Transform]->SetName("InspectorTransform");
 		mComponents[(UINT)eComponentType::Transform]->SetTarget(mTargetGameObject);
 		AddWidget(mComponents[(UINT)eComponentType::Transform]);
-		
+
 		mComponents[(UINT)eComponentType::MeshRenderer] = new gui::MeshRenderer();
 		mComponents[(UINT)eComponentType::MeshRenderer]->SetName("InspectorMeshRenderer");
 		mComponents[(UINT)eComponentType::MeshRenderer]->SetTarget(mTargetGameObject);

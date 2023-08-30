@@ -247,11 +247,13 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaSpriteRenderer.h" />
     <ClInclude Include="yaStructedBuffer.h" />
     <ClInclude Include="yaSwordsman.h" />
+    <ClInclude Include="yaTenzen.h" />
     <ClInclude Include="yaTexture.h" />
     <ClInclude Include="yaTime.h" />
     <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaTransform.h" />
     <ClInclude Include="yaWallScript.h" />
+    <ClInclude Include="yaBoneCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaBoneAnimator.cpp" />
@@ -324,11 +326,13 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaSpriteRenderer.cpp" />
     <ClCompile Include="yaStructedBuffer.cpp" />
     <ClCompile Include="yaSwordsman.cpp" />
+    <ClCompile Include="yaTenzen.cpp" />
     <ClCompile Include="yaTexture.cpp" />
     <ClCompile Include="yaTime.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaTransform.cpp" />
     <ClCompile Include="yaWallScript.cpp" />
+    <ClCompile Include="yaBoneCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl" />

@@ -37,7 +37,7 @@
 
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
-
+#include "yaTenzen.h"
 
 namespace ya
 {
@@ -285,10 +285,10 @@ namespace ya
 		//}
 		{
 
-			mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
+			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
 
-			mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
-			mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
+			//mMeshData->Instantiate(eLayerType::Monster);
 			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003015.fbx", L"attack1");
 
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
@@ -311,7 +311,7 @@ namespace ya
 
 
 		}
-
+		object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	void TitleScene::Update()

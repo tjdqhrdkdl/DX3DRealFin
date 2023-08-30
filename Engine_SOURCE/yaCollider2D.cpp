@@ -15,6 +15,7 @@ namespace ya
 		, mbTrigger(false)
 		, mID(0)
 		, mRadius(0.0f)
+		, mbActive(true)
 	{
 		mID = ColliderNumber++;
 	}
@@ -34,12 +35,14 @@ namespace ya
 
 	void Collider2D::FixedUpdate()
 	{
-		Vector3 scale = mTransform->GetScale();
+		if (!mbActive)
+			return;
+		Vector3 scale = mTransform->GetFinalScale();
 		scale *= Vector3(mSize.x, mSize.y, mSize.z);
 
-		Vector3 rotation = mTransform->GetRotation();
+		Vector3 rotation = mTransform->GetFinalRotation();
 
-		Vector3 position = mTransform->GetPosition();
+		Vector3 position = mTransform->GetFinalPosition();
 		Vector3 colliderPos = position + Vector3(mCenter.x, mCenter.y, mCenter.z);
 		mPosition = colliderPos;
 

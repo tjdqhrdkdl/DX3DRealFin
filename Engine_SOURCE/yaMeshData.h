@@ -56,7 +56,8 @@ namespace ya
 
 		void SetAnimationClipCount(UINT num) { mAnimationClipCount = num; }
 		UINT GetAnimationClipCount() { return mAnimationClipCount; }
-
+		class BoneAnimator* GetAnimator() { return mRepresentBoneAnimator; }
+		MeshObject* GetMeshObject() { return mMeshObject; }
 
 		void SaveWString(const std::wstring& _str, FILE* _pFile);
 		void LoadWString(std::wstring& _str, FILE* _pFile);
@@ -80,5 +81,6 @@ namespace ya
 		UINT mAnimationClipCount;
 
 		class BoneAnimator* mRepresentBoneAnimator;
+		MeshObject* mMeshObject;
 	};
 }

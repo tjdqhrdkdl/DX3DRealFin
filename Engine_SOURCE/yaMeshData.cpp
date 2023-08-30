@@ -40,7 +40,6 @@ namespace ya
 		for (size_t i = 0; i < meshes.size(); i++)
 		{
 			mesh = meshes[i];
-			mesh->SetParentMeshData(meshData);
 			// 리소스에 넣어주기
 			
 			std::wstring name = std::filesystem::path(fullPath).stem();
@@ -449,7 +448,7 @@ namespace ya
 			gameObj->SetName(name +L"." + std::to_wstring(i));
 			MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
 			mr->SetMesh(mMeshes[i]);
-
+			mMeshes[i]->SetParentMeshData(this);
 			for (size_t k = 0; k < mMaterialsVec[i].size(); k++)
 			{
 				mr->SetMaterial(mMaterialsVec[i][k], k);
@@ -466,7 +465,9 @@ namespace ya
 					mRepresentBoneAnimator = animator;
 			}
 		}
-
+		
+		meshObject->SetParent();
+		mMeshObject = meshObject;
 		return meshObject;
 	}
 	void MeshData::Play(const std::wstring animName)

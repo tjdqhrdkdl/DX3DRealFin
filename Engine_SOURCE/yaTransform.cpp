@@ -13,9 +13,6 @@ namespace ya
 		, mRotation(Vector3::Zero)
 		, mPosition(Vector3::One)
 		, mParent(nullptr)
-		, mSubPosition(Vector3::Zero)
-		, mSubRotation(Vector3::Zero)
-		, mSubScale(Vector3::One)
 	{
 		
 	}
@@ -39,10 +36,10 @@ namespace ya
 		//렌더링에 사용될 위치값들을 업데이트
 
 		// 월드 행렬 생성
-		
+
 
 		// 크기 변환 행렬
-		Vector3 finalScale = mScale * mSubScale;
+		Vector3 finalScale = mScale;
 		Matrix scale = Matrix::CreateScale(finalScale);
 		mMatScale = scale;
 
@@ -51,12 +48,10 @@ namespace ya
 		// 회전 변환 행렬
 		Matrix rotation;
 
-		Vector3 finalRotation = mRotation + mSubRotation;
+		Vector3 finalRotation = mRotation;
 		Vector3 radian(finalRotation.x * (XM_PI / 180)
 			, finalRotation.y * (XM_PI / 180)
 			, finalRotation.z * (XM_PI / 180));
-
-		float theta;
 
 		rotation = Matrix::CreateRotationX(radian.x);
 		rotation *= Matrix::CreateRotationY(radian.y);
@@ -69,7 +64,7 @@ namespace ya
 
 		// 이동 변환 행렬
 		Matrix position;
-		Vector3 finalPosition = mPosition + mSubPosition;
+		Vector3 finalPosition = mPosition;
 		position.Translation(finalPosition);
 
 		mMatTranslation = position;
@@ -80,6 +75,17 @@ namespace ya
 		}
 		else
 		{
+			if (mParent)
+			{
+				Vector3 finalRotation = mRotation + mParent->mFinalRotation;
+				Vector3 radian(finalRotation.x * (XM_PI / 180)
+					, finalRotation.y * (XM_PI / 180)
+					, finalRotation.z * (XM_PI / 180));
+
+				rotation = Matrix::CreateRotationX(radian.x);
+				rotation *= Matrix::CreateRotationY(radian.y);
+				rotation *= Matrix::CreateRotationZ(radian.z);
+			}
 			mForward = Vector3::TransformNormal(Vector3::Forward, rotation);
 			mRight = Vector3::TransformNormal(Vector3::Right, rotation);
 			mUp = Vector3::TransformNormal(Vector3::Up, rotation);
@@ -88,10 +94,19 @@ namespace ya
 		// 뷰행렬 세팅
 		// 프로젝션 행렬 세팅
 
-	
+
 		if (mParent)
 		{
 			mWorld *= mParent->mWorld;
+			mFinalPosition = mPosition + mParent->mFinalPosition;
+			mFinalRotation = mRotation + mParent->mFinalRotation;
+			mFinalScale = mScale * mParent->mFinalScale;
+		}
+		else
+		{
+			mFinalPosition = mPosition;
+			mFinalRotation = mRotation;
+			mFinalScale = mScale;
 		}
 	}
 

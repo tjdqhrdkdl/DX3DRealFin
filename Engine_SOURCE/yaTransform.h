@@ -24,24 +24,23 @@ namespace ya
 		Vector3 GetRotation() { return mRotation; };
 		Vector3 GetScale() { return mScale; };
 
-		Vector3 GetSubPosition() { return mSubPosition; };
-		Vector3 GetSubRotation() { return mSubRotation; };
-		Vector3 GetSubScale()	 { return mSubScale; };
+		Vector3 GetFinalPosition() {return mFinalPosition;}
+		Vector3 GetFinalRotation() { return mFinalRotation; }
+		Vector3 GetFinalScale() { return mFinalScale; }
+
 
 		void SetPosition(Vector3 position) { mPosition = position; };
 		void SetRotation(Vector3 degree) { mRotation = degree; };
 		void SetScale(Vector3 scale) { mScale = scale; };
 
-		void SetSubPosition(Vector3 position) { mSubPosition = position; };
-		void SetSubRotation(Vector3 degree) { mSubRotation = degree; };
-		void SetSubScale(Vector3 scale) { mSubScale = scale; };
-
 		Vector3 Forward() { return mForward; }
 		Vector3 Right() { return mRight; }
 		Vector3 Up() { return mUp; }
+
 		void SetForward(Vector3 forward)	{ mForward = forward;	}
 		void SetRight(Vector3 right)		{ mRight = right;}
 		void SetUp(Vector3 up)		{ mUp = up;}
+
 		Matrix& GetWorldMatrix() { return mWorld; }
 
 		void IsCamera(bool cam) { mbCamera = cam; }
@@ -55,6 +54,10 @@ namespace ya
 		Vector3 mRotation;
 		Vector3 mScale;
 
+		Vector3 mFinalPosition;
+		Vector3 mFinalRotation;
+		Vector3 mFinalScale;
+
 		bool mbCamera;
 
 		Matrix mMatScale;
@@ -62,9 +65,5 @@ namespace ya
 		Matrix mMatRotation;
 
 		Matrix mWorld;
-
-		Vector3 mSubPosition;
-		Vector3 mSubRotation;
-		Vector3 mSubScale;
 	};
 }
