@@ -20,8 +20,8 @@ namespace ya
 		virtual HRESULT Save(const std::wstring& path, FILE* file = nullptr);
 		virtual HRESULT Load(const std::wstring& path, FILE* file = nullptr);
 
-		virtual HRESULT AnimationSave(const std::wstring& path, const std::wstring& animationname, FILE* file = nullptr);
-		virtual HRESULT AnimationLoad(const std::wstring& path, const std::wstring& animationname, FILE* file = nullptr);
+		virtual HRESULT AnimationSave(const std::wstring& path, FILE* file = nullptr);
+		virtual HRESULT AnimationLoad(const std::wstring& path, FILE* file = nullptr);
 
 
 		bool IsAnimMesh() { return !mBones.empty(); }

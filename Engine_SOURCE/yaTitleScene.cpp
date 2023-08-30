@@ -312,8 +312,6 @@ namespace ya
 			//mMeshData->Instantiate(eLayerType::Monster);
 
 
-
-
 			mMeshData = new MeshData();
 			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
 			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata", L"SpearMan");

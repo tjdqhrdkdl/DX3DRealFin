@@ -473,7 +473,7 @@ namespace ya
 		return S_OK;
 	}
 
-	HRESULT MeshData::AnimationSave(const std::wstring& path, const std::wstring& animationname, FILE* file)
+	HRESULT MeshData::AnimationSave(const std::wstring& path, FILE* file)
 	{
 		std::string strPath(path.begin(), path.end());
 
@@ -552,7 +552,7 @@ namespace ya
 		return S_OK;
 	}
 
-	HRESULT MeshData::AnimationLoad(const std::wstring& path, const std::wstring& animationname, FILE* file)
+	HRESULT MeshData::AnimationLoad(const std::wstring& path, FILE* file)
 	{
 
 		std::string strPath(path.begin(), path.end());
@@ -675,13 +675,8 @@ namespace ya
 			boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * iFrameCount
 				, eSRVType::SRV, vecFrameTrans[i].data(), false);
 			PushBackBoneFrameData(boneFrameData);
-		}
-		
+		}	
 	
-
-		
-
-		int a = 0;
 
 		
 		return S_OK;
