@@ -302,9 +302,9 @@ namespace ya
 		//}
 		{
 
-			mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
-			mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
-			mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
+			//mMeshData->Instantiate(eLayerType::Monster);
 
 			mMeshData = new MeshData();
 			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");

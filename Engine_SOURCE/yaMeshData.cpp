@@ -355,13 +355,12 @@ namespace ya
 		{
 			UINT boneSize = mBones.size();
 			fwrite(&boneSize, sizeof(UINT), 1, file);
-
+			//std::vector<BoneFrameTransform> vecFrameTrans;
+			//vecFrameTrans.resize((UINT)meshData->mBones.size() * iFrameCount);
 			for (size_t i = 0; i < mBones.size(); ++i)
-			{
-				
-				Matrix boneoffsetMatrix = mBones[i].offset;
-				fwrite(&boneoffsetMatrix, sizeof(Matrix), 1, file);
-			}
+			{	
+				fwrite(&mBones[i].offset, sizeof(Matrix), 1, file);
+			}		
 		}		
 
 		fclose(file);
@@ -401,7 +400,7 @@ namespace ya
 		for (size_t i = 0; i < meshSize; i++)
 		{
 			mMeshes[i] = std::make_shared<Mesh>();
-			mMeshes[i]->SetParentMeshData(this);
+			//mMeshes[i]->SetParentMeshData(this);
 			mMeshes[i]->Load(name, file);
 
 			std::wstring name = std::filesystem::path(path).stem();
@@ -436,25 +435,29 @@ namespace ya
 
 		bool AniMesh;
 		fread(&AniMesh, sizeof(bool), 1, file);
+		std::vector<Matrix> vecOffset;
 
 		if (AniMesh)
 		{
 			UINT boneSize;
 			fread(&boneSize, sizeof(UINT), 1, file);
-			mBones.resize(boneSize);
-
-			for (size_t i = 0; i < mBones.size(); ++i)
+			
+			
+			
+			for (size_t i = 0; i < boneSize; ++i)
 			{
-				Matrix boneoffsetMatrix;
-				fread(&boneoffsetMatrix, sizeof(Matrix), 1, file);
-
-				mBones[i].offset = boneoffsetMatrix;
+				Matrix matrix;
+				fread(&matrix, sizeof(Matrix), 1, file);
+				vecOffset.push_back(matrix);
 			}
 
-			mBoneOffset = new graphics::StructedBuffer();
-			mBoneOffset->Create(sizeof(Matrix), (UINT)mBones.size(), eSRVType::SRV, mBones.data(), false);
-			mBoneOffset->GetSize();
+			
 		}
+	
+		mBoneOffset = new graphics::StructedBuffer();
+		mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
+		mBoneOffset->GetSize();
+
 
 		fclose(file);
 
@@ -611,9 +614,9 @@ namespace ya
 		}
 
 
-		// 본정보들 전부 저장
-		/*mBones.resize(boneSize);*/		
+		// 본정보들 전부 저장	
 		UINT iFrameCount = 0;
+		mBones.resize(boneSize);
 		for (size_t i = 0; i < boneSize; i++)
 		{
 
@@ -629,7 +632,7 @@ namespace ya
 			mBones[i].keyFrames.resize(1);
 			for (size_t j = 0; j < 1; j++)
 			{				
-
+				
 				UINT boneKeyFramesSize;
 				fread(&boneKeyFramesSize, sizeof(UINT), 1, file);
 				mBones[i].keyFrames[j].resize(boneKeyFramesSize);
@@ -664,7 +667,6 @@ namespace ya
 
 		fclose(file);
 
-		
 
 		std::vector<BoneFrameTransform> vecFrameTrans;
 		vecFrameTrans.resize((UINT)mBones.size() * iFrameCount);
@@ -697,6 +699,8 @@ namespace ya
 			, eSRVType::SRV, vecFrameTrans.data(), false);
 		PushBackBoneFrameData(boneFrameData);	
 
+
+		
 		
 
 
