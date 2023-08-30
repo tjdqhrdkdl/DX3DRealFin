@@ -17,8 +17,7 @@ namespace ya
 		virtual void OnCollisionStay(Collider2D* collider) override;
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
-
 	private:
-
+		bool mbChecked;
 	};
 }

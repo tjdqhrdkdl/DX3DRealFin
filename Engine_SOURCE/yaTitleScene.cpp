@@ -31,7 +31,7 @@
 #include "yaMusketeerman.h"
 #include "yaSwordsman.h"
 
-#include "yaCrouchObjectScript.h"
+//#include "yaCrouchObjectScript.h"
 
 #include "yaMonsterScript.h"
 
@@ -73,6 +73,7 @@ namespace ya
 
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);
+		SetPlayer(player);
 
 
 		{
@@ -169,7 +170,7 @@ namespace ya
 				hookTarget->SetName(L"hook target");
 				Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
 				hookTargetTr->SetPosition(Vector3(-20.0f, 5.0f, -20.0f));
-				hookTargetTr->SetScale(Vector3(4.0f, 30.0f, 4.0f));
+				hookTargetTr->SetScale(Vector3(4.0f, 4.0f, 4.0f));
 				Collider2D* hookTargetCollider = hookTarget->AddComponent<Collider2D>();
 				hookTargetCollider->SetType(eColliderType::Box);
 				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
@@ -197,7 +198,19 @@ namespace ya
 				hookTarget1->SetName(L"Hook target2");
 				Transform* hookTargetTr = hookTarget1->GetComponent<Transform>();
 				hookTargetTr->SetPosition(Vector3(-40.0f, 5.0f, -20.0f));
-				hookTargetTr->SetScale(Vector3(4.0f, 30.0f, 4.0f));
+				hookTargetTr->SetScale(Vector3(4.0f, 4.0f, 4.0f));
+				Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
+				hookTargetCollider->SetType(eColliderType::Box);
+				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+				hookTarget1->AddComponent<HookTargetScript>();
+			}
+
+			{
+				GameObject* hookTarget1 = object::Instantiate<GameObject>(eLayerType::Hook);
+				hookTarget1->SetName(L"Hook target2");
+				Transform* hookTargetTr = hookTarget1->GetComponent<Transform>();
+				hookTargetTr->SetPosition(Vector3(-40.0f, 5.0f, -20.0f));
+				hookTargetTr->SetScale(Vector3(4.0f, 4.0f, 4.0f));
 				Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
 				hookTargetCollider->SetType(eColliderType::Box);
 				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));

@@ -424,6 +424,12 @@
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Contents\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroCommon.h">
+      <Filter>Contents\Common</Filter>
+    </ClInclude>
     <ClInclude Include="yaMonsterScript.h">
       <Filter>Contents\Monster\Script</Filter>
     </ClInclude>
@@ -601,6 +607,9 @@
     <Filter Include="Contents\Scene">
       <UniqueIdentifier>{c5ed46d7-aab9-4a27-aa1c-2ab0c73d7891}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Common">
+      <UniqueIdentifier>{a113a912-36e8-4cf5-9e8c-1c2921fcdb26}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Contents\Monster\Script">
       <UniqueIdentifier>{7c1f7815-7c8d-4a02-a18a-cd5a3c91c1c3}</UniqueIdentifier>
     </Filter>
@@ -630,6 +639,9 @@
     </Filter>
     <Filter Include="Engine\Graphics\API">
       <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FontWrapper\Graphics\Buffer">
+      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\High Level InterFace">
       <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
