@@ -285,7 +285,7 @@ namespace ya
 		PushBackBoneFrameData(boneFrameData);
 
 		
-		AnimationSave(path);
+		//AnimationSave(path, name);
 
 
 		
@@ -473,7 +473,7 @@ namespace ya
 		return S_OK;
 	}
 
-	HRESULT MeshData::AnimationSave(const std::wstring& path, FILE* file)
+	HRESULT MeshData::AnimationSave(const std::wstring& path, const std::wstring& animationname, FILE* file)
 	{
 		std::string strPath(path.begin(), path.end());
 
@@ -504,8 +504,12 @@ namespace ya
 		fwrite(&boneSize, sizeof(UINT), 1, file);
 
 
+		//애니 클립 사이즈 저장
+		UINT AnimClipSize = mAnimationClipCount;
+		fwrite(&AnimClipSize, sizeof(UINT), 1, file);
+
 		
-		for (size_t i = 0; i < 1; i++)
+		for (size_t i = 0; i < AnimClipSize; i++)
 		{
 			SaveWString(mAnimClip[i].name, file);		
 			fwrite(&mAnimClip[i].startTime, sizeof(double), 1, file);
@@ -527,7 +531,7 @@ namespace ya
 			fwrite(&mBones[i].offset, sizeof(Matrix), 1, file);
 						
 
-			for (size_t j = 0; j < 1; j++)
+			for (size_t j = 0; j < AnimClipSize; j++)
 			{				
 
 				UINT boneKeyFramesSize = mBones[i].keyFrames[j].size();
@@ -542,30 +546,13 @@ namespace ya
 				}
 			}
 		}
-		
-
 
 		fclose(file);
-
-		mMeshes;
-		mMaterialsVec;
-		mChildObjects;
-		mFullPath;
-
-		mAnimClip;
-		mBones;
-		mBoneFrameDataVector;
-		mBoneOffset;
-		mAnimationClipCount = 1;
-		mRepresentBoneAnimator;
-
-		int a = 0;
-
 
 		return S_OK;
 	}
 
-	HRESULT MeshData::AnimationLoad(const std::wstring& path, FILE* file)
+	HRESULT MeshData::AnimationLoad(const std::wstring& path, const std::wstring& animationname, FILE* file)
 	{
 
 		std::string strPath(path.begin(), path.end());
@@ -596,10 +583,13 @@ namespace ya
 		fread(&boneSize, sizeof(UINT), 1, file);	
 
 
+		//애니 클립 사이즈 저장
+		UINT AnimClipSize = 0;
+		fread(&AnimClipSize, sizeof(UINT), 1, file);
+		mAnimationClipCount = AnimClipSize;
 
-
-		mAnimClip.resize(1);
-		for (size_t i = 0; i < 1; i++)
+		mAnimClip.resize(mAnimationClipCount);
+		for (size_t i = 0; i < mAnimationClipCount; i++)
 		{
 			LoadWString(mAnimClip[i].name, file);
 
@@ -629,14 +619,14 @@ namespace ya
 
 
 			//boneFrameDataVector = max(frameCount, boneFrameDataVector);
-			mBones[i].keyFrames.resize(1);
-			for (size_t j = 0; j < 1; j++)
+			mBones[i].keyFrames.resize(mAnimationClipCount);
+			for (size_t j = 0; j < mAnimationClipCount; j++)
 			{				
 				
 				UINT boneKeyFramesSize;
 				fread(&boneKeyFramesSize, sizeof(UINT), 1, file);
 				mBones[i].keyFrames[j].resize(boneKeyFramesSize);
-				for (UINT k = 0; k < boneKeyFramesSize; k++)
+				for (UINT k = 0; k < mBones[i].keyFrames[j].size(); k++)
 				{
 					fread(&mBones[i].keyFrames[j][k].time, sizeof(double), 1, file);
 					fread(&mBones[i].keyFrames[j][k].frame, sizeof(int), 1, file);
@@ -645,25 +635,9 @@ namespace ya
 					fread(&mBones[i].keyFrames[j][k].rotation, sizeof(Vector4), 1, file);
 
 				}
-			}
-
-			//iFrameCount = max(iFrameCount, (UINT)mBones[i].keyFrames[mAnimationClipCount].size());
-			iFrameCount = max(iFrameCount, (UINT)mBones[i].keyFrames[0].size());
-			
+			iFrameCount = max(iFrameCount, (UINT)mBones[i].keyFrames[j].size());			
+			}			
 		}
-
-		//UINT boneFrameTransformSize;
-		//fread(&boneFrameTransformSize, sizeof(UINT), 1, file);
-		//mBonesFrameTransforms.resize(boneFrameTransformSize);
-
-		//for (size_t i = 0; i < boneFrameTransformSize; i++)
-		//{
-		//	fread(&mBonesFrameTransforms[i].rotation, sizeof(Vector4), 1, file);
-		//	fread(&mBonesFrameTransforms[i].scale, sizeof(Vector4), 1, file);
-		//	fread(&mBonesFrameTransforms[i].translate, sizeof(Vector4), 1, file);
-		//}
-
-
 
 		fclose(file);
 
@@ -673,23 +647,24 @@ namespace ya
 
 		for (size_t i = 0; i < mBones.size(); ++i)
 		{
-
-			for (size_t j = 0; j < mBones[i].keyFrames[0].size(); ++j)
+			for (size_t k = 0; k < mAnimationClipCount; k++)
 			{
-				vecFrameTrans[(UINT)mBones.size() * j + i]
-					= BoneFrameTransform
+
+				for (size_t j = 0; j < mBones[i].keyFrames[k].size(); ++j)
 				{
-					Vector4(mBones[i].keyFrames[0][j].translate.x
-						, mBones[i].keyFrames[0][j].translate.y
-						, mBones[i].keyFrames[0][j].translate.z, 0.f)
-					, Vector4(mBones[i].keyFrames[0][j].scale.x
-						, mBones[i].keyFrames[0][j].scale.y
-						, mBones[i].keyFrames[0][j].scale.z, 0.f)
-					, mBones[i].keyFrames[0][j].rotation
-				};
-								
+					vecFrameTrans[(UINT)mBones.size() * j + i]
+						= BoneFrameTransform
+					{
+						Vector4(mBones[i].keyFrames[k][j].translate.x
+							, mBones[i].keyFrames[k][j].translate.y
+							, mBones[i].keyFrames[k][j].translate.z, 0.f)
+						, Vector4(mBones[i].keyFrames[k][j].scale.x
+							, mBones[i].keyFrames[k][j].scale.y
+							, mBones[i].keyFrames[k][j].scale.z, 0.f)
+						, mBones[i].keyFrames[k][j].rotation
+					};
+				}
 			}
-			
 		}
 
 
@@ -699,24 +674,6 @@ namespace ya
 			, eSRVType::SRV, vecFrameTrans.data(), false);
 		PushBackBoneFrameData(boneFrameData);	
 
-
-		
-		
-
-
-		mMeshes;
-		mMaterialsVec;
-		mChildObjects;
-		mFullPath;
-
-		mAnimClip;
-		mBones;
-		mBoneFrameDataVector;
-		mBoneOffset;
-		mAnimationClipCount = 1;
-		mRepresentBoneAnimator;
-
-		int a = 0;
 		
 		return S_OK;
 	}

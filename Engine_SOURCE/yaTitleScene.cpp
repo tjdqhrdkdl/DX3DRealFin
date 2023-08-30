@@ -303,12 +303,19 @@ namespace ya
 		{
 
 			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000411.fbx", L"attack2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003050.fbx", L"attack3");
+			//mMeshData->AnimationSave(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003050.fbx", L"attack3");
 			//mMeshData->Instantiate(eLayerType::Monster);
+
+
+
 
 			mMeshData = new MeshData();
 			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");
-			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\a000_000402.animationdata");
+			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\a000_003050.animationdata", L"attack3");
+			
 			mMeshData->Instantiate(eLayerType::Monster);
 			
 
@@ -352,6 +359,11 @@ namespace ya
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
 			mMeshData->Play(L"attack2");
+		}
+		if (Input::GetKeyDown(eKeyCode::B))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack3");
 		}
 
 		Scene::Update();
