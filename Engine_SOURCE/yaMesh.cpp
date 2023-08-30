@@ -12,11 +12,16 @@ namespace ya
 		, mVBDesc{}
 		, mIndexInfos{}
 	{
-
 	}
 
 	Mesh::~Mesh()
 	{
+		for (size_t i = 0; i < mIndexInfos.size(); i++)
+		{
+			delete mIndexInfos[i].pIdxSysMem;
+		} 
+
+		delete pVtxSysMem;
 
 	}
 

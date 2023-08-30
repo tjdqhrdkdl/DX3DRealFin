@@ -3,6 +3,7 @@
 
 namespace ya
 {
+	class MeshData;
 	class TitleScene : public Scene
 	{
 	public:
@@ -21,6 +22,6 @@ namespace ya
 		void Test() { int a = 0; }
 	private:
 		//for test
-		class MeshData* mMeshData;
+		std::shared_ptr<MeshData> mMeshData;
 	};
 }

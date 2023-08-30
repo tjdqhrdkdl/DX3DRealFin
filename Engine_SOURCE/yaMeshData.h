@@ -13,7 +13,7 @@ namespace ya
 		MeshData();
 		~MeshData();
 
-		static MeshData* LoadFromFbx(const std::wstring& path);
+		static std::shared_ptr<MeshData> LoadFromFbx(const std::wstring& path);
 		
 		void LoadAnimationFromFbx(const std::wstring& path, const std::wstring& name);
 

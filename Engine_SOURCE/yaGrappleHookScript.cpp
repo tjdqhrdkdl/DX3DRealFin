@@ -6,9 +6,6 @@
 #include "yaTransform.h"
 #include "yaCollisionManager.h"
 
-#include <assert.h>
-
-
 #include "yaPlayer.h"
 #include "yaApplication.h"
 #include "yaInput.h"
@@ -19,12 +16,15 @@ namespace ya
 {
 	GrappleHookScript::GrappleHookScript()
 		: Script()
-		, mGrappleHookTarget(nullptr)
-		, mSpeed(100.0f)
+		, mHookTarget(nullptr)
+		, mSpeed(160.0f)
 		, mDirection(Vector3::Zero)
 		, mDistance(0.0f)
 		, mCurrentDistance(0.0f)
 		, mbGrappleHook(false)
+		, mHookTargetDistance(1000.0f)
+		
+		, mHookTargetCount(0)
 
 	{
 	}
@@ -43,29 +43,9 @@ namespace ya
 		Transform* cameraTr = camera->GetComponent<Transform>();
 		Vector3 cameraPos = cameraTr->GetPosition();
 
-
-		// find hook target
-		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 pos = tr->GetPosition();
-		std::vector<eLayerType> layers;
-		layers.push_back(eLayerType::Hook);
-		RayHit hit = CollisionManager::RayCast(camera, cameraPos, cameraTr->Forward(), layers);
-		//RayHit hit = CollisionManager::RayCast(GetOwner(), pos, tr->Forward(), layers);
-
-		GrappleHookScript* action = player->GetScript<GrappleHookScript>();
-		if (hit.isHit)
-		{
-			action->SetGrappleHookTarget(hit.hitObj);
-		}
-		else
-		{
-			action->SetGrappleHookTarget(nullptr);
-		}
-
-
 		if (mbGrappleHook)
 		{
-			if (mCurrentDistance > 4.0f)
+			if (mCurrentDistance > 2.0f)
 			{
 				GameObject* owner = GetOwner();
 
@@ -95,24 +75,44 @@ namespace ya
 
 	void GrappleHookScript::Render()
 	{
-		if (mGrappleHookTarget != nullptr)
+		/*if (mHookTarget != nullptr)
 		{
 			wchar_t szFloat[50] = {};
 			swprintf_s(szFloat, 50, L"target on");
 			TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
+		}*/
+	}
+
+	void GrappleHookScript::SetHookTarget(GameObject* target, float distance)
+	{
+		if (mHookTargetDistance > distance)
+		{
+			mHookTargetDistance = distance;
+			mHookTarget = target;
+		}
+	}
+
+	void GrappleHookScript::SubHookTargetCount()
+	{
+		mHookTargetCount--;
+
+		if(mHookTargetCount <= 0)
+		{
+			mHookTarget = nullptr;
+			mHookTargetDistance = 1000.0f;
 		}
 	}
 
 	void GrappleHookScript::GrappleHook()
 	{
-		if (mGrappleHookTarget == nullptr)
+		if (mHookTarget == nullptr)
 		{
 			return;
 		}
 
 		mbGrappleHook = true;
 
-		Transform* targetTr = mGrappleHookTarget->GetComponent<Transform>();
+		Transform* targetTr = mHookTarget->GetComponent<Transform>();
 		mHookTargetPosition = targetTr->GetPosition() + Vector3(0.0f, 15.0f, 0.0f);
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();

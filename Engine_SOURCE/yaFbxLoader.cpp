@@ -51,6 +51,7 @@ namespace ya
 		mManager->SetIOSettings(ioSettings);
 		mScene = fbxsdk::FbxScene::Create(mManager, "");
 		mImporter = fbxsdk::FbxImporter::Create(mManager, "");
+
 	}
 
 	bool FbxLoader::LoadFbx(const std::wstring& path)
@@ -869,7 +870,6 @@ namespace ya
 	}
 	void FbxLoader::Release()
 	{
-
 		mManager->Destroy();
 
 		for (Bone* bone : mBones)
