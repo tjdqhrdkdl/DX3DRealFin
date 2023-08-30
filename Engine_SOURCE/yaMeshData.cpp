@@ -271,7 +271,9 @@ namespace ya
 						, meshBones->at(i).keyFrames[animCount][j].scale.y
 						, meshBones->at(i).keyFrames[animCount][j].scale.z, 0.f)
 					, meshBones->at(i).keyFrames[animCount][j].rotation
-				};				
+				};		
+				UINT test = (UINT)meshBones->size()* j + i;
+				int a = 0;
 			}
 		}
 
@@ -284,6 +286,13 @@ namespace ya
 
 		
 		AnimationSave(path);
+		mAnimClip;
+		mBones;
+		mBoneFrameDataVector;
+		mBoneOffset;
+		mRepresentBoneAnimator;
+
+		int a = 0;
 
 		
 		loader.Release();
@@ -686,6 +695,9 @@ namespace ya
 						, mBones[i].keyFrames[0][j].scale.z, 0.f)
 					, mBones[i].keyFrames[0][j].rotation
 				};
+
+				UINT test = (UINT)mBones.size() * j + i;
+				int a = 0;
 			}
 		}
 
