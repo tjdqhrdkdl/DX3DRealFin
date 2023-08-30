@@ -183,8 +183,6 @@ namespace ya
 	void MeshData::LoadAnimationFromFbx(const std::wstring& path, const std::wstring& name)
 	{
 
-		
-
 		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
 		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
 
@@ -199,6 +197,9 @@ namespace ya
 		std::vector<BoneMatrix>* meshBones = GetBones();
 		UINT animCount = GetAnimationClipCount();
 		SetAnimationClipCount(animCount + 1);
+
+		//애니메이션 데이터의 본
+		
 		for (size_t j = 0; j < meshBones->size(); j++)
 		{
 			meshBones->at(j).keyFrames.push_back(std::vector<BoneKeyFrame>());
@@ -225,13 +226,15 @@ namespace ya
 						tKeyframe.rotation.w = (float)vecBone[i]->keyFrames[k].transform.GetQ().mData[3];
 
 						meshBones->at(j).keyFrames[animCount].push_back(tKeyframe);
-
+						//mBonekeyFrame.push_back(tKeyframe);
 					}
 					break;
 				}
 			}
 			iFrameCount = max(iFrameCount, (UINT)meshBones->at(j).keyFrames[animCount].size());
 		}
+
+		mBones;
 
 		std::vector<AnimationClip*>& vecAnimClip = loader.GetAnimClip();
 
@@ -255,10 +258,9 @@ namespace ya
 		// Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
 		std::vector<BoneFrameTransform> vecFrameTrans;
 		vecFrameTrans.resize((UINT)meshBones->size() * iFrameCount);
-		
+
 		for (size_t i = 0; i < meshBones->size(); ++i)
 		{
-
 			for (size_t j = 0; j < meshBones->at(i).keyFrames[animCount].size(); ++j)
 			{
 				vecFrameTrans[(UINT)meshBones->size() * j + i]
@@ -271,9 +273,7 @@ namespace ya
 						, meshBones->at(i).keyFrames[animCount][j].scale.y
 						, meshBones->at(i).keyFrames[animCount][j].scale.z, 0.f)
 					, meshBones->at(i).keyFrames[animCount][j].rotation
-				};		
-				UINT test = (UINT)meshBones->size()* j + i;
-				int a = 0;
+				};						
 			}
 		}
 
@@ -286,13 +286,7 @@ namespace ya
 
 		
 		AnimationSave(path);
-		mAnimClip;
-		mBones;
-		mBoneFrameDataVector;
-		mBoneOffset;
-		mRepresentBoneAnimator;
 
-		int a = 0;
 
 		
 		loader.Release();
@@ -407,7 +401,7 @@ namespace ya
 		for (size_t i = 0; i < meshSize; i++)
 		{
 			mMeshes[i] = std::make_shared<Mesh>();
-			//mMeshes[i]->SetParentMeshData(meshData);
+			mMeshes[i]->SetParentMeshData(this);
 			mMeshes[i]->Load(name, file);
 
 			std::wstring name = std::filesystem::path(path).stem();
@@ -465,7 +459,10 @@ namespace ya
 		fclose(file);
 
 						
-			
+		mBones;
+		mMeshes;
+		mAnimClip;
+
 		mFullPath = CurparentPath;
 
 		
@@ -502,6 +499,7 @@ namespace ya
 		//본 사이즈 저장
 		UINT boneSize = mBones.size();
 		fwrite(&boneSize, sizeof(UINT), 1, file);
+
 
 		
 		for (size_t i = 0; i < 1; i++)
@@ -542,16 +540,6 @@ namespace ya
 			}
 		}
 		
-		
-		//UINT boneFrameTransformSize = mBonesFrameTransforms.size();
-		//fwrite(&boneFrameTransformSize, sizeof(UINT), 1, file);
-
-		//for (size_t i = 0; i < boneFrameTransformSize; i++)
-		//{
-		//	fwrite(&mBonesFrameTransforms[i].rotation, sizeof(Vector4), 1, file);
-		//	fwrite(&mBonesFrameTransforms[i].scale, sizeof(Vector4), 1, file);
-		//	fwrite(&mBonesFrameTransforms[i].translate, sizeof(Vector4), 1, file);
-		//}
 
 
 		fclose(file);
@@ -602,9 +590,10 @@ namespace ya
 
 		//본 사이즈 
 		UINT boneSize = 0;
-		fread(&boneSize, sizeof(UINT), 1, file);
+		fread(&boneSize, sizeof(UINT), 1, file);	
 
-		
+
+
 
 		mAnimClip.resize(1);
 		for (size_t i = 0; i < 1; i++)
@@ -623,7 +612,7 @@ namespace ya
 
 
 		// 본정보들 전부 저장
-		mBones.resize(boneSize);		
+		/*mBones.resize(boneSize);*/		
 		UINT iFrameCount = 0;
 		for (size_t i = 0; i < boneSize; i++)
 		{
@@ -675,6 +664,7 @@ namespace ya
 
 		fclose(file);
 
+		
 
 		std::vector<BoneFrameTransform> vecFrameTrans;
 		vecFrameTrans.resize((UINT)mBones.size() * iFrameCount);
@@ -695,10 +685,9 @@ namespace ya
 						, mBones[i].keyFrames[0][j].scale.z, 0.f)
 					, mBones[i].keyFrames[0][j].rotation
 				};
-
-				UINT test = (UINT)mBones.size() * j + i;
-				int a = 0;
+								
 			}
+			
 		}
 
 
@@ -707,6 +696,8 @@ namespace ya
 		boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * iFrameCount
 			, eSRVType::SRV, vecFrameTrans.data(), false);
 		PushBackBoneFrameData(boneFrameData);	
+
+		
 
 
 		mMeshes;
