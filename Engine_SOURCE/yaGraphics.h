@@ -255,7 +255,7 @@ namespace ya::graphics
 		int parentIdx;
 		Matrix offset;
 		Matrix bone;
-		std::vector<std::vector< BoneKeyFrame>> keyFrames;
+		std::vector<std::vector<BoneKeyFrame>> keyFrames;
 	};
 
 	struct BoneAnimationClip

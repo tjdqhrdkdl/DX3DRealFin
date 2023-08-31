@@ -112,29 +112,8 @@ namespace ya
 
 	HRESULT Mesh::Save(const std::wstring& name, FILE* file)
 	{	
-		//UINT vtxcount = mVtxCount;
-		//fwrite(&vtxcount, sizeof(UINT), 1, file);
-
-	
-		//int byteSize = mVBDesc.ByteWidth;
-		//fwrite(&byteSize, sizeof(int), 1, file);
-		//fwrite(pVtxSysMem, byteSize, 1, file);
-
-		//// 인덱스 정보 
-		//UINT materialCount = mIndexInfos.size();
-		//fwrite(&materialCount, sizeof(int), 1, file);
-
-		////mIndexInfos
-		//UINT idxBufferSize = 0;
-		//for (size_t i = 0; i < materialCount; i++)
-		//{
-		//	fwrite(&mIndexInfos[i], sizeof(IndexInfo), 1, file);
-		//	fwrite(mIndexInfos[i].pIdxSysMem
-		//		, mIndexInfos[i].indexCount * sizeof(UINT), 1, file);
-		//}
-
-		//UINT vtxcount = mVtxCount;
-		//fwrite(&vtxcount, sizeof(UINT), 1, file);
+		UINT vtxcount = mVtxCount;
+		fwrite(&vtxcount, sizeof(UINT), 1, file);
 
 		int byteSize = mVBDesc.ByteWidth;
 		fwrite(&byteSize, sizeof(int), 1, file);
@@ -151,81 +130,15 @@ namespace ya
 			fwrite(&mIndexInfos[i], sizeof(IndexInfo), 1, file);
 			fwrite(mIndexInfos[i].pIdxSysMem
 				, mIndexInfos[i].indexCount * sizeof(UINT), 1, file);
-		}
-
-		
-		// 애니메이션 클립에있는 정보
-		std::vector<BoneAnimationClip> AnimClip = mParentMeshData->GetAnimClips();
-		UINT animationCount = AnimClip.size();
-		fwrite(&animationCount, sizeof(UINT), 1, file);
-		if (AnimClip.size() == 0)
-			return S_OK;
-
-		for (size_t i = 0; i < animationCount; i++)
-		{
-			UINT nameSize = AnimClip[i].name.size();
-			fwrite(&nameSize, sizeof(UINT), 1, file);
-			fwrite(AnimClip[i].name.c_str(), AnimClip[i].name.size() * sizeof(wchar_t), 1, file);
-			fwrite(&AnimClip[i].startTime, sizeof(double), 1, file);
-			fwrite(&AnimClip[i].endTime, sizeof(double), 1, file);
-			fwrite(&AnimClip[i].timeLength, sizeof(double), 1, file);
-			fwrite(&AnimClip[i].mode, sizeof(int), 1, file);
-			fwrite(&AnimClip[i].updateTime, sizeof(float), 1, file);
-			fwrite(&AnimClip[i].startFrame, sizeof(int), 1, file);
-			fwrite(&AnimClip[i].endFrame, sizeof(int), 1, file);
-			fwrite(&AnimClip[i].frameLength, sizeof(int), 1, file);
-		}
-
-		//// 본정보들 전부 저장
-		//UINT boneCount = 99;//mBones.size();
-		//fwrite(&boneCount, sizeof(UINT), 1, file);
-		//for (size_t i = 0; i < boneCount; i++)
-		//{
-		//	UINT nameSize = mBones[i].name.size();
-		//	fwrite(&nameSize, sizeof(UINT), 1, file);
-		//	fwrite(mBones[i].name.c_str(), mBones[i].name.size() * sizeof(wchar_t), 1, file);
-
-		//	fwrite(&mBones[i].depth, sizeof(int), 1, file);
-		//	fwrite(&mBones[i].parentIdx, sizeof(int), 1, file);
-		//	fwrite(&mBones[i].bone, sizeof(Matrix), 1, file);
-		//	fwrite(&mBones[i].offset, sizeof(Matrix), 1, file);
-
-		//	int frameCount = mBones[i].keyFrames.size();
-		//	fwrite(&frameCount, sizeof(int), 1, file);
-
-		//	for (size_t j = 0; j < frameCount; j++)
-		//	{
-		//		fwrite(&mBones[i].keyFrames[j], sizeof(BoneKeyFrame), 1, file);
-		//	}
-		//}
+		}	
 
 		return S_OK;
 	}
 
 	HRESULT Mesh::Load(const std::wstring& name, FILE* file)
-	{
-				
-		//fread(&mVtxCount, sizeof(UINT), 1, file);			
+	{	
 
-		// 정점정보 저장
-		//int byteSize = 0;
-		//fread(&byteSize, sizeof(int), 1, file);
-		//pVtxSysMem = (graphics::Vertex*)malloc(byteSize);		
-		//fread(pVtxSysMem, 1, byteSize, file);
-		//
-		//
-		//mVBDesc.ByteWidth = byteSize;
-		//mVBDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		//mVBDesc.Usage = D3D11_USAGE_DEFAULT;
-
-		//D3D11_SUBRESOURCE_DATA tSub = {};
-		//tSub.pSysMem = malloc(mVBDesc.ByteWidth);
-
-		////graphics::Vertex* pSys = (graphics::Vertex*)tSub.pSysMem;		
-
-		//if (FAILED(GetDevice()->CreateBuffer(&mVBDesc, &tSub, mVertexBuffer.GetAddressOf())))
-		//	return S_FALSE;
-		
+		fread(&mVtxCount, sizeof(UINT), 1, file);
 
 		int byteSize = 0;
 		fread(&byteSize, sizeof(int), 1, file);
@@ -267,112 +180,7 @@ namespace ya
 
 			mIndexInfos.push_back(info);
 			
-		}
-		
-
-
-		// 애니메이션 클립에있는 정보
-		UINT animationCount = 0;
-		fread(&animationCount, sizeof(UINT), 1, file);
-		if (animationCount <= 0)
-			return S_OK;
-
-
-		//mAnimClip.resize(animationCount);
-
-		for (size_t i = 0; i < animationCount; i++)
-		{
-			BoneAnimationClip clip = {};
-
-			UINT nameSize = 0;
-			fread(&nameSize, sizeof(UINT), 1, file);
-			wchar_t buffer[256] = L"";
-			fread(buffer, sizeof(wchar_t), nameSize, file);
-			clip.name = buffer;
-
-			fread(&clip.startTime, sizeof(double), 1, file);
-			fread(&clip.endTime, sizeof(double), 1, file);
-			fread(&clip.timeLength, sizeof(double), 1, file);
-			fread(&clip.mode, sizeof(int), 1, file);
-			fread(&clip.updateTime, sizeof(float), 1, file);
-			fread(&clip.startFrame, sizeof(int), 1, file);
-			fread(&clip.endFrame, sizeof(int), 1, file);
-			fread(&clip.frameLength, sizeof(int), 1, file);
-
-			mParentMeshData->PushBackAnimClip(clip);			
-		}
-
-		
-
-		//std::vector<BoneAnimationClip> AnimClips = mParentMeshData->GetAnimClips();
-		//std::vector<BoneMatrix>* Bones = mParentMeshData->GetBones();
-
-		//// 본정보들 전부 저장
-		//UINT boneCount = 0;
-		//fread(&boneCount, sizeof(UINT), 1, file);
-		//Bones->resize(boneCount);
-		//int frameCount = 0;
-		//for (size_t i = 0; i < boneCount; i++)
-		//{
-		//	UINT nameSize = 0;
-		//	fread(&nameSize, sizeof(UINT), 1, file);
-		//	wchar_t buffer[256] = L"";
-		//	fread(buffer, sizeof(wchar_t), nameSize, file);
-		//	Bones->at(i).name = buffer;
-
-		//	fread(&Bones->at(i).depth, sizeof(int), 1, file);
-		//	fread(&Bones->at(i).parentIdx, sizeof(int), 1, file);
-		//	fread(&Bones->at(i).bone, sizeof(Matrix), 1, file);
-		//	fread(&Bones->at(i).offset, sizeof(Matrix), 1, file);
-
-		//	int curFrameCount = 0;
-		//	fread(&curFrameCount, sizeof(int), 1, file);
-		//	Bones->at(i).keyFrames.resize(curFrameCount);
-		//	frameCount = max(frameCount, curFrameCount);
-
-		//	for (size_t j = 0; j < curFrameCount; j++)
-		//	{
-		//		fread(&Bones->at(i).keyFrames[j], sizeof(BoneKeyFrame), 1, file);
-		//	}
-		//}
-
-
-		//
-		//if (AnimClips.size() > 0)
-		//{
-		//	// BoneOffet 행렬
-		//	std::vector<Matrix> vecOffset;
-		//	std::vector<BoneFrameTransform> vecFrameTrans;
-		//	vecFrameTrans.resize((UINT)Bones->size() * frameCount);
-
-		//	for (size_t i = 0; i < Bones->size(); ++i)
-		//	{
-		//		vecOffset.push_back(Bones->at(i).offset);
-
-		//		for (size_t j = 0; j < Bones->at(i).keyFrames.size(); ++j)
-		//		{
-		//			vecFrameTrans[(UINT)Bones->size() * j + i]
-		//				= BoneFrameTransform
-		//			{
-		//				Vector4(Bones->at(i).keyFrames[j].translate.x
-		//					, Bones->at(i).keyFrames[j].translate.y
-		//					, Bones->at(i).keyFrames[j].translate.z, 0.f)
-		//				, Vector4(Bones->at(i).keyFrames[j].scale.x
-		//					, Bones->at(i).keyFrames[j].scale.y
-		//					, Bones->at(i).keyFrames[j].scale.z, 0.f)
-		//				, Bones->at(i).keyFrames[j].rotation
-		//			};
-		//		}
-		//	}
-
-		//	mBoneOffset = new StructedBuffer();
-		//	mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
-
-		//	mBoneFrameData = new StructedBuffer();
-		//	mBoneFrameData->Create(sizeof(BoneFrameTransform), (UINT)vecOffset.size() * frameCount
-		//		, eSRVType::SRV, vecFrameTrans.data(), false);
-		//}
-
+		}		
 
 		return S_OK;
 	}

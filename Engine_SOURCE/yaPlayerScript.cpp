@@ -104,6 +104,30 @@ namespace ya
 		//Scene* test = SceneManager::GetActiveScene();
 		//test->GetGameObjects(enums::eLayerType::Monster);
 
+		if (dynamic_cast<GameObject*>(collider->GetOwner()))
+		{
+			GameObject* ground = (GameObject*)collider->GetOwner();
+			{
+				if (L"Ground1" == ground->GetName())
+				{
+					
+					Transform* playertr = GetOwner()->GetComponent<Transform>();
+					Transform* groundtr = ground->GetComponent<Transform>();
+
+					Vector3 goundUp = groundtr->Up();
+					Vector3 playerUp = playertr->Up();
+
+
+		
+					int a = 0;
+
+
+				}
+
+
+			}
+		}
+
 		
 		if (dynamic_cast<MonsterBase*>(collider->GetOwner()))
 		{
