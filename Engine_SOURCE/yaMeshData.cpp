@@ -176,7 +176,7 @@ namespace ya
 		//name += L".mesh" + std::to_wstring(i);
 		
 	
-		meshData->Save(path);
+		meshSharedPtr->Save(path);
 
 		loader.Release();
 		return meshSharedPtr;
