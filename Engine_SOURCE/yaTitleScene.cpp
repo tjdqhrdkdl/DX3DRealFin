@@ -31,7 +31,7 @@
 #include "yaMusketeerman.h"
 #include "yaSwordsman.h"
 
-//#include "yaCrouchObjectScript.h"
+#include "yaCrouchObjectScript.h"
 
 #include "yaMonsterScript.h"
 
@@ -74,7 +74,6 @@ namespace ya
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);
 		SetPlayer(player);
-
 
 		{
 			Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
@@ -321,11 +320,11 @@ namespace ya
 			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
 			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
 			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
-			//mMeshData->AnimationSave(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\Samurai.fbx", L"SpearMan");
+			//mMeshData->AnimationSave(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\Samurai.animationdata");
 			//mMeshData->Instantiate(eLayerType::Monster);
 
 
-			mMeshData = new MeshData();
+			mMeshData = std::make_shared<MeshData>();
 			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
 			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata");
 			
