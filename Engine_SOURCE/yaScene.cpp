@@ -5,6 +5,7 @@ namespace ya
 {
 	Scene::Scene(eSceneType type)
 		: mType(type)
+		, mPlayer(nullptr)
 	{
 		mLayers.resize((UINT)eLayerType::End);
 	}

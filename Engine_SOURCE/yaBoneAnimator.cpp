@@ -32,6 +32,11 @@ namespace ya
 	{
 		delete mBoneMatrixBuffer;
 		mBoneMatrixBuffer = nullptr;
+
+		for (auto evt : mEvents)
+		{
+			delete evt.second;
+		}
 	}
 
 	void BoneAnimator::Initialize()

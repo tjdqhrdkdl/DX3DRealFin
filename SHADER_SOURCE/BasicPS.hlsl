@@ -47,16 +47,17 @@ float4 main(VSOut In) : SV_Target
     if (OutColor.a <= 0.0f)
         discard;
     float3 vNormal = In.ViewNormal;
-    
+    float fSpecular = 1;
     if (usedNormal == 1)
     {
     // 물체의 표면에 적용될 탄젠트 공간 기준 방향벡터를 가져온다.
         vNormal = normalTexture.Sample(anisotropicSampler, In.UV);
+        fSpecular = vNormal.z;
         vNormal.z = sqrt(1 - vNormal.x * vNormal.x - vNormal.y * vNormal.y);
         
     // 0~1값을 -1~1의 값으로 변환
         vNormal = (vNormal * 2.0f) - 1.0f;
-        
+               
         float3x3 matTBN =
         {
             In.ViewTanget,
@@ -75,7 +76,7 @@ float4 main(VSOut In) : SV_Target
     }
     
     OutColor.rgb = (OutColor.rgb * lightColor.diffuse.rgb
-                    + lightColor.specular.rgb 
+                    + lightColor.specular.rgb * fSpecular
                     + (OutColor.xyz * lightColor.ambient.rgb));
     
     return OutColor;
