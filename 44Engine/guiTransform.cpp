@@ -1,5 +1,6 @@
 #include "guiTransform.h"
 #include "yaTransform.h"
+#include "yaCollider2D.h"
 
 namespace gui
 {
@@ -24,6 +25,7 @@ namespace gui
 			return;
 
 		ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
+		ya::Collider2D* col = GetTarget()->GetComponent<ya::Collider2D>();
 
 		mPosisition = tr->GetPosition();
 		mRotation = tr->GetRotation();
@@ -32,6 +34,10 @@ namespace gui
 		mForward = tr->Forward();
 		mRight = tr->Right();
 		mUp = tr->Up();
+
+		mColliderCenter = ya::math::Vector3::Zero;
+		if (col)
+			mColliderCenter = col->GetCenter();
 	}
 
 	void Transform::Update()
@@ -56,9 +62,13 @@ namespace gui
 		ImGui::Text("Up"); ImGui::SameLine();
 		ImGui::InputFloat3("##Up", (float*)&mUp);
 
+		ImGui::Text("ColliderCenter"); ImGui::SameLine();
+		ImGui::InputFloat3("##ColliderCenter", (float*)&mColliderCenter);
+
 		if (GetTarget())
 		{
 			ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
+			ya::Collider2D* col = GetTarget()->GetComponent<ya::Collider2D>();
 
 			tr->SetPosition(mPosisition);
 			tr->SetRotation(mRotation);
@@ -67,6 +77,9 @@ namespace gui
 			tr->SetForward(mForward);
 			tr->SetRight(mRight);
 			tr->SetUp(mUp);
+
+			if (col)
+				col->SetCenter(mColliderCenter);
 		}
 	}
 

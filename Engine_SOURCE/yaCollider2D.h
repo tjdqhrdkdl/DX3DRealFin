@@ -31,6 +31,7 @@ namespace ya
 		UINT GetID() { return mID; }
 		Vector3 GetPosition() { return mPosition; }
 		Vector3 GetSize() { return mSize; }
+		Vector3 GetCenter() { return mCenter; }
 		eColliderType GetColliderType() { return mType; }
 
 		void Active(bool active) { mbActive = active; };

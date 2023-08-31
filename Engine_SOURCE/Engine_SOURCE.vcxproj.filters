@@ -227,6 +227,12 @@
     <ClCompile Include="yaBoneShader.cpp">
       <Filter>Engine\Resource\Shader\CS</Filter>
     </ClCompile>
+    <ClCompile Include="yaTenzen.cpp">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBoneCollider.cpp">
+      <Filter>Contents\BoneCollider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -473,6 +479,12 @@
     <ClInclude Include="yaBoneShader.h">
       <Filter>Engine\Resource\Shader\CS</Filter>
     </ClInclude>
+    <ClInclude Include="yaTenzen.h">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBoneCollider.h">
+      <Filter>Contents\BoneCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -645,6 +657,12 @@
     </Filter>
     <Filter Include="Engine\High Level InterFace">
       <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\Tenzen">
+      <UniqueIdentifier>{dfbe71ec-1295-49ab-8177-7898b9b9c7bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\BoneCollider">
+      <UniqueIdentifier>{77d0e2a3-e34f-4d51-a3fc-d1d340933a3b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

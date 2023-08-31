@@ -37,7 +37,7 @@
 
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
-
+#include "yaTenzen.h"
 
 namespace ya
 {
@@ -331,10 +331,6 @@ namespace ya
 			mMeshData->Instantiate(eLayerType::Monster);
 			
 
-
-
-
-
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
@@ -356,7 +352,7 @@ namespace ya
 			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
 
 		}
-
+		object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	void TitleScene::Update()
