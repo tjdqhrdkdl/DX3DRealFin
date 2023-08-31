@@ -31,7 +31,7 @@
 #include "yaMusketeerman.h"
 #include "yaSwordsman.h"
 
-//#include "yaCrouchObjectScript.h"
+#include "yaCrouchObjectScript.h"
 
 #include "yaMonsterScript.h"
 
@@ -74,7 +74,6 @@ namespace ya
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);
 		SetPlayer(player);
-
 
 		{
 			Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
@@ -149,6 +148,23 @@ namespace ya
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
 		}
+
+		{
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground->SetName(L"Ground1");
+			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
+			groundTr->SetScale(Vector3(50.0f, 10.0f, 10.0f));
+			groundTr->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			ground->AddComponent<GroundScript>();
+		}
+
 
 		{
 			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
@@ -298,11 +314,22 @@ namespace ya
 		//}
 		{
 
-			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
-
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"attack2");
+			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\1700.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000200.fbx", L"attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
+			//mMeshData->AnimationSave(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\Samurai.animationdata");
 			//mMeshData->Instantiate(eLayerType::Monster);
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003015.fbx", L"attack1");
+
+
+			mMeshData = std::make_shared<MeshData>();
+			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata");
+			
+			mMeshData->Instantiate(eLayerType::Monster);
+			
 
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
@@ -318,9 +345,10 @@ namespace ya
 
 			//mMeshData = new MeshData();
 
-			//MeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700.fbx");
-			//mMeshData->Load(L"Monster\\\IInteriorMinistry_Samurai\\MeshData\\c1700.meshdata");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000401.fbx", L"attack2");
+
+			//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinalMesh_Join.fbx");
+			//mMeshData->Load(L"Map\\MeshData\\FinalMesh_Join.meshdata");
+			//
 			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
 
 		}
@@ -329,16 +357,30 @@ namespace ya
 	}
 	void TitleScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::N))
+		if (Input::GetKeyDown(eKeyCode::Y))
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
-			mMeshData->Play(L"attack1");
-			
+			mMeshData->Play(L"attack1");			
 		}
-		if (Input::GetKeyDown(eKeyCode::M))
+		if (Input::GetKeyDown(eKeyCode::U))
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
 			mMeshData->Play(L"attack2");
+		}
+		if (Input::GetKeyDown(eKeyCode::I))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack3");
+		}
+		if (Input::GetKeyDown(eKeyCode::O))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack4");
+		}
+		if (Input::GetKeyDown(eKeyCode::P))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack5");
 		}
 
 		Scene::Update();

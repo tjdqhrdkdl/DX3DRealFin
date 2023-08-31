@@ -28,14 +28,9 @@ namespace ya
 		std::vector<GameObject*> GetDontDestroyGameObjects();
 		const std::vector<GameObject*>& GetGameObjects(const eLayerType type);
 		
-
-<<<<<<< HEAD
 		void SetPlayer(Player* player) { mPlayer = player; }
 		Player* GetPlayer() { return mPlayer; }
 
-=======
-		
->>>>>>> 4deaceaa9030fb6d17294b0f49ded3ec8bac90a3
 	private:
 		std::vector<Layer> mLayers;
 		eSceneType mType;

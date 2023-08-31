@@ -174,8 +174,6 @@ namespace ya
 			events->mFrameEvents.resize(clips->at(i).endFrame);
 			mEvents.insert(std::make_pair(clips->at(i).name, events));
 		}
-
-
 	}
 
 	BoneAnimator::Events* BoneAnimator::FindEvents(const std::wstring& name)
