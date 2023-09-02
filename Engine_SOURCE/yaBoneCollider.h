@@ -24,7 +24,7 @@ namespace ya
 		void Render()		override;
 
 
-		void SetMeshAndBone(MeshData* meshData, std::wstring bone);
+		void SetMeshAndBone(std::shared_ptr<MeshData> meshData, std::wstring bone);
 		void SetScale(Vector3 scale);
 		void SetAnimOffSet(UINT animIdx, Vector3 offset);
 		void SetAnimOffSet(const std::wstring& animName, Vector3 offset);
@@ -34,7 +34,7 @@ namespace ya
 
 
 	private:
-		MeshData* mMeshData;
+		std::shared_ptr<MeshData> mMeshData;
 		graphics::BoneMatrix mBoneMat;
 		int mBeforeClipIdx;
 

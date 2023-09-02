@@ -23,6 +23,8 @@ namespace ya
 		Vector3 GetPosition() { return mPosition; };
 		Vector3 GetRotation() { return mRotation; };
 		Vector3 GetScale() { return mScale; };
+		Vector3 GetRotationOffset() { return mRotationOffset; };
+
 
 		Vector3 GetFinalPosition() {return mFinalPosition;}
 		Vector3 GetFinalRotation() { return mFinalRotation; }
@@ -32,6 +34,7 @@ namespace ya
 		void SetPosition(Vector3 position) { mPosition = position; };
 		void SetRotation(Vector3 degree) { mRotation = degree; };
 		void SetScale(Vector3 scale) { mScale = scale; };
+		void SetRotationOffset(Vector3 offset) { mRotationOffset = offset; };
 
 		Vector3 Forward() { return mForward; }
 		Vector3 Right() { return mRight; }
@@ -47,12 +50,16 @@ namespace ya
 
 	private:
 		Transform* mParent;
+
 		Vector3 mForward;
 		Vector3 mRight;
 		Vector3 mUp;
+
 		Vector3 mPosition;
 		Vector3 mRotation;
 		Vector3 mScale;
+		Vector3 mRotationOffset;
+
 
 		Vector3 mFinalPosition;
 		Vector3 mFinalRotation;

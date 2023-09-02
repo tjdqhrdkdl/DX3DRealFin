@@ -313,22 +313,20 @@ namespace ya
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
 		{
-
-			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\1700.fbx");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000200.fbx", L"attack1");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
-			//mMeshData->AnimationSave(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\Samurai.animationdata");
+			//mMeshData = MeshData::LoadFromFbx(L"Player\\Mesh\\AM_M_9000.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000100.fbx", L"attack1");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
+			//mMeshData->AnimationSave(L"Player\\AnimationData\\Player.animationdata");
 			//mMeshData->Instantiate(eLayerType::Monster);
 
-
-			mMeshData = std::make_shared<MeshData>();
-			mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
-			mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata");
-			
-			mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData = std::make_shared<MeshData>();
+			//mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			//mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata");
+			//
+			//mMeshData->Instantiate(eLayerType::Monster);
 			
 
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);

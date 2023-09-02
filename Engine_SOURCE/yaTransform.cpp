@@ -12,6 +12,7 @@ namespace ya
 		, mScale(Vector3::One)
 		, mRotation(Vector3::Zero)
 		, mPosition(Vector3::One)
+		, mRotationOffset(Vector3::Zero)
 		, mParent(nullptr)
 	{
 		
@@ -69,7 +70,12 @@ namespace ya
 
 		mMatTranslation = position;
 
-		mWorld = scale * rotation * position;
+		Matrix rotationOffset;
+		rotationOffset.Translation(mRotationOffset);
+		if (Vector3::Zero != mRotationOffset)
+			int a = 0;
+		mWorld = scale * rotationOffset * rotation * position;
+		
 		if (mbCamera)
 		{
 		}

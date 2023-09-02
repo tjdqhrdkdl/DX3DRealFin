@@ -68,7 +68,7 @@ namespace ya
         GameObject::Render();
     }
 
-    void BoneCollider::SetMeshAndBone(MeshData* meshData, std::wstring bone)
+    void BoneCollider::SetMeshAndBone(std::shared_ptr<MeshData> meshData, std::wstring bone)
     {
         mMeshData = meshData;
         MeshObject* meshObject = mMeshData->GetMeshObject();

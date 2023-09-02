@@ -55,12 +55,15 @@ namespace ya
 
 		Events* events = FindEvents(mAnimationClips->at(mCurrentClip).name);
 
-		if (mAnimationUpdateTime[mCurrentClip] >= mAnimationClips->at(mCurrentClip).timeLength)
+		if (mAnimationUpdateTime[mCurrentClip] >= mAnimationClips->at(mCurrentClip).timeLength - 0.05f)
 		{
 			//애니메이션 종료 + 루프 돎
 			mAnimationUpdateTime[mCurrentClip] = 0.f;
 			if (events)
+			{
 				events->mCompleteEvent();
+				events->mEndEvent();
+			}
 			
 		}
 
