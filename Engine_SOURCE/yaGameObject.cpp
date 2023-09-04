@@ -48,7 +48,7 @@ namespace ya
 			if (script == nullptr)
 				continue;
 
-			script->Initialize();
+			//script->Initialize();
 		}
 
 	}
