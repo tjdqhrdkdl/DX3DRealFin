@@ -204,7 +204,8 @@ struct tFrameTrans
 };
 
 StructuredBuffer<tFrameTrans> g_arrFrameTrans : register(t17);
-StructuredBuffer<matrix> g_arrOffset : register(t18);
+StructuredBuffer<tFrameTrans> g_arrNextFrameTrans : register(t18);
+StructuredBuffer<matrix> g_arrOffset : register(t19);
 RWStructuredBuffer<matrix> g_arrFinelMat : register(u2);
 
 
@@ -224,28 +225,58 @@ void CS_Animation3D(int3 _iThreadIdx : SV_DispatchThreadID)
 {
     if (boneCount <= _iThreadIdx.x)
         return;
-
+    if (!animChange)
+    {
+    
     // 오프셋 행렬을 곱하여 최종 본행렬을 만들어낸다.		
-    float4 vQZero = float4(0.f, 0.f, 0.f, 1.f);
-    matrix matBone = (matrix) 0.f;
+        float4 vQZero = float4(0.f, 0.f, 0.f, 1.f);
+        matrix matBone = (matrix) 0.f;
 
     //frameIdx
     // Frame Data Index == Bone Count * Frame Count + _iThreadIdx.x
-    uint iFrameDataIndex = boneCount * frameIdx + _iThreadIdx.x;
-    uint iNextFrameDataIdx = boneCount * (frameIdx + 1) + _iThreadIdx.x;
+        uint iFrameDataIndex = boneCount * frameIdx + _iThreadIdx.x;
+        uint iNextFrameDataIdx = boneCount * (frameIdx + 1) + _iThreadIdx.x;
 
-    float4 vScale = lerp(g_arrFrameTrans[iFrameDataIndex].vScale, g_arrFrameTrans[iNextFrameDataIdx].vScale, frameRatio);
-    float4 vTrans = lerp(g_arrFrameTrans[iFrameDataIndex].vTranslate, g_arrFrameTrans[iNextFrameDataIdx].vTranslate, frameRatio);
-    float4 qRot = QuternionLerp(g_arrFrameTrans[iFrameDataIndex].qRot, g_arrFrameTrans[iNextFrameDataIdx].qRot, frameRatio);
+        float4 vScale = lerp(g_arrFrameTrans[iFrameDataIndex].vScale, g_arrFrameTrans[iNextFrameDataIdx].vScale, frameRatio);
+        float4 vTrans = lerp(g_arrFrameTrans[iFrameDataIndex].vTranslate, g_arrFrameTrans[iNextFrameDataIdx].vTranslate, frameRatio);
+        float4 qRot = QuternionLerp(g_arrFrameTrans[iFrameDataIndex].qRot, g_arrFrameTrans[iNextFrameDataIdx].qRot, frameRatio);
 
     // 최종 본행렬 연산
-    MatrixAffineTransformation(vScale, vQZero, qRot, vTrans, matBone);
+        MatrixAffineTransformation(vScale, vQZero, qRot, vTrans, matBone);
 
     // 최종 본행렬 연산    
     //MatrixAffineTransformation(g_arrFrameTrans[iFrameDataIndex].vScale, vQZero, g_arrFrameTrans[iFrameDataIndex].qRot, g_arrFrameTrans[iFrameDataIndex].vTranslate, matBone);
 
-    matrix matOffset = transpose(g_arrOffset[_iThreadIdx.x]);
+        matrix matOffset = transpose(g_arrOffset[_iThreadIdx.x]);
 
     // 구조화버퍼에 결과값 저장
-    g_arrFinelMat[_iThreadIdx.x] = mul(matOffset, matBone);
+        g_arrFinelMat[_iThreadIdx.x] = mul(matOffset, matBone);
+    }
+    else
+    {
+            
+    // 오프셋 행렬을 곱하여 최종 본행렬을 만들어낸다.		
+        float4 vQZero = float4(0.f, 0.f, 0.f, 1.f);
+        matrix matBone = (matrix) 0.f;
+
+    //frameIdx
+    // Frame Data Index == Bone Count * Frame Count + _iThreadIdx.x
+        uint iFrameDataIndex = boneCount * frameIdx + _iThreadIdx.x;
+        uint iNextFrameDataIdx = boneCount * (frameIdx + 1) + _iThreadIdx.x;
+
+        float4 vScale = lerp(g_arrFrameTrans[iFrameDataIndex].vScale, g_arrNextFrameTrans[_iThreadIdx.x].vScale, frameRatio);
+        float4 vTrans = lerp(g_arrFrameTrans[iFrameDataIndex].vTranslate, g_arrNextFrameTrans[_iThreadIdx.x].vTranslate, frameRatio);
+        float4 qRot = QuternionLerp(g_arrFrameTrans[iFrameDataIndex].qRot, g_arrNextFrameTrans[_iThreadIdx.x].qRot, frameRatio);
+
+    // 최종 본행렬 연산
+        MatrixAffineTransformation(vScale, vQZero, qRot, vTrans, matBone);
+
+    // 최종 본행렬 연산    
+    //MatrixAffineTransformation(g_arrFrameTrans[iFrameDataIndex].vScale, vQZero, g_arrFrameTrans[iFrameDataIndex].qRot, g_arrFrameTrans[iFrameDataIndex].vTranslate, matBone);
+
+        matrix matOffset = transpose(g_arrOffset[_iThreadIdx.x]);
+
+    // 구조화버퍼에 결과값 저장
+        g_arrFinelMat[_iThreadIdx.x] = mul(matOffset, matBone);
+    }
 }

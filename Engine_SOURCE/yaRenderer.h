@@ -106,6 +106,8 @@ namespace ya::renderer
 		UINT frameIdx;
 		UINT nextFrameIdx;
 		float frameRatio;
+
+		BOOL animChange;
 	};
 
 

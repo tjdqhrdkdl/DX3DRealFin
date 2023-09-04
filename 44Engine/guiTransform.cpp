@@ -8,7 +8,7 @@ namespace gui
 		: Component(eComponentType::Transform)
 	{
 		SetName("Transform");
-		SetSize(ImVec2(200.0f, 180.0f));
+		SetSize(ImVec2(400.0f, 300.0f));
 	}
 
 	Transform::~Transform()
@@ -30,6 +30,7 @@ namespace gui
 		mPosisition = tr->GetPosition();
 		mRotation = tr->GetRotation();
 		mScale = tr->GetScale();
+		mRotationOffset = tr->GetRotationOffset();
 
 		mForward = tr->Forward();
 		mRight = tr->Right();
@@ -52,6 +53,9 @@ namespace gui
 
 		ImGui::Text("Scale"); ImGui::SameLine();
 		ImGui::InputFloat3("##Scale", (float*)&mScale);
+
+		ImGui::Text("RotOffset"); ImGui::SameLine();
+		ImGui::InputFloat3("##RotOffset", (float*)&mRotationOffset);
 		
 		ImGui::Text("Foward"); ImGui::SameLine();
 		ImGui::InputFloat3("##Forward", (float*)&mForward);
@@ -73,6 +77,7 @@ namespace gui
 			tr->SetPosition(mPosisition);
 			tr->SetRotation(mRotation);
 			tr->SetScale(mScale);
+			tr->SetRotationOffset(mRotationOffset);
 
 			tr->SetForward(mForward);
 			tr->SetRight(mRight);

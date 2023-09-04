@@ -15,7 +15,7 @@ namespace ya
 	fbxsdk::FbxArray<fbxsdk::FbxString*> FbxLoader::mAnimationNames = {};
 	std::vector<AnimationClip*> FbxLoader::mAnimationClips = {};
 	std::vector<BoneAnimationClip*> FbxLoader::mBoneAnimationClips = {};
-
+	fbxsdk::FbxNode* FbxLoader::mMasterNode = nullptr;
 
 	
 
@@ -537,15 +537,22 @@ namespace ya
 	void FbxLoader::LoadSkeleton(fbxsdk::FbxNode* _pNode)
 	{
 		int iChildCount = _pNode->GetChildCount();
+
 		LoadSkeleton_Re(_pNode, 0, 0, -1);
 	}
 	void FbxLoader::LoadSkeleton_Re(fbxsdk::FbxNode* _pNode, int _iDepth, int _iIdx, int _iParentIdx)
 	{
 		fbxsdk::FbxNodeAttribute* pAttr = _pNode->GetNodeAttribute();
-
+		std::string str = _pNode->GetName();
+		if (str == "Master")
+		{
+			mMasterNode = _pNode;
+		}
 		if (pAttr && pAttr->GetAttributeType() == fbxsdk::FbxNodeAttribute::eSkeleton)
 		{
-			FbxNode* rootNode = mScene->GetRootNode();
+
+
+			fbxsdk::FbxNode* rootNode = mScene->GetRootNode();
 			FbxAMatrix matNodeTransform = GetTransform(rootNode);
 			Bone* pBone = new Bone;
 
@@ -830,7 +837,6 @@ namespace ya
 		fbxsdk::FbxLongLong llStartFrame = mAnimationClips[0]->startTime.GetFrameCount(eTimeMode);
 		fbxsdk::FbxLongLong llEndFrame = mAnimationClips[0]->endTime.GetFrameCount(eTimeMode);
 
-		
 		for (fbxsdk::FbxLongLong i = llStartFrame; i < llEndFrame; ++i)
 		{
 			KeyFrame tFrame = {};
@@ -839,9 +845,14 @@ namespace ya
 			tTime.SetFrame(i, eTimeMode);
 
 			fbxsdk::FbxAMatrix matFromNode = _pRootNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
-			fbxsdk::FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCurNode->EvaluateGlobalTransform(tTime);
-			matCurTrans = matReflect * matCurTrans * matReflect;
+			fbxsdk::FbxAMatrix masterInverseMat = mMasterNode->EvaluateGlobalTransform(tTime);
+			fbxsdk::FbxVector4 masterInverseTranslation = masterInverseMat.GetT();
 
+			fbxsdk::FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCurNode->EvaluateGlobalTransform(tTime);
+
+			matCurTrans.SetT(matCurTrans.GetT() - masterInverseTranslation);
+
+			matCurTrans = matReflect * matCurTrans * matReflect;
 			tFrame.time = tTime.GetSecondDouble();
 			tFrame.transform = matCurTrans;
 

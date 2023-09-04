@@ -41,14 +41,9 @@ namespace ya
                         //본데이터 받아서 오브젝트 위치/회전 변경
                         Transform* tr = GetComponent<Transform>();
                         Vector3 pos = mBoneMat.keyFrames[clip][frame].translate;
-                        pos.y = -pos.y;
-                        pos.x = -pos.x;
                         tr->SetPosition(pos);
                         Quaternion q = mBoneMat.keyFrames[clip][frame].rotation;
                         Vector3 rot = q.ToEuler();
-                        float temp = rot.y;
-                        rot.y = -rot.x;
-                        rot.x = -temp;
                         tr->SetRotation(rot * 180 / XM_PI);
                     }
                     else
@@ -68,7 +63,7 @@ namespace ya
         GameObject::Render();
     }
 
-    void BoneCollider::SetMeshAndBone(MeshData* meshData, std::wstring bone)
+    void BoneCollider::SetMeshAndBone(std::shared_ptr<MeshData> meshData, std::wstring bone)
     {
         mMeshData = meshData;
         MeshObject* meshObject = mMeshData->GetMeshObject();

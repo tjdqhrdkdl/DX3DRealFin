@@ -73,7 +73,8 @@ namespace ya
 		int GetCurrentFrameIdx() { return mFrameIdx; }
 
 		int GetAnimationIdxByName(const std::wstring& name) { if (mAnimationNameAndIndexMap.find(name) == mAnimationNameAndIndexMap.end()) return -1; else return mAnimationNameAndIndexMap[name]; }
-
+		
+		std::wstring GetPlayAnimationName() { return mAnimationClips->at(mCurrentClip).name; }
 	private:
 		const std::vector<BoneMatrix>* mBones;
 		const std::vector<BoneAnimationClip>* mAnimationClips;
@@ -98,5 +99,11 @@ namespace ya
 		//애니메이션 도중 event
 		std::map<std::wstring, Events*> mEvents;
 
+		
+		//애니메이션 사이 보간을 위한 변수
+		bool mbAnimChanging;
+		float mAnimChangeTime;
+		float mAnimChangeTimeChecker;
+		std::wstring mNextAnimName;
 	};
 }

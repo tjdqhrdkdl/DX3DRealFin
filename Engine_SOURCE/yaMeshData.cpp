@@ -209,6 +209,7 @@ namespace ya
 			{
 				if (meshBones->at(j).name == vecBone[i]->name)
 				{
+
 					for (UINT k = 0; k < vecBone[i]->keyFrames.size(); ++k)
 					{
 						BoneKeyFrame tKeyframe = {};
@@ -727,6 +728,13 @@ namespace ya
 			BoneAnimator* animator = mChildObjects[i]->GetComponent<BoneAnimator>();
 			animator->Play(animName);
 		}
+	}
+	std::wstring MeshData::GetPlayAnimationName()
+	{
+		if (mRepresentBoneAnimator)
+			return mRepresentBoneAnimator->GetPlayAnimationName();
+
+		return L"";
 	}
 	std::function<void()>& MeshData::GetAnimationStartEvent(const std::wstring& name)
 	{

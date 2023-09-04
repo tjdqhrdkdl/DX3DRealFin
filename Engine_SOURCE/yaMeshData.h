@@ -30,6 +30,7 @@ namespace ya
 
 
 		void Play(const std::wstring animName);
+		std::wstring GetPlayAnimationName();
 
 		std::function<void()>& GetAnimationStartEvent(const std::wstring& name);				
 		std::function<void()>& GetAnimationCompleteEvent(const std::wstring& name);				
@@ -58,6 +59,9 @@ namespace ya
 		UINT GetAnimationClipCount() { return mAnimationClipCount; }
 		class BoneAnimator* GetAnimator() { return mRepresentBoneAnimator; }
 		MeshObject* GetMeshObject() { return mMeshObject; }
+		std::vector<GameObject*> GetChildObjects() { return mChildObjects; }
+		
+
 
 		void SaveWString(const std::wstring& _str, FILE* _pFile);
 		void LoadWString(std::wstring& _str, FILE* _pFile);
