@@ -39,7 +39,7 @@ namespace ya
 
 		if(rigidbody != nullptr)
 		{
-			rigidbody->SetGround(true);
+			//rigidbody->SetGround(true);
 		}
 	}
 

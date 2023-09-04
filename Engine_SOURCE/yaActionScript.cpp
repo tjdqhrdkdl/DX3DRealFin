@@ -206,7 +206,7 @@ namespace ya
 			mGroundSlopeAngle = groundRadian;
 			mForwardSlopeAngle = forwardRadian - 1.5708f;
 
-			if (Hit.length < 0.3f)
+			if (Hit.length < 0.5f)
 				mRigidbody->SetGround(true);
 		}
 

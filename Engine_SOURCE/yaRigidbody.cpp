@@ -16,7 +16,7 @@ namespace ya
 	{
 		mGravity = Vector3(0.0f, -200.0f, 0.0f);
 		mbGround = false;
-		mLimitVelocity = Vector3(40.0f, 1000.0f, 40.0f);
+		mLimitVelocity = Vector3(40.0f, 100.0f, 40.0f);
 	}
 
 	Rigidbody::~Rigidbody()
@@ -104,6 +104,7 @@ namespace ya
 		}
 
 		// 속도에 맞춰 물체를 이동시킨다.
+		Vector3 velo;
 
 		if (mbGround)
 		{
@@ -112,16 +113,17 @@ namespace ya
 
 			dir.Normalize();
 			dir = Vector3::Transform(dir, mRotateDirection);
-			
-			mVelocity = dir * 30.f; // length;
-			mRotateDirection = {};
-		}
 
-		if (mVelocity.y > 1.f)
-			int a = 0;
+			// 회전된 속도는 땅에서만 사용하므로 멤버 변수를 건드리지 않는다.
+			velo = dir * length;
+			mRotateDirection = {};
+
+		}
+		else
+			velo = mVelocity;
 
 		Vector3 pos = tr->GetPosition();
-		pos += mVelocity * Time::DeltaTime();
+		pos += velo * Time::DeltaTime();
 		tr->SetPosition(pos);
 
 		ClearForce();
