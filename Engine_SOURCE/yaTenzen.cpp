@@ -45,13 +45,13 @@ namespace ya
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_000600.fbx", L"LookAround");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_000700.fbx", L"Surprised");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_001040.fbx", L"DrawSword");
-		mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_003000.fbx", L"SwingSword1"); // 칼을 우상단에서 우하단으로 크게 휘두르고 제자리로.
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_003000.fbx", L"SwingSword1"); // 칼을 우상단에서 우하단으로 크게 휘두르고 제자리로.
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_405000.fbx", L"Walk");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_405010.fbx", L"Run");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_500000.fbx", L"Defense");
 		//mMeshData->AnimationSave(L"Monster\\Boss_tenzen\\AnimationData\\tenzen.animationdata");
 		
-		//mMeshData->AnimationLoad(L"Monster\\Boss_tenzen\\AnimationData\\tenzen.animationdata");
+		mMeshData->AnimationLoad(L"Monster\\Boss_tenzen\\AnimationData\\tenzen.animationdata");
 		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster);
 
 		//std::vector<GameObject*> childObjects = mMeshData->GetChildObjects();
@@ -80,19 +80,20 @@ namespace ya
 		meshTr->SetRotation(Vector3(180, 180, 0));
 		meshTr->SetPosition(Vector3(0, 100, 0));
 		meshTr->SetScale(Vector3(20, 20, 20));
+		meshTr->SetRotationOffset(Vector3(-20, -5, -20));
 
-		//BoneCollider* katana =  object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
-		//katana->SetMeshAndBone(mMeshData, L"R_Katana_long");
-		//////katana->SetAnimOffSet(1, Vector3(-1.0, -0.8, 0));
-		//////katana->SetAnimOffSet(L"Idle", Vector3(-1.0, -0.8, 0));
-		//////
-		//////katana->SetAnimOffSet(2,Vector3(-5, -0.5, 0));
+		BoneCollider* katana =  object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+		katana->SetMeshAndBone(mMeshData, L"R_Katana_long");
+		////katana->SetAnimOffSet(1, Vector3(-1.0, -0.8, 0));
+		////katana->SetAnimOffSet(L"Idle", Vector3(-1.0, -0.8, 0));
 		////
-		////katana->SetColliderActiveFrame(2, 10, 100);
-		//katana->SetColliderActiveFrame(L"SwingSword1", 0, 100);
+		////katana->SetAnimOffSet(2,Vector3(-5, -0.5, 0));
+		//
+		//katana->SetColliderActiveFrame(2, 10, 100);
+		katana->SetColliderActiveFrame(L"SwingSword1", 0, 100);
 
-		////katana->SetScale(Vector3(2, 0.3, 0.3));
-		////mKatanaCollider = katana;
+		//katana->SetScale(Vector3(2, 0.3, 0.3));
+		//mKatanaCollider = katana;
 
 		MonsterBase::Initialize();
 

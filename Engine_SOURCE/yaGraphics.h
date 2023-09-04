@@ -195,6 +195,8 @@ namespace ya::graphics
 		math::Vector3 rotatation;
 		math::Vector3 scale;
 		
+		void* parent;
+
 		float radius;
 		float duration;
 		float time;

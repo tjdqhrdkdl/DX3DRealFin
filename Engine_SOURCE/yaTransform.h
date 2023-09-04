@@ -26,8 +26,6 @@ namespace ya
 		Vector3 GetRotationOffset() { return mRotationOffset; };
 
 
-		Vector3 GetFinalPosition() {return mFinalPosition;}
-		Vector3 GetFinalRotation() { return mFinalRotation; }
 		Vector3 GetFinalScale() { return mFinalScale; }
 
 
@@ -60,9 +58,6 @@ namespace ya
 		Vector3 mScale;
 		Vector3 mRotationOffset;
 
-
-		Vector3 mFinalPosition;
-		Vector3 mFinalRotation;
 		Vector3 mFinalScale;
 
 		bool mbCamera;
@@ -70,6 +65,7 @@ namespace ya
 		Matrix mMatScale;
 		Matrix mMatTranslation;
 		Matrix mMatRotation;
+		Matrix mMatRotationOffset;
 
 		Matrix mWorld;
 	};

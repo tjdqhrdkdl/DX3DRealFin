@@ -173,7 +173,7 @@ namespace gui
 		ya::Transform* tr = debugObj->GetComponent<ya::Transform>();
 		tr->SetPosition(mesh.position);
 		tr->SetRotation(mesh.rotatation);
-		
+		tr->SetParent((ya::Transform*)mesh.parent);
 
 		if (mesh.type == eColliderType::Rect)
 			tr->SetScale(mesh.scale);
