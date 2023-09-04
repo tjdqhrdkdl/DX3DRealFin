@@ -99,5 +99,11 @@ namespace ya
 		//애니메이션 도중 event
 		std::map<std::wstring, Events*> mEvents;
 
+		
+		//애니메이션 사이 보간을 위한 변수
+		bool mbAnimChanging;
+		float mAnimChangeTime;
+		float mAnimChangeTimeChecker;
+		std::wstring mNextAnimName;
 	};
 }

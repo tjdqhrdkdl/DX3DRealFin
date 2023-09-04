@@ -45,7 +45,7 @@ namespace ya
         void Attack();
         void Defense();
         void Trace();
-
+        
         void DrawSwordEndEvent();
         void DefenseEndEvent();
         void AttackEndEvent();

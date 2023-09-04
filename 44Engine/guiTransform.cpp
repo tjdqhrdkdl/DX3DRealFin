@@ -8,7 +8,7 @@ namespace gui
 		: Component(eComponentType::Transform)
 	{
 		SetName("Transform");
-		SetSize(ImVec2(200.0f, 180.0f));
+		SetSize(ImVec2(400.0f, 300.0f));
 	}
 
 	Transform::~Transform()

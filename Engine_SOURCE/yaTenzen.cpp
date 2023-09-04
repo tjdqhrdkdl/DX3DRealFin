@@ -15,14 +15,9 @@
 
 namespace ya
 {
+
 	void Tenzen::Initialize()
 	{
-		SetName(L"TenzenObject");
-		mMeshData = MeshData::LoadFromFbx(L"Monster\\Boss_tenzen\\Mesh\\c1020.fbx");
-
-		//mMeshData = std::make_shared<MeshData>();
-		//mMeshData->Load(L"Monster\\Boss_tenzen\\MeshData\\c1020.meshdata");
-
 		//3천번대 공격
 		//5천번대 이동
 		//8천번대 피격
@@ -35,6 +30,8 @@ namespace ya
 		// 501400 방어자세 해제
 		// 505000~3 방어자세 이동
 		//  505400~3 방어자세 회전
+		SetName(L"TenzenObject");
+		//mMeshData = MeshData::LoadFromFbx(L"Monster\\Boss_tenzen\\Mesh\\c1020.fbx");
 		 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_000000.fbx", L"Idle");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_000401.fbx", L"SitIdle");
@@ -50,51 +47,59 @@ namespace ya
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_405010.fbx", L"Run");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_500000.fbx", L"Defense");
 		//mMeshData->AnimationSave(L"Monster\\Boss_tenzen\\AnimationData\\tenzen.animationdata");
-		
+
+		//fbx 로드
+		mMeshData = std::make_shared<MeshData>();
+		mMeshData->Load(L"Monster\\Boss_tenzen\\MeshData\\c1020.meshdata");
 		mMeshData->AnimationLoad(L"Monster\\Boss_tenzen\\AnimationData\\tenzen.animationdata");
 		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster);
 
-		//std::vector<GameObject*> childObjects = mMeshData->GetChildObjects();
-		//std::vector<std::vector<std::shared_ptr<Material>>> materials = mMeshData->GetMaterialsVec();
-		//for (size_t i = 0; i < materials.size(); i++)
-		//{
-		//	if (materials[i][0]->GetName() == L"#04#")
-		//		mKatanaObjectTr = childObjects[i]->GetComponent<Transform>();
-		//	if (materials[i][0]->GetName() == L"#06#")
-		//		mKatanaHandleObjectTr = childObjects[i]->GetComponent<Transform>();
-		//}
-		//mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+
+		//칼과 손잡이 찾아두기
+		std::vector<GameObject*> childObjects = mMeshData->GetChildObjects();
+		std::vector<std::vector<std::shared_ptr<Material>>> materials = mMeshData->GetMaterialsVec();
+		for (size_t i = 0; i < materials.size(); i++)
+		{
+			if (materials[i][0]->GetName() == L"#04#")
+				mKatanaObjectTr = childObjects[i]->GetComponent<Transform>();
+			if (materials[i][0]->GetName() == L"#06#")
+				mKatanaHandleObjectTr = childObjects[i]->GetComponent<Transform>();
+		}
+		mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+		
 		
 
-
-		//mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
-		//mMeshData->GetAnimationEndEvent(L"SwingSword1") = std::bind(&Tenzen::AttackEndEvent, this);
-		//mMeshData->GetAnimationEndEvent(L"Run") = std::bind(&Tenzen::TraceEndEvent, this);
-		//mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&Tenzen::DefenseEndEvent, this);
+		//애니메이션 이벤트 추가
+		mMeshData->GetAnimationFrameEvent(L"DrawSword", 20) = [this]() {
+			mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
+			mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0)); 
+		};
+		mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
+		mMeshData->GetAnimationEndEvent(L"SwingSword1") = std::bind(&Tenzen::AttackEndEvent, this);
+		mMeshData->GetAnimationEndEvent(L"Run") = std::bind(&Tenzen::TraceEndEvent, this);
+		mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&Tenzen::DefenseEndEvent, this);
 
 
 		
 
-
+		//메시 데이터 트랜스폼
 		Transform* meshTr = object->GetComponent<Transform>();
 		meshTr->SetRotation(Vector3(180, 180, 0));
 		meshTr->SetPosition(Vector3(0, 100, 0));
 		meshTr->SetScale(Vector3(20, 20, 20));
 		meshTr->SetRotationOffset(Vector3(-20, -5, -20));
+		meshTr->SetParent(GetComponent<Transform>());
 
+
+		//무기 콜라이더 추가
 		BoneCollider* katana =  object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
 		katana->SetMeshAndBone(mMeshData, L"R_Katana_long");
-		////katana->SetAnimOffSet(1, Vector3(-1.0, -0.8, 0));
-		////katana->SetAnimOffSet(L"Idle", Vector3(-1.0, -0.8, 0));
-		////
-		////katana->SetAnimOffSet(2,Vector3(-5, -0.5, 0));
-		//
-		//katana->SetColliderActiveFrame(2, 10, 100);
+		katana->SetAnimOffSet(L"SwingSword1",Vector3(-5, -0.5, 0));
 		katana->SetColliderActiveFrame(L"SwingSword1", 0, 100);
+		katana->SetScale(Vector3(2, 0.3, 0.3));
+		mKatanaCollider = katana;
 
-		//katana->SetScale(Vector3(2, 0.3, 0.3));
-		//mKatanaCollider = katana;
-
+		
 		MonsterBase::Initialize();
 
 
@@ -109,19 +114,18 @@ namespace ya
 			ADD_STATE(TenzenState_Idle);
 
 
-		//Idle();
-		//Alert();
-		//Recognize();
-		//Attack();
-		//Defense();
-		//Trace();
-		//mAnimationName = L"SwingSword1";
-		//if (mAnimationName != L"" &&
-		//	mAnimationName != mMeshData->GetPlayAnimationName()
-		//	)
-		//{
-		//	mMeshData->Play(mAnimationName);
-		//}
+		Idle();
+		Alert();
+		Recognize();
+		Attack();
+		Defense();
+		Trace();
+		if (mAnimationName != L"" &&
+			mAnimationName != mMeshData->GetPlayAnimationName()
+			)
+		{
+			mMeshData->Play(mAnimationName);
+		}
 		MonsterBase::Update();
 		mBeforeState = mState;
 
@@ -203,8 +207,7 @@ namespace ya
 	void Tenzen::DrawSwordEndEvent()
 	{
 		ADD_STATE(TenzenState_DrawSword);
-		mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
-		mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0));
+		ADD_STATE(TenzenState_Guard);
 	}
 	void Tenzen::DefenseEndEvent()
 	{
