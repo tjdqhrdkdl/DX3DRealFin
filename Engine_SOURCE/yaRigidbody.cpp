@@ -15,7 +15,7 @@ namespace ya
 		, mFriction(180.0f)
 	{
 		mGravity = Vector3(0.0f, -200.0f, 0.0f);
-		mbGround = true;
+		mbGround = false;
 		mLimitVelocity = Vector3(40.0f, 1000.0f, 40.0f);
 	}
 
@@ -54,11 +54,16 @@ namespace ya
 
 			float dot = gravity.Dot(mVelocity);
 			mVelocity -= gravity * dot;
+
+			Vector3 velocity = mVelocity;
+			float length = velocity.Length();
 		}
 		else
 		{ // 공중
 			mVelocity += mGravity * Time::DeltaTime();
 		}
+
+		//mVelocity += mGravity * Time::DeltaTime();
 
 		// 최대 속도 제한
 		Vector3 gravity = mGravity;
@@ -84,21 +89,37 @@ namespace ya
 		// 마찰력 조건 : 적용된 힘이 없고, 속도가 0이 아닐때
 		if (!(mVelocity == Vector3::Zero))
 		{
-			// 속도에 반대 방향
+			 //속도에 반대 방향
 			Vector3 friction = -mVelocity;
 			friction.Normalize();
 			friction = friction * mFriction * mMass * Time::DeltaTime();
 
-			// 마찰력으로 인한 속도 감소량이 현재 속도보다 더 큰 경우
+			 //마찰력으로 인한 속도 감소량이 현재 속도보다 더 큰 경우
 			if (mVelocity.Length() < friction.Length())
-				// 속도를 0 로 만든다.
+				 //속도를 0 로 만든다.
 				mVelocity = Vector3::Zero;
 			else
-				// 속도에서 마찰력으로 인한 반대방향으로 속도를 차감한다.
+				 //속도에서 마찰력으로 인한 반대방향으로 속도를 차감한다.
 				mVelocity += friction;
 		}
 
 		// 속도에 맞춰 물체를 이동시킨다.
+
+		if (mbGround)
+		{
+			Vector3 dir = mVelocity;
+			float length = dir.Length();
+
+			dir.Normalize();
+			dir = Vector3::Transform(dir, mRotateDirection);
+			
+			mVelocity = dir * 30.f; // length;
+			mRotateDirection = {};
+		}
+
+		if (mVelocity.y > 1.f)
+			int a = 0;
+
 		Vector3 pos = tr->GetPosition();
 		pos += mVelocity * Time::DeltaTime();
 		tr->SetPosition(pos);

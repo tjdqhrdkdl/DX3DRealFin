@@ -30,6 +30,9 @@ namespace ya
 		void Deflect();
 		void Parrying();
 
+		void CheckGround();
+		void UpdatePhysics();
+
 	protected:
 		GameObject* mTarget;
 
@@ -38,6 +41,17 @@ namespace ya
 
 		float mSpeed;
 		Vector3 mDirection;
+		Vector3 mRotateDirection;
+
+		Vector3 mGroundNormal;
+		Vector3 mGroundCross;
+		float mGroundDistance;
+		float mGroundSlopeAngle;
+		float mForwardSlopeAngle;
+
+		bool mMoving;
+		bool mRunning;
+		bool mGrounded;
 
 	private:
 		float mJumpTimer;

@@ -2,6 +2,7 @@
 
 #include "yaTime.h"
 #include "yaInput.h"
+#include "yaCollisionManager.h"
 
 #include "yaRigidbody.h"
 #include "yaTransform.h"
@@ -21,13 +22,24 @@ namespace ya
 		, mTransform(nullptr)
 		, mSpeed(100.0f)
 		, mDirection(Vector3::Zero)
+		, mRotateDirection(Vector3::Zero)
+		, mGroundDistance(0.f)
+		, mGroundNormal(Vector3::Zero)
+		, mGroundSlopeAngle(0.f)
+		, mForwardSlopeAngle(0.f)
+		, mGroundCross(0.f)
+		, mMoving(false)
+		, mRunning(false)
+		, mGrounded(false)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
 	{
 	}
+
 	ActionScript::~ActionScript()
 	{
 	}
+
 	void ActionScript::Initialize()
 	{
 		GameObject* obj = GetOwner();
@@ -40,6 +52,8 @@ namespace ya
 	void ActionScript::Update()
 	{
 		assert(GetOwner() != nullptr);
+
+		CheckGround();
 
 		if (mJumpTimer > 0.0f)
 		{
@@ -69,10 +83,12 @@ namespace ya
 			return;
 		}
 
+		mDirection = dir;
+
 		if (speed > 0.0f)
-			mRigidbody->AddForce(speed * dir);
+			mRigidbody->AddForce(speed * mDirection);
 		else
-			mRigidbody->AddForce(mSpeed * dir);
+			mRigidbody->AddForce(mSpeed * mDirection);
 		
 	}
 
@@ -90,14 +106,15 @@ namespace ya
 		}
 
 		Vector3 rot = mTransform->GetRotation();
+		mRotateDirection = dir;
 		
 		if (speed > 0.0f)
 		{
-			rot += speed * 4.0f * dir * Time::DeltaTime();
+			rot += speed * 4.0f * mRotateDirection * Time::DeltaTime();
 		}
 		else
 		{
-			rot += mSpeed * 4.0f * dir * Time::DeltaTime();
+			rot += mSpeed * 4.0f * mRotateDirection * Time::DeltaTime();
 		}
 
 		mTransform->SetRotation(rot);
@@ -155,5 +172,70 @@ namespace ya
 		// 체간 증가
 
 		// 패링 이펙트 발생
+	}
+	
+	// 땅, 경사로 체크
+	void ActionScript::CheckGround()
+	{
+		Vector3 rayPosition = mTransform->GetPosition();
+		Vector3 objScale = mTransform->GetScale();
+		rayPosition.y -= objScale.y / 2.f;
+		//rayPosition.y += 0.1f;
+
+		std::vector<eLayerType> layers = {};
+		layers.push_back(eLayerType::Ground);
+
+		Vector3 direction = -(mTransform->Up());
+
+		RayHit Hit = CollisionManager::RayCast(GetOwner(), rayPosition, direction, layers);
+
+		mRigidbody->SetGround(false);
+
+		if (Hit.isHit)
+		{
+            Transform* hitTransform = Hit.hitObj->GetComponent<Transform>();
+
+			mGroundNormal = hitTransform->Up();
+
+			float groundRadian = mGroundNormal.Dot(Vector3::Up);
+			groundRadian = acos(groundRadian);
+
+			float forwardRadian = mGroundNormal.Dot(mDirection);
+			forwardRadian = acos(forwardRadian);
+
+			mGroundSlopeAngle = groundRadian;
+			mForwardSlopeAngle = forwardRadian - 1.5708f;
+
+			if (Hit.length < 0.3f)
+				mRigidbody->SetGround(true);
+		}
+
+		mGroundCross = mGroundNormal.Cross(Vector3::Up);
+
+		if (Vector3::Zero != mGroundCross)
+		{
+			Vector3 velocity = mRigidbody->GetVelocity();
+			Vector3 position = mTransform->GetPosition();
+
+			Vector3 axis = mGroundCross;
+
+			Matrix mat = Matrix::CreateFromAxisAngle(axis, -mGroundSlopeAngle);
+			mRigidbody->SetRotateDirection(mat);
+			//forward = Vector3::Transform(forward, mat);
+
+			//mDirection = forward;
+		}
+	}
+
+	void ActionScript::UpdatePhysics()
+	{
+		if (mGrounded)
+		{
+			mRigidbody->SetGround(true);
+		}
+		else
+		{
+			mRigidbody->SetGround(false);
+		}
 	}
 }
