@@ -65,12 +65,6 @@ namespace ya
 				//애니메이션 종료 + 루프 돎
 				mNextAnimName = currentName;
 				mbAnimChanging = true;
-				if (events)
-				{
-					events->mCompleteEvent();
-					events->mEndEvent();
-				}
-
 			}
 
 			mCurrentTime = mAnimationClips->at(mCurrentClip).startTime + mAnimationUpdateTime[mCurrentClip];
@@ -102,19 +96,26 @@ namespace ya
 				mAnimChangeTimeChecker = 0;
 				mAnimationUpdateTime[mCurrentClip] = 0;
 
+				std::wstring endAnimName = mAnimationClips->at(mCurrentClip).name;
+
 				Events* events = nullptr;
 				events = FindEvents(mAnimationClips->at(mCurrentClip).name);
 
-				if (events)
+				if (events && endAnimName != mNextAnimName)
 					events->mEndEvent();
-				//새로운 애니메이션으로 변경
 
+				else if (events && endAnimName == mNextAnimName)
+				{
+					events->mCompleteEvent();
+					events->mEndEvent();
+				}
+				//새로운 애니메이션으로 변경
 				mCurrentClip = mAnimationNameAndIndexMap[mNextAnimName];
 				mFrameIdx = 0;
 
 				events = FindEvents(mAnimationClips->at(mCurrentClip).name);
 
-				if (events)
+				if (events && endAnimName != mNextAnimName)
 					events->mStartEvent();
 
 
