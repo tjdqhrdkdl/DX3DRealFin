@@ -89,9 +89,9 @@ namespace ya
 			spearmancol->SetSize(Vector3(1.0, 2.0f, 1.0f));
 			Rigidbody* spearmanRigidbody = mSpearman->AddComponent<Rigidbody>();
 			spearmanRigidbody->SetGround(false);
-			spearman->AddComponent<MonsterScript>();
+			mSpearman->AddComponent<MonsterScript>();
 
-			camScript->SetLockOnTarget(spearman);
+			camScript->SetLockOnTarget(mSpearman);
 		}
 
 
@@ -433,8 +433,21 @@ namespace ya
 			//
 			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
 
+			//mMeshData = MeshData::LoadFromFbx(L"Monster\\RedOgre\\Mesh\\c5020.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000402.fbx", L"a000_000402");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_003001.fbx", L"a000_003001");
+			//mMeshData->AnimationSave(L"Monster\\\RedOgre\\AnimationData\\RedOrge_Animation.animationdata");
+			//
+			//
+			//mMeshData = std::make_shared<MeshData>();
+			//mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
+			//mMeshData->AnimationLoad(L"Monster\\\RedOgre\\AnimationData\\RedOrge_Animation.animationdata");
+			//
+			//
+			//mMeshData->Instantiate(eLayerType::Monster);
+
 		}
-		object::Instantiate<Tenzen>(eLayerType::Monster);
+		//object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	void TitleScene::Update()
@@ -442,17 +455,13 @@ namespace ya
 
 		if (Input::GetKeyDown(eKeyCode::U))
 		{
-			mMeshData->Play(L"SpearMan_Boundary_Step1");
+			mMeshData->Play(L"a000_000402");
 		}
 		if (Input::GetKeyDown(eKeyCode::I))
 		{
-			mMeshData->Play(L"TEST1");
+			mMeshData->Play(L"a000_003001");
 		}
-		if (Input::GetKeyDown(eKeyCode::O))
-		{
-			mMeshData->Play(L"TEST");
-		}
-
+		
 		Scene::Update();
 	}
 	void TitleScene::FixedUpdate()

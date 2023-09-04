@@ -23,6 +23,7 @@ namespace ya
 
         bool IsParrying() { return mbParrying; }
         
+        void Idle_Stand();
 
 
     private:

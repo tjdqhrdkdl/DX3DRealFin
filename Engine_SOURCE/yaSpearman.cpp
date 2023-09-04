@@ -36,18 +36,19 @@ namespace ya
 		
 		mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\SpearManAnimation_1.animationdata");
 		
-
+		
 		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
 		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
 		meshobjtr->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
+		meshobjtr->SetRotation(Vector3(0.f, 0.0f, 0.0f));
 		mAnimationOffSet = Vec3(-5.5f, 0.0f, 4.0f);
+		
+		//SpearMan_Idle_Stand
+		mMeshData->Play(L"SpearMan_Boundary_Step1");
 
 		CreateMonsterState();
-		SetSituation(enums::eSituation::None);
+		SetSituation(enums::eSituation::None, true);
 
-		//SpearMan_Running
-		mMeshData->Play(L"SpearMan_Boundary_Step1");
 
 		mAttackRange = 8.0f;
 		mTime = 0.f;
@@ -67,10 +68,10 @@ namespace ya
 		Vec3 playerPos = GetPlayerPos();
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
-		//Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
-		//meshobjtr->SetPosition(tr->GetPosition() + mAnimationOffSet);
-
-		//meshobjtr->SetRotation(tr->GetRotation());
+		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
+		meshobjtr->SetPosition(tr->GetPosition() + mAnimationOffSet);
+		
+		meshobjtr->SetRotation(tr->GetRotation());
 
 		if (IsDeathBlow())
 		{
@@ -104,7 +105,7 @@ namespace ya
 				if (NavigationPlayer(15.0f))
 				{
 					//배틀로 상태 변경
-					//SetSituation(enums::eSituation::Battle, true);
+					SetSituation(enums::eSituation::Battle, true);
 				}
 			}
 			//플레이어가 시야각에서 벗어나 있는 경우?
@@ -114,6 +115,8 @@ namespace ya
 				{
 					if (NavigationPlayer(20.0f))
 					{
+						//SpearMan_Boundary_Start
+						OnceAniamtion(L"SpearMan_Boundary_Step2");
 						SetSituation(enums::eSituation::Boundary, true);
 					}
 
@@ -125,14 +128,28 @@ namespace ya
 		break;
 		case ya::enums::eSituation::Idle:
 		{
-			OnceAniamtion(L"SpearMan_Boundary_Step2");
+			//바운더리 or None 상태 둘중 하나로 이동
+			//None 상태는 플레이어가 은신 + 거리가 멀면 시간지나고 이동
+			//바운더리는 플레이어가 아직 가까이 있음 하지만 안보일때 바운더리 유지
+			
+
+
+
 		}
 		break;
 		case ya::enums::eSituation::Boundary:
 		{
-			OnceAniamtion(L"SpearMan_Boundary_Step2");
-			//mAnimationOffSet = Vec3();
 
+			//두리번 거리는 애니메이션 
+			
+			mMeshData->GetAnimationCompleteEvent(L"SpearMan_Boundary_Step2")
+				= std::bind(&Spearman::Idle_Stand, this);
+			//mMeshData->GetAnimationStartEvent(L"SpearMan_Boundary_Step2") = std::bind(&Spearman::TTTEST, this);
+			//mMeshData->GetAnimationEndEvent(L"SpearMan_Boundary_Step2") 
+			//	= std::bind(&Spearman::Idle_Stand, this);
+		
+
+			
 
 		}
 			break;
@@ -172,7 +189,7 @@ namespace ya
 		break;
 		case ya::enums::eSituation::Run:
 		{
-			OnceAniamtion(L"SpearMan_Walk");
+			OnceAniamtion(L"SpearMan_Boundary_Step1");
 			//오른쪽 방향
 			if (mRandomXY.x > mWlakFixPos.x)
 			{
@@ -288,6 +305,24 @@ namespace ya
 		attackcol->SetSize(Vector3(3.0, 2.0f, 4.0f));
 
 	
+
+	}
+
+	void Spearman::Idle_Stand()
+	{
+		
+		//OnceAniamtion(L"SpearMan_Boundary_Step1");
+		//SetSituation(enums::eSituation::Idle, true);
+
+
+		if (mMeshData->GetPlayAnimationName() == L"SpearMan_Boundary_Step1")
+		{
+			int  a = 0;
+		}
+		if (mMeshData->GetPlayAnimationName() == L"SpearMan_Boundary_Step2")
+		{
+			OnceAniamtion(L"SpearMan_Boundary_Step1");
+		}
 
 	}
 
