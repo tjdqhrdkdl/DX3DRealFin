@@ -31,9 +31,23 @@ namespace ya
 			faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 		}
 
+		mMeshData = std::make_shared<MeshData>();
+		mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\c1700_SpearMan.meshdata");
+		
+		mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\SpearManAnimation_1.animationdata");
+		
+
+		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
+		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
+		meshobjtr->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
+		mAnimationOffSet = Vec3(-5.5f, 0.0f, 4.0f);
 
 		CreateMonsterState();
 		SetSituation(enums::eSituation::None);
+
+		//SpearMan_Running
+		mMeshData->Play(L"SpearMan_Boundary_Step1");
 
 		mAttackRange = 8.0f;
 		mTime = 0.f;
@@ -53,53 +67,54 @@ namespace ya
 		Vec3 playerPos = GetPlayerPos();
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
-		
+		//Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
+		//meshobjtr->SetPosition(tr->GetPosition() + mAnimationOffSet);
+
+		//meshobjtr->SetRotation(tr->GetRotation());
+
+		if (IsDeathBlow())
+		{
+			TEST->SetPosition(Vector3(0.0f, 2.0f, 0.0f));
+		}
+		else
+		{
+			TEST->SetPosition(Vector3(100.0f, 100.0f, 100.0f));
+		}
+
 
 		switch (GetSituation())
 		{
+		//몬스터 처음 상태로 인식을 한번이라도 하면 None상태는 더 안함
 		case ya::enums::eSituation::None:
 		{
-			//인살 띄우기
-			if (IsDeathBlow())
+			//플레이어가 가까운 거리에 있으면서 뒤에 있을경우 은신 가능 상태로 변경
+			if (NavigationPlayer(3.0f) && !IsPlayerFront())
 			{
-				TEST->SetPosition(Vector3(0.0f, 2.0f, 0.0f));
-
-				if (IsStartBlow())
-				{
-					if (!NavigationPlayer(3.0f))
-					{
-						TEST->SetPosition(Vector3(100.0f, 100.0f, 100.0f));
-					}
-				}
+				SetDeathBlow(true);
 			}
-			//없애기
 			else
 			{
-				TEST->SetPosition(Vector3(100.0f, 100.0f, 100.0f));
+				SetDeathBlow(false);				
 			}
 
-			if (IsPlayerFieldview())
+			//플레이어가 시야각안에 있다.
+			if (IsPlayerFieldview(45.0f, 135.0f))
 			{
+				//플레이어가 15범위 안에 들어있을 경우
 				if (NavigationPlayer(15.0f))
 				{
 					//배틀로 상태 변경
-					SetStartBlow(false);
-					if (GetSituation() != enums::eSituation::Groggy)
-					{
-						SetDeathBlow(false);
-					}
-					SetSituation(enums::eSituation::Battle);
+					//SetSituation(enums::eSituation::Battle, true);
 				}
 			}
+			//플레이어가 시야각에서 벗어나 있는 경우?
 			else
 			{
-				if (!IsPlayerFront())
+				if (IsPlayerFront())
 				{
-					if (NavigationPlayer(3.0f))
+					if (NavigationPlayer(20.0f))
 					{
-						int a = 0;
-						if (IsStartBlow())
-							SetDeathBlow(true);
+						SetSituation(enums::eSituation::Boundary, true);
 					}
 
 
@@ -107,10 +122,19 @@ namespace ya
 
 			}
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Idle:
-			break;
+		{
+			OnceAniamtion(L"SpearMan_Boundary_Step2");
+		}
+		break;
 		case ya::enums::eSituation::Boundary:
+		{
+			OnceAniamtion(L"SpearMan_Boundary_Step2");
+			//mAnimationOffSet = Vec3();
+
+
+		}
 			break;
 		case ya::enums::eSituation::Chase:
 			break;
@@ -118,25 +142,25 @@ namespace ya
 		{
 			int random = RandomNumber(1, 3);
 
-			
+			random = 1;
 
 			if (random == 1)
-			{				
+			{
 				mRandomXY.x = RandomNumber((int)(monsterPos.x - 4), (int)(monsterPos.x + 4));
 				mRandomXY.y = RandomNumber((int)(monsterPos.z - 4), (int)(monsterPos.z + 4));
-				
-				
+
+
 				mRandomFinPos.x = mRandomXY.x;
 				mRandomFinPos.z = mRandomXY.y;
 				mRandomFinPos.y = monsterPos.y;
 				mWlakFixPos = monsterPos;
 
 				MonsterRotation(mRandomFinPos);
-				SetSituation(enums::eSituation::Run);
+				SetSituation(enums::eSituation::Run, true);
 			}
 			else if (random == 2)
 			{
-				SetSituation(enums::eSituation::Defense);
+				SetSituation(enums::eSituation::Defense, true);
 				TurnToPlayer();
 			}
 			else if (random == 3)
@@ -145,16 +169,16 @@ namespace ya
 				TurnToPlayer();
 			}
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Run:
-		{			
+		{
+			OnceAniamtion(L"SpearMan_Walk");
 			//오른쪽 방향
 			if (mRandomXY.x > mWlakFixPos.x)
 			{
 				if (monsterPos.x > mRandomFinPos.x)
 				{
-					SetSituation(enums::eSituation::None);
-					int a = 0;
+					SetSituation(enums::eSituation::Idle, true);
 				}
 				rigi->AddForce(tr->Forward() * 70.f);
 
@@ -164,15 +188,14 @@ namespace ya
 			{
 				if (monsterPos.x <= mRandomFinPos.x)
 				{
-					SetSituation(enums::eSituation::None);
-					int a = 0;
+					SetSituation(enums::eSituation::Idle, true);
 				}
-				
+
 				rigi->AddForce(tr->Forward() * 70.f);
 			}
 
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Defense:
 		{
 			mTime += Time::DeltaTime();
@@ -187,17 +210,17 @@ namespace ya
 			}
 			if (mTime >= 3.0f)
 			{
-				SetSituation(enums::eSituation::None);
-				mTime = 0.f;				
+				SetSituation(enums::eSituation::Idle, true);
+				mTime = 0.f;
 			}
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Attack:
 		{
 			//어택 상태일때 
 			mTime += Time::DeltaTime();
-			if(mTime >= 1.0f)
-			{				
+			if (mTime >= 1.0f)
+			{
 				mTime = 0.f;
 			}
 
@@ -205,28 +228,36 @@ namespace ya
 			{
 				TurnToPlayer();
 				Attack_sting();
-				SetSituation(enums::eSituation::None);
+				SetSituation(enums::eSituation::Idle, true);
 			}
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Sit:
 			break;
 		case ya::enums::eSituation::Groggy:
-		{			
+		{
 
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Death:
 			break;
 		case ya::enums::eSituation::End:
 			break;
 
 		}
-		
+
+		//if (Input::GetKeyDown(eKeyCode::U))
+		//{
+		//	mMeshData->Play(L"SpearMan_shout");
+		//}
+		//if (Input::GetKeyDown(eKeyCode::I))
+		//{
+		//	mMeshData->Play(L"SpearMan_Boundary_Step1");
+		//}
 
 
 		GameObject::FixedUpdate();
-		
+
 	}
 
 	void Spearman::Render()

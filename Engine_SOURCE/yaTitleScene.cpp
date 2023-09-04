@@ -61,7 +61,7 @@ namespace ya
 		CameraScript* camScript = cameraObj->AddComponent<CameraScript>();
 		mainCamera = cameraComp;
 
-		
+
 		Player* player = object::Instantiate<Player>(eLayerType::Player);
 		player->GetComponent<Transform>()->SetPosition(Vector3(-13.0f, 0.0f, -10.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
@@ -76,18 +76,18 @@ namespace ya
 		SetPlayer(player);
 
 		{
-			Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
-			spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-			spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-			spearman->SetName(L"Spearman");
-			spearman->SetPlayerObject(player);
-			MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
-			spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
+			Spearman* mSpearman = object::Instantiate<Spearman>(eLayerType::Monster);
+			mSpearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+			mSpearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+			mSpearman->SetName(L"Spearman");
+			mSpearman->SetPlayerObject(player);
+			//MeshRenderer* spearmanmr = mSpearman->AddComponent<MeshRenderer>();
+			//spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* spearmancol = mSpearman->AddComponent <Collider2D>();
 			spearmancol->SetType(eColliderType::Box);
-			spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
-			Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
+			spearmancol->SetSize(Vector3(1.0, 2.0f, 1.0f));
+			Rigidbody* spearmanRigidbody = mSpearman->AddComponent<Rigidbody>();
 			spearmanRigidbody->SetGround(false);
 			spearman->AddComponent<MonsterScript>();
 
@@ -112,7 +112,7 @@ namespace ya
 
 		//	camScript->SetLockOnTarget(musketeerman);
 		//}
-		
+
 		//{
 		//	Swordsman* swordsman = object::Instantiate<Swordsman>(eLayerType::Monster);
 		//	swordsman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
@@ -149,24 +149,24 @@ namespace ya
 			ground->AddComponent<GroundScript>();
 		}
 
-		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
-			ground->SetName(L"Ground1");
-			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
-			groundTr->SetScale(Vector3(50.0f, 10.0f, 10.0f));
-			groundTr->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
-			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			ground->AddComponent<GroundScript>();
-		}
+		//{
+		//	GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+		//	ground->SetName(L"Ground1");
+		//	Transform* groundTr = ground->GetComponent<Transform>();
+		//	groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
+		//	groundTr->SetScale(Vector3(50.0f, 10.0f, 10.0f));
+		//	groundTr->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
+		//	MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+		//	groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		//	groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+		//	Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+		//	groundCollider->SetType(eColliderType::Box);
+		//	groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+		//	ground->AddComponent<GroundScript>();
+		//}
 
 
-		{
+		/*{
 			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
 			grappleGround->SetName(L"grapple target");
 			Transform* groundTr = grappleGround->GetComponent<Transform>();
@@ -244,7 +244,7 @@ namespace ya
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			grappleGround1->AddComponent<CrouchObjectScript>();
-		}
+		}*/
 
 		//{
 		//		GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
@@ -322,18 +322,102 @@ namespace ya
 			//mMeshData->AnimationSave(L"Player\\AnimationData\\Player.animationdata");
 			//mMeshData->Instantiate(eLayerType::Monster);
 
-			//mMeshData = std::make_shared<MeshData>();
-			//mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
-			//mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata");
+			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700_SpearMan.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_400000.fbx", L"SpearMan_Boundary_Step1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000200.fbx", L"SpearMan_Boundary_Step2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000401.fbx", L"SpearMan_Idle_Stand");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000402.fbx", L"SpearMan_Boundary_Start");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_001040.fbx", L"SpearMan_shout");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000411.fbx", L"SpearMan_Groggy");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_405000.fbx", L"SpearMan_Walk");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_405010.fbx", L"SpearMan_Running");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_000412.fbx", L"SpearMan_Groggy_Recovery");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003000.fbx", L"SpearMan_Start_Attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003001.fbx", L"SpearMan_Start_Attack2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003004.fbx", L"SpearMan_Disarm_Attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003005.fbx", L"SpearMan_Disarm_Attack2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003053.fbx", L"SpearMan_Disarm_Attack3");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003006.fbx", L"SpearMan_1Default_Attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"SpearMan_1Default_Attack2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003010.fbx", L"SpearMan_2Default_Attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003011.fbx", L"SpearMan_2Default_Attack2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003012.fbx", L"SpearMan_2Default_Attack3");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003015.fbx", L"SpearMan_3Default_Attack1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_003016.fbx", L"SpearMan_3Default_Attack2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008600.fbx", L"SpearMan_1Default_Attack1_Failed");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008602.fbx", L"SpearMan_1Default_Attack2_Failed");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008500.fbx", L"SpearMan_2Default_Attack1_Failed");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008501.fbx", L"SpearMan_2Default_Attack2_Failed");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008602.fbx", L"SpearMan_2Default_Attack3_Failed");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008510.fbx", L"SpearMan_3Default_Attack2_Failed");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a100_003102.fbx", L"SpearMan_Defense_Reaction");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_500000.fbx", L"SpearMan_1Default_Defense1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_501040.fbx", L"SpearMan_1Default_Defense2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_505000.fbx", L"SpearMan_1Default_Defense_Forward");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_505001.fbx", L"SpearMan_1Default_Defense_Back");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_505002.fbx", L"SpearMan_1Default_Defense_Left");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_505003.fbx", L"SpearMan_1Default_Defense_Right");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_505400.fbx", L"SpearMan_1Default_Defense_Left_Turn_90");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_505401.fbx", L"SpearMan_1Default_Defense_Right_Turn_90");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_505402.fbx", L"SpearMan_1Default_Defense_Left_Turn_180");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_505403.fbx", L"SpearMan_1Default_Defense_Right_Turn_180");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a100_005211.fbx", L"SpearMan_Step_Back");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_405400.fbx", L"SpearMan_Idle_Left_Turn_90");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_405401.fbx", L"SpearMan_Idle_Right_Turn_90");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_405402.fbx", L"SpearMan_Idle_Left_Turn_180");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_405403.fbx", L"SpearMan_Idle_Right_Turn_180");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007000.fbx", L"SpearMan_Jump_1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007010.fbx", L"SpearMan_Jump_2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007020.fbx", L"SpearMan_Jump_3");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007021.fbx", L"SpearMan_Death_Hit1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007121.fbx", L"SpearMan_Death_Hit2");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_012230.fbx", L"SpearMan_Death_Deathblow1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007100.fbx", L"SpearMan_Levitation_Hit_Back");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007200.fbx", L"SpearMan_Levitation_Hit_Front");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007120.fbx", L"SpearMan_Wake_Up_Front");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_007220.fbx", L"SpearMan_Wake_Up_Back");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008010.fbx", L"SpearMan_Hit_1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008011.fbx", L"SpearMan_Hit_2_Start");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008130.fbx", L"SpearMan_Hit_2_End");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008012.fbx", L"SpearMan_Hit_3");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008013.fbx", L"SpearMan_Hit_4");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008021.fbx", L"SpearMan_Hit_5");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008022.fbx", L"SpearMan_Hit_6");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_008023.fbx", L"SpearMan_Hit_7");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_020110.fbx", L"SpearMan_Hit_8");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a100_003000.fbx", L"SpearMan_Evasion_Left");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a100_003001.fbx", L"SpearMan_Evasion_Right");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_605000.fbx", L"SpearMan_Hit_Molotov_Cocktail");
 			//
+
+			//mMeshData->AnimationSave(L"Monster\\\IInteriorMinistry_Samurai\\AnimationData\\SpearManAnimation_1.animationdata");
 			//mMeshData->Instantiate(eLayerType::Monster);
-			
+
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_400000.fbx", L"TEST");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_003000.fbx", L"TEST1");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_000700.fbx", L"TEST2");			
+			//mMeshData->AnimationSave(L"Monster\\\MusketeerMan\\Animation\\MusketeerManAnimation_1.animationdata");
+
+
+
+			//mMeshData = std::make_shared<MeshData>();
+			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700_SpearMan.fbx");
+
+			//mMeshData->Load(L"Monster\\\IInteriorMinistry_Samurai\\MeshData\\c1700_SpearMan.meshdata");
+			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_400000.fbx", L"SpearMan_Boundary_Step1");
+
+			//mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\SpearManAnimation_1.animationdata");
+			//mMeshData->Instantiate(eLayerType::Monster);
+
+			//mMeshData = MeshData::LoadFromFbx(L"House\\Mesh\\House.fbx");
+			//mMeshData->Instantiate(eLayerType::Monster);
+
 
 			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
 			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
 
-			
+
 			//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
 
 
@@ -355,30 +439,18 @@ namespace ya
 	}
 	void TitleScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::Y))
-		{
-			//SceneManager::LoadScene(eSceneType::Play);
-			mMeshData->Play(L"attack1");			
-		}
+
 		if (Input::GetKeyDown(eKeyCode::U))
 		{
-			//SceneManager::LoadScene(eSceneType::Play);
-			mMeshData->Play(L"attack2");
+			mMeshData->Play(L"SpearMan_Boundary_Step1");
 		}
 		if (Input::GetKeyDown(eKeyCode::I))
 		{
-			//SceneManager::LoadScene(eSceneType::Play);
-			mMeshData->Play(L"attack3");
+			mMeshData->Play(L"TEST1");
 		}
 		if (Input::GetKeyDown(eKeyCode::O))
 		{
-			//SceneManager::LoadScene(eSceneType::Play);
-			mMeshData->Play(L"attack4");
-		}
-		if (Input::GetKeyDown(eKeyCode::P))
-		{
-			//SceneManager::LoadScene(eSceneType::Play);
-			mMeshData->Play(L"attack5");
+			mMeshData->Play(L"TEST");
 		}
 
 		Scene::Update();

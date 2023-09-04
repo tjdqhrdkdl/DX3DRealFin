@@ -73,13 +73,7 @@ namespace ya
 				mbPlayerFront = false;
 			}
 
-			//
-			float dir = atan2(mMonster2PlayerNormalize.z, mMonster2PlayerNormalize.x);
-			float angle = (float)((dir * 180) / XM_PI);
-			if (angle <= 135.0f && angle > 45.0f)
-				mbPlayerFieldview = true;
-			else
-				mbPlayerFieldview = false;
+
 
 
 			//DeathBlowRecovery
@@ -355,6 +349,16 @@ namespace ya
 
 	}
 
+	bool MonsterBase::IsPlayerFieldview(float minangle, float maxangle)
+	{		
+		float dir = atan2(mMonster2PlayerNormalize.z, mMonster2PlayerNormalize.x);
+		float angle = (float)((dir * 180) / XM_PI);
+		if (angle <= maxangle && angle > minangle)
+			return true;
+		else
+			return false;
+	}
+
 	int MonsterBase::RandomNumber(int ieast, int Max)
 	{
 		int result = 0;
@@ -366,6 +370,17 @@ namespace ya
 		
 		return result;
 	}
+
+	void MonsterBase::OnceAniamtion(const std::wstring& animation)
+	{
+		if (mbOnceAnimation)
+		{
+			mMeshData->Play(animation);
+			mbOnceAnimation = false;
+		}
+	}
+
+
 
 	void MonsterBase::CreateMonsterState()
 	{

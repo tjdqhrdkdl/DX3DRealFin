@@ -95,8 +95,11 @@ namespace ya::enums
 
 	enum class eSituation
 	{
-		None,
-		Idle,			//기본 상태
+		None,			//처음 몬스터 생겨났을때의 상태로
+						//여기에서 기본 행동을 합니다 EX) 경계 서는 몹이면 경계를
+						//순찰 도는 몹이면 이동 로직을 짜주면 되고 
+						//None 상태에서만 처음 은신이 가능합니다.
+		Idle,			//	
 		Boundary,		//경계
 		Chase,			//		
 		Battle,			//여기에서 분기 공격 , 후퇴, 막기 나눠서갈것
