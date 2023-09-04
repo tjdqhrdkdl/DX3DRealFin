@@ -161,5 +161,6 @@ namespace ya
 		static fbxsdk::FbxArray<fbxsdk::FbxString*> mAnimationNames;
 		static std::vector<AnimationClip*> mAnimationClips;
 		static std::vector<BoneAnimationClip*> mBoneAnimationClips;
+		static fbxsdk::FbxNode* mMasterNode;
 	};
 }

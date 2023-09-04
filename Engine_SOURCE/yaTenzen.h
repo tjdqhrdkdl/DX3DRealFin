@@ -20,15 +20,17 @@ namespace ya
         //
         enum eTenzenState
         {
-            TenzenState_None = 0x0000,
-            TenzenState_Idle = 0x0001,
-            TenzenState_Alert = 0x0002,
-            TenzenState_Recognize = 0x0004,
-            TenzenState_Attack = 0x0008,
-            TenzenState_Deffense = 0x0010,
-            TenzenState_Trace = 0x0020,
-            TenzenState_OnHit = 0x0040,
-            TenzenState_Dead = 0x0080,
+            TenzenState_None =           0x00000000,
+            TenzenState_Idle =           0x00000001,
+            TenzenState_Alert =          0x00000002,
+            TenzenState_Recognize =      0x00000004,
+            TenzenState_DrawSword =      0x00000008,
+            TenzenState_Attack =         0x00000010,
+            TenzenState_Defense =       0x00000020,
+            TenzenState_Guard =          0x00000040,
+            TenzenState_Trace =          0x00000080,
+            TenzenState_OnHit =          0x00000100,
+            TenzenState_Dead =           0x00000200,
         };
     public:
 
@@ -37,14 +39,29 @@ namespace ya
         virtual void FixedUpdate() override;
         virtual void Render() override;
 
-        void SetAnimation();
+        void Idle();
+        void Alert();
+        void Recognize();
+        void Attack();
+        void Defense();
+        void Trace();
+        
+        void DrawSwordEndEvent();
+        void DefenseEndEvent();
+        void AttackEndEvent();
+        void TraceEndEvent();
+
 
     private:
-        MeshData* mMeshData;
-        GameObject* mKatana;
-
+        std::shared_ptr<MeshData> mMeshData;
+        GameObject* mKatanaCollider;
+        Transform* mKatanaObjectTr;
+        Transform* mKatanaHandleObjectTr;
+       
+        int mBeforeState;
         int mState;
 
+        std::wstring mAnimationName;
 	};
 
 }

@@ -37,12 +37,12 @@ namespace ya
 	{
 		if (!mbActive)
 			return;
-		Vector3 scale = mTransform->GetFinalScale();
+		Vector3 scale = mTransform->GetScale();
 		scale *= Vector3(mSize.x, mSize.y, mSize.z);
 
-		Vector3 rotation = mTransform->GetFinalRotation();
+		Vector3 rotation = mTransform->GetRotation();
 
-		Vector3 position = mTransform->GetFinalPosition();
+		Vector3 position = mTransform->GetPosition();
 		Vector3 colliderPos = position + Vector3(mCenter.x, mCenter.y, mCenter.z);
 		mPosition = colliderPos;
 
@@ -62,6 +62,7 @@ namespace ya
 		meshAttribute.radius = mRadius;
 		meshAttribute.rotatation = rotation;
 		meshAttribute.scale = scale;
+		meshAttribute.parent = mTransform->GetParent();
 		meshAttribute.type = mType;
 
 		renderer::debugMeshes.push_back(meshAttribute);

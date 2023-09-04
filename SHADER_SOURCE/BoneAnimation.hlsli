@@ -13,6 +13,7 @@ cbuffer BoneInfo : register(b7)
     uint frameIdx;
     uint nextFrameIdx;
     float frameRatio;
+    bool animChange;
 }
 
 StructuredBuffer<Matrix> BoneMatrix : register(t30);

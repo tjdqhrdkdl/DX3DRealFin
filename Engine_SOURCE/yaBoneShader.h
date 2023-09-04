@@ -18,8 +18,10 @@ namespace ya::graphics
 		void SetFrameIndex(int frameIdx) { mBoneAnimationData.frameIdx = frameIdx; }
 		void SetNextFrameIdx(int frameIdx) { mBoneAnimationData.nextFrameIdx = frameIdx; }
 		void SetFrameRatio(float frameRatio) { mBoneAnimationData.frameRatio = frameRatio; }
+		void SetAnimChange(bool animChange) { mBoneAnimationData.animChange = animChange; }
 
 		void SetFrameDataBuffer(StructedBuffer* buffer) { mFrameDataBuffer = buffer; }
+		void SetNextFrameDataBuffer(StructedBuffer* buffer) { mNextFrameDataBuffer = buffer; }
 		void SetOffsetMatBuffer(StructedBuffer* buffer) { mOffsetMatBuffer = buffer; }
 		void SetOutputBuffer(StructedBuffer* buffer) { mOutputBuffer = buffer; }
 
@@ -27,8 +29,9 @@ namespace ya::graphics
 		virtual void Clear() override;
 
 	private:
-		StructedBuffer* mFrameDataBuffer;			// t13
-		StructedBuffer* mOffsetMatBuffer;			// t14 
+		StructedBuffer* mFrameDataBuffer;			// t17
+		StructedBuffer* mNextFrameDataBuffer;		// t18
+		StructedBuffer* mOffsetMatBuffer;			// t19 
 		StructedBuffer* mOutputBuffer;				// u0
 
 		BoneAnimationCB mBoneAnimationData;

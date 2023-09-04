@@ -12,6 +12,7 @@ namespace ya
 		, mScale(Vector3::One)
 		, mRotation(Vector3::Zero)
 		, mPosition(Vector3::One)
+		, mRotationOffset(Vector3::Zero)
 		, mParent(nullptr)
 	{
 		
@@ -69,23 +70,19 @@ namespace ya
 
 		mMatTranslation = position;
 
-		mWorld = scale * rotation * position;
+		Matrix rotationOffset;
+		rotationOffset.Translation(mRotationOffset);
+		mMatRotationOffset = rotationOffset;
+
+
+		mWorld = scale * rotationOffset * rotation * position;
+		
 		if (mbCamera)
 		{
 		}
 		else
 		{
-			if (mParent)
-			{
-				Vector3 finalRotation = mRotation + mParent->mFinalRotation;
-				Vector3 radian(finalRotation.x * (XM_PI / 180)
-					, finalRotation.y * (XM_PI / 180)
-					, finalRotation.z * (XM_PI / 180));
 
-				rotation = Matrix::CreateRotationX(radian.x);
-				rotation *= Matrix::CreateRotationY(radian.y);
-				rotation *= Matrix::CreateRotationZ(radian.z);
-			}
 			mForward = Vector3::TransformNormal(Vector3::Forward, rotation);
 			mRight = Vector3::TransformNormal(Vector3::Right, rotation);
 			mUp = Vector3::TransformNormal(Vector3::Up, rotation);
@@ -98,14 +95,20 @@ namespace ya
 		if (mParent)
 		{
 			mWorld *= mParent->mWorld;
-			mFinalPosition = mPosition + mParent->mFinalPosition;
-			mFinalRotation = mRotation + mParent->mFinalRotation;
 			mFinalScale = mScale * mParent->mFinalScale;
+
+			Matrix matScale = Matrix::CreateScale(mFinalScale);
+			Matrix matRT = matScale.Invert() * mWorld;
+			matRT._41 = 0;
+			matRT._42 = 0;
+			matRT._43 = 0;
+
+			mForward = Vector3::TransformNormal(Vector3::Forward, matRT);
+			mRight = Vector3::TransformNormal(Vector3::Right, matRT);
+			mUp = Vector3::TransformNormal(Vector3::Up, matRT);
 		}
 		else
 		{
-			mFinalPosition = mPosition;
-			mFinalRotation = mRotation;
 			mFinalScale = mScale;
 		}
 	}
