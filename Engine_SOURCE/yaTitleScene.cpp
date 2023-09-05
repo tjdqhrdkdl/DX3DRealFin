@@ -149,38 +149,35 @@ namespace ya
 			ground->AddComponent<GroundScript>();
 
 
-			ground = object::Instantiate<GameObject>(eLayerType::Ground);
-			ground->SetName(L"Ground1");
-			groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, 0.0f, 10.0f));
-			groundTr->SetScale(Vector3(20.0f, 2.0f, 40.0f));
-			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
-			groundRenderer = ground->AddComponent<MeshRenderer>();
+			//ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			//ground->SetName(L"Ground1");
+			//groundTr = ground->GetComponent<Transform>();
+			//groundTr->SetPosition(Vector3(0.0f, 0.0f, 10.0f));
+			//groundTr->SetScale(Vector3(20.0f, 2.0f, 40.0f));
+			//groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
+			//groundRenderer = ground->AddComponent<MeshRenderer>();
 
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground2");
-			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
 			groundTr->SetScale(Vector3(50.0f, 10.0f, 10.0f));
 			groundTr->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
-			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
-		}
 
-
-		{
 			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
 			grappleGround->SetName(L"grapple target");
-			Transform* groundTr = grappleGround->GetComponent<Transform>();
+			groundTr = grappleGround->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(-20.0f, 7.0f, -20.0f));
 			groundTr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
+			groundRenderer = grappleGround->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			groundCollider = ground->AddComponent<Collider2D>();
@@ -347,7 +344,7 @@ namespace ya
 			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
 
 		}
-		object::Instantiate<Tenzen>(eLayerType::Monster);
+		//object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	void TitleScene::Update()
