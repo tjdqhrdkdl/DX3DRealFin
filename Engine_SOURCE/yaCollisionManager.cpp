@@ -474,7 +474,7 @@ namespace ya
 
 
 			float dist = RayIntersect(ray, obj);
-			if (dist <= 0)
+			if (dist < 0)
 				continue;
 
 			if (dist < distMin)
@@ -529,11 +529,6 @@ namespace ya
 					t2 = w; // swap t1 and t2
 				}
 
-				if (t1 < 0)
-					t1 = 0;
-
-				if (t1 < 0 && t2 < 0)
-					return -1;
 				// tMax 은 가장 가까이있는 "먼" 교차
 				if (t2 < tMax)
 					tMax = t2;
@@ -580,11 +575,7 @@ namespace ya
 					t1 = t2;
 					t2 = w; // swap t1 and t2
 				}
-				if (t1 < 0)
-					t1 = 0;
 
-				if (t1 < 0 && t2 < 0)
-					return -1;
 				// tMin 은 가장 가까이있는 "먼" 교차
 				if (t2 < tMax)
 					tMax = t2;
@@ -631,11 +622,6 @@ namespace ya
 					t1 = t2;
 					t2 = w; // swap t1 and t2
 				}
-				if (t1 < 0)
-					t1 = 0;
-
-				if (t1 < 0 && t2 < 0)
-					return -1;
 
 				// tMin 은 가장 가까이있는 "먼" 교차
 				if (t2 < tMax)
