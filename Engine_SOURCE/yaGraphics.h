@@ -195,6 +195,8 @@ namespace ya::graphics
 		math::Vector3 rotatation;
 		math::Vector3 scale;
 		
+		void* parent;
+
 		float radius;
 		float duration;
 		float time;
@@ -255,7 +257,7 @@ namespace ya::graphics
 		int parentIdx;
 		Matrix offset;
 		Matrix bone;
-		std::vector<std::vector< BoneKeyFrame>> keyFrames;
+		std::vector<std::vector<BoneKeyFrame>> keyFrames;
 	};
 
 	struct BoneAnimationClip

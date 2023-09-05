@@ -6,6 +6,7 @@
 namespace ya
 {
 	using namespace ya::enums;
+	class Player;
 	class Scene : public Entity
 	{
 	public:
@@ -27,10 +28,12 @@ namespace ya
 		std::vector<GameObject*> GetDontDestroyGameObjects();
 		const std::vector<GameObject*>& GetGameObjects(const eLayerType type);
 		
+		void SetPlayer(Player* player) { mPlayer = player; }
+		Player* GetPlayer() { return mPlayer; }
 
-		
 	private:
 		std::vector<Layer> mLayers;
 		eSceneType mType;
+		Player* mPlayer;
 	};
 }

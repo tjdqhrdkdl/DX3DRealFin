@@ -23,48 +23,50 @@ namespace ya
 		Vector3 GetPosition() { return mPosition; };
 		Vector3 GetRotation() { return mRotation; };
 		Vector3 GetScale() { return mScale; };
+		Vector3 GetRotationOffset() { return mRotationOffset; };
 
-		Vector3 GetSubPosition() { return mSubPosition; };
-		Vector3 GetSubRotation() { return mSubRotation; };
-		Vector3 GetSubScale()	 { return mSubScale; };
+
+		Vector3 GetFinalScale() { return mFinalScale; }
+
 
 		void SetPosition(Vector3 position) { mPosition = position; };
 		void SetRotation(Vector3 degree) { mRotation = degree; };
 		void SetScale(Vector3 scale) { mScale = scale; };
-
-		void SetSubPosition(Vector3 position) { mSubPosition = position; };
-		void SetSubRotation(Vector3 degree) { mSubRotation = degree; };
-		void SetSubScale(Vector3 scale) { mSubScale = scale; };
+		void SetRotationOffset(Vector3 offset) { mRotationOffset = offset; };
 
 		Vector3 Forward() { return mForward; }
 		Vector3 Right() { return mRight; }
 		Vector3 Up() { return mUp; }
+
 		void SetForward(Vector3 forward)	{ mForward = forward;	}
 		void SetRight(Vector3 right)		{ mRight = right;}
 		void SetUp(Vector3 up)		{ mUp = up;}
+
 		Matrix& GetWorldMatrix() { return mWorld; }
 
 		void IsCamera(bool cam) { mbCamera = cam; }
 
 	private:
 		Transform* mParent;
+
 		Vector3 mForward;
 		Vector3 mRight;
 		Vector3 mUp;
+
 		Vector3 mPosition;
 		Vector3 mRotation;
 		Vector3 mScale;
+		Vector3 mRotationOffset;
+
+		Vector3 mFinalScale;
 
 		bool mbCamera;
 
 		Matrix mMatScale;
 		Matrix mMatTranslation;
 		Matrix mMatRotation;
+		Matrix mMatRotationOffset;
 
 		Matrix mWorld;
-
-		Vector3 mSubPosition;
-		Vector3 mSubRotation;
-		Vector3 mSubScale;
 	};
 }

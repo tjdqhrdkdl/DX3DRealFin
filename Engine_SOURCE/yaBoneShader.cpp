@@ -28,8 +28,13 @@ namespace ya::graphics
 		//mBoneAnimationData
 
 		mFrameDataBuffer->BindSRV(eShaderStage::CS, 17);
-		mOffsetMatBuffer->BindSRV(eShaderStage::CS, 18);
+		mOffsetMatBuffer->BindSRV(eShaderStage::CS, 19);
 		mOutputBuffer->BindUAV(eShaderStage::CS, 2);
+
+		if (mBoneAnimationData.animChange)
+		{
+			mNextFrameDataBuffer->BindSRV(eShaderStage::CS, 18);
+		}
 
 		mGroupX = (mBoneAnimationData.boneCount / mThreadGroupCountX + 1);
 		mGroupY = 1;
@@ -42,6 +47,11 @@ namespace ya::graphics
 		{
 			mFrameDataBuffer->Clear();
 			mFrameDataBuffer = nullptr;
+		}
+		if (mNextFrameDataBuffer && mBoneAnimationData.animChange)
+		{
+			mNextFrameDataBuffer->Clear();
+			mNextFrameDataBuffer = nullptr;
 		}
 		if (mOffsetMatBuffer)
 		{

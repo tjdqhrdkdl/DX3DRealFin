@@ -11,7 +11,7 @@ namespace ya
 		Shader();
 		~Shader();
 
-		virtual HRESULT Load(const std::wstring& path) override;
+		virtual HRESULT Load(const std::wstring& path, FILE* file = nullptr) override;
 
 		void Create(eShaderStage stage, const std::wstring& file, const std::string& funName);
 		void Binds();

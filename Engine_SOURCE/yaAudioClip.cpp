@@ -20,7 +20,7 @@ namespace ya
 		mSound = nullptr;
 	}
 
-	HRESULT AudioClip::Load(const std::wstring& path)
+	HRESULT AudioClip::Load(const std::wstring& path, FILE* file)
 	{
 		std::string cPath(path.begin(), path.end());
 		if (!Fmod::CreateSound(cPath, &mSound))

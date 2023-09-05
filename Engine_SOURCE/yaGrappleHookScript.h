@@ -6,6 +6,7 @@ namespace ya
 {
 	class GrappleHookScript : public Script
 	{
+
 	public:
 		GrappleHookScript();
 		virtual ~GrappleHookScript();
@@ -16,8 +17,11 @@ namespace ya
 		virtual void Render() override;
 
 	public:
-		void SetGrappleHookTarget(GameObject* target) { mGrappleHookTarget = target; }
-		GameObject* GetGrappleHookTarget() const { return mGrappleHookTarget; }
+		void SetHookTarget(GameObject* target, float distance);
+		GameObject* GetHookTarget() const { return mHookTarget; }
+
+		void SetHookTargetDistance(float distance) { mHookTargetDistance = distance; }
+		float GetHookTargetDistance() { return mHookTargetDistance; }
 
 		void SetSpeed(const float speed) { mSpeed = speed; }
 		float GetSpeed() const { return mSpeed; }
@@ -28,12 +32,18 @@ namespace ya
 		void SetGrappleHook(bool hook) { mbGrappleHook = hook; }
 		bool IsGrappleHook() const { return mbGrappleHook; }
 
+		void AddHookTargetCount() { mHookTargetCount++; }
+		void SubHookTargetCount();
+
 	public:
 		void GrappleHook();
 
 	private:
-		GameObject* mGrappleHookTarget;
+		UINT mHookTargetCount;
+		
+		GameObject* mHookTarget;
 		Vector3 mHookTargetPosition;
+		float mHookTargetDistance;
 
 		float mSpeed;
 		Vector3 mDirection;
@@ -42,6 +52,7 @@ namespace ya
 		float mCurrentDistance;
 
 		bool mbGrappleHook;
+
 	};
 }
 

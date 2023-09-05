@@ -15,6 +15,7 @@ namespace ya
 		, mbTrigger(false)
 		, mID(0)
 		, mRadius(0.0f)
+		, mbActive(true)
 	{
 		mID = ColliderNumber++;
 	}
@@ -34,6 +35,8 @@ namespace ya
 
 	void Collider2D::FixedUpdate()
 	{
+		if (!mbActive)
+			return;
 		Vector3 scale = mTransform->GetScale();
 		scale *= Vector3(mSize.x, mSize.y, mSize.z);
 
@@ -59,6 +62,7 @@ namespace ya
 		meshAttribute.radius = mRadius;
 		meshAttribute.rotatation = rotation;
 		meshAttribute.scale = scale;
+		meshAttribute.parent = mTransform->GetParent();
 		meshAttribute.type = mType;
 
 		renderer::debugMeshes.push_back(meshAttribute);

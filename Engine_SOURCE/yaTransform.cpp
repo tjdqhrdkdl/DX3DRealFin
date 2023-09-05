@@ -12,10 +12,8 @@ namespace ya
 		, mScale(Vector3::One)
 		, mRotation(Vector3::Zero)
 		, mPosition(Vector3::One)
+		, mRotationOffset(Vector3::Zero)
 		, mParent(nullptr)
-		, mSubPosition(Vector3::Zero)
-		, mSubRotation(Vector3::Zero)
-		, mSubScale(Vector3::One)
 	{
 		
 	}
@@ -39,10 +37,10 @@ namespace ya
 		//렌더링에 사용될 위치값들을 업데이트
 
 		// 월드 행렬 생성
-		
+
 
 		// 크기 변환 행렬
-		Vector3 finalScale = mScale * mSubScale;
+		Vector3 finalScale = mScale;
 		Matrix scale = Matrix::CreateScale(finalScale);
 		mMatScale = scale;
 
@@ -51,12 +49,10 @@ namespace ya
 		// 회전 변환 행렬
 		Matrix rotation;
 
-		Vector3 finalRotation = mRotation + mSubRotation;
+		Vector3 finalRotation = mRotation;
 		Vector3 radian(finalRotation.x * (XM_PI / 180)
 			, finalRotation.y * (XM_PI / 180)
 			, finalRotation.z * (XM_PI / 180));
-
-		float theta;
 
 		rotation = Matrix::CreateRotationX(radian.x);
 		rotation *= Matrix::CreateRotationY(radian.y);
@@ -69,17 +65,24 @@ namespace ya
 
 		// 이동 변환 행렬
 		Matrix position;
-		Vector3 finalPosition = mPosition + mSubPosition;
+		Vector3 finalPosition = mPosition;
 		position.Translation(finalPosition);
 
 		mMatTranslation = position;
 
-		mWorld = scale * rotation * position;
+		Matrix rotationOffset;
+		rotationOffset.Translation(mRotationOffset);
+		mMatRotationOffset = rotationOffset;
+
+
+		mWorld = scale * rotationOffset * rotation * position;
+		
 		if (mbCamera)
 		{
 		}
 		else
 		{
+
 			mForward = Vector3::TransformNormal(Vector3::Forward, rotation);
 			mRight = Vector3::TransformNormal(Vector3::Right, rotation);
 			mUp = Vector3::TransformNormal(Vector3::Up, rotation);
@@ -88,10 +91,25 @@ namespace ya
 		// 뷰행렬 세팅
 		// 프로젝션 행렬 세팅
 
-	
+
 		if (mParent)
 		{
 			mWorld *= mParent->mWorld;
+			mFinalScale = mScale * mParent->mFinalScale;
+
+			Matrix matScale = Matrix::CreateScale(mFinalScale);
+			Matrix matRT = matScale.Invert() * mWorld;
+			matRT._41 = 0;
+			matRT._42 = 0;
+			matRT._43 = 0;
+
+			mForward = Vector3::TransformNormal(Vector3::Forward, matRT);
+			mRight = Vector3::TransformNormal(Vector3::Right, matRT);
+			mUp = Vector3::TransformNormal(Vector3::Up, matRT);
+		}
+		else
+		{
+			mFinalScale = mScale;
 		}
 	}
 

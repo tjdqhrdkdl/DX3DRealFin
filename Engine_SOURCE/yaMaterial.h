@@ -14,7 +14,8 @@ namespace ya::graphics
 		Material();
 		virtual ~Material();
 
-		virtual HRESULT Load(const std::wstring& path) override;
+		virtual HRESULT Save(const std::wstring& path, FILE* file = nullptr) override;
+		virtual HRESULT Load(const std::wstring& filename, FILE* file = nullptr) override;
 
 		void SetData(eGPUParam param, void* data);
 		void Bind();

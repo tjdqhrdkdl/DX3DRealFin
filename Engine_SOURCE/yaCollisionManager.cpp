@@ -204,6 +204,10 @@ namespace ya
 		Matrix leftMat = leftTr->GetWorldMatrix();
 		Matrix rightMat = rightTr->GetWorldMatrix();
 
+		Vector3 leftPos = Vector3(leftMat._41, leftMat._42, leftMat._43);
+		leftPos += left->GetCenter();
+		Vector3 rightPos = Vector3(rightMat._41, rightMat._42, rightMat._43);
+		rightPos += right->GetCenter();
 
 		if (left->GetColliderType() == eColliderType::Rect
 			&& right->GetColliderType() == eColliderType::Rect
@@ -232,7 +236,7 @@ namespace ya
 			for (size_t i = 0; i < 4; i++)
 				Axis[i].z = 0.0f;
 
-			Vector3 vc = leftTr->GetPosition() - rightTr->GetPosition();
+			Vector3 vc = leftPos - rightPos;
 			vc.z = 0.0f;
 
 			Vector3 centerDir = vc;
@@ -293,10 +297,6 @@ namespace ya
 				arrCubeLocalPos[23] = Vector3(-0.5f, -0.5f, -0.5f)
 			};
 
-
-			Matrix leftMat = leftTr->GetWorldMatrix();
-			Matrix rightMat = rightTr->GetWorldMatrix();
-
 			Vector3 leftScale = Vector3(left->GetSize().x, left->GetSize().y, left->GetSize().z);
 			Matrix finalLeft = Matrix::CreateScale(leftScale);
 			finalLeft *= leftMat;
@@ -322,7 +322,7 @@ namespace ya
 			Axis[5] -= Vector3::Transform(arrCubeLocalPos[0], finalRight);
 
 
-			Vector3 vc = left->GetPosition() - right->GetPosition();
+			Vector3 vc = leftPos - rightPos;
 
 			Vector3 centerDir = vc;
 			for (size_t i = 0; i < 6; i++)
@@ -355,7 +355,8 @@ namespace ya
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers)
 	{
 		Scene* scene = SceneManager::GetActiveScene();
-		Vector3 position = owner->GetComponent<Transform>()->GetPosition();
+		Matrix worldMat = owner->GetComponent<Transform>()->GetWorldMatrix();
+		Vector3 position = Vector3(worldMat._41, worldMat._42, worldMat._43);
 		ya::Ray ray = ya::Ray(position, direction);
 
 		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
@@ -471,12 +472,6 @@ namespace ya
 			if (obj == owner)
 				continue;
 
-			Matrix worldMat = tr->GetWorldMatrix();
-
-			Collider2D* collider = obj->GetComponent<Collider2D>();
-			Vector3 colScale = Vector3(collider->GetSize().x, collider->GetSize().y, collider->GetSize().z);
-			Matrix colMatrix = Matrix::CreateScale(colScale);
-			worldMat *= colMatrix;
 
 			float dist = RayIntersect(ray, obj);
 			if (dist <= 0)
@@ -494,7 +489,7 @@ namespace ya
 		Transform* tr = colObj->GetComponent<Transform>();
 		Collider2D* col = colObj->GetComponent<Collider2D>();
 		Matrix worldMatrix = tr->GetWorldMatrix();
-		Vector3 scale = tr->GetScale();
+		Vector3 scale = tr->GetFinalScale();
 		Vector3 colScale = col->GetSize();
 		scale.x *= colScale.x;
 		scale.y *= colScale.y;
@@ -505,8 +500,9 @@ namespace ya
 		float threshHold = 0.00000001;
 
 
-
-		Vector3 boxWorldPosition(worldMatrix._41, worldMatrix._42, worldMatrix._43);
+		Vector3 colCenter = col->GetCenter();
+		Vector3 boxWorldPosition(worldMatrix._41 , worldMatrix._42, worldMatrix._43);
+		boxWorldPosition += colCenter;
 
 
 		//x

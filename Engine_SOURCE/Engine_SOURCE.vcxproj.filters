@@ -221,9 +221,6 @@
     <ClCompile Include="yaParticleSystem.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="yaAnimationData.cpp">
-      <Filter>Engine\Resource\MeshData\AnimationData</Filter>
-    </ClCompile>
     <ClCompile Include="yaBoneAnimator.cpp">
       <Filter>Engine\Component\Animator</Filter>
     </ClCompile>
@@ -235,6 +232,12 @@
     </ClCompile>
     <ClCompile Include="yaHangingObjectScript.cpp">
       <Filter>Contents\Ground</Filter>
+    </ClInclude>
+    <ClCompile Include="yaTenzen.cpp">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBoneCollider.cpp">
+      <Filter>Contents\BoneCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +436,12 @@
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Contents\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroCommon.h">
+      <Filter>Contents\Common</Filter>
+    </ClInclude>
     <ClInclude Include="yaMonsterScript.h">
       <Filter>Contents\Monster\Script</Filter>
     </ClInclude>
@@ -470,9 +479,6 @@
     <ClInclude Include="yaParticleShader.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="yaAnimationData.h">
-      <Filter>Engine\Resource\MeshData\AnimationData</Filter>
-    </ClInclude>
     <ClInclude Include="yaBoneAnimator.h">
       <Filter>Engine\Component\Animator</Filter>
     </ClInclude>
@@ -484,6 +490,12 @@
     </ClInclude>
     <ClInclude Include="yaHangingObjectScript.h">
       <Filter>Contents\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTenzen.h">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBoneCollider.h">
+      <Filter>Contents\BoneCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -619,6 +631,9 @@
     <Filter Include="Contents\Scene">
       <UniqueIdentifier>{c5ed46d7-aab9-4a27-aa1c-2ab0c73d7891}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Common">
+      <UniqueIdentifier>{a113a912-36e8-4cf5-9e8c-1c2921fcdb26}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Contents\Monster\Script">
       <UniqueIdentifier>{7c1f7815-7c8d-4a02-a18a-cd5a3c91c1c3}</UniqueIdentifier>
     </Filter>
@@ -649,11 +664,17 @@
     <Filter Include="Engine\Graphics\API">
       <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Resource\MeshData\AnimationData">
-      <UniqueIdentifier>{3e5bd15e-d277-4a9d-b321-43728e90724f}</UniqueIdentifier>
+    <Filter Include="Engine\FontWrapper\Graphics\Buffer">
+      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\High Level InterFace">
       <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\Tenzen">
+      <UniqueIdentifier>{dfbe71ec-1295-49ab-8177-7898b9b9c7bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\BoneCollider">
+      <UniqueIdentifier>{77d0e2a3-e34f-4d51-a3fc-d1d340933a3b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

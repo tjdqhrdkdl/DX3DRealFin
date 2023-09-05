@@ -37,7 +37,7 @@
 
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
-#include "yaAnimationData.h"
+#include "yaTenzen.h"
 
 namespace ya
 {
@@ -73,7 +73,7 @@ namespace ya
 
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);
-
+		SetPlayer(player);
 
 		{
 			//Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
@@ -148,6 +148,7 @@ namespace ya
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
 
+
 			ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground1");
 			groundTr = ground->GetComponent<Transform>();
@@ -155,6 +156,31 @@ namespace ya
 			groundTr->SetScale(Vector3(20.0f, 2.0f, 40.0f));
 			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
 			groundRenderer = ground->AddComponent<MeshRenderer>();
+
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground->SetName(L"Ground2");
+			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
+			groundTr->SetScale(Vector3(50.0f, 10.0f, 10.0f));
+			groundTr->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			ground->AddComponent<GroundScript>();
+		}
+
+
+		{
+			GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
+			grappleGround->SetName(L"grapple target");
+			Transform* groundTr = grappleGround->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(-20.0f, 7.0f, -20.0f));
+			groundTr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
+			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			groundCollider = ground->AddComponent<Collider2D>();
@@ -163,33 +189,19 @@ namespace ya
 			ground->AddComponent<GroundScript>();
 		}
 
-		{
-			//GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
-			//grappleGround->SetName(L"grapple target");
-			//Transform* groundTr = grappleGround->GetComponent<Transform>();
-			//groundTr->SetPosition(Vector3(-20.0f, 7.0f, -20.0f));
-			//groundTr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
-			//groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			//MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
-			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			//Collider2D* groundCollider = grappleGround->AddComponent<Collider2D>();
-			//groundCollider->SetType(eColliderType::Box);
-			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			//grappleGround->AddComponent<GroundScript>();
+		
 
 			{
-				//GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Hook);
-				//hookTarget->SetName(L"hook target");
-				//Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
-				//hookTargetTr->SetPosition(Vector3(-20.0f, 5.0f, -20.0f));
-				//hookTargetTr->SetScale(Vector3(4.0f, 30.0f, 4.0f));
-				//Collider2D* hookTargetCollider = hookTarget->AddComponent<Collider2D>();
-				//hookTargetCollider->SetType(eColliderType::Box);
-				//hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-				//hookTarget->AddComponent<HookTargetScript>();
-			}
-		}
+				GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Hook);
+				hookTarget->SetName(L"hook target");
+				Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
+				hookTargetTr->SetPosition(Vector3(-20.0f, 5.0f, -20.0f));
+				hookTargetTr->SetScale(Vector3(4.0f, 4.0f, 4.0f));
+				Collider2D* hookTargetCollider = hookTarget->AddComponent<Collider2D>();
+				hookTargetCollider->SetType(eColliderType::Box);
+				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+				hookTarget->AddComponent<HookTargetScript>();
+      }
 
 		{
 			//GameObject* grappleGround1 = object::Instantiate<GameObject>(eLayerType::Ground);
@@ -207,15 +219,15 @@ namespace ya
 
 
 			{
-				//GameObject* hookTarget1 = object::Instantiate<GameObject>(eLayerType::Hook);
-				//hookTarget1->SetName(L"Hook target2");
-				//Transform* hookTargetTr = hookTarget1->GetComponent<Transform>();
-				//hookTargetTr->SetPosition(Vector3(-40.0f, 5.0f, -20.0f));
-				//hookTargetTr->SetScale(Vector3(4.0f, 30.0f, 4.0f));
-				//Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
-				//hookTargetCollider->SetType(eColliderType::Box);
-				//hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-				//hookTarget1->AddComponent<HookTargetScript>();
+				GameObject* hookTarget1 = object::Instantiate<GameObject>(eLayerType::Hook);
+				hookTarget1->SetName(L"Hook target2");
+				Transform* hookTargetTr = hookTarget1->GetComponent<Transform>();
+				hookTargetTr->SetPosition(Vector3(-40.0f, 5.0f, -20.0f));
+				hookTargetTr->SetScale(Vector3(4.0f, 4.0f, 4.0f));
+				Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
+				hookTargetCollider->SetType(eColliderType::Box);
+				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+				hookTarget1->AddComponent<HookTargetScript>();
 			}
 		}
 
@@ -298,27 +310,72 @@ namespace ya
 		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		//}
 		{
-			mMeshData = MeshData::LoadFromFbx(L"Monster\\Spearman\\Mesh\\c1020.fbx");
+			//mMeshData = MeshData::LoadFromFbx(L"Player\\Mesh\\AM_M_9000.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000100.fbx", L"attack1");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
+			//mMeshData->AnimationSave(L"Player\\AnimationData\\Player.animationdata");
+			//mMeshData->Instantiate(eLayerType::Monster);
 
-			AnimationData* animData2 = AnimationData::LoadFromFbx(mMeshData, L"Monster\\\Boss_tenzen\\Animation\\oioiioioi.fbx", L"attack2");
+			//mMeshData = std::make_shared<MeshData>();
+			//mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			//mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata");
+			//
+			//mMeshData->Instantiate(eLayerType::Monster);
+			
 
-			AnimationData* animData1 = AnimationData::LoadFromFbx(mMeshData, L"Monster\\\Boss_tenzen\\Animation\\dance.fbx", L"attack1");
-			mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+
+			
+			//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
+
+
+			//MeshData* newMeshData = new MeshData();
+			//newMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			//GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
+
+			//mMeshData = new MeshData();
+
+
+			//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinalMesh_Join.fbx");
+			//mMeshData->Load(L"Map\\MeshData\\FinalMesh_Join.meshdata");
+			//
+			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
+
 		}
-
+		object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	void TitleScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::N))
+		if (Input::GetKeyDown(eKeyCode::Y))
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
-			mMeshData->Play(L"attack1");
+			mMeshData->Play(L"attack1");			
 		}
-		if (Input::GetKeyDown(eKeyCode::M))
+		if (Input::GetKeyDown(eKeyCode::U))
 		{
 			//SceneManager::LoadScene(eSceneType::Play);
 			mMeshData->Play(L"attack2");
+		}
+		if (Input::GetKeyDown(eKeyCode::I))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack3");
+		}
+		if (Input::GetKeyDown(eKeyCode::O))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack4");
+		}
+		if (Input::GetKeyDown(eKeyCode::P))
+		{
+			//SceneManager::LoadScene(eSceneType::Play);
+			mMeshData->Play(L"attack5");
 		}
 
 		Scene::Update();

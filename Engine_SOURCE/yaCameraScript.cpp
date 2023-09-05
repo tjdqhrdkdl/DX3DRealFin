@@ -167,8 +167,7 @@ namespace ya
 
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
 				Transform* tr = GetOwner()->GetComponent<Transform>();
-				if (mLockOnTarget == nullptr)
-				{			//디버깅시에 문제생기는 부분 막음.
+							//디버깅시에 문제생기는 부분 막음.
 					if (Time::DeltaTime() < 0.1f)
 					{
 						//두번 계산해줄 것이다.
@@ -198,7 +197,7 @@ namespace ya
 
 
 					}
-				}
+				
 				//회전
 
 
@@ -225,10 +224,12 @@ namespace ya
 	void CameraScript::LockOn()
 	{
 		if (Input::GetKeyDown(eKeyCode::MBTN))
-			if (mbLockOn)
+			if (mbLockOn && !(mLockOnTarget->IsDead()))
 				mLockOnTarget = nullptr, mbLockOn = false;
 			else
 				SetLockOnTarget();
+		if (mLockOnTarget && mLockOnTarget->IsDead())
+			mbLockOn = false, mLockOnTarget = nullptr;
 		if (mbLockOn)
 		{
 			Transform* monTr = mLockOnTarget->GetComponent<Transform>();

@@ -3,6 +3,7 @@
 #include "yaGraphicDevice_DX11.h"
 #include "yaFbxLoader.h"
 #include "yaMesh.h"
+#include "yaMeshData.h"
 
 namespace ya
 {
@@ -11,11 +12,16 @@ namespace ya
 		, mVBDesc{}
 		, mIndexInfos{}
 	{
-
 	}
 
 	Mesh::~Mesh()
 	{
+		for (size_t i = 0; i < mIndexInfos.size(); i++)
+		{
+			delete mIndexInfos[i].pIdxSysMem;
+		} 
+
+		delete pVtxSysMem;
 
 	}
 
@@ -104,10 +110,82 @@ namespace ya
 		return ret;
 	}
 
-	HRESULT Mesh::Load(const std::wstring& path)
-	{
-		return E_NOTIMPL;
+	HRESULT Mesh::Save(const std::wstring& name, FILE* file)
+	{	
+		UINT vtxcount = mVtxCount;
+		fwrite(&vtxcount, sizeof(UINT), 1, file);
+
+		int byteSize = mVBDesc.ByteWidth;
+		fwrite(&byteSize, sizeof(int), 1, file);
+		fwrite(pVtxSysMem, byteSize, 1, file);
+
+		// 인덱스 정보 
+		UINT materialCount = mIndexInfos.size();
+		fwrite(&materialCount, sizeof(int), 1, file);
+
+		//mIndexInfos
+		UINT idxBufferSize = 0;
+		for (size_t i = 0; i < materialCount; i++)
+		{
+			fwrite(&mIndexInfos[i], sizeof(IndexInfo), 1, file);
+			fwrite(mIndexInfos[i].pIdxSysMem
+				, mIndexInfos[i].indexCount * sizeof(UINT), 1, file);
+		}	
+
+		return S_OK;
 	}
+
+	HRESULT Mesh::Load(const std::wstring& name, FILE* file)
+	{	
+
+		fread(&mVtxCount, sizeof(UINT), 1, file);
+
+		int byteSize = 0;
+		fread(&byteSize, sizeof(int), 1, file);
+		pVtxSysMem = (graphics::Vertex*)malloc(byteSize);
+		fread(pVtxSysMem, 1, byteSize, file);
+
+		D3D11_BUFFER_DESC desc = {};
+		desc.ByteWidth = byteSize;
+		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		desc.Usage = D3D11_USAGE_DEFAULT;
+
+		D3D11_SUBRESOURCE_DATA data = {};
+		data.pSysMem = pVtxSysMem;
+
+		if (FAILED(GetDevice()->CreateBuffer(&desc, &data, mVertexBuffer.GetAddressOf())))
+			return S_FALSE;
+
+
+
+		// 인덱스 정보 
+		UINT materialCount = 0;
+		fread(&materialCount, sizeof(int), 1, file);
+
+		for (size_t i = 0; i < materialCount; i++)
+		{
+			IndexInfo info = {};
+			fread(&info, sizeof(IndexInfo), 1, file);
+
+			UINT byteWidth = info.indexCount * sizeof(UINT);
+			void* pSysMem = malloc(byteWidth);
+			info.pIdxSysMem = pSysMem;
+			fread(info.pIdxSysMem, info.indexCount * sizeof(UINT), 1, file);
+
+			D3D11_SUBRESOURCE_DATA idxData = {};
+			idxData.pSysMem = info.pIdxSysMem;
+
+			if (FAILED(GetDevice()->CreateBuffer(&info.desc, &idxData, info.buffer.GetAddressOf())))
+				return S_FALSE;
+
+			mIndexInfos.push_back(info);
+			
+		}		
+
+		return S_OK;
+	}
+
+
 
 	bool Mesh::CreateVertexBuffer(void* data, UINT count)
 	{
