@@ -232,8 +232,8 @@
     </ClCompile>
     <ClCompile Include="yaHangingObjectScript.cpp">
       <Filter>Contents\Ground</Filter>
-    </ClInclude>
-    <ClCompile Include="yaTenzen.cpp">
+	</ClCompile>
+	<ClCompile Include="yaTenzen.cpp">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClCompile>
     <ClCompile Include="yaBoneCollider.cpp">
