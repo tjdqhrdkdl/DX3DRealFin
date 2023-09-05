@@ -76,22 +76,22 @@ namespace ya
 		SetPlayer(player);
 
 		{
-			Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
-			spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-			spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-			spearman->SetName(L"Spearman");
-			spearman->SetPlayerObject(player);
-			MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
-			spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
-			spearmancol->SetType(eColliderType::Box);
-			spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
-			Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
-			spearmanRigidbody->SetGround(false);
-			spearman->AddComponent<MonsterScript>();
+			//Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
+			//spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+			//spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+			//spearman->SetName(L"Spearman");
+			//spearman->SetPlayerObject(player);
+			//MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
+			//spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
+			//spearmancol->SetType(eColliderType::Box);
+			//spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+			//Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
+			//spearmanRigidbody->SetGround(false);
+			//spearman->AddComponent<MonsterScript>();
 
-			camScript->SetLockOnTarget(spearman);
+			//camScript->SetLockOnTarget(spearman);
 		}
 
 
@@ -137,7 +137,7 @@ namespace ya
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, -10.0f, 10.0f));
+			groundTr->SetPosition(Vector3(0.0f, -11.0f, 10.0f));
 			groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
@@ -147,11 +147,18 @@ namespace ya
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
-		}
 
-		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+
+			ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground1");
+			groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, 0.0f, 10.0f));
+			groundTr->SetScale(Vector3(20.0f, 2.0f, 40.0f));
+			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
+			groundRenderer = ground->AddComponent<MeshRenderer>();
+
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground->SetName(L"Ground2");
 			Transform* groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
 			groundTr->SetScale(Vector3(50.0f, 10.0f, 10.0f));
@@ -176,10 +183,13 @@ namespace ya
 			MeshRenderer* groundRenderer = grappleGround->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = grappleGround->AddComponent<Collider2D>();
+			groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			grappleGround->AddComponent<GroundScript>();
+			ground->AddComponent<GroundScript>();
+		}
+
+		
 
 			{
 				GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Hook);
@@ -191,35 +201,22 @@ namespace ya
 				hookTargetCollider->SetType(eColliderType::Box);
 				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 				hookTarget->AddComponent<HookTargetScript>();
-			}
-		}
+      }
 
 		{
-			GameObject* grappleGround1 = object::Instantiate<GameObject>(eLayerType::Ground);
-			grappleGround1->SetName(L"grapple target2");
-			Transform* ground1Tr = grappleGround1->GetComponent<Transform>();
-			ground1Tr->SetPosition(Vector3(-40.0f, 7.0f, -20.0f));
-			ground1Tr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
-			ground1Tr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			MeshRenderer* groundRenderer = grappleGround1->AddComponent<MeshRenderer>();
-			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = grappleGround1->AddComponent<Collider2D>();
-			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			//GameObject* grappleGround1 = object::Instantiate<GameObject>(eLayerType::Ground);
+			//grappleGround1->SetName(L"grapple target2");
+			//Transform* ground1Tr = grappleGround1->GetComponent<Transform>();
+			//ground1Tr->SetPosition(Vector3(-40.0f, 7.0f, -20.0f));
+			//ground1Tr->SetScale(Vector3(10.0f, 2.0f, 10.0f));
+			//ground1Tr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			//MeshRenderer* groundRenderer = grappleGround1->AddComponent<MeshRenderer>();
+			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//Collider2D* groundCollider = grappleGround1->AddComponent<Collider2D>();
+			//groundCollider->SetType(eColliderType::Box);
+			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 
-
-			{
-				GameObject* hookTarget1 = object::Instantiate<GameObject>(eLayerType::Hook);
-				hookTarget1->SetName(L"Hook target2");
-				Transform* hookTargetTr = hookTarget1->GetComponent<Transform>();
-				hookTargetTr->SetPosition(Vector3(-40.0f, 5.0f, -20.0f));
-				hookTargetTr->SetScale(Vector3(4.0f, 4.0f, 4.0f));
-				Collider2D* hookTargetCollider = hookTarget1->AddComponent<Collider2D>();
-				hookTargetCollider->SetType(eColliderType::Box);
-				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-				hookTarget1->AddComponent<HookTargetScript>();
-			}
 
 			{
 				GameObject* hookTarget1 = object::Instantiate<GameObject>(eLayerType::Hook);
@@ -235,15 +232,15 @@ namespace ya
 		}
 
 		{
-			GameObject* grappleGround1 = object::Instantiate<GameObject>(eLayerType::Ground);
-			grappleGround1->SetName(L"crouch object");
-			Transform* ground1Tr = grappleGround1->GetComponent<Transform>();
-			ground1Tr->SetPosition(Vector3(60.0f, 0.0f, 60.0f));
-			ground1Tr->SetScale(Vector3(40.0f, 20.0f, 40.0f));
-			Collider2D* groundCollider = grappleGround1->AddComponent<Collider2D>();
-			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			grappleGround1->AddComponent<CrouchObjectScript>();
+			//GameObject* grappleGround1 = object::Instantiate<GameObject>(eLayerType::Ground);
+			//grappleGround1->SetName(L"crouch object");
+			//Transform* ground1Tr = grappleGround1->GetComponent<Transform>();
+			//ground1Tr->SetPosition(Vector3(60.0f, 0.0f, 60.0f));
+			//ground1Tr->SetScale(Vector3(40.0f, 20.0f, 40.0f));
+			//Collider2D* groundCollider = grappleGround1->AddComponent<Collider2D>();
+			//groundCollider->SetType(eColliderType::Box);
+			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			//grappleGround1->AddComponent<CrouchObjectScript>();
 		}
 
 		//{

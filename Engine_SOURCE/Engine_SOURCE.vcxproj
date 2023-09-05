@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -174,6 +174,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
   <ItemGroup>
     <ClInclude Include="yaBoneAnimator.h" />
     <ClInclude Include="yaBoneShader.h" />
+    <ClInclude Include="yaHangingScript.h" />
+    <ClInclude Include="yaHangingObjectScript.h" />
     <ClInclude Include="yaMonsterBase.h" />
     <ClInclude Include="yaActionScript.h" />
     <ClInclude Include="yaAnimation.h" />
@@ -259,6 +261,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
   <ItemGroup>
     <ClCompile Include="yaBoneAnimator.cpp" />
     <ClCompile Include="yaBoneShader.cpp" />
+    <ClCompile Include="yaHangingScript.cpp" />
+    <ClCompile Include="yaHangingObjectScript.cpp" />
     <ClCompile Include="yaMonsterBase.cpp" />
     <ClCompile Include="yaActionScript.cpp" />
     <ClCompile Include="yaAnimation.cpp" />
