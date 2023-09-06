@@ -234,6 +234,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaPlayerScript.h" />
     <ClInclude Include="yaPlayScene.h" />
     <ClInclude Include="yaPrefab.h" />
+    <ClInclude Include="yaRedOgre.h" />
     <ClInclude Include="yaRenderer.h" />
     <ClInclude Include="yaResource.h" />
     <ClInclude Include="yaResources.h" />
@@ -317,6 +318,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaPlayerScript.cpp" />
     <ClCompile Include="yaPlayScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />
+    <ClCompile Include="yaRedOgre.cpp" />
     <ClCompile Include="yaRenderer.cpp" />
     <ClCompile Include="yaResource.cpp" />
     <ClCompile Include="yaResources.cpp" />

@@ -148,7 +148,6 @@ namespace ya
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
 
-
 			ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground1");
 			groundTr = ground->GetComponent<Transform>();
@@ -162,8 +161,6 @@ namespace ya
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
-		}
-
 
 			//GameObject* grappleGround = object::Instantiate<GameObject>(eLayerType::Ground);
 			//grappleGround->SetName(L"grapple target");
