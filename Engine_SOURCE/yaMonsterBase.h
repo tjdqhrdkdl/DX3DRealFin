@@ -9,7 +9,9 @@
 #include "yaResources.h"
 #include "yaMeshRenderer.h"
 #include "yaCollider2D.h"
-
+#include "yaMeshData.h"
+#include "yaMeshObject.h"
+#include "yaBoneCollider.h"
 
 #include <time.h>
 
@@ -37,11 +39,15 @@ namespace ya
         bool NavigationPlayer(float range);
         void MonsterRotation(Vector3 target_point);
         void TurnToPlayer();
+        float TurnToPlayerDir();
         bool WalkToPlayer(float range);
         void AlertnessLevel();
 
+
+        bool IsPlayerFieldview(float minangle, float maxangle);
         int RandomNumber(int ieast, int Max);
 
+        void OnceAniamtion(const std::wstring& animation);
 
 
 #pragma region State_GetSet
@@ -57,13 +63,17 @@ namespace ya
         float GetMaxDeathBlowCount() { return mMonsterState->GetMaxDeathBlowCount(); }
         float GetAlertnessCount() { return mMonsterState->GetAlertnessCount(); }
         bool IsDeathBlow() { return mMonsterState->IsDeathBlow(); }
-        bool IsStartBlow() { return mMonsterState->IsStartBlow(); }
+        //bool IsStartBlow() { return mMonsterState->IsStartBlow(); }
         bool IsDeathBlowOnOff() { return mMonsterState->IsDeathBlowOnOff(); }
 
 
 
         void SetState(State* state) { mMonsterState = state; }
-        void SetSituation(enums::eSituation situation) { mMonsterState->SetSituation(situation); }
+        void SetSituation(enums::eSituation situation, bool OnceAniamtion = false) 
+        { 
+            mMonsterState->SetSituation(situation);
+            mbOnceAnimation = OnceAniamtion;
+        }
         void SetHp(float hp) { mMonsterState->SetHp(hp);}
         void SetMaxHP(float maxhp) { mMonsterState->SetMaxHP(maxhp); }
         void SetSpeed(float speed) { mMonsterState->SetSpeed(speed); }
@@ -71,7 +81,7 @@ namespace ya
         void SetMaxDeathBlowCount(float maxblowcount) { mMonsterState->SetMaxDeathBlowCount(maxblowcount); }
         void SetAlertnessCount(float count) { mMonsterState->SetAlertnessCount(count); }
         void SetDeathBlow(bool deathblow) { mMonsterState->SetDeathBlow(deathblow); }
-        void SetStartBlow(bool blow) { mMonsterState->SetStartBlow(blow); }
+        //void SetStartBlow(bool blow) { mMonsterState->SetStartBlow(blow); }
         void SetDeathBlowonoff(bool onoff) { mMonsterState->SetDeathBlowonoff(onoff); }
 
 
@@ -87,7 +97,7 @@ namespace ya
         Vec3 GetMonster2PlayerNormalize() { return mMonster2PlayerNormalize; }
         Vec3 GetPlayer2MonsterNormalize() { return mPlayer2MonsterNormalize; }
         bool IsPlayerFront() { return mbPlayerFront; }
-        bool IsPlayerFieldview() { return mbPlayerFieldview; }
+        //bool IsPlayerFieldview() { return mbPlayerFieldview; }
         bool IsDefense() { return mbDefense; }
 
       
@@ -98,9 +108,15 @@ namespace ya
 		void SetMonster2PlayerNormalize(Vec3 mormal) { mMonster2PlayerNormalize = mormal; }
 		void SetPlayer2MonsterNormalize(Vec3 mormal) { mPlayer2MonsterNormalize = mormal; }
         void SetPlayerFront(bool front) {  mbPlayerFront = front; }
-        void SetPlayerFieldview(bool view) { mbPlayerFieldview = view; }
+        //void SetPlayerFieldview(bool view) { mbPlayerFieldview = view; }
         void SetDefense(bool defense) { mbDefense = defense; }
+        void SetOnceAnimation(bool animation) { mbOnceAnimation = animation; }
 
+    protected:
+
+        std::shared_ptr<MeshData>   mMeshData;
+        MeshObject*                 mMeshObject;
+        Vec3                        mAnimationOffSet;
 
 
     private:
@@ -115,8 +131,9 @@ namespace ya
 
 
         bool                mbPlayerFront;
-        bool                mbPlayerFieldview;
+        //bool                mbPlayerFieldview;
         bool                mbDefense;
+        bool                mbOnceAnimation;
 
         
 
