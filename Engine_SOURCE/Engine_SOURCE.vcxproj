@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -172,8 +172,12 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="yaPlayerAttackScript.h" />
+    <ClInclude Include="yaPlayerMeshScript.h" />
     <ClInclude Include="yaBoneAnimator.h" />
     <ClInclude Include="yaBoneShader.h" />
+    <ClInclude Include="yaHangingScript.h" />
+    <ClInclude Include="yaHangingObjectScript.h" />
     <ClInclude Include="yaMonsterBase.h" />
     <ClInclude Include="yaActionScript.h" />
     <ClInclude Include="yaAnimation.h" />
@@ -229,9 +233,11 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaParticleSystem.h" />
     <ClInclude Include="yaPlayer.h" />
     <ClInclude Include="yaPlayerActionScript.h" />
+    <ClInclude Include="yaPlayerProjectileScript.h" />
     <ClInclude Include="yaPlayerScript.h" />
     <ClInclude Include="yaPlayScene.h" />
     <ClInclude Include="yaPrefab.h" />
+    <ClInclude Include="yaRedOgre.h" />
     <ClInclude Include="yaRenderer.h" />
     <ClInclude Include="yaResource.h" />
     <ClInclude Include="yaResources.h" />
@@ -257,8 +263,12 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaBoneCollider.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="yaPlayerAttackScript.cpp" />
+    <ClCompile Include="yaPlayerMeshScript.cpp" />
     <ClCompile Include="yaBoneAnimator.cpp" />
     <ClCompile Include="yaBoneShader.cpp" />
+    <ClCompile Include="yaHangingScript.cpp" />
+    <ClCompile Include="yaHangingObjectScript.cpp" />
     <ClCompile Include="yaMonsterBase.cpp" />
     <ClCompile Include="yaActionScript.cpp" />
     <ClCompile Include="yaAnimation.cpp" />
@@ -310,9 +320,11 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaParticleSystem.cpp" />
     <ClCompile Include="yaPlayer.cpp" />
     <ClCompile Include="yaPlayerActionScript.cpp" />
+    <ClCompile Include="yaPlayerProjectileScript.cpp" />
     <ClCompile Include="yaPlayerScript.cpp" />
     <ClCompile Include="yaPlayScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />
+    <ClCompile Include="yaRedOgre.cpp" />
     <ClCompile Include="yaRenderer.cpp" />
     <ClCompile Include="yaResource.cpp" />
     <ClCompile Include="yaResources.cpp" />

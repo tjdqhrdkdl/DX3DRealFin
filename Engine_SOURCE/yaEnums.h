@@ -16,6 +16,7 @@ namespace ya::enums
 		Grid,
 		Ground,
 		Logbridge,
+		HangingObject,
 		Hook,
 		Monster,
 		MonsterProjectile,

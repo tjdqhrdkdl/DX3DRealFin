@@ -3,11 +3,11 @@
 
 namespace ya
 {
-	class PlayerScript : public Script
+	class HangingObjectScript : public Script
 	{
 	public:
-		PlayerScript();
-		~PlayerScript();
+		HangingObjectScript();
+		~HangingObjectScript();
 
 		virtual void Initialize() override;
 		virtual void Update() override;
@@ -17,9 +17,12 @@ namespace ya
 		virtual void OnCollisionStay(Collider2D* collider) override;
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
-	private:
+		void Start();
+		void Action();
+		void End();
 
-		float TESTTime;
+	private:
 
 	};
 }
+

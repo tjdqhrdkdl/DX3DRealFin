@@ -2,6 +2,7 @@
 
 #include "yaTime.h"
 #include "yaInput.h"
+#include "yaCollisionManager.h"
 
 #include "yaRigidbody.h"
 #include "yaTransform.h"
@@ -21,13 +22,24 @@ namespace ya
 		, mTransform(nullptr)
 		, mSpeed(100.0f)
 		, mDirection(Vector3::Zero)
+		, mRotateDirection(Vector3::Zero)
+		, mGroundDistance(0.f)
+		, mGroundNormal(Vector3::Zero)
+		, mGroundSlopeAngle(0.f)
+		, mForwardSlopeAngle(0.f)
+		, mGroundCross(0.f)
+		, mMoving(false)
+		, mRunning(false)
+		, mGrounded(false)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
 	{
 	}
+
 	ActionScript::~ActionScript()
 	{
 	}
+
 	void ActionScript::Initialize()
 	{
 		GameObject* obj = GetOwner();
@@ -40,6 +52,8 @@ namespace ya
 	void ActionScript::Update()
 	{
 		assert(GetOwner() != nullptr);
+
+		CheckGround();
 
 		if (mJumpTimer > 0.0f)
 		{
@@ -69,10 +83,12 @@ namespace ya
 			return;
 		}
 
+		mDirection = dir;
+
 		if (speed > 0.0f)
-			mRigidbody->AddForce(speed * dir);
+			mRigidbody->AddForce(speed * mDirection);
 		else
-			mRigidbody->AddForce(mSpeed * dir);
+			mRigidbody->AddForce(mSpeed * mDirection);
 		
 	}
 
@@ -90,14 +106,15 @@ namespace ya
 		}
 
 		Vector3 rot = mTransform->GetRotation();
+		mRotateDirection = dir;
 		
 		if (speed > 0.0f)
 		{
-			rot += speed * 4.0f * dir * Time::DeltaTime();
+			rot += speed * 4.0f * mRotateDirection * Time::DeltaTime();
 		}
 		else
 		{
-			rot += mSpeed * 4.0f * dir * Time::DeltaTime();
+			rot += mSpeed * 4.0f * mRotateDirection * Time::DeltaTime();
 		}
 
 		mTransform->SetRotation(rot);
@@ -128,7 +145,7 @@ namespace ya
 
 		if (mRigidbody->IsGround())
 		{
-			mRigidbody->SetGround(false);
+			//mRigidbody->SetGround(false);
 			mJumpTimer = 0.1f;
 		}
 	}
@@ -155,5 +172,100 @@ namespace ya
 		// 체간 증가
 
 		// 패링 이펙트 발생
+	}
+	
+	// 땅, 경사로 체크
+	void ActionScript::CheckGround()
+	{
+		Vector3 position = mTransform->GetPosition();
+		Vector3 objScale = mTransform->GetScale();
+
+		// 지형체크용 레이캐스트의 시작점은 포지션의 맨아래에서 시작
+		Vector3 rayPosition = mTransform->GetPosition();//rayDirection * position.Length();
+		Matrix rotation = mTransform->GetRotationMatrix();
+		rayPosition.y -= objScale.y / 2.f;
+
+		// 순서대로 북서, 북동, 남서, 남동
+		Vector3 nw = rayPosition;
+		nw.x -= objScale.x / 2.f;
+		nw.z += objScale.z / 2.f;
+		//nw = Vector3::Transform(nw, rotation);
+
+		Vector3 ne = rayPosition;
+		ne.x += objScale.x / 2.f;
+		ne.z += objScale.z / 2.f;
+		//ne = Vector3::Transform(ne, rotation);
+
+		Vector3 sw = rayPosition;
+		sw.x -= objScale.x / 2.f;
+		sw.z -= objScale.z / 2.f;
+		//sw = Vector3::Transform(sw, rotation);
+
+		Vector3 se = rayPosition;
+		se.x += objScale.x / 2.f;
+		se.z -= objScale.z / 2.f;
+		//se = Vector3::Transform(se, rotation);
+
+		std::vector<eLayerType> layers = {};
+		layers.push_back(eLayerType::Ground);
+
+		Vector3 direction = -(mTransform->Up());
+
+		// 지형 체크용
+		RayHit CheckHit[4] = {};
+		CheckHit[0] = CollisionManager::RayCast(GetOwner(), nw, direction, layers);
+		CheckHit[1] = CollisionManager::RayCast(GetOwner(), ne, direction, layers);
+		CheckHit[2] = CollisionManager::RayCast(GetOwner(), sw, direction, layers);
+		CheckHit[3] = CollisionManager::RayCast(GetOwner(), se, direction, layers);
+
+		// 지형 보정용
+		RayHit CorrectionHit = CollisionManager::RayCast(GetOwner(), position, direction, layers);
+
+		mRigidbody->SetGround(false);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			if (CheckHit[i].isHit)
+			{
+				Transform* hitTransform = CheckHit[i].hitObj->GetComponent<Transform>();
+
+				mGroundNormal = hitTransform->Up();
+
+				float groundRadian = mGroundNormal.Dot(Vector3::Up);
+				groundRadian = acos(groundRadian);
+
+				float forwardRadian = mGroundNormal.Dot(mDirection);
+				forwardRadian = acos(forwardRadian);
+
+				mGroundSlopeAngle = groundRadian;
+				mForwardSlopeAngle = forwardRadian - 1.5708f;
+
+				if (CheckHit[i].length < 0.1f)
+					mRigidbody->SetGround(true);
+
+				if (mRigidbody->IsGround())
+				{
+					float overPos = objScale.y / 2.f - CorrectionHit.length;
+					Vector3 correctionPos = position;
+
+					// 땅을 뚫을때
+					if (0.f < overPos)
+						correctionPos.y += overPos;
+
+					mTransform->SetPosition(correctionPos);
+				}
+				break;
+			}
+		}
+
+		mGroundCross = mGroundNormal.Cross(Vector3::Up);
+
+		if (Vector3::Zero != mGroundCross)
+		{
+			Vector3 axis = mGroundCross;
+
+			Matrix mat = Matrix::CreateFromAxisAngle(axis, -mGroundSlopeAngle);
+			mRigidbody->SetRotateDirection(mat);
+		}
 	}
 }

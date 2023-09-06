@@ -8,6 +8,7 @@
 #include "yaTransform.h"
 #include "yaRigidbody.h"
 #include "yaCameraScript.h"
+#include "yaPlayerMeshScript.h"
 
 namespace ya
 {
@@ -31,17 +32,29 @@ namespace ya
 	{
 		ActionScript::Initialize();
 
+		//CheckGround();
+		//UpdatePhysics();
+
 	}
 
 	void PlayerActionScript::Update()
 	{
 		Player* player = dynamic_cast<Player*>(GetOwner());
 
+		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+		//UpdatePhysics();
+
 		Walk();
 		Run();
 
+		if (Input::GetKeyDown(eKeyCode::SPACE))
+		{
+			playerAnim->Play(L"a000_200000");
+		}
+
 		if (Input::GetKey(eKeyCode::SPACE))
 		{
+			player->SetStateFlag(ePlayerState::Jump, true);
 			Jump();
 		}
 
@@ -74,6 +87,7 @@ namespace ya
 			return;
 
 		Player* player = dynamic_cast<Player*>(GetOwner());
+		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 
 		Vector3 pos = mTransform->GetPosition();
 		Vector3 rot = mTransform->GetRotation();
@@ -130,6 +144,36 @@ namespace ya
 			}
 		}
 
+		if (Input::GetKeyDown(eKeyCode::W))
+		{
+			if (abs(theta.y) < mFrontTheta)
+				playerAnim->Play(L"a000_000100");
+			else
+				playerAnim->Play(L"a000_000010");
+		}
+		if (Input::GetKeyDown(eKeyCode::A))
+		{
+			if (abs(theta.y) < mFrontTheta)
+				playerAnim->Play(L"a000_000100");
+			else
+				playerAnim->Play(L"a000_000010");
+
+		}
+		if (Input::GetKeyDown(eKeyCode::S))
+		{
+			if (abs(theta.y) < mFrontTheta)
+				playerAnim->Play(L"a000_000100");
+			else
+				playerAnim->Play(L"a000_000011");
+		}
+		if (Input::GetKeyDown(eKeyCode::D))
+		{
+			if (abs(theta.y) < mFrontTheta)
+				playerAnim->Play(L"a000_000100");
+			else
+				playerAnim->Play(L"a000_000012");
+		}
+
 		if (Input::GetKey(eKeyCode::W))
 		{
 			if (bLockOn)
@@ -153,6 +197,7 @@ namespace ya
 				mLastDir = eDirection::Forward;
 			}
 		}
+
 		if (Input::GetKey(eKeyCode::S))
 		{
 			if (bLockOn)
@@ -223,10 +268,17 @@ namespace ya
 				}
 			}
 		}
+
+		/*if (Input::GetKeyNone(eKeyCode::W) && Input::GetKeyNone(eKeyCode::A) && Input::GetKeyNone(eKeyCode::S) && Input::GetKeyNone(eKeyCode::D))
+		{
+			playerAnim->Play(L"a000_000000");
+		}*/
 	}
 
 	void PlayerActionScript::Run()
 	{
+		PlayerMeshScript* playerAnim = GetOwner()->GetScript<PlayerMeshScript>();
+
 		if (Input::GetKey(eKeyCode::LSHIFT))
 		{
 
@@ -240,6 +292,8 @@ namespace ya
 
 		if (Input::GetKeyDown(eKeyCode::LSHIFT))
 		{
+			playerAnim->Play(L"a000_001151");
+
 			Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
 			mRigidbody->SetLimitVelocity(Vector3(50.0f, limitVelocity.y, 50.0f));
 
@@ -257,6 +311,8 @@ namespace ya
 			mRigidbody->SetLimitVelocity(Vector3(40.0f, limitVelocity.y, 40.0f));
 
 			mbDash = false;
+
+			playerAnim->Play(L"a000_001151");
 		}
 	}
 }
