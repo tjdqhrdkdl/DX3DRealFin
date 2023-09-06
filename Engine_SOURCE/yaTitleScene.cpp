@@ -158,7 +158,7 @@ namespace ya
 			groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
@@ -178,21 +178,18 @@ namespace ya
 			//groundCollider->SetType(eColliderType::Box);
 			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			//ground->AddComponent<GroundScript>();
+
+		{
+			GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Hook);
+			hookTarget->SetName(L"hook target");
+			Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
+			hookTargetTr->SetPosition(Vector3(-20.0f, 5.0f, -20.0f));
+			hookTargetTr->SetScale(Vector3(4.0f, 4.0f, 4.0f));
+			Collider2D* hookTargetCollider = hookTarget->AddComponent<Collider2D>();
+			hookTargetCollider->SetType(eColliderType::Box);
+			hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			hookTarget->AddComponent<HookTargetScript>();
 		}
-
-		
-
-			{
-				GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Hook);
-				hookTarget->SetName(L"hook target");
-				Transform* hookTargetTr = hookTarget->GetComponent<Transform>();
-				hookTargetTr->SetPosition(Vector3(-20.0f, 5.0f, -20.0f));
-				hookTargetTr->SetScale(Vector3(4.0f, 4.0f, 4.0f));
-				Collider2D* hookTargetCollider = hookTarget->AddComponent<Collider2D>();
-				hookTargetCollider->SetType(eColliderType::Box);
-				hookTargetCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-				hookTarget->AddComponent<HookTargetScript>();
-			}
 
 		{
 			//GameObject* grappleGround1 = object::Instantiate<GameObject>(eLayerType::Ground);
@@ -366,14 +363,14 @@ namespace ya
 
 			//mMeshData->AnimationSave(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
 
-			mMeshData = std::make_shared<MeshData>();
-			mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
-			mMeshData->AnimationLoad(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
-			
-			mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData = std::make_shared<MeshData>();
+			//mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
+			//mMeshData->AnimationLoad(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
+			//
+			//mMeshData->Instantiate(eLayerType::Monster);
 
 		}
-		object::Instantiate<Tenzen>(eLayerType::Monster);
+		//object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	void TitleScene::Update()
