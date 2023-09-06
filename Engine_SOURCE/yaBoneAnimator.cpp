@@ -63,8 +63,11 @@ namespace ya
 			if (mAnimationUpdateTime[mCurrentClip] >= mAnimationClips->at(mCurrentClip).timeLength - 0.05f)
 			{
 				//애니메이션 종료 + 루프 돎
+				mAnimationUpdateTime[mCurrentClip] = 0;
 				mNextAnimName = currentName;
-				mbAnimChanging = true;
+				mbAnimChanging = false;
+				events->mCompleteEvent();
+				events->mEndEvent();
 			}
 
 			mCurrentTime = mAnimationClips->at(mCurrentClip).startTime + mAnimationUpdateTime[mCurrentClip];
@@ -101,21 +104,16 @@ namespace ya
 				Events* events = nullptr;
 				events = FindEvents(mAnimationClips->at(mCurrentClip).name);
 
-				if (events && endAnimName != mNextAnimName)
+				if (events)
 					events->mEndEvent();
 
-				else if (events && endAnimName == mNextAnimName)
-				{
-					events->mCompleteEvent();
-					events->mEndEvent();
-				}
 				//새로운 애니메이션으로 변경
 				mCurrentClip = mAnimationNameAndIndexMap[mNextAnimName];
 				mFrameIdx = 0;
 
 				events = FindEvents(mAnimationClips->at(mCurrentClip).name);
 
-				if (events && endAnimName != mNextAnimName)
+				if (events)
 					events->mStartEvent();
 
 

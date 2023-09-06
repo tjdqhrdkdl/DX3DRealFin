@@ -26,13 +26,15 @@ namespace ya
             TenzenState_Recognize =      0x00000004,
             TenzenState_DrawSword =      0x00000008,
             TenzenState_Attack =         0x00000010,
-            TenzenState_Defense =       0x00000020,
+            TenzenState_Defense =        0x00000020,
             TenzenState_Guard =          0x00000040,
             TenzenState_Trace =          0x00000080,
             TenzenState_OnHit =          0x00000100,
             TenzenState_Dead =           0x00000200,
         };
     public:
+        Tenzen();
+        virtual ~Tenzen();
 
         virtual void Initialize() override;
         virtual void Update() override;
@@ -51,13 +53,17 @@ namespace ya
         void AttackEndEvent();
         void TraceEndEvent();
 
+        void SwingSword1Frame12Event();
 
     private:
         std::shared_ptr<MeshData> mMeshData;
         GameObject* mKatanaCollider;
         Transform* mKatanaObjectTr;
         Transform* mKatanaHandleObjectTr;
-       
+        
+        Collider2D* mCollider;
+        class ActionScript* mActionScript;
+
         int mBeforeState;
         int mState;
 
