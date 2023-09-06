@@ -236,6 +236,12 @@
     <ClCompile Include="yaPlayerMeshScript.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
+    <ClCompile Include="yaPlayerProjectileScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerAttackScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -489,6 +495,12 @@
       <Filter>Contents\BoneCollider</Filter>
     </ClInclude>
     <ClInclude Include="yaPlayerMeshScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerAttackScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerProjectileScript.h">
       <Filter>Contents\Player</Filter>
     </ClInclude>
   </ItemGroup>
