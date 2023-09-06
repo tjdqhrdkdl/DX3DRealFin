@@ -239,6 +239,9 @@
     <ClCompile Include="yaBoneCollider.cpp">
       <Filter>Contents\BoneCollider</Filter>
     </ClCompile>
+    <ClCompile Include="yaRedOgre.cpp">
+      <Filter>Contents\Monster\RedOgre</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -497,6 +500,7 @@
     <ClInclude Include="yaBoneCollider.h">
       <Filter>Contents\BoneCollider</Filter>
     </ClInclude>
+    <ClInclude Include="yaRedOgre.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

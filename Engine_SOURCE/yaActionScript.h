@@ -31,7 +31,6 @@ namespace ya
 		void Parrying();
 
 		void CheckGround();
-		void UpdatePhysics();
 
 	protected:
 		GameObject* mTarget;

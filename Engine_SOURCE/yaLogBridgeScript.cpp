@@ -70,7 +70,7 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 	multiHit[2] = CollisionManager::RayCast(colObj, back, direction, layers);
 	multiHit[3]= CollisionManager::RayCast(colObj, left, direction, layers);
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; ++i)
 	{
 		if (!multiHit[i].isHit)
 		{
