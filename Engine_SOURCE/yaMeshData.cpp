@@ -1,4 +1,5 @@
 #include "yaMeshData.h"
+#include "yaMeshData.h"
 #include "yaGameObject.h"
 #include "yaFbxLoader.h"
 #include "yaResources.h"

@@ -11,6 +11,7 @@
 #include "yaCollider2D.h"
 #include "yaMeshData.h"
 #include "yaMeshObject.h"
+#include "yaBoneCollider.h"
 
 #include <time.h>
 
@@ -38,6 +39,7 @@ namespace ya
         bool NavigationPlayer(float range);
         void MonsterRotation(Vector3 target_point);
         void TurnToPlayer();
+        float TurnToPlayerDir();
         bool WalkToPlayer(float range);
         void AlertnessLevel();
 
@@ -108,6 +110,7 @@ namespace ya
         void SetPlayerFront(bool front) {  mbPlayerFront = front; }
         //void SetPlayerFieldview(bool view) { mbPlayerFieldview = view; }
         void SetDefense(bool defense) { mbDefense = defense; }
+        void SetOnceAnimation(bool animation) { mbOnceAnimation = animation; }
 
     protected:
 

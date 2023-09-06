@@ -256,6 +256,22 @@ namespace ya
 		tr->SetRotation(Vec3(0.0f, rot.y + monDirection.y, 0.0f));
 	}
 
+	float MonsterBase::TurnToPlayerDir()
+	{
+		Transform* tr = GetComponent<Transform>();
+		Vec3 rot = tr->GetRotation();
+
+		Quaternion quater = Quaternion::FromToRotation
+		(tr->Forward(), GetMonster2PlayerNormalize());
+		Vec3 monDirection = quater.ToEuler();
+
+		monDirection *= 180.f / XM_PI;
+
+		tr->SetRotation(Vec3(0.0f, rot.y + monDirection.y, 0.0f));
+
+		return monDirection.y;
+	}
+
 	bool MonsterBase::WalkToPlayer(float range)
 	{
 		Transform* tr = GetComponent<Transform>();
@@ -362,11 +378,10 @@ namespace ya
 	int MonsterBase::RandomNumber(int ieast, int Max)
 	{
 		int result = 0;
-		if (Max == 0)
+		if (Max - ieast + 1 == 0)
 			return 1;
-		result = (rand() % Max - ieast + 1) + ieast;
-		if (result == 0)
-			result = RandomNumber(ieast, Max);
+		result = (rand() % (Max - ieast + 1)) + ieast;
+		
 		
 		return result;
 	}

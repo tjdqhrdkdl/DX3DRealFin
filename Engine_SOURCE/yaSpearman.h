@@ -24,7 +24,12 @@ namespace ya
         bool IsParrying() { return mbParrying; }
         
         void Idle_Stand();
+        void Link_attack();
+        void Link_Defense();
 
+
+        void KatanaColliderInit();
+        void Animation_Event();
 
     private:
 
@@ -34,12 +39,18 @@ namespace ya
         Vec3                    mRandomFinPos;
         Vec3                    mWlakFixPos;
         
+        UINT                    mRandom;
+
         bool                    mbParrying;
 
+       
 
         //지울거에요 안씀
         class Transform* TEST;
 
+    public:
+        Spearman();
+        ~Spearman();
 
     };
 }

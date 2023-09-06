@@ -3,22 +3,20 @@
 
 namespace ya
 {
+
+	Spearman::Spearman()
+	{
+	}
+
+	Spearman::~Spearman()
+	{
+		int a = 0;
+	}
+
 	void Spearman::Initialize()
 	{
-
+		
 		Transform* tr = GetComponent<Transform>();
-		// 플레이어의 forward를 구분하기위한 object
-		// 후에 mesh 씌우면 없앨 예정
-		GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
-		face->SetName(L"face");
-		Transform* faceTr = face->GetComponent<Transform>();
-		faceTr->SetPosition(Vector3(0.0f, 0.5f, 0.5f));
-		faceTr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
-		MeshRenderer* faceRenderer = face->AddComponent<MeshRenderer>();
-		faceRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-
-
 		{
 			Transform* tr = GetComponent<Transform>();
 			GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
@@ -36,25 +34,31 @@ namespace ya
 		
 		mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\SpearManAnimation_1.animationdata");
 		
-		
 		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
+
 		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
-		meshobjtr->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		meshobjtr->SetRotation(Vector3(0.f, 0.0f, 0.0f));
-		mAnimationOffSet = Vec3(-5.5f, 0.0f, 4.0f);
+		meshobjtr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
+		meshobjtr->SetRotationOffset(Vector3(-2.0f, 1.0f, 0.0f));
+		meshobjtr->SetParent(GetComponent<Transform>());
 		
-		//SpearMan_Idle_Stand
-		mMeshData->Play(L"SpearMan_Boundary_Step1");
+		KatanaColliderInit();
+		
+		Animation_Event();
+		
+		
+		mMeshData->Play(L"a000_000401");
 
 		CreateMonsterState();
 		SetSituation(enums::eSituation::None, true);
-
 
 		mAttackRange = 8.0f;
 		mTime = 0.f;
 		
 		//몬스터 할일 있나
+	
 		MonsterBase::Initialize();
+
 	}
 
 
@@ -68,10 +72,10 @@ namespace ya
 		Vec3 playerPos = GetPlayerPos();
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
-		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
-		meshobjtr->SetPosition(tr->GetPosition() + mAnimationOffSet);
+		//Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
+		//meshobjtr->SetPosition(tr->GetPosition());
 		
-		meshobjtr->SetRotation(tr->GetRotation());
+		//meshobjtr->SetRotation(tr->GetRotation());
 
 		if (IsDeathBlow())
 		{
@@ -105,7 +109,9 @@ namespace ya
 				if (NavigationPlayer(15.0f))
 				{
 					//배틀로 상태 변경
-					SetSituation(enums::eSituation::Battle, true);
+					//TurnToPlayer();
+					//OnceAniamtion(L"a000_000402");
+					//SetSituation(enums::eSituation::Battle, true);
 				}
 			}
 			//플레이어가 시야각에서 벗어나 있는 경우?
@@ -114,10 +120,9 @@ namespace ya
 				if (IsPlayerFront())
 				{
 					if (NavigationPlayer(20.0f))
-					{
-						//SpearMan_Boundary_Start
-						OnceAniamtion(L"SpearMan_Boundary_Step2");
-						SetSituation(enums::eSituation::Boundary, true);
+					{						
+						//OnceAniamtion(L"a000_000200");
+						//SetSituation(enums::eSituation::Boundary, true);
 					}
 
 
@@ -131,7 +136,13 @@ namespace ya
 			//바운더리 or None 상태 둘중 하나로 이동
 			//None 상태는 플레이어가 은신 + 거리가 멀면 시간지나고 이동
 			//바운더리는 플레이어가 아직 가까이 있음 하지만 안보일때 바운더리 유지
-			
+			OnceAniamtion(L"a000_400000");
+			mTime += Time::DeltaTime();
+			if (mTime >= 3.0f)
+			{
+				SetSituation(enums::eSituation::Battle, true);
+				mTime = 0.f;
+			}
 
 
 
@@ -139,17 +150,7 @@ namespace ya
 		break;
 		case ya::enums::eSituation::Boundary:
 		{
-
-			//두리번 거리는 애니메이션 
-			
-			mMeshData->GetAnimationCompleteEvent(L"SpearMan_Boundary_Step2")
-				= std::bind(&Spearman::Idle_Stand, this);
-			//mMeshData->GetAnimationStartEvent(L"SpearMan_Boundary_Step2") = std::bind(&Spearman::TTTEST, this);
-			//mMeshData->GetAnimationEndEvent(L"SpearMan_Boundary_Step2") 
-			//	= std::bind(&Spearman::Idle_Stand, this);
-		
-
-			
+			//두리번 거리는 애니메이션
 
 		}
 			break;
@@ -157,11 +158,11 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Battle:
 		{
-			int random = RandomNumber(1, 3);
+			mRandom = RandomNumber(2, 8);
 
-			random = 1;
+			mRandom = 4;
 
-			if (random == 1)
+			if (mRandom == 1)
 			{
 				mRandomXY.x = RandomNumber((int)(monsterPos.x - 4), (int)(monsterPos.x + 4));
 				mRandomXY.y = RandomNumber((int)(monsterPos.z - 4), (int)(monsterPos.z + 4));
@@ -172,24 +173,29 @@ namespace ya
 				mRandomFinPos.y = monsterPos.y;
 				mWlakFixPos = monsterPos;
 
+
 				MonsterRotation(mRandomFinPos);
+				OnceAniamtion(L"a000_405010");
 				SetSituation(enums::eSituation::Run, true);
 			}
-			else if (random == 2)
+			else if (mRandom <= 3)
 			{
+				TurnToPlayer();
 				SetSituation(enums::eSituation::Defense, true);
-				TurnToPlayer();
 			}
-			else if (random == 3)
+			else if (mRandom > 3)
 			{
-				SetSituation(enums::eSituation::Attack);
 				TurnToPlayer();
+				OnceAniamtion(L"a000_405000");
+				SetSituation(enums::eSituation::Attack, true);
+				mRandom = RandomNumber(1, 3);
+				//mRandom = 3;
 			}
 		}
 		break;
 		case ya::enums::eSituation::Run:
 		{
-			OnceAniamtion(L"SpearMan_Boundary_Step1");
+			
 			//오른쪽 방향
 			if (mRandomXY.x > mWlakFixPos.x)
 			{
@@ -197,7 +203,7 @@ namespace ya
 				{
 					SetSituation(enums::eSituation::Idle, true);
 				}
-				rigi->AddForce(tr->Forward() * 70.f);
+				rigi->AddForce(tr->Forward() * 130.f);
 
 			}
 			//왼쪽 방향
@@ -208,7 +214,7 @@ namespace ya
 					SetSituation(enums::eSituation::Idle, true);
 				}
 
-				rigi->AddForce(tr->Forward() * 70.f);
+				rigi->AddForce(tr->Forward() * 130.f);
 			}
 
 		}
@@ -216,8 +222,10 @@ namespace ya
 		case ya::enums::eSituation::Defense:
 		{
 			mTime += Time::DeltaTime();
+			OnceAniamtion(L"a000_500000");
 
-			if (mTime < 1.0f)
+
+			if (mTime < 0.8f)
 			{
 				mbParrying = true;
 			}
@@ -225,11 +233,8 @@ namespace ya
 			{
 				mbParrying = false;
 			}
-			if (mTime >= 3.0f)
-			{
-				SetSituation(enums::eSituation::Idle, true);
-				mTime = 0.f;
-			}
+
+
 		}
 		break;
 		case ya::enums::eSituation::Attack:
@@ -241,11 +246,28 @@ namespace ya
 				mTime = 0.f;
 			}
 
-			if (WalkToPlayer(2.0f))
+			if (WalkToPlayer(3.0f))
 			{
-				TurnToPlayer();
-				Attack_sting();
-				SetSituation(enums::eSituation::Idle, true);
+				
+				//Attack_sting();
+				if (mRandom == 1)
+				{
+					OnceAniamtion(L"a000_003006");
+					
+
+				}
+
+				if (mRandom == 2)
+				{
+					OnceAniamtion(L"a000_003010");					
+					
+				}
+
+				if (mRandom == 3)
+				{
+					OnceAniamtion(L"a000_003015");					
+					//OnceAniamtion(L"a000_003001");
+				}				
 			}
 		}
 		break;
@@ -309,21 +331,175 @@ namespace ya
 	}
 
 	void Spearman::Idle_Stand()
+	{			
+		OnceAniamtion(L"a000_400000");
+		SetSituation(enums::eSituation::Idle, true);
+	}
+
+	void Spearman::Link_attack()
 	{
-		
-		//OnceAniamtion(L"SpearMan_Boundary_Step1");
-		//SetSituation(enums::eSituation::Idle, true);
+		SetOnceAnimation(true);
 
 
-		if (mMeshData->GetPlayAnimationName() == L"SpearMan_Boundary_Step1")
-		{
-			int  a = 0;
+		if (mMeshData->GetPlayAnimationName() == L"a000_003006")
+		{			
+			OnceAniamtion(L"a000_003007");
 		}
-		if (mMeshData->GetPlayAnimationName() == L"SpearMan_Boundary_Step2")
+		if (mMeshData->GetPlayAnimationName() == L"a000_003007")
 		{
-			OnceAniamtion(L"SpearMan_Boundary_Step1");
+			Idle_Stand();
 		}
+		if (mMeshData->GetPlayAnimationName() == L"a000_003010")
+		{			
+			OnceAniamtion(L"a000_003011");
+		}
+		if (mMeshData->GetPlayAnimationName() == L"a000_003011")
+		{			
+			OnceAniamtion(L"a000_003012");
+		}
+		if (mMeshData->GetPlayAnimationName() == L"a000_003012")
+		{
+			Idle_Stand();
+		}
+		if (mMeshData->GetPlayAnimationName() == L"a000_003015")
+		{			
+			OnceAniamtion(L"a000_003016");
+		}
+		if (mMeshData->GetPlayAnimationName() == L"a000_003016")
+		{
+			Idle_Stand();
+		}
+
 
 	}
+
+	void Spearman::Link_Defense()
+	{
+		SetOnceAnimation(true);
+
+		if (mMeshData->GetPlayAnimationName() == L"a000_500000")
+		{
+			OnceAniamtion(L"a000_501040");
+		}
+		if (mMeshData->GetPlayAnimationName() == L"a000_501040")
+		{
+			mTime = 0.f;
+			Idle_Stand();
+		}
+	}
+
+	void Spearman::KatanaColliderInit()
+	{
+
+#pragma region	Attack_1
+		
+			BoneCollider* Rkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+			Rkatana->SetMeshAndBone(mMeshData, L"R_Katana");
+			Rkatana->SetAnimOffSet(L"a000_003006", Vector3(2.0f, 0.5f, 0.0f));
+			Rkatana->SetColliderActiveFrame(L"a000_003006", 20, 23);		
+		
+			BoneCollider* Lkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+			Lkatana->SetMeshAndBone(mMeshData, L"L_Katana");
+			Lkatana->SetAnimOffSet(L"a000_003006", Vector3(2.0f, 0.5f, 0.0f));
+			Lkatana->SetColliderActiveFrame(L"a000_003006", 36, 38);
+		
+		{			
+			Rkatana->SetAnimOffSet(L"a000_003007", Vector3(0.7f, 0.8f, 0.0f));
+			Rkatana->SetColliderActiveFrame(L"a000_003007", 28, 31);
+		}
+		{			
+			Lkatana->SetAnimOffSet(L"a000_003007", Vector3(0.7, 0.8, 0));
+			Lkatana->SetColliderActiveFrame(L"a000_003007", 28, 31);
+		}
+#pragma endregion
+
+#pragma region	Attack_2
+
+		{			
+			Lkatana->SetAnimOffSet(L"a000_003010", Vector3(1.8f, 0.5f, 0.0f));
+			Lkatana->SetColliderActiveFrame(L"a000_003010", 33, 37);
+		}
+
+
+		{			
+			Rkatana->SetAnimOffSet(L"a000_003011", Vector3(1.0f, 0.5f, 0.0f));
+			Rkatana->SetColliderActiveFrame(L"a000_003011", 27, 30);
+		}
+
+		{			
+			Rkatana->SetAnimOffSet(L"a000_003012", Vector3(0.9f, 1.0f, 0.0f));
+			Rkatana->SetColliderActiveFrame(L"a000_003012", 27, 29);
+		}
+		{			
+			Lkatana->SetAnimOffSet(L"a000_003012", Vector3(0.9f, 1.0f, 0.0f));
+			Lkatana->SetColliderActiveFrame(L"a000_003012", 27, 29);
+		}
+#pragma endregion
+
+#pragma region	Attack_3
+
+		{			
+			Lkatana->SetAnimOffSet(L"a000_003015", Vector3(0.9f, 1.0f, 0.0f));
+			Lkatana->SetColliderActiveFrame(L"a000_003015", 45, 47);
+		}
+
+
+		{
+			Rkatana->SetAnimOffSet(L"a000_003016", Vector3(0.9f, 0.9f, 0.0f));
+			Rkatana->SetColliderActiveFrame(L"a000_003016", 30, 32);
+		}
+#pragma endregion
+
+#pragma region	Start_Attack_1
+
+		{
+			Rkatana->SetAnimOffSet(L"a000_003000", Vector3(0.9f, 0.9f, 0.0f));
+			Rkatana->SetColliderActiveFrame(L"a000_003000", 43, 46);
+		}
+
+#pragma endregion
+
+#pragma region	Start_Attack_2
+
+		{
+			Rkatana->SetAnimOffSet(L"a000_003001", Vector3(0.7f, 0.8f, 0.0f));
+			Rkatana->SetColliderActiveFrame(L"a000_003001", 55, 58);
+		}
+		{
+			Lkatana->SetAnimOffSet(L"a000_003001", Vector3(0.7, 0.8, 0));
+			Lkatana->SetColliderActiveFrame(L"a000_003001", 55, 58);
+		}
+
+#pragma endregion
+	}
+
+	void Spearman::Animation_Event()
+	{
+
+		mMeshData->GetAnimationCompleteEvent(L"a000_500000")
+			= std::bind(&Spearman::Link_Defense, this);
+		mMeshData->GetAnimationCompleteEvent(L"a000_501040")
+			= std::bind(&Spearman::Link_Defense, this);
+		mMeshData->GetAnimationCompleteEvent(L"a000_003006")
+			= std::bind(&Spearman::Link_attack, this);
+		mMeshData->GetAnimationCompleteEvent(L"a000_003007")
+			= std::bind(&Spearman::Link_attack, this);
+		mMeshData->GetAnimationCompleteEvent(L"a000_003010")
+			= std::bind(&Spearman::Link_attack, this);
+		mMeshData->GetAnimationCompleteEvent(L"a000_003011")
+			= std::bind(&Spearman::Link_attack, this);
+		mMeshData->GetAnimationCompleteEvent(L"a000_003012")
+			= std::bind(&Spearman::Link_attack, this);
+		mMeshData->GetAnimationCompleteEvent(L"a000_003015")
+			= std::bind(&Spearman::Link_attack, this);
+		mMeshData->GetAnimationCompleteEvent(L"a000_003016")
+			= std::bind(&Spearman::Link_attack, this);
+
+
+
+	}
+
+
+
 
 }
