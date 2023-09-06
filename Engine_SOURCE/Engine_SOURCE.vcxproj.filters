@@ -232,12 +232,15 @@
     </ClCompile>
     <ClCompile Include="yaHangingObjectScript.cpp">
       <Filter>Contents\Ground</Filter>
-	</ClCompile>
-	<ClCompile Include="yaTenzen.cpp">
+    </ClCompile>
+    <ClCompile Include="yaTenzen.cpp">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClCompile>
     <ClCompile Include="yaBoneCollider.cpp">
       <Filter>Contents\BoneCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="yaRedOgre.cpp">
+      <Filter>Contents\Monster\RedOgre</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -497,6 +500,7 @@
     <ClInclude Include="yaBoneCollider.h">
       <Filter>Contents\BoneCollider</Filter>
     </ClInclude>
+    <ClInclude Include="yaRedOgre.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -664,9 +668,6 @@
     <Filter Include="Engine\Graphics\API">
       <UniqueIdentifier>{84412ea6-7caf-491d-942d-e28b888beb51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\FontWrapper\Graphics\Buffer">
-      <UniqueIdentifier>{5c3eda36-af6f-4fc7-aaa2-ae3fb32ab852}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\High Level InterFace">
       <UniqueIdentifier>{41aee320-b140-434d-b89b-da46885d9236}</UniqueIdentifier>
     </Filter>
@@ -675,6 +676,9 @@
     </Filter>
     <Filter Include="Contents\BoneCollider">
       <UniqueIdentifier>{77d0e2a3-e34f-4d51-a3fc-d1d340933a3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\RedOgre">
+      <UniqueIdentifier>{5076058c-ee45-4a04-bd59-18a6048b01b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
