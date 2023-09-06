@@ -25,8 +25,13 @@ namespace ya
 		void SetVelocity(Vector3 velocity) { mVelocity = velocity; }
 		Vector3 GetVelocity() { return mVelocity; }
 
+		void SetGravity(Vector3 gravity) { mGravity = gravity; }
+		Vector3 GetGravity() { return mGravity; }
+
 		Vector3 GetLimitVelocity() { return mLimitVelocity; }
 		void SetLimitVelocity(Vector3 limit) { mLimitVelocity = limit; }
+
+		void SetRotateDirection(Matrix dir) { mRotateDirection = dir; }
 
 	private:
 		// 힘과 마찰력을 이용한 이동
@@ -40,5 +45,6 @@ namespace ya
 		Vector3 mGravity;	/// 중력 크기
 		bool mbGround;		/// 지면에 붙어있는지
 		Vector3 mLimitVelocity;	/// 떨어지는 속도 한계값
+		Matrix mRotateDirection; /// 경사 회전 행렬
 	};
 }

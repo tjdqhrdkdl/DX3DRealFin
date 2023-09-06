@@ -227,6 +227,12 @@
     <ClCompile Include="yaBoneShader.cpp">
       <Filter>Engine\Resource\Shader\CS</Filter>
     </ClCompile>
+    <ClCompile Include="yaHangingScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaHangingObjectScript.cpp">
+      <Filter>Contents\Ground</Filter>
+    </ClCompile>
     <ClCompile Include="yaTenzen.cpp">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClCompile>
@@ -241,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="yaPlayerAttackScript.cpp">
       <Filter>Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaRedOgre.cpp">
+      <Filter>Contents\Monster\RedOgre</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -488,6 +497,12 @@
     <ClInclude Include="yaBoneShader.h">
       <Filter>Engine\Resource\Shader\CS</Filter>
     </ClInclude>
+    <ClInclude Include="yaHangingScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaHangingObjectScript.h">
+      <Filter>Contents\Ground</Filter>
+    </ClInclude>
     <ClInclude Include="yaTenzen.h">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClInclude>
@@ -503,6 +518,7 @@
     <ClInclude Include="yaPlayerProjectileScript.h">
       <Filter>Contents\Player</Filter>
     </ClInclude>
+    <ClInclude Include="yaRedOgre.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -678,6 +694,9 @@
     </Filter>
     <Filter Include="Contents\BoneCollider">
       <UniqueIdentifier>{77d0e2a3-e34f-4d51-a3fc-d1d340933a3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\RedOgre">
+      <UniqueIdentifier>{5076058c-ee45-4a04-bd59-18a6048b01b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

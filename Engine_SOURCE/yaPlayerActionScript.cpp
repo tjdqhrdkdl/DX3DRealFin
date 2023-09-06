@@ -32,6 +32,9 @@ namespace ya
 	{
 		ActionScript::Initialize();
 
+		//CheckGround();
+		//UpdatePhysics();
+
 	}
 
 	void PlayerActionScript::Update()
@@ -39,6 +42,7 @@ namespace ya
 		Player* player = dynamic_cast<Player*>(GetOwner());
 
 		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+		//UpdatePhysics();
 
 		Walk();
 		Run();

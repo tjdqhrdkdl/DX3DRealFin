@@ -74,13 +74,12 @@ namespace ya
 			mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
 			mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0)); 
 		};
-		mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
+		mMeshData->GetAnimationCompleteEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
 		mMeshData->GetAnimationEndEvent(L"SwingSword1") = std::bind(&Tenzen::AttackEndEvent, this);
-		mMeshData->GetAnimationEndEvent(L"Run") = std::bind(&Tenzen::TraceEndEvent, this);
+		mMeshData->GetAnimationStartEvent(L"Run") = std::bind(&Tenzen::TraceEndEvent, this);
 		mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&Tenzen::DefenseEndEvent, this);
 
 
-		
 
 		//메시 데이터 트랜스폼
 		Transform* meshTr = object->GetComponent<Transform>();

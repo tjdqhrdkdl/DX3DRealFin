@@ -10,6 +10,9 @@ namespace ya
 			HangingScript();
 			~HangingScript();
 
+			void InitHanging();
+			void DoHanging(Collider2D* collider);
+
 			virtual void Initialize() override;
 			virtual void Update() override;
 			virtual void Render() override;
