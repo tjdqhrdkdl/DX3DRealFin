@@ -1,13 +1,14 @@
 #pragma once
 #include "yaScript.h"
+#include "yaMeshData.h"
 
 namespace ya
 {
-	class PlayerScript : public Script
+	class PlayerMeshScript : public Script
 	{
 	public:
-		PlayerScript();
-		~PlayerScript();
+		PlayerMeshScript();
+		virtual ~PlayerMeshScript();
 
 		virtual void Initialize() override;
 		virtual void Update() override;
@@ -17,9 +18,13 @@ namespace ya
 		virtual void OnCollisionStay(Collider2D* collider) override;
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
+	public:
+		void LoadAnimation();
+		void Play(std::wstring name);
+
 	private:
+		bool mbLoad;
 
-		float TESTTime;
-
+		std::map<std::wstring, std::shared_ptr<MeshData>> mMeshDataMap;
 	};
 }

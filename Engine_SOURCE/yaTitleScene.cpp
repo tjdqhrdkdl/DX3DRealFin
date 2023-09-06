@@ -67,9 +67,9 @@ namespace ya
 		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
 
-		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
 
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);
@@ -251,8 +251,6 @@ namespace ya
 
 			CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
-
-
 			{
 				GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
 				directionalLight->SetName(L"directionalLight");
@@ -365,9 +363,19 @@ namespace ya
 				//mMeshData->AnimationLoad(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
 				//
 				//mMeshData->Instantiate(eLayerType::Monster);
+        
+        
+        
+        //mMeshData = std::make_shared<MeshData>();
+			//mMeshData->Load(L"Player\\MeshData\\AM_M_9000.meshdata");
+			//mMeshData = MeshData::LoadFromFbx(L"Player\\Mesh\\AM_M_9000.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000100.fbx", L"a000_000100");
+			////mMeshData->AnimationSave(L"Player\\AnimationData\\a000_000010.animationdata");
+			//mMeshData->AnimationLoad(L"Player\\AnimationData\\test\\a000_000100.animationdata");
+			//GameObject* player = mMeshData->Instantiate(eLayerType::Player);
 
 			}
-			//object::Instantiate<Tenzen>(eLayerType::Monster);
+
 			Scene::Initialize();
 		}
 	}
