@@ -9,8 +9,6 @@
 #include "yaTransform.h"
 #include "yaRigidbody.h"
 
-#include "yaPlayerProjectileScript.h"
-
 namespace ya
 {
 	PlayerAttackScript::PlayerAttackScript()
