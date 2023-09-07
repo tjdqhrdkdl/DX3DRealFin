@@ -242,14 +242,14 @@
     <ClCompile Include="yaPlayerMeshScript.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerProjectileScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
     <ClCompile Include="yaPlayerAttackScript.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
     <ClCompile Include="yaRedOgre.cpp">
       <Filter>Contents\Monster\RedOgre</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBase.cpp">
+      <Filter>Contents\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -515,10 +515,10 @@
     <ClInclude Include="yaPlayerAttackScript.h">
       <Filter>Contents\Player</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayerProjectileScript.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
     <ClInclude Include="yaRedOgre.h" />
+    <ClInclude Include="UIBase.h">
+      <Filter>Contents\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -697,6 +697,9 @@
     </Filter>
     <Filter Include="Contents\Monster\RedOgre">
       <UniqueIdentifier>{5076058c-ee45-4a04-bd59-18a6048b01b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\UI">
+      <UniqueIdentifier>{d2433e5c-ec31-491f-b2d2-3de536a27254}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
