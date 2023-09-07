@@ -30,18 +30,13 @@ namespace ya
 	void PlayerActionScript::Initialize()
 	{
 		ActionScript::Initialize();
-
-		//CheckGround();
-		//UpdatePhysics();
-
 	}
 
 	void PlayerActionScript::Update()
 	{
 		Player* player = dynamic_cast<Player*>(GetOwner());
 
-
-		//UpdatePhysics();
+		CheckGround();
 		Walk();
 		Run();
 

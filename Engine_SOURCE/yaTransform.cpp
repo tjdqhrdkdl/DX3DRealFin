@@ -77,12 +77,12 @@ namespace ya
 
 		mWorld = scale * rotationOffset * rotation * position;
 		
+
 		if (mbCamera)
 		{
 		}
 		else
 		{
-
 			mForward = Vector3::TransformNormal(Vector3::Forward, rotation);
 			mRight = Vector3::TransformNormal(Vector3::Right, rotation);
 			mUp = Vector3::TransformNormal(Vector3::Up, rotation);

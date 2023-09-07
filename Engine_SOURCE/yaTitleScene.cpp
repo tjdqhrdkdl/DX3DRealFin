@@ -38,6 +38,7 @@
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
 #include "yaTenzen.h"
+#include "yaRedOgre.h"
 
 namespace ya
 {
@@ -326,50 +327,17 @@ namespace ya
 			//mMeshData = new MeshData();
 
 
-			//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinalMesh_Join.fbx");
-			//mMeshData->Load(L"Map\\MeshData\\FinalMesh_Join.meshdata");
-			//
-			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
-
-			//mMeshData = MeshData::LoadFromFbx(L"Monster\\RedOgre\\Mesh\\c5020.fbx");
-			//
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000000.fbx", L"a000_000000");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000401.fbx", L"a000_000401");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000402.fbx", L"a000_000402");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_010000.fbx", L"a000_010000");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003000.fbx", L"a100_003000");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003001.fbx", L"a100_003001");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003002.fbx", L"a100_003002");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003003.fbx", L"a100_003003");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003005.fbx", L"a100_003005");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003006.fbx", L"a100_003006");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003007.fbx", L"a100_003007");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003008.fbx", L"a100_003008");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003011.fbx", L"a100_003011");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005401.fbx", L"a100_005401");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005402.fbx", L"a100_005402");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005403.fbx", L"a100_005403");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005400.fbx", L"a100_005400");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005000.fbx", L"a100_005000");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_405010.fbx", L"a100_405010");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_405001.fbx", L"a100_405001");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_405002.fbx", L"a100_405002");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_405003.fbx", L"a100_405003");
-			////mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\.fbx", L"");
+				//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinalMesh_Join.fbx");
+				//mMeshData->Load(L"Map\\MeshData\\FinalMesh_Join.meshdata");
+				//
 
 
-			//mMeshData->AnimationSave(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
-
-			//mMeshData = std::make_shared<MeshData>();
-			//mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
-			//mMeshData->AnimationLoad(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
-			//
-			//mMeshData->Instantiate(eLayerType::Monster);
-
+			}
+			object::Instantiate<RedOgre>(eLayerType::Monster);
+			Scene::Initialize();
 		}
-		//object::Instantiate<Tenzen>(eLayerType::Monster);
-		Scene::Initialize();
 	}
+
 	void TitleScene::Update()
 	{
 		if (Input::GetKeyDown(eKeyCode::Y))
