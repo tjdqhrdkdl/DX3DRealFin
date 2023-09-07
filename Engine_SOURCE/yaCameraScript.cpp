@@ -76,6 +76,43 @@ namespace ya
 				pos += 100.0f * -tr->Up() * Time::DeltaTime();
 			}
 
+			if (Input::GetKeyState(eKeyCode::MBTN) == eKeyState::PRESSED)
+			{
+				Vector2 mousePos = Input::GetMousePosition();
+				POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
+				ScreenToClient(application.GetHwnd(), &center);
+
+				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
+				Transform* tr = GetOwner()->GetComponent<Transform>();
+				//디버깅시에 문제생기는 부분 막음.
+				if (Time::DeltaTime() < 0.1f)
+				{
+					Vector3 forward = tr->Forward();
+					Vector3 right = tr->Right();
+					Vector3 up = tr->Up();
+					forward += right * mouseMovement.x * Time::DeltaTime();
+					forward += up * mouseMovement.y * Time::DeltaTime();
+
+					forward.Normalize();
+					Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
+
+					 right = UpVector.Cross(forward);
+					right.Normalize();
+
+					 up = forward.Cross(right);
+					up.Normalize();
+
+					tr->IsCamera(true);
+					tr->SetForward(forward);
+					tr->SetUp(up);
+					tr->SetRight(right);
+				}
+
+				//회전
+
+
+				SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
+			}
 			tr->SetPosition(pos);
 		}
 
