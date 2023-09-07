@@ -14,6 +14,10 @@ namespace ya
 
 	Application::Application()
 	{
+		Plane pla = Plane::Plane(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f));
+
+		
+
 
 	}
 

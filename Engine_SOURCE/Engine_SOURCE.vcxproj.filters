@@ -239,6 +239,15 @@
     <ClCompile Include="yaBoneCollider.cpp">
       <Filter>Contents\BoneCollider</Filter>
     </ClCompile>
+    <ClCompile Include="yaPlayerMeshScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerProjectileScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerAttackScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
     <ClCompile Include="yaRedOgre.cpp">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClCompile>
@@ -500,8 +509,16 @@
     <ClInclude Include="yaBoneCollider.h">
       <Filter>Contents\BoneCollider</Filter>
     </ClInclude>
-    <ClInclude Include="yaRedOgre.h">
-      <Filter>Contents\Monster\RedOgre</Filter>
+    <ClInclude Include="yaPlayerMeshScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerAttackScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerProjectileScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaRedOgre.h" />
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
