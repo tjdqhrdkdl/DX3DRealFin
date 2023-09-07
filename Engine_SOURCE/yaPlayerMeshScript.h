@@ -23,6 +23,7 @@ namespace ya
 		void Play(std::wstring name);
 
 	private:
+		bool mbUse;
 		bool mbLoad;
 
 		std::map<std::wstring, std::shared_ptr<MeshData>> mMeshDataMap;
