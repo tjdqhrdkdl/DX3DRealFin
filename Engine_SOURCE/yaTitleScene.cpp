@@ -76,26 +76,26 @@ namespace ya
 		player->SetCamera(cameraObj);
 		SetPlayer(player);
 
-		{
+		//{
 
-			Spearman* mSpearman = object::Instantiate<Spearman>(eLayerType::Monster);
-			mSpearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-			mSpearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-			mSpearman->SetName(L"Spearman");
-			mSpearman->SetPlayerObject(player);
-			//MeshRenderer* spearmanmr = mSpearman->AddComponent<MeshRenderer>();
-			//spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* spearmancol = mSpearman->AddComponent <Collider2D>();
-			spearmancol->SetType(eColliderType::Box);
-			spearmancol->SetSize(Vector3(1.0, 2.0f, 1.0f));
-			Rigidbody* spearmanRigidbody = mSpearman->AddComponent<Rigidbody>();
-			spearmanRigidbody->SetGround(false);
-			mSpearman->AddComponent<MonsterScript>();
+		//	Spearman* mSpearman = object::Instantiate<Spearman>(eLayerType::Monster);
+		//	mSpearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+		//	mSpearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		//	mSpearman->SetName(L"Spearman");
+		//	mSpearman->SetPlayerObject(player);
+		//	//MeshRenderer* spearmanmr = mSpearman->AddComponent<MeshRenderer>();
+		//	//spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		//	//spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+		//	Collider2D* spearmancol = mSpearman->AddComponent <Collider2D>();
+		//	spearmancol->SetType(eColliderType::Box);
+		//	spearmancol->SetSize(Vector3(1.0, 2.0f, 1.0f));
+		//	Rigidbody* spearmanRigidbody = mSpearman->AddComponent<Rigidbody>();
+		//	spearmanRigidbody->SetGround(false);
+		//	mSpearman->AddComponent<MonsterScript>();
 
-			camScript->SetLockOnTarget(mSpearman);
+		//	camScript->SetLockOnTarget(mSpearman);
 
-		}
+		//}
 
 
 		//{
@@ -359,7 +359,7 @@ namespace ya
 			//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 			//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 			//}
-			{
+			
 				//mMeshData = MeshData::LoadFromFbx(L"Player\\Mesh\\AM_M_9000.fbx");
 				//mMeshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000100.fbx", L"attack1");
 				////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
