@@ -23,5 +23,6 @@ namespace ya
 	private:
 		//for test
 		std::shared_ptr<MeshData> mMeshData;
+
 	};
 }

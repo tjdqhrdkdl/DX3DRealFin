@@ -4,6 +4,7 @@
 #include "yaPlayerActionScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
+#include "yaPlayerMeshScript.h"
 #include "yaRigidbody.h"
 
 namespace ya
@@ -22,6 +23,7 @@ namespace ya
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 		playerRigidbody->SetGround(false);
 
+		AddComponent<PlayerMeshScript>();
 		AddComponent<PlayerScript>();
 		AddComponent<PlayerActionScript>();
 		AddComponent<GrappleHookScript>();

@@ -28,6 +28,7 @@ namespace ya
 
 		void SetStateFlag(ePlayerState state, bool on = true);
 		UINT GetStateFlag() { return mStateFlag; }
+		bool IsStateFlag(ePlayerState state) { return (GetStateFlag() & (UINT)state) ? true : false; }
 
 		bool IsAttack() { return mbTESTAttack; }
 		void SetAttack(bool attack) { mbTESTAttack = attack; }

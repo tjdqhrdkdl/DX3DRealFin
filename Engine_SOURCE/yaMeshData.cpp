@@ -1,4 +1,5 @@
 #include "yaMeshData.h"
+#include "yaMeshData.h"
 #include "yaGameObject.h"
 #include "yaFbxLoader.h"
 #include "yaResources.h"
@@ -589,21 +590,23 @@ namespace ya
 		//애니 클립 사이즈 저장
 		UINT AnimClipSize = 0;
 		fread(&AnimClipSize, sizeof(UINT), 1, file);
-		mAnimationClipCount = AnimClipSize;
+		mAnimationClipCount += AnimClipSize;
 
-		mAnimClip.resize(mAnimationClipCount);
-		for (size_t i = 0; i < mAnimationClipCount; i++)
+		std::vector<BoneAnimationClip> animClip;
+
+		animClip.resize(AnimClipSize);
+		for (size_t i = 0; i < AnimClipSize; i++)
 		{
-			LoadWString(mAnimClip[i].name, file);
+			LoadWString(animClip[i].name, file);
 
-			fread(&mAnimClip[i].startTime, sizeof(double), 1, file);
-			fread(&mAnimClip[i].endTime, sizeof(double), 1, file);
-			fread(&mAnimClip[i].timeLength, sizeof(double), 1, file);
-			fread(&mAnimClip[i].mode, sizeof(int), 1, file);
-			fread(&mAnimClip[i].updateTime, sizeof(float), 1, file);
-			fread(&mAnimClip[i].startFrame, sizeof(int), 1, file);
-			fread(&mAnimClip[i].endFrame, sizeof(int), 1, file);
-			fread(&mAnimClip[i].frameLength, sizeof(int), 1, file);			
+			fread(&animClip[i].startTime, sizeof(double), 1, file);
+			fread(&animClip[i].endTime, sizeof(double), 1, file);
+			fread(&animClip[i].timeLength, sizeof(double), 1, file);
+			fread(&animClip[i].mode, sizeof(int), 1, file);
+			fread(&animClip[i].updateTime, sizeof(float), 1, file);
+			fread(&animClip[i].startFrame, sizeof(int), 1, file);
+			fread(&animClip[i].endFrame, sizeof(int), 1, file);
+			fread(&animClip[i].frameLength, sizeof(int), 1, file);			
 		}
 
 
@@ -622,8 +625,8 @@ namespace ya
 
 
 			//boneFrameDataVector = max(frameCount, boneFrameDataVector);
-			mBones[i].keyFrames.resize(mAnimationClipCount);
-			for (size_t j = 0; j < mAnimationClipCount; j++)
+			mBones[i].keyFrames.resize(AnimClipSize);
+			for (size_t j = 0; j < AnimClipSize; j++)
 			{				
 				
 				UINT boneKeyFramesSize;
@@ -646,13 +649,13 @@ namespace ya
 
 
 		std::vector<std::vector<BoneFrameTransform>> vecFrameTrans;
-		vecFrameTrans.resize(mAnimationClipCount);
+		vecFrameTrans.resize(AnimClipSize);
 
 		
 
 		for (size_t i = 0; i < mBones.size(); ++i)
 		{
-			for (size_t k = 0; k < mAnimationClipCount; k++)
+			for (size_t k = 0; k < AnimClipSize; k++)
 			{
 				vecFrameTrans[k].resize((UINT)mBones.size() * iFrameCount);
 				for (size_t j = 0; j < mBones[i].keyFrames[k].size(); ++j)
@@ -672,7 +675,7 @@ namespace ya
 			}
 		}
 
-		for (size_t i = 0; i < mAnimationClipCount; i++)
+		for (size_t i = 0; i < AnimClipSize; i++)
 		{
 			graphics::StructedBuffer* boneFrameData = new graphics::StructedBuffer();
 			boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * iFrameCount
@@ -680,7 +683,7 @@ namespace ya
 			PushBackBoneFrameData(boneFrameData);
 		}	
 	
-
+		mAnimClip.insert(mAnimClip.end(), animClip.begin(), animClip.end());
 		
 		return S_OK;
 	}

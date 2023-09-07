@@ -24,6 +24,7 @@ namespace ya
 		Vector3 GetRotation() { return mRotation; };
 		Vector3 GetScale() { return mScale; };
 		Vector3 GetRotationOffset() { return mRotationOffset; };
+		Matrix& GetRotationMatrix() { return mMatRotation; };
 
 
 		Vector3 GetFinalScale() { return mFinalScale; }

@@ -27,10 +27,10 @@ namespace ya
 		float GetMaxDeathBlowCount() { return mMaxDeathBlowCount; }
 		float GetAlertnessCount() { return mAlertnessCount; }
 		bool IsDeathBlow() { return mbDeathBlow; }
-		bool IsStartBlow() { return mbStartBlow; }
+		//bool IsStartBlow() { return mbStartBlow; }
 		bool IsDeathBlowOnOff() { return mbDeathBlowOnOff; }
 
-		void SetSituation(enums::eSituation situation) { mSituation = situation; }
+		void SetSituation(enums::eSituation situation, bool OnceAniamtion = false) { mSituation = situation; }
 
 		void SetHp(float hp);
 		void SetMaxHP(float maxhp) { mMaxHp += maxhp; }
@@ -40,7 +40,7 @@ namespace ya
 		void SetAlertnessCount(float count) { mAlertnessCount += count; }
 
 		void SetDeathBlow(bool deathblow) { mbDeathBlow = deathblow; }
-		void SetStartBlow(bool blow) { mbStartBlow = blow; }
+		//void SetStartBlow(bool blow) { mbStartBlow = blow; }
 		void SetDeathBlowonoff(bool onoff) { mbDeathBlowOnOff = onoff; }
 
 		void AddHp(float hp) { mHp += hp; }
@@ -76,7 +76,7 @@ namespace ya
 		float               mMaxDeathBlowCount;
 
 		bool				mbDeathBlowOnOff;
-		bool				mbStartBlow;
+		//bool				mbStartBlow;
 
 		// 경보 레벨
 		float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)

@@ -12,7 +12,7 @@ namespace ya
 		mMaxDeathBlowCount = 0.f;
 		mAlertnessCount = 0.f;
 		mbDeathBlow = 0.f;
-		mbStartBlow = true;
+		//mbStartBlow = true;
 		mbDeathBlowOnOff = true;
 
 	}
