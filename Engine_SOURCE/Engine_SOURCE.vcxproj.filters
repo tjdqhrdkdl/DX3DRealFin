@@ -519,7 +519,6 @@
       <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaRedOgre.h" />
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
