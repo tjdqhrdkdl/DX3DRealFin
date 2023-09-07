@@ -53,8 +53,6 @@ namespace ya
 	{
 		assert(GetOwner() != nullptr);
 
-		CheckGround();
-
 		if (mJumpTimer > 0.0f)
 		{
 			mJumpTimer -= Time::DeltaTime();
@@ -180,31 +178,52 @@ namespace ya
 		Vector3 position = mTransform->GetPosition();
 		Vector3 objScale = mTransform->GetScale();
 
-		// 지형체크용 레이캐스트의 시작점은 포지션의 맨아래에서 시작
+		// 지형체크용 레이의 시작점은 포지션의 맨아래에서 시작
 		Vector3 rayPosition = mTransform->GetPosition();//rayDirection * position.Length();
-		Matrix rotation = mTransform->GetRotationMatrix();
 		rayPosition.y -= objScale.y / 2.f;
+		//Vector3 rotation = mTransform->GetRotation();
+		
+		//float radian = rotation.y * (XM_PI / 180);
+		//Vector3 axis = mTransform->Up();
+		//Matrix mat = Matrix::CreateFromAxisAngle(axis, radian);
+
+		// z의 크기 절반 만큼의 크기를 가진 forward 벡터와 위에서 설정한 위치 벡터를 더하여
+		// forward 방향을 가진 z크기의 절반 값을 가진 벡터를 구한다
+		Vector3 forward = mTransform->Forward();
+		forward = forward * objScale.z / 2.f;
+		Vector3 forwardPos = rayPosition + forward;
 
 		// 순서대로 북서, 북동, 남서, 남동
-		Vector3 nw = rayPosition;
+		Vector3 nw = forwardPos;
 		nw.x -= objScale.x / 2.f;
-		nw.z += objScale.z / 2.f;
-		//nw = Vector3::Transform(nw, rotation);
 
-		Vector3 ne = rayPosition;
+		Vector3 ne = forwardPos;
 		ne.x += objScale.x / 2.f;
-		ne.z += objScale.z / 2.f;
-		//ne = Vector3::Transform(ne, rotation);
 
-		Vector3 sw = rayPosition;
+		Vector3 sw = forwardPos;
 		sw.x -= objScale.x / 2.f;
-		sw.z -= objScale.z / 2.f;
-		//sw = Vector3::Transform(sw, rotation);
+		sw.z -= objScale.z;
 
-		Vector3 se = rayPosition;
+		Vector3 se = forwardPos;
 		se.x += objScale.x / 2.f;
-		se.z -= objScale.z / 2.f;
-		//se = Vector3::Transform(se, rotation);
+		se.z -= objScale.z;
+
+
+		Vector3 nw2 = rayPosition;
+		nw2.x -= objScale.x / 2.f;
+		nw2.z += objScale.z / 2.f;
+	
+		Vector3 ne2 = rayPosition;
+		ne2.x += objScale.x / 2.f;
+		ne2.z += objScale.z / 2.f;
+
+		Vector3 sw2 = rayPosition;
+		sw2.x -= objScale.x / 2.f;
+		sw2.z -= objScale.z / 2.f;
+
+		Vector3 se2 = rayPosition;
+		se2.x += objScale.x / 2.f;
+		se2.z -= objScale.z / 2.f;
 
 		std::vector<eLayerType> layers = {};
 		layers.push_back(eLayerType::Ground);
@@ -227,6 +246,7 @@ namespace ya
 		{
 			if (CheckHit[i].isHit)
 			{
+
 				Transform* hitTransform = CheckHit[i].hitObj->GetComponent<Transform>();
 
 				mGroundNormal = hitTransform->Up();
@@ -240,19 +260,23 @@ namespace ya
 				mGroundSlopeAngle = groundRadian;
 				mForwardSlopeAngle = forwardRadian - 1.5708f;
 
-				if (CheckHit[i].length < 0.1f)
+				float CorrectionLength = CorrectionHit.length - objScale.y / 2.f;
+
+				if (CorrectionLength < 0.001f)
+				{
 					mRigidbody->SetGround(true);
 
-				if (mRigidbody->IsGround())
-				{
+					// 물체의 y 크기의 절반과 가운데에서 쏜 레이의 길이를 뺐을때
+					// 수치가 0보다 크면 물체는 땅을 뚫었다고 판단.
 					float overPos = objScale.y / 2.f - CorrectionHit.length;
 					Vector3 correctionPos = position;
 
 					// 땅을 뚫을때
 					if (0.f < overPos)
+					{
 						correctionPos.y += overPos;
-
-					mTransform->SetPosition(correctionPos);
+						mTransform->SetPosition(correctionPos);
+					}
 				}
 				break;
 			}

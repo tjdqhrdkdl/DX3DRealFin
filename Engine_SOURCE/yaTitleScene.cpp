@@ -38,6 +38,7 @@
 #include "yaFbxLoader.h"
 #include "yaMeshData.h"
 #include "yaTenzen.h"
+#include "yaRedOgre.h"
 
 namespace ya
 {
@@ -549,7 +550,6 @@ namespace ya
 
 			//mMeshData = new MeshData();
 
-
 			//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinMap.fbx");
 			
 			//mMeshData = std::make_shared<MeshData>();
@@ -578,7 +578,6 @@ namespace ya
 		}
 		//object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
-
 	}
 
 	void TitleScene::Update()

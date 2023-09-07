@@ -117,7 +117,6 @@ namespace ya
 			// 회전된 속도는 땅에서만 사용하므로 멤버 변수를 건드리지 않는다.
 			velo = dir * length;
 			mRotateDirection = {};
-
 		}
 		else
 			velo = mVelocity;
