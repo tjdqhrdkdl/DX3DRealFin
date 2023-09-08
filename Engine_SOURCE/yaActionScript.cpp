@@ -6,6 +6,7 @@
 
 #include "yaRigidbody.h"
 #include "yaTransform.h"
+#include "yaCollider2D.h"
 
 #include "yaPlayer.h"
 
@@ -20,6 +21,7 @@ namespace ya
 		, mTarget(nullptr)
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
+		, mCollider(nullptr)
 		, mSpeed(100.0f)
 		, mDirection(Vector3::Zero)
 		, mRotateDirection(Vector3::Zero)
@@ -48,6 +50,7 @@ namespace ya
 
 		mTransform = obj->GetComponent<Transform>();
 		mRigidbody = obj->GetComponent<Rigidbody>();
+		mCollider = obj->GetComponent<Collider2D>();
 	}
 
 	void ActionScript::Update()
@@ -178,10 +181,12 @@ namespace ya
 	void ActionScript::CheckGround()
 	{
 		Vector3 position = mTransform->GetPosition();
-		Vector3 objScale = mTransform->GetScale();
+		Vector3 Scale = mTransform->GetScale();
+		Vector3 objScale = mCollider->GetSize();
+		objScale *= Scale;
 
 		// 지형체크용 레이의 시작점은 포지션의 맨아래에서 시작
-		Vector3 rayPosition = mTransform->GetPosition();//rayDirection * position.Length();
+		Vector3 rayPosition = mTransform->GetPosition();
 		rayPosition.y -= objScale.y / 2.f;
 
 		// z의 크기 절반 만큼의 크기를 가진 forward 벡터와 위에서 설정한 위치 벡터를 더하여

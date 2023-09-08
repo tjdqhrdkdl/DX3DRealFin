@@ -1,5 +1,6 @@
 #include "yaRedOgre.h"
 #include "yaMeshData.h"
+#include "yaActionScript.h"
 
 
 namespace ya
@@ -56,18 +57,23 @@ namespace ya
 		mMeshData->AnimationLoad(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
 		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster);
 
+		//오브젝트 트랜스폼
+		Transform* tr = GetComponent<Transform>();
+		tr->SetPosition(Vector3(-30, 20, 0));
+		tr->SetScale(Vector3(3, 3, 3));
+
 		//메시 데이터 트랜스폼
 		Transform* meshTr = object->GetComponent<Transform>();
 		meshTr->SetRotation(Vector3(180, 180, 0));
-		meshTr->SetPosition(Vector3(0, 20, 0));
+		meshTr->SetPosition(Vector3(0, 0, 0));
 		meshTr->SetScale(Vector3(1, 1, 1));
-		meshTr->SetRotationOffset(Vector3(0, 0, 0));
+		meshTr->SetRotationOffset(Vector3(0, 1.5, 0));
 		meshTr->SetParent(GetComponent<Transform>());
 
 
 		Collider2D* mCollider = AddComponent<Collider2D>();
 		mCollider->SetType(eColliderType::Box);
-		mCollider->SetSize(Vector3(1.0, 2.0f, 1.0f));
+		mCollider->SetSize(Vector3(1.0, 3.0f, 1.0f));
 
 		AddComponent<Rigidbody>();
 		mActionScript = AddComponent<ActionScript>();

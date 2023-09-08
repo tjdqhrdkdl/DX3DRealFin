@@ -42,6 +42,7 @@ namespace ya
 
 		class Transform* mTransform;
 		class Rigidbody* mRigidbody;
+		class Collider2D* mCollider;
 
 		float mSpeed;
 		Vector3 mDirection;
