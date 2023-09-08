@@ -3,8 +3,9 @@
 
 namespace ya
 {
-	class PlayerAttackScript : public ActionScript
+	class PlayerAttackScript : public Script
 	{
+	public:
 		enum class eAttackState
 		{
 			None,
@@ -26,16 +27,8 @@ namespace ya
 			End,
 		};
 
-		/*
-		- 스탠딩 공격
-		- 이동하면서 공격
-		- 점프하면서 공격
-		- 매달린채로 공격
-		
+//		- 가드
 
-		- 가드
-
-		*/
 
 	public:
 		PlayerAttackScript();

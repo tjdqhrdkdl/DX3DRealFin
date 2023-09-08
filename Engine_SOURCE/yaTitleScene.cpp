@@ -77,24 +77,23 @@ namespace ya
 		SetPlayer(player);
 
 		{
-
-			Spearman* mSpearman = object::Instantiate<Spearman>(eLayerType::Monster);
-			mSpearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-			mSpearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-			mSpearman->SetName(L"Spearman");
-			mSpearman->SetPlayerObject(player);
-			//MeshRenderer* spearmanmr = mSpearman->AddComponent<MeshRenderer>();
-			//spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* spearmancol = mSpearman->AddComponent <Collider2D>();
+			Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
+			spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+			spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+			spearman->SetName(L"Spearman");
+			spearman->SetPlayerObject(player);
+			MeshRenderer* spearmanmr = spearman->AddComponent<MeshRenderer>();
+			spearmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			spearmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* spearmancol = spearman->AddComponent <Collider2D>();
 			spearmancol->SetType(eColliderType::Box);
-			spearmancol->SetSize(Vector3(1.0, 2.0f, 1.0f));
-			Rigidbody* spearmanRigidbody = mSpearman->AddComponent<Rigidbody>();
+			spearmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
+			Rigidbody* spearmanRigidbody = spearman->AddComponent<Rigidbody>();
 			spearmanRigidbody->SetGround(false);
-			mSpearman->AddComponent<MonsterScript>();
+			spearman->AddComponent<MonsterScript>();
+			spearman->AddComponent<ActionScript>();
 
-			camScript->SetLockOnTarget(mSpearman);
-
+			camScript->SetLockOnTarget(spearman);
 		}
 
 
@@ -582,16 +581,32 @@ namespace ya
 
 	void TitleScene::Update()
 	{
+		//if (Input::GetKeyDown(eKeyCode::Y))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack1");			
+		//}
+		//if (Input::GetKeyDown(eKeyCode::U))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack2");
+		//}
+		//if (Input::GetKeyDown(eKeyCode::I))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack3");
+		//}
+		//if (Input::GetKeyDown(eKeyCode::O))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack4");
+		//}
+		//if (Input::GetKeyDown(eKeyCode::P))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack5");
+		//}
 
-		if (Input::GetKeyDown(eKeyCode::U))
-		{
-			mMeshData->Play(L"a000_000402");
-		}
-		if (Input::GetKeyDown(eKeyCode::I))
-		{
-			mMeshData->Play(L"a000_003001");
-		}
-		
 		Scene::Update();
 	}
 	void TitleScene::FixedUpdate()

@@ -9,12 +9,12 @@
 #include "yaTransform.h"
 #include "yaRigidbody.h"
 
-#include "yaPlayerProjectileScript.h"
+#include "yaPlayerMeshScript.h"
 
 namespace ya
 {
 	PlayerAttackScript::PlayerAttackScript()
-		: ActionScript()
+		: Script()
 		, mAttackState(eAttackState::None)
 		, mTimer{0.0f}
 		, mTimerMax{ 0.4f, 0.4f, 0.4f, 0.4f, 0.4f,  0.4f, 0.4f, 0.4f, 0.4f, 0.4f }
@@ -27,7 +27,7 @@ namespace ya
 
 	void PlayerAttackScript::Initialize()
 	{
-		Transform* tr = GetOwner()->GetComponent<Transform>();
+		//Transform* tr = GetOwner()->GetComponent<Transform>();
 
 		/*mAttackProjectile = object::Instantiate<GameObject>(eLayerType::PlayerProjectile, tr);
 		mAttackProjectile->SetName(L"player attack projectile");
@@ -43,6 +43,7 @@ namespace ya
 	void PlayerAttackScript::Update()
 	{
 		Player* player = dynamic_cast<Player*>(GetOwner());
+		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 
 		switch (mAttackState)
 		{
@@ -67,6 +68,7 @@ namespace ya
 				else
 				{
 					mAttackState = eAttackState::Attack1;
+					playerAnim->Play(L"a050_300100");
 				}
 			}
 
@@ -89,6 +91,7 @@ namespace ya
 			if (Input::GetKeyDown(eKeyCode::LBTN))
 			{
 				mAttackState = eAttackState::Attack2;
+				playerAnim->Play(L"a050_305101");
 			}
 		}
 			break;
@@ -104,6 +107,7 @@ namespace ya
 			if (Input::GetKeyDown(eKeyCode::LBTN))
 			{
 				mAttackState = eAttackState::Attack3;
+				playerAnim->Play(L"a050_300020");
 			}
 		}
 			break;
@@ -119,6 +123,7 @@ namespace ya
 			if (Input::GetKeyDown(eKeyCode::LBTN))
 			{
 				mAttackState = eAttackState::Attack4;
+				playerAnim->Play(L"a050_300030");
 			}
 		}
 			break;
@@ -134,6 +139,7 @@ namespace ya
 			if (Input::GetKeyDown(eKeyCode::LBTN))
 			{
 				mAttackState = eAttackState::Attack5;
+				playerAnim->Play(L"a050_300040");
 			}
 		}
 			break;
@@ -144,6 +150,12 @@ namespace ya
 				mAttackState = eAttackState::None;
 				player->SetStateFlag(ePlayerState::Attack, false);
 				mTimer[(UINT)eAttackState::Attack5] = mTimerMax[(UINT)eAttackState::Attack5];
+			}
+
+			if (Input::GetKeyDown(eKeyCode::LBTN))
+			{
+				mAttackState = eAttackState::Attack1;
+				playerAnim->Play(L"a050_300100");
 			}
 		}
 			break;
