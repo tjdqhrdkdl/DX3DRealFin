@@ -49,6 +49,14 @@ void ya::RedOgre::Initialize()
 	meshTr->SetParent(GetComponent<Transform>());
 
 
+	Collider2D* mCollider = AddComponent <Collider2D>();
+	mCollider->SetType(eColliderType::Box);
+	mCollider->SetSize(Vector3(1.0, 2.0f, 1.0f));
+
+	AddComponent<Rigidbody>();
+	mActionScript = AddComponent<ActionScript>();
+	//mRedOgre->AddComponent<MonsterScript>();
+
 	MonsterBase::Initialize();
 }
 
