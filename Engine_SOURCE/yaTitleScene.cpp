@@ -76,7 +76,7 @@ namespace ya
 		player->SetCamera(cameraObj);
 		SetPlayer(player);
 
-		//RedOgre* redOgre = object::Instantiate<RedOgre>(eLayerType::Monster);
+
 
 		//{
 
