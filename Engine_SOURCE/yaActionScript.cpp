@@ -12,9 +12,13 @@
 
 #include <assert.h>
 
+#include "yaApplication.h"
+
+extern ya::Application application;
+
 namespace ya
 {
-	const float defaultJumpForce = 400.0f;
+	const float defaultJumpForce = 1000.0f;
 
 	ActionScript::ActionScript()
 		: Script()
@@ -64,6 +68,8 @@ namespace ya
  			mJumpTimer -= Time::DeltaTime();
 			mRigidbody->AddForce(Vector3(0.0f, mJumpForce, 0.0f));
 		}
+
+		CheckGround();
 	}
 
 	void ActionScript::FixedUpdate()
@@ -72,6 +78,12 @@ namespace ya
 
 	void ActionScript::Render()
 	{
+		/*if (mRigidbody->IsGround())
+		{
+			wchar_t szFloat[50] = {};
+			swprintf_s(szFloat, 50, L"ground");
+			TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
+		}*/
 	}
 
 	/// <summary>
@@ -224,7 +236,6 @@ namespace ya
 
 		// 지형 보정용
 		RayHit CorrectionHit = CollisionManager::RayCast(GetOwner(), position, direction, layers);
-
 		mGrounded = false;
 
 		for (int i = 0; i < 4; ++i)

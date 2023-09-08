@@ -76,8 +76,6 @@ namespace ya
 		player->SetCamera(cameraObj);
 		SetPlayer(player);
 
-
-
 		//{
 
 		//	Spearman* mSpearman = object::Instantiate<Spearman>(eLayerType::Monster);
@@ -138,7 +136,6 @@ namespace ya
 		//}
 
 
-		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();
@@ -550,16 +547,32 @@ namespace ya
 
 	void TitleScene::Update()
 	{
+		//if (Input::GetKeyDown(eKeyCode::Y))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack1");			
+		//}
+		//if (Input::GetKeyDown(eKeyCode::U))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack2");
+		//}
+		//if (Input::GetKeyDown(eKeyCode::I))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack3");
+		//}
+		//if (Input::GetKeyDown(eKeyCode::O))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack4");
+		//}
+		//if (Input::GetKeyDown(eKeyCode::P))
+		//{
+		//	//SceneManager::LoadScene(eSceneType::Play);
+		//	mMeshData->Play(L"attack5");
+		//}
 
-		if (Input::GetKeyDown(eKeyCode::U))
-		{
-			mMeshData->Play(L"a000_000402");
-		}
-		if (Input::GetKeyDown(eKeyCode::I))
-		{
-			mMeshData->Play(L"a000_003001");
-		}
-		
 		Scene::Update();
 	}
 	void TitleScene::FixedUpdate()

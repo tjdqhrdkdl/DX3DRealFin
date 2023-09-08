@@ -12,8 +12,8 @@ namespace ya::enums
 		Crouch  = 16,
 		Wall	= 32,
 		Hang	= 64,
-		Attack,
-		Block,
+		Attack	= 128,
+		Block	= 256,
 	};
 
 	enum class eProsthetics
