@@ -18,17 +18,17 @@ namespace ya
 	{
 		UICanvasObj::Initialize();
 
-		auto InGameUITex = Resources::Load<Texture>(L"InGameUI", L"Texture\\UI\\SB_FE.png");
+		auto InGameUITex = Resources::Load<Texture>(L"InGameMainHUDTexture", L"Texture\\UI\\SB_FE.png");
 
 		assert(nullptr != InGameUITex);
 
 		MeshRenderer* meshRenderer = GetComponent<MeshRenderer>();
 		meshRenderer->GetMaterial(0u)->SetTexture((eTextureSlot)eInGameUITextureSlot::MainHudTexture, InGameUITex);
 
-		tUI_UVPos hpbar{};
-		hpbar.TextureSlot = eInGameUITextureSlot::MainHudTexture;
-		hpbar.UVBegin = Vector2(0.1f, 0.1f);
-		hpbar.UVEnd = Vector2(0.2f, 0.2f);
+		tUIInfo hpbar{};
+		hpbar.TextureSlot = (int)eInGameUITextureSlot::MainHudTexture;
+		hpbar.UVBeginInTexture = Vector2(0.1f, 0.1f);
+		hpbar.UVEndInTexture = Vector2(0.2f, 0.2f);
 
 		mMapUI.insert(std::make_pair(L"HPBar", hpbar));
 	}
