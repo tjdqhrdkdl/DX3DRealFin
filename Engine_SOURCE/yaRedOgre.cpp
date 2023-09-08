@@ -72,7 +72,6 @@ namespace ya
 		AddComponent<Rigidbody>();
 		mActionScript = AddComponent<ActionScript>();
 		assert(mActionScript);
-		//mRedOgre->AddComponent<MonsterScript>();
 
 		MonsterBase::Initialize();
 	}
