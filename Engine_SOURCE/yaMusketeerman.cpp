@@ -166,7 +166,7 @@ namespace ya
 
 
 		Rigidbody* rigi = attack->AddComponent<Rigidbody>();
-		rigi->SetGround(true);
+		//rigi->SetGround(true);
 
 	}
 

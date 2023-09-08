@@ -22,6 +22,11 @@ namespace ya
 		void SetDirection(const Vector3 dir) { mDirection = dir; }
 		Vector3 GetDirection() const { return mDirection; }
 
+		void SetJumping(bool jumping) { mJumping = jumping; }
+		bool IsJumping() { return mJumping; }
+		void SetGrounded(bool grounded) { mGrounded = grounded; }
+		bool IsGrounded() { return mGrounded; }
+
 	public:
 		void Move(const Vector3 dir, float force = -1.0f);
 		void Rotate(const Vector3 dir, float speed = -1.0f);
@@ -50,6 +55,7 @@ namespace ya
 
 		bool mMoving;
 		bool mRunning;
+		bool mJumping;
 		bool mGrounded;
 
 	private:

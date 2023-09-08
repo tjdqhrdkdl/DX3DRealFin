@@ -21,7 +21,6 @@ namespace ya
 		col->SetSize(Vector3(1.0, 1.0f, 1.0f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
-		playerRigidbody->SetGround(false);
 
 		AddComponent<PlayerMeshScript>();
 		AddComponent<PlayerScript>();

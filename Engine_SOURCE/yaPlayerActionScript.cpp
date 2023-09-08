@@ -39,7 +39,6 @@ namespace ya
 
 		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
     
-    CheckGround();
 		Walk();
 		Run();
 
@@ -51,6 +50,7 @@ namespace ya
 		if (Input::GetKey(eKeyCode::SPACE))
 		{
 			player->SetStateFlag(ePlayerState::Jump, true);
+			SetJumping(true);
 			Jump();
 		}
 

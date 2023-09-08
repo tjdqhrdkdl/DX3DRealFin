@@ -30,6 +30,7 @@ namespace ya
 		, mGroundCross(0.f)
 		, mMoving(false)
 		, mRunning(false)
+		, mJumping(false)
 		, mGrounded(false)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
@@ -53,9 +54,11 @@ namespace ya
 	{
 		assert(GetOwner() != nullptr);
 
+		CheckGround();
+
 		if (mJumpTimer > 0.0f)
 		{
-			mJumpTimer -= Time::DeltaTime();
+ 			mJumpTimer -= Time::DeltaTime();
 			mRigidbody->AddForce(Vector3(0.0f, mJumpForce, 0.0f));
 		}
 	}
@@ -138,12 +141,11 @@ namespace ya
 		// force가 지정되지 않았을 때 기존의 force 사용
 		else
 		{
-			mJumpForce = defaultJumpForce;
+  			mJumpForce = defaultJumpForce;
 		}
 
-		if (mRigidbody->IsGround())
+		if (mGrounded)
 		{
-			//mRigidbody->SetGround(false);
 			mJumpTimer = 0.1f;
 		}
 	}
@@ -172,7 +174,7 @@ namespace ya
 		// 패링 이펙트 발생
 	}
 	
-	// 땅, 경사로 체크
+	// 땅, 경사로 체크. 일단 가운데 레이만 사용함..
 	void ActionScript::CheckGround()
 	{
 		Vector3 position = mTransform->GetPosition();
@@ -181,11 +183,6 @@ namespace ya
 		// 지형체크용 레이의 시작점은 포지션의 맨아래에서 시작
 		Vector3 rayPosition = mTransform->GetPosition();//rayDirection * position.Length();
 		rayPosition.y -= objScale.y / 2.f;
-		//Vector3 rotation = mTransform->GetRotation();
-		
-		//float radian = rotation.y * (XM_PI / 180);
-		//Vector3 axis = mTransform->Up();
-		//Matrix mat = Matrix::CreateFromAxisAngle(axis, radian);
 
 		// z의 크기 절반 만큼의 크기를 가진 forward 벡터와 위에서 설정한 위치 벡터를 더하여
 		// forward 방향을 가진 z크기의 절반 값을 가진 벡터를 구한다
@@ -208,23 +205,6 @@ namespace ya
 		se.x += objScale.x / 2.f;
 		se.z -= objScale.z;
 
-
-		Vector3 nw2 = rayPosition;
-		nw2.x -= objScale.x / 2.f;
-		nw2.z += objScale.z / 2.f;
-	
-		Vector3 ne2 = rayPosition;
-		ne2.x += objScale.x / 2.f;
-		ne2.z += objScale.z / 2.f;
-
-		Vector3 sw2 = rayPosition;
-		sw2.x -= objScale.x / 2.f;
-		sw2.z -= objScale.z / 2.f;
-
-		Vector3 se2 = rayPosition;
-		se2.x += objScale.x / 2.f;
-		se2.z -= objScale.z / 2.f;
-
 		std::vector<eLayerType> layers = {};
 		layers.push_back(eLayerType::Ground);
 
@@ -240,13 +220,12 @@ namespace ya
 		// 지형 보정용
 		RayHit CorrectionHit = CollisionManager::RayCast(GetOwner(), position, direction, layers);
 
-		mRigidbody->SetGround(false);
+		mGrounded = false;
 
 		for (int i = 0; i < 4; ++i)
 		{
 			if (CheckHit[i].isHit)
 			{
-
 				Transform* hitTransform = CheckHit[i].hitObj->GetComponent<Transform>();
 
 				mGroundNormal = hitTransform->Up();
@@ -260,11 +239,12 @@ namespace ya
 				mGroundSlopeAngle = groundRadian;
 				mForwardSlopeAngle = forwardRadian - 1.5708f;
 
+				// 밑바닥을 기준으로 구한 거리
 				float CorrectionLength = CorrectionHit.length - objScale.y / 2.f;
 
 				if (CorrectionLength < 0.001f)
 				{
-					mRigidbody->SetGround(true);
+					mGrounded = true;
 
 					// 물체의 y 크기의 절반과 가운데에서 쏜 레이의 길이를 뺐을때
 					// 수치가 0보다 크면 물체는 땅을 뚫었다고 판단.

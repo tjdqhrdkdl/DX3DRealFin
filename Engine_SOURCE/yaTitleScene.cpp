@@ -76,6 +76,8 @@ namespace ya
 		player->SetCamera(cameraObj);
 		SetPlayer(player);
 
+		//RedOgre* redOgre = object::Instantiate<RedOgre>(eLayerType::Monster);
+
 		//{
 
 		//	Spearman* mSpearman = object::Instantiate<Spearman>(eLayerType::Monster);
@@ -152,21 +154,21 @@ namespace ya
 			ground->AddComponent<GroundScript>();
 
 
-		//{
-		//	GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
-		//	ground->SetName(L"Ground1");
-		//	Transform* groundTr = ground->GetComponent<Transform>();
-		//	groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
-		//	groundTr->SetScale(Vector3(50.0f, 10.0f, 10.0f));
-		//	groundTr->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
-		//	MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-		//	groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		//	groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-		//	Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-		//	groundCollider->SetType(eColliderType::Box);
-		//	groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-		//	ground->AddComponent<GroundScript>();
-		//}
+		{
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground->SetName(L"Ground1");
+			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
+			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
+			groundTr->SetRotation(Vector3(30.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			ground->AddComponent<GroundScript>();
+		}
 
 
 		/*{
@@ -396,40 +398,6 @@ namespace ya
 				//
 				//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
 
-				//mMeshData = MeshData::LoadFromFbx(L"Monster\\RedOgre\\Mesh\\c5020.fbx");
-				//
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000000.fbx", L"a000_000000");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000401.fbx", L"a000_000401");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000402.fbx", L"a000_000402");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_010000.fbx", L"a000_010000");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003000.fbx", L"a100_003000");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003001.fbx", L"a100_003001");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003002.fbx", L"a100_003002");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003003.fbx", L"a100_003003");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003005.fbx", L"a100_003005");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003006.fbx", L"a100_003006");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003007.fbx", L"a100_003007");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003008.fbx", L"a100_003008");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_003011.fbx", L"a100_003011");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005401.fbx", L"a100_005401");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005402.fbx", L"a100_005402");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005403.fbx", L"a100_005403");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005400.fbx", L"a100_005400");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_005000.fbx", L"a100_005000");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_405010.fbx", L"a100_405010");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_405001.fbx", L"a100_405001");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_405002.fbx", L"a100_405002");
-				//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a100_405003.fbx", L"a100_405003");
-				////mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\.fbx", L"");
-
-
-				//mMeshData->AnimationSave(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
-
-				//mMeshData = std::make_shared<MeshData>();
-				//mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
-				//mMeshData->AnimationLoad(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
-				//
-				//mMeshData->Instantiate(eLayerType::Monster);
         
         
         
