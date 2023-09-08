@@ -32,7 +32,7 @@ void ya::LogBridgeScript::OnCollisionEnter(Collider2D* collider)
 
 	if (colRigidbody != nullptr)
 	{
-		colRigidbody->SetGround(true);
+		//colRigidbody->SetGround(true);
 		//colRigidbody->SetLogBridge(true);
 	}
 }
@@ -120,7 +120,7 @@ void ya::LogBridgeScript::OnCollisionExit(Collider2D* collider)
 
 	if (colRigidbody != nullptr)
 	{
-		colRigidbody->SetGround(false);
+		//colRigidbody->SetGround(false);
 		//colRigidbody->SetLogBridge(false);
 	}
 

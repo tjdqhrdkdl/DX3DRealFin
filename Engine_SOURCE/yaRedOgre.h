@@ -9,6 +9,9 @@ namespace ya
     {
 
     public:
+        RedOgre();
+        virtual ~RedOgre();
+
         virtual void Initialize() override;
         virtual void Update() override;
         virtual void FixedUpdate() override;
@@ -16,6 +19,11 @@ namespace ya
 
     private:
         std::shared_ptr<MeshData> mMeshData;
+        GameObject* mLHandCollider;
+        GameObject* mRHandCollider;
+
+        Collider2D* mCollider;
+        class ActionScript* mActionScript;
     };
 }
 
