@@ -39,7 +39,7 @@ namespace ya
 	void PlayerActionScript::Update()
 	{
 		CheckGround();
-		
+
 		Walk();
 		Run();
 
@@ -67,6 +67,7 @@ namespace ya
 		if (Input::GetKey(eKeyCode::SPACE))
 		{
 			mPlayer->SetStateFlag(ePlayerState::Jump, true);
+			SetJumping(true);
 			Jump();
 		}
 

@@ -512,7 +512,9 @@
     <ClInclude Include="yaPlayerAttackScript.h">
       <Filter>Contents\Player</Filter>
     </ClInclude>
-    <ClInclude Include="yaRedOgre.h" />
+    <ClInclude Include="yaRedOgre.h">
+      <Filter>Contents\Monster\RedOgre</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
