@@ -76,7 +76,7 @@ namespace ya
 		player->SetCamera(cameraObj);
 		SetPlayer(player);
 
-		{
+		/*{
 			Spearman* spearman = object::Instantiate<Spearman>(eLayerType::Monster);
 			spearman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
 			spearman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
@@ -94,7 +94,7 @@ namespace ya
 			spearman->AddComponent<ActionScript>();
 
 			camScript->SetLockOnTarget(spearman);
-		}
+		}*/
 
 
 		//{
@@ -135,7 +135,6 @@ namespace ya
 		//}
 
 
-		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();

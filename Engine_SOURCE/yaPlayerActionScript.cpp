@@ -31,15 +31,15 @@ namespace ya
 	void PlayerActionScript::Initialize()
 	{
 		ActionScript::Initialize();
+
+		mPlayer = dynamic_cast<Player*>(GetOwner());
+		mPlayerAnim = mPlayer->GetScript<PlayerMeshScript>();
 	}
 
 	void PlayerActionScript::Update()
 	{
-		Player* player = dynamic_cast<Player*>(GetOwner());
-
-		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
-    
-    CheckGround();
+		CheckGround();
+		
 		Walk();
 		Run();
 
@@ -47,40 +47,40 @@ namespace ya
 		if (Input::GetKeyDown(eKeyCode::H))
 		{
 			// TODO: 매달리기 -> 떨어지기, 올라가기 만들어야함
-			if (player->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
-				player->SetStateFlag(ePlayerState::Hang, false);
-				playerAnim->Play(L"a000_000000");
+				mPlayer->SetStateFlag(ePlayerState::Hang, false);
+				mPlayerAnim->Play(L"a000_000000");
 			}
 			else
 			{
-				player->SetStateFlag(ePlayerState::Hang, true);
-				playerAnim->Play(L"a000_020000");
+				mPlayer->SetStateFlag(ePlayerState::Hang, true);
+				mPlayerAnim->Play(L"a000_020000");
 			}
 		}
 
 		if (Input::GetKeyDown(eKeyCode::SPACE))
 		{
-			playerAnim->Play(L"a000_200000");
+			mPlayerAnim->Play(L"a000_200000");
 		}
 
 		if (Input::GetKey(eKeyCode::SPACE))
 		{
-			player->SetStateFlag(ePlayerState::Jump, true);
+			mPlayer->SetStateFlag(ePlayerState::Jump, true);
 			Jump();
 		}
 
 		if (Input::GetKeyDown(eKeyCode::Q))
 		{
-			if (player->IsStateFlag(ePlayerState::Crouch))
+			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
-				player->SetStateFlag(ePlayerState::Crouch, false);
-				playerAnim->Play(L"a000_000000");
+				mPlayer->SetStateFlag(ePlayerState::Crouch, false);
+				mPlayerAnim->Play(L"a000_000000");
 			}
 			else
 			{
-				player->SetStateFlag(ePlayerState::Crouch, true);
-				playerAnim->Play(L"a000_005000");
+				mPlayer->SetStateFlag(ePlayerState::Crouch, true);
+				mPlayerAnim->Play(L"a000_005000");
 			}
 		}
 
@@ -165,14 +165,12 @@ namespace ya
 		{
 			player->SetStateFlag(ePlayerState::Walk, true);
 
-			if (player->IsStateFlag(ePlayerState::Hang))
+			 if (player->IsStateFlag(ePlayerState::Hang))
 			{
 			}
 			else if (player->IsStateFlag(ePlayerState::Crouch))
 			{
-			}
-			else if (player->IsStateFlag(ePlayerState::Block))
-			{
+				playerAnim->Play(L"a000_005100");
 			}
 			else
 			{
@@ -193,10 +191,6 @@ namespace ya
 					playerAnim->Play(L"a000_005102");
 				else
 					playerAnim->Play(L"a000_005100");
-			}
-			else if (player->IsStateFlag(ePlayerState::Block))
-			{
-
 			}
 			else
 			{
@@ -229,10 +223,6 @@ namespace ya
 				else
 					playerAnim->Play(L"a000_005100");
 			}
-			else if (player->IsStateFlag(ePlayerState::Block))
-			{
-
-			}
 			else
 			{
 				if (bLockOn)
@@ -262,10 +252,6 @@ namespace ya
 					playerAnim->Play(L"a000_005103");
 				else
 					playerAnim->Play(L"a000_005100");
-			}
-			else if (player->IsStateFlag(ePlayerState::Block))
-			{
-
 			}
 			else
 			{
@@ -390,10 +376,6 @@ namespace ya
 			{
 				playerAnim->Play(L"a000_005000");
 			}
-			else if (player->IsStateFlag(ePlayerState::Block))
-			{
-				//playerAnim->Play(L"a050_002000");
-			}
 			else
 			{
 				if (bLockOn)
@@ -412,11 +394,6 @@ namespace ya
 	{
 		PlayerMeshScript* playerAnim = GetOwner()->GetScript<PlayerMeshScript>();
 
-		if (Input::GetKey(eKeyCode::LSHIFT))
-		{
-			playerAnim->Play(L"a000_001151");
-		}
-
 		if (mDashTimer > 0.0f)
 		{
 			Move(mTransform->Forward(), mDashSpeed);
@@ -425,21 +402,30 @@ namespace ya
 
 		if (Input::GetKeyDown(eKeyCode::LSHIFT))
 		{
-			playerAnim->Play(L"a000_001151");
+			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 
 			Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
 			mRigidbody->SetLimitVelocity(Vector3(50.0f, limitVelocity.y, 50.0f));
 
 			mbDash = true;
 
-			if (mDashTimer <= 0.0f)
-			{
+			if(mDashTimer <= 0.0f)
 				mDashTimer = mDashTimerMax;
+			
+			if (mPlayer->IsStateFlag(ePlayerState::Walk))
+			{
+				mPlayerAnim->Play(L"a000_001200");
+			}
+			else if(mDashTimer == mDashTimerMax)
+			{
+				mPlayerAnim->Play(L"a000_001510");
 			}
 		}
 
 		if (Input::GetKeyUp(eKeyCode::LSHIFT))
 		{
+			mPlayer->SetStateFlag(ePlayerState::Sprint, false);
+
 			Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
 			mRigidbody->SetLimitVelocity(Vector3(40.0f, limitVelocity.y, 40.0f));
 

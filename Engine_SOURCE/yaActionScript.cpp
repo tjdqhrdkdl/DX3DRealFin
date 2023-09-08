@@ -155,7 +155,7 @@ namespace ya
 
 		if (mRigidbody->IsGround())
 		{
-			mRigidbody->SetGround(false);
+			//mRigidbody->SetGround(false);
 			mJumpTimer = 0.1f;
 		}
 	}
