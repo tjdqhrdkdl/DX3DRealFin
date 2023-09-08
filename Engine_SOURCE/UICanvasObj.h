@@ -3,12 +3,12 @@
 
 namespace ya
 {
-	class UIBase :
+	class UICanvasObj :
 		public GameObject
 	{
 	public:
-		UIBase();
-		~UIBase();
+		UICanvasObj();
+		virtual ~UICanvasObj();
 
 		virtual void Initialize() override;
 		virtual void Update() override;

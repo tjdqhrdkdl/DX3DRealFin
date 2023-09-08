@@ -7,8 +7,8 @@ namespace ya::graphics
         : Resource(eResourceType::Material)
         , mMode(eRenderingMode::Opaque)
         , mbAnimaion(false)
+        , mCB{}
     {
-
     }
 
     Material::~Material()

@@ -475,6 +475,7 @@ namespace ya::renderer
 		std::shared_ptr<Shader> uiShader = std::make_shared<Shader>();
 		uiShader->Create(eShaderStage::VS, L"UserInterfaceVS.hlsl", "main");
 		uiShader->Create(eShaderStage::PS, L"UserInterfacePS.hlsl", "main");
+		uiShader->SetBSState(eBSType::AlphaBlend);
 
 		Resources::Insert<Shader>(L"UIShader", uiShader);
 #pragma endregion
@@ -932,13 +933,11 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"SpriteMaterial", spriteMaterial);
 #pragma endregion
 		#pragma region UI
-		std::shared_ptr <Texture> uiTexture = Resources::Find<Texture>(L"HPBarTexture");
 		std::shared_ptr<Shader> uiShader = Resources::Find<Shader>(L"UIShader");
 		std::shared_ptr<Material> uiMaterial = std::make_shared<Material>();
 		uiMaterial->SetRenderingMode(eRenderingMode::Transparent);
 	
 		uiMaterial->SetShader(uiShader);
-		uiMaterial->SetTexture(eTextureSlot::Albedo, uiTexture);
 		Resources::Insert<Material>(L"UIMaterial", uiMaterial);
 #pragma endregion
 		#pragma region GRID

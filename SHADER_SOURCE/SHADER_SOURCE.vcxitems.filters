@@ -109,5 +109,6 @@
     <None Include="$(MSBuildThisFileDirectory)Resource.hlsli" />
     <None Include="$(MSBuildThisFileDirectory)Blur.hlsli" />
     <None Include="$(MSBuildThisFileDirectory)BoneAnimation.hlsli" />
+    <None Include="$(MSBuildThisFileDirectory)UI.hlsli" />
   </ItemGroup>
 </Project>
