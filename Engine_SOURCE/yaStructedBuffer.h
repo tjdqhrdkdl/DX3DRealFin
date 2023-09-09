@@ -11,7 +11,7 @@ namespace ya::graphics
 		StructedBuffer();
 		~StructedBuffer();
 
-		bool Create(UINT size, UINT stride, eSRVType type, void* data, bool cpuAccess = false);
+		bool Create(UINT size, UINT count, eSRVType type, void* data, bool cpuAccess = false);
 		void SetData(void* data, UINT bufferCount);
 		void GetData(void* data, UINT size = 0);
 		void BindSRV(eShaderStage stage, UINT slot);
@@ -41,5 +41,7 @@ namespace ya::graphics
 
 		UINT mSRVSlot;
 		UINT mUAVSlot;
+
+		bool mbCPUAccess;
 	};
 }

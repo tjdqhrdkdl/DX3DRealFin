@@ -28,9 +28,27 @@ namespace ya
 		tUIInfo hpbar{};
 		hpbar.TextureSlot = (int)eInGameUITextureSlot::MainHudTexture;
 		hpbar.UVBeginInTexture = Vector2(0.1f, 0.1f);
-		hpbar.UVEndInTexture = Vector2(0.2f, 0.2f);
+		hpbar.UVSizeInTexture = Vector2(0.5f, 0.5f);
 
-		mMapUI.insert(std::make_pair(L"HPBar", hpbar));
+		AddUIInfo(L"HPBar", hpbar);
+	}
+
+	void UICanvas_InGame::Render()
+	{
+		const tUIInfo* pUIInfo = FindUIInfo(L"HPBar");
+		if (nullptr == pUIInfo)
+		{
+			return;
+		}
+
+		tUIRenderInfo renderInfo{};
+		renderInfo.UIInfo = *pUIInfo;
+		renderInfo.UVBeginInCanvas = Vector2(0.5f, 0.5f);
+		renderInfo.UVSizeInCanvas = Vector2(0.2f, 0.2f);
+
+		RenderUI(renderInfo);
+
+		UICanvasObj::Render();
 	}
 }
 

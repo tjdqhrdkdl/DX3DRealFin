@@ -23,6 +23,8 @@ namespace ya
 
         virtual void Initialize() override;
 
+
+        virtual void Render() override;
         
 
     private:

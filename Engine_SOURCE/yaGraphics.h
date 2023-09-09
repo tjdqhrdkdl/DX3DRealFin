@@ -20,6 +20,7 @@
 #define CBSLOT_PARTICLESYSTEM	5
 #define CBSLOT_NOISE			6
 #define CBSLOT_BONEANIMATION	7
+#define CBSLOT_UNIFORMDATA		8
 
 using namespace ya::math;
 namespace ya::graphics
@@ -140,6 +141,7 @@ namespace ya::graphics
 		ParticleSystem,
 		Noise,
 		Bone,
+		UniformData,
 		End,
 	};
 

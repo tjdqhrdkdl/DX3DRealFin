@@ -874,6 +874,10 @@ namespace ya::renderer
 		constantBuffers[(UINT)eCBType::Bone] = new ConstantBuffer(eCBType::Bone);
 		constantBuffers[(UINT)eCBType::Bone]->Create(sizeof(BoneAnimationCB));
 
+		constantBuffers[(UINT)eCBType::UniformData] = new ConstantBuffer(eCBType::UniformData);
+		constantBuffers[(UINT)eCBType::UniformData]->Create(sizeof(UniformDataCB));
+		
+
 #pragma endregion
 		#pragma region STRUCTED BUFFER
 		lightsBuffer = new graphics::StructedBuffer();

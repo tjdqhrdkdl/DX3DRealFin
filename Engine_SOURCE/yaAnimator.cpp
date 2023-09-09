@@ -81,6 +81,8 @@ namespace ya
 		Events* events = new Events();
 		events->mEvents.resize(spriteLegth);
 		mEvents.insert(std::make_pair(name, events));
+
+		return true;
 	}
 
 	Animation* Animator::FindAnimation(const std::wstring& name)

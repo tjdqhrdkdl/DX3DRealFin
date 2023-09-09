@@ -12,22 +12,18 @@ namespace ya
     struct tUIInfo
     {
         int TextureSlot{};
-        Vector3 Padding;
+        Vector3 Padding{};
         
         Vector2 UVBeginInTexture{};
-        Vector2 UVEndInTexture{};
+        Vector2 UVSizeInTexture{};
     };
 
     struct tUIRenderInfo
     {
-        int TextureSlot{};
-        Vector3 Padding;
-
-        Vector2 UVBeginInTexture{};
-        Vector2 UVEndInTexture{};
+        tUIInfo UIInfo;
 
         Vector2 UVBeginInCanvas{};
-        Vector2 UVEndInCanvas{};
+        Vector2 UVSizeInCanvas{};
     };
 
 
@@ -47,6 +43,8 @@ namespace ya
         void RenderUI(const tUIRenderInfo& _info) { mUIRenderQueue.push_back(_info); }
         
         inline void AddUIInfo(const std::wstring& _UIName, const tUIInfo& _uiInfo);
+
+        const tUIInfo* FindUIInfo(const std::wstring& _UIName);
 
 	private:       
 		//텍스처별 UV값 정리
