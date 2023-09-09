@@ -13,6 +13,8 @@ Texture2D diffuseLightTarget : register(t6);
 Texture2D specularLightTarget : register(t7);
 //Atlas texture
 Texture2D atlasTexture : register(t12);
+TextureCube skyTexture : register(t11);
+//Texture2D skySphererTexture : register(t11);
 
 // Light
 //StructuredBuffer<LightAttribute> lightAttributes : register(t13);

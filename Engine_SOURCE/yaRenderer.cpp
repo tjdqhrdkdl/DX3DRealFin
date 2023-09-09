@@ -447,10 +447,10 @@ namespace ya::renderer
 			indexes.push_back(iBottomIdx - (i + 1));
 		}
 
-		//std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
-		//Resources::Insert<Mesh>(L"SphereMesh", sphereMesh);
-		//sphereMesh->CreateVertexBuffer(sphereVtx.data(), sphereVtx.size());
-		//sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
+		std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
+		Resources::Insert<Mesh>(L"SphereMesh", sphereMesh);
+		sphereMesh->CreateVertexBuffer(sphereVtx.data(), sphereVtx.size());
+		sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
 		#pragma endregion
 	}
@@ -570,6 +570,17 @@ namespace ya::renderer
 		MergeShader->SetBSState(eBSType::Default);
 
 		Resources::Insert<Shader>(L"MergeShader", MergeShader);
+#pragma endregion
+
+
+#pragma region SKYBOX SHADER
+		std::shared_ptr<Shader> skyBoxShader = std::make_shared<Shader>();
+		skyBoxShader->Create(eShaderStage::VS, L"SkyBoxVS.hlsl", "main");
+		skyBoxShader->Create(eShaderStage::PS, L"SkyBoxPS.hlsl", "main");
+		skyBoxShader->SetRSState(eRSType::SolidFront);
+		skyBoxShader->SetDSState(eDSType::Less);
+		skyBoxShader->SetBSState(eBSType::Default);
+		Resources::Insert<Shader>(L"SkyBoxShader", skyBoxShader);
 #pragma endregion
 
 		//Compute
@@ -715,6 +726,12 @@ namespace ya::renderer
 			, mergeShader->GetVSBlobBufferPointer()
 			, mergeShader->GetVSBlobBufferSize()
 			, mergeShader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> skyBoxShader = Resources::Find<Shader>(L"SkyBoxShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
+			, skyBoxShader->GetVSBlobBufferPointer()
+			, skyBoxShader->GetVSBlobBufferSize()
+			, skyBoxShader->GetInputLayoutAddressOf());
 
 #pragma endregion
 		#pragma region sampler state
@@ -1043,6 +1060,19 @@ namespace ya::renderer
 
 		Resources::Insert<Material>(L"MergeMaterial", mergeMaterial);
 #pragma endregion
+
+#pragma region SKYBOX
+		std::shared_ptr<Shader> skyBoxShader = Resources::Find<Shader>(L"SkyBoxShader");
+		std::shared_ptr<Material> skyBoxMaterial = std::make_shared<Material>();
+		skyBoxMaterial->SetRenderingMode(eRenderingMode::Opaque);
+		skyBoxMaterial->SetShader(skyBoxShader);
+		Resources::Insert<Material>(L"SkyBoxMaterial", skyBoxMaterial);
+
+		std::shared_ptr<Texture> skyBoxTexture = Resources::Load<Texture>(L"Sky01", L"SkyBox\\SkyWater.dds");
+		skyBoxTexture->BindShaderResource(eShaderStage::PS, 11);
+
+#pragma endregion
+
 
 	}
 
