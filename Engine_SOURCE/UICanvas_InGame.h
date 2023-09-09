@@ -4,14 +4,15 @@
 
 namespace ya
 {
-
-
-    enum class eInGameUITextureSlot
+    namespace InGameUITextures
     {
-        MainHudTexture,
-        END
-    };
+        enum ENUM
+        {
+            HP_HUD,
+            GeneralHUD,
 
+        };
+    }
 
 
     class UICanvas_InGame :
@@ -25,9 +26,10 @@ namespace ya
 
 
         virtual void Render() override;
-        
-
     private:
+        void CreateHP_HUD();
+        void CreateGeneralHUD();
+        
 
     };
 }
