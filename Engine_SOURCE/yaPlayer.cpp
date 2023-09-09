@@ -1,11 +1,13 @@
 #include "yaPlayer.h"
 
+#include "yaRigidbody.h"
+
 #include "yaPlayerScript.h"
 #include "yaPlayerActionScript.h"
+#include "yaPlayerAttackScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaPlayerMeshScript.h"
-#include "yaRigidbody.h"
 
 namespace ya
 {
@@ -21,11 +23,11 @@ namespace ya
 		col->SetSize(Vector3(1.0, 1.0f, 1.0f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
-		playerRigidbody->SetGround(false);
 
-		AddComponent<PlayerMeshScript>();
 		AddComponent<PlayerScript>();
+		AddComponent<PlayerMeshScript>();
 		AddComponent<PlayerActionScript>();
+		AddComponent<PlayerAttackScript>();
 		AddComponent<GrappleHookScript>();
 	}
 

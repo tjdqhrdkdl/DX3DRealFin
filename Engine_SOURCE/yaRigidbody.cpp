@@ -1,6 +1,7 @@
 #include "yaRigidbody.h"
 #include "yaTime.h"
 #include "yaGameObject.h"
+#include "yaActionScript.h"
 
 #include "yaInput.h"
 
@@ -15,7 +16,6 @@ namespace ya
 		, mFriction(180.0f)
 	{
 		mGravity = Vector3(0.0f, -200.0f, 0.0f);
-		mbGround = false;
 		mLimitVelocity = Vector3(40.0f, 100.0f, 40.0f);
 	}
 
@@ -26,6 +26,10 @@ namespace ya
 
 	void Rigidbody::Initialize()
 	{
+		GameObject* obj = GetOwner();
+		assert(obj != nullptr);
+
+		mActionScript = obj->GetScript<ActionScript>();
 	}
 
 	void Rigidbody::FixedUpdate()
@@ -47,23 +51,18 @@ namespace ya
 		// 속도에 가속도를 더해준다.
 		mVelocity += (mAccelation * Time::DeltaTime());
 
-		if (mbGround)
+		if (mActionScript->IsGrounded() && !mActionScript->IsJumping())
 		{ // 땅
 			Vector3 gravity = mGravity;
 			gravity.Normalize();
 
 			float dot = gravity.Dot(mVelocity);
 			mVelocity -= gravity * dot;
-
-			Vector3 velocity = mVelocity;
-			float length = velocity.Length();
 		}
 		else
 		{ // 공중
 			mVelocity += mGravity * Time::DeltaTime();
 		}
-
-		//mVelocity += mGravity * Time::DeltaTime();
 
 		// 최대 속도 제한
 		Vector3 gravity = mGravity;
@@ -106,7 +105,7 @@ namespace ya
 		// 속도에 맞춰 물체를 이동시킨다.
 		Vector3 velo;
 
-		if (mbGround)
+		if (mActionScript->IsGrounded()) //&& ePlayerState::Jump != (ePlayerState)player->GetStateFlag())
 		{
 			Vector3 dir = mVelocity;
 			float length = dir.Length();

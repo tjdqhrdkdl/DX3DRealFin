@@ -248,12 +248,6 @@
     <ClCompile Include="yaRedOgre.cpp">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClCompile>
-    <ClCompile Include="UICanvasObj.cpp">
-      <Filter>Contents\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UICanvas_InGame.cpp">
-      <Filter>Contents\UI</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -518,12 +512,8 @@
     <ClInclude Include="yaPlayerAttackScript.h">
       <Filter>Contents\Player</Filter>
     </ClInclude>
-    <ClInclude Include="yaRedOgre.h" />
-    <ClInclude Include="UICanvasObj.h">
-      <Filter>Contents\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UICanvas_InGame.h">
-      <Filter>Contents\UI</Filter>
+    <ClInclude Include="yaRedOgre.h">
+      <Filter>Contents\Monster\RedOgre</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -703,9 +693,6 @@
     </Filter>
     <Filter Include="Contents\Monster\RedOgre">
       <UniqueIdentifier>{5076058c-ee45-4a04-bd59-18a6048b01b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Contents\UI">
-      <UniqueIdentifier>{d2433e5c-ec31-491f-b2d2-3de536a27254}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
