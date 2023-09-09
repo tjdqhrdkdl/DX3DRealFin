@@ -1,10 +1,11 @@
 #pragma once
 #include "yaGameObject.h"
-
+#include "UINames.h"
 
 namespace ya
 {
     constexpr UINT Register_UIBuffer = 20u;
+    constexpr math::Vector2 GameResolution = math::Vector2(1600.f, 900.f);
 
     namespace graphics
     {
@@ -14,7 +15,7 @@ namespace ya
     struct tUIInfo
     {
         int TextureSlot{};
-        Vector3 Padding{};
+        Vector3 Padding_UIInfo{};
         
         Vector2 UVBeginInTexture{};
         Vector2 UVSizeInTexture{};
@@ -26,6 +27,9 @@ namespace ya
 
         Vector2 UVBeginInCanvas{};
         Vector2 UVSizeInCanvas{};
+
+        float ZValue{};
+        Vector3 Padding_UIRenderInfo;
     };
 
 
@@ -42,14 +46,14 @@ namespace ya
 		virtual void Render() override;
 
     public:
+        inline bool RenderUI(const std::wstring& _name, const Vector2& _start, const Vector2& _size, float _z, bool _isUV = false);
         void RenderUI(const tUIRenderInfo& _info) { mUIRenderQueue.push_back(_info); }
         
-        inline void AddUIInfo(const std::wstring& _UIName, const tUIInfo& _uiInfo);
         bool AddUIInfo(const std::wstring& _name, int _texSlot, const Vector2& _start, const Vector2& _end);
+        inline void AddUIInfo(const std::wstring& _UIName, const tUIInfo& _uiInfo);
+        
 
         const tUIInfo* FindUIInfo(const std::wstring& _UIName);
-
-        
 
 	private:
 		//텍스처별 UV값 정리
@@ -75,6 +79,32 @@ namespace ya
         }
 
         return uiInfo;
+    }
+
+    inline bool UICanvasObj::RenderUI(const std::wstring& _name, const Vector2& _start, const Vector2& _size, float _z = 0.f, bool _isUV)
+    {
+        bool suc = false;
+        const tUIInfo* uiInfo = FindUIInfo(_name);
+        if (uiInfo)
+        {
+            tUIRenderInfo renderInfo{};
+            renderInfo.UIInfo = *uiInfo;
+            if (_isUV)
+            {
+                renderInfo.UVBeginInCanvas = _start;
+                renderInfo.UVSizeInCanvas = _size;
+            }
+            else
+            {
+                renderInfo.UVBeginInCanvas = _start / GameResolution;
+                renderInfo.UVSizeInCanvas = _size / GameResolution;
+            }
+
+            renderInfo.ZValue = _z;
+            RenderUI(renderInfo);
+            suc = true;
+        }
+        return suc;
     }
 }
 

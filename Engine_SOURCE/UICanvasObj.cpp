@@ -50,6 +50,15 @@ namespace ya
 			mUIDrawSBuffer->Create((UINT)mUIRenderQueue.size() * 2u, (UINT)sizeof(tUIRenderInfo), eSRVType::SRV, nullptr);
 		}
 
+		
+
+		std::sort(mUIRenderQueue.begin(), mUIRenderQueue.end(),
+			[](const tUIRenderInfo& _left, const tUIRenderInfo& _right)->bool
+			{
+				return (_left.ZValue > _right.ZValue);
+			}
+		);
+
 		//GPU에 데이터 보내고
 		mUIDrawSBuffer->SetData(mUIRenderQueue.data(), mUIRenderQueue.size());
 		mUIDrawSBuffer->BindSRV(eShaderStage::PS, Register_UIBuffer);
@@ -61,6 +70,8 @@ namespace ya
 		mUIRenderQueue.clear();
 		mUIDrawSBuffer->Clear();
 	}
+
+
 
 
 

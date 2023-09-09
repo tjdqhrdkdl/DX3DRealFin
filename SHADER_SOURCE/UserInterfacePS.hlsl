@@ -22,7 +22,20 @@ float4 main(VSOut In) : SV_Target
 			UISBuffer[i].UVBeginInTexture
 			+ UISBuffer[i].UVSizeInTexture * ((In.UV - UISBuffer[i].UVBeginInCanvas) / UISBuffer[i].UVSizeInCanvas);
 			
-			color = albedoTexture.Sample(anisotropicSampler, SampleUV);
+
+			float4 sampleColor = albedoTexture.Sample(anisotropicSampler, SampleUV);
+			if(color.a == 0.f)
+			{
+				color = sampleColor;
+			}
+			else
+			{
+				color.rgb *= (1.f - sampleColor.a);
+				color.rgb += sampleColor.rgb * sampleColor.a;
+				
+				//result_alpha = alpha1 + alpha2 * (1 - alpha1)
+				color.a = sampleColor.a + color.a * (1.f - sampleColor.a);
+			}
 		}
 	}
 

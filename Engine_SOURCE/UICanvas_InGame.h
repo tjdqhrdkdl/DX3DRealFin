@@ -8,8 +8,8 @@ namespace ya
     {
         enum ENUM
         {
-            HP_HUD,
-            GeneralHUD,
+            HUD_Player,
+            HUD_Enemy,
 
         };
     }
@@ -24,13 +24,9 @@ namespace ya
 
         virtual void Initialize() override;
 
-
-        virtual void Render() override;
     private:
         void CreateHP_HUD();
         void CreateGeneralHUD();
-        
-
     };
 }
 

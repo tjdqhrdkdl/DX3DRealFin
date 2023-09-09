@@ -14,6 +14,9 @@ struct tUIRenderInfo
 	
 	float2 UVBeginInCanvas;
 	float2 UVSizeInCanvas;
+	
+	float ZValue;
+	float3 Padding_UIRenderInfo;
 };
 StructuredBuffer<tUIRenderInfo> UISBuffer : register(t20);
 #define UISBufferSize int_0
