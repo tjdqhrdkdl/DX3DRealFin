@@ -90,47 +90,21 @@ namespace ya
 			//Rigidbody* spearmanRigidbody = mSpearman->AddComponent<Rigidbody>();
 			//spearmanRigidbody->SetGround(false);
 
-
-
 		}
 
 
-		//{
-		//	Musketeerman* musketeerman = object::Instantiate<Musketeerman>(eLayerType::Monster);
-		//	musketeerman->GetComponent<Transform>()->SetPosition(Vector3(-5.0f, 0.0f, 15.0f));
-		//	musketeerman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		//	musketeerman->SetName(L"Musketeerman");
-		//	musketeerman->SetPlayerObject(player);
-		//	MeshRenderer* musketeermanmr = musketeerman->AddComponent<MeshRenderer>();
-		//	musketeermanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		//	musketeermanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-		//	Collider2D* musketeermancol = musketeerman->AddComponent <Collider2D>();
-		//	musketeermancol->SetType(eColliderType::Box);
-		//	musketeermancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
-		//	Rigidbody* spearmanRigidbody = musketeerman->AddComponent<Rigidbody>();
-		//	spearmanRigidbody->SetGround(false);
-
-		//	camScript->SetLockOnTarget(musketeerman);
-		//}
-
-		//{
-		//	Swordsman* swordsman = object::Instantiate<Swordsman>(eLayerType::Monster);
-		//	swordsman->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-		//	swordsman->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-		//	swordsman->SetName(L"Swordsman");
-		//	swordsman->SetPlayerObject(player);
-		//	MeshRenderer* swordsmanmr = swordsman->AddComponent<MeshRenderer>();
-		//	swordsmanmr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		//	swordsmanmr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-		//	Collider2D* swordsmancol = swordsman->AddComponent <Collider2D>();
-		//	swordsmancol->SetType(eColliderType::Box);
-		//	swordsmancol->SetSize(Vector3(1.0, 2.0f, 2.0f));
-		//	Rigidbody* spearmanRigidbody = swordsman->AddComponent<Rigidbody>();
-		//	spearmanRigidbody->SetGround(false);
-		//	swordsman->AddComponent<MonsterScript>();
-
-		//	camScript->SetLockOnTarget(swordsman);
-		//}
+		{
+			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
+			player->GetComponent<Transform>()->SetPosition(Vector3(-25.0f, 10.0f, 0.0f));
+			player->GetComponent<Transform>()->SetScale(Vector3(10.0f, 10.0f, 10.0f));
+			player->SetName(L"PPP");
+			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			
+			std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
+			mr->SetMaterial(mat, 0);
+			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"ShadowMapTarget"));
+		}
 
 		{
 			GameObject* player = object::Instantiate<GameObject>(eLayerType::Player);
@@ -161,7 +135,7 @@ namespace ya
 		}
 
 
-		{
+		/*{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
 			ground->SetName(L"Ground1");
 			Transform* groundTr = ground->GetComponent<Transform>();
@@ -175,7 +149,7 @@ namespace ya
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
-		}
+		}*/
 
 	
 		/*{

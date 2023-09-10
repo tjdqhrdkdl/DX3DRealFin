@@ -36,6 +36,12 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)DeferredVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)DepthMapPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)DepthMapVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)GridPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
     </FxCompile>
