@@ -16,9 +16,9 @@ namespace ya
 			Attack4,			// a050_300030 // 9
 			Attack5,			// a050_300040 // 5 
 
-			JumpAttack1,		// a050_308000  a050_308050
-			JumpAttack2,		// a050_308010	a050_308060
-			JumpAttack3,		// a050_308020	a050_308070
+			JumpAttack1,		// a050_308010  a050_308060
+			JumpAttack2,		// a050_308000  a050_308050
+			JumpAttack3,		// a050_308010	a050_308060
 
 			CrouchAttack1,		// a050_301050
 
