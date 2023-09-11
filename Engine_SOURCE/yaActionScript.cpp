@@ -34,12 +34,14 @@ namespace ya
 		, mGroundSlopeAngle(0.f)
 		, mForwardSlopeAngle(0.f)
 		, mGroundCross(0.f)
-		, mMoving(false)
-		, mRunning(false)
-		, mJumping(false)
-		, mGrounded(false)
+		, mbMoving(false)
+		, mbRunning(false)
+		, mbJumping(false)
+		, mbGrounded(false)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
+		, mJumpEvent(nullptr)
+		, mGroundEvent(nullptr)
 	{
 	}
 
@@ -60,8 +62,6 @@ namespace ya
 	void ActionScript::Update()
 	{
 		assert(GetOwner() != nullptr);
-
-		CheckGround();
 
 		if (mJumpTimer > 0.0f)
 		{
@@ -159,7 +159,7 @@ namespace ya
   			mJumpForce = defaultJumpForce;
 		}
 
-		if (mGrounded)
+		if (mbGrounded)
 		{
 			mJumpTimer = 0.1f;
 		}
@@ -236,7 +236,9 @@ namespace ya
 
 		// 지형 보정용
 		RayHit CorrectionHit = CollisionManager::RayCast(GetOwner(), position, direction, layers);
-		mGrounded = false;
+	
+		// 땅에 붙었는지 체크하기 위한 플래그
+		bool bGroundFlag = false;
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -259,8 +261,19 @@ namespace ya
 				float CorrectionLength = CorrectionHit.length - objScale.y / 2.f;
 
 				if (CorrectionLength < 0.001f)
-				{
-					mGrounded = true;
+				{ // 바닥으로 부터 거리가 0.001f 미만일때
+					if (!mbGrounded && mJumpTimer < 0.0f)
+					{	// 착지하는지 체크
+						// ground가 아닌 상태(공중일 때)에서 jumpTimer가 종료 됐을 때(jump가 끝났을 때) jump->ground로 상태가 변화한 것으로 판단한다.
+						// jumpTimer가 0.0f 보다 크면 jump를 시작한 것이므로 jump 상태를 false로 바꾸지 않는다.
+						SetJumping(false);
+
+						if (mGroundEvent != nullptr)
+							mGroundEvent();
+					}
+
+					mbGrounded = true;
+					bGroundFlag |= true;
 
 					// 물체의 y 크기의 절반과 가운데에서 쏜 레이의 길이를 뺐을때
 					// 수치가 0보다 크면 물체는 땅을 뚫었다고 판단.
@@ -274,8 +287,16 @@ namespace ya
 						mTransform->SetPosition(correctionPos);
 					}
 				}
-				break;
 			}
+		}
+
+		if (!bGroundFlag)
+		{
+			if (mbGrounded)
+				if(mJumpEvent != nullptr)
+					mJumpEvent();
+
+			mbGrounded = false;
 		}
 
 		mGroundCross = mGroundNormal.Cross(Vector3::Up);
