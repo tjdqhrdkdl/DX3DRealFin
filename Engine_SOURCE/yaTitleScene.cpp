@@ -41,6 +41,8 @@
 #include "yaTenzen.h"
 #include "yaRedOgre.h"
 
+#include "UICanvas_InGame.h"
+
 namespace ya
 {
 	TitleScene::TitleScene()
@@ -53,15 +55,16 @@ namespace ya
 	void TitleScene::Initialize()
 	{
 		// Main Camera Game Object
-		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera);
-		cameraObj->SetName(L"MainCamera");
-		cameraObj->GetComponent<Transform>()->SetPosition(Vector3(20.0f, .0f, -80.0f));
-		Camera* cameraComp = cameraObj->AddComponent<Camera>();
-		cameraComp->SetProjectionType(Camera::eProjectionType::Perspective);
-		//cameraComp->RegisterCameraInRenderer();
-		cameraComp->TurnLayerMask(eLayerType::UI, false);
-		CameraScript* camScript = cameraObj->AddComponent<CameraScript>();
-		mainCamera = cameraComp;
+		{
+			GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera);
+			cameraObj->SetName(L"MainCamera");
+			cameraObj->GetComponent<Transform>()->SetPosition(Vector3(20.0f, .0f, -80.0f));
+			Camera* cameraComp = cameraObj->AddComponent<Camera>();
+			cameraComp->SetProjectionType(Camera::eProjectionType::Perspective);
+			//cameraComp->RegisterCameraInRenderer();
+			cameraComp->TurnLayerMask(eLayerType::UI, false);
+			CameraScript* camScript = cameraObj->AddComponent<CameraScript>();
+			mainCamera = cameraComp;
 
 
 		//Player* player = object::Instantiate<Player>(eLayerType::Player);
@@ -69,13 +72,24 @@ namespace ya
 		//player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 		//player->GetComponent<Transform>()->SetRotation(Vector3(15.0f, 45.0f, 0.0f));
 
-		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
+			/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
 
-		//camScript->SetTarget(player);
-		//player->SetCamera(cameraObj);
-		//SetPlayer(player);
+			//camScript->SetTarget(player);
+			//player->SetCamera(cameraObj);
+			//SetPlayer(player);
+		}
+
+		{
+			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera);
+			uiCam->SetName(L"UICamera");
+			uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
+			Camera* cameraComp = uiCam->AddComponent<Camera>();
+			cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
+			cameraComp->DisableLayerMasks();
+			cameraComp->TurnLayerMask(eLayerType::UI, true);
+		}
 
 		{
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
@@ -91,6 +105,14 @@ namespace ya
 			wallCollider->SetType(eColliderType::Box);
 			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
 			wall->AddComponent<WallScript>();
+		{
+			UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
+			ui->SetName(L"UICanvasObj_InGame");
+
+
+		}
+
+		//{
 
 			wall = object::Instantiate<GameObject>(eLayerType::Wall);
 			wall->SetName(L"wall1");
@@ -316,89 +338,89 @@ namespace ya
 			CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
 			CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
-			CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
-			CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
 			CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
 			CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
-			{
-				GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
-				directionalLight->SetName(L"directionalLight");
+		{
+			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
+			directionalLight->SetName(L"directionalLight");
 
-				directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 100.0f, 0.0f));
-				directionalLight->GetComponent<Transform>()->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
+			directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 100.0f, 0.0f));
+			directionalLight->GetComponent<Transform>()->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
 
-				Light* lightComp = directionalLight->AddComponent<Light>();
-				lightComp->SetType(eLightType::Directional);
-				lightComp->SetDiffuse(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-				lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-				lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
-			}
+			Light* lightComp = directionalLight->AddComponent<Light>();
+			lightComp->SetType(eLightType::Directional);
+			lightComp->SetDiffuse(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+		}
 
-			//{
-			//	GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
-			//	directionalLight->SetName(L"PointLight");
+		//{
+		//	GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
+		//	directionalLight->SetName(L"PointLight");
 
-			//	directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+		//	directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 
-			//	Light* lightComp = directionalLight->AddComponent<Light>();
-			//	lightComp->SetType(eLightType::Point);
-			//	lightComp->SetRadius(20.0f);
-			//	lightComp->SetDiffuse(Vector4(0.0f, 0.0f, 1.0f, 1.0f));
-			//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
-			//}
+		//	Light* lightComp = directionalLight->AddComponent<Light>();
+		//	lightComp->SetType(eLightType::Point);
+		//	lightComp->SetRadius(20.0f);
+		//	lightComp->SetDiffuse(Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+		//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+		//}
 
-			//{
-			//	GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
-			//	directionalLight->SetName(L"PointLight");
+		//{
+		//	GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
+		//	directionalLight->SetName(L"PointLight");
 
-			//	directionalLight->GetComponent<Transform>()->SetPosition(Vector3(-15.0f, 0.0f, 0.0f));
+		//	directionalLight->GetComponent<Transform>()->SetPosition(Vector3(-15.0f, 0.0f, 0.0f));
 
-			//	Light* lightComp = directionalLight->AddComponent<Light>();
-			//	lightComp->SetType(eLightType::Point);
-			//	lightComp->SetRadius(30.0f);
-			//	lightComp->SetDiffuse(Vector4(0.0f, 1.0f, 0.0f, 1.0f));
-			//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
-			//}
-			
-				//mMeshData = MeshData::LoadFromFbx(L"Player\\Mesh\\AM_M_9000.fbx");
-				//mMeshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000100.fbx", L"attack1");
-				////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
-				////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
-				////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
-				////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
-				//mMeshData->AnimationSave(L"Player\\AnimationData\\Player.animationdata");
-				//mMeshData->Instantiate(eLayerType::Monster);
+		//	Light* lightComp = directionalLight->AddComponent<Light>();
+		//	lightComp->SetType(eLightType::Point);
+		//	lightComp->SetRadius(30.0f);
+		//	lightComp->SetDiffuse(Vector4(0.0f, 1.0f, 0.0f, 1.0f));
+		//	lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+		//	lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+		//}
 
-				//mMeshData = std::make_shared<MeshData>();
-				//mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
-				//mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata");
-				//
-				//mMeshData->Instantiate(eLayerType::Monster);
+			//mMeshData = MeshData::LoadFromFbx(L"Player\\Mesh\\AM_M_9000.fbx");
+			//mMeshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000100.fbx", L"attack1");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
+			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
+			//mMeshData->AnimationSave(L"Player\\AnimationData\\Player.animationdata");
+			//mMeshData->Instantiate(eLayerType::Monster);
 
-
-				//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
-				//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
-				//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+			//mMeshData = std::make_shared<MeshData>();
+			//mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			//mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\Samurai.animationdata");
+			//
+			//mMeshData->Instantiate(eLayerType::Monster);
 
 
-				//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
 
 
-				//MeshData* newMeshData = new MeshData();
-				//newMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
-				//GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
-
-				//mMeshData = new MeshData();
+			//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
 
 
-				//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinalMesh_Join.fbx");
-				//mMeshData->Load(L"Map\\MeshData\\FinalMesh_Join.meshdata");
-				//
-				//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
+			//MeshData* newMeshData = new MeshData();
+			//newMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+			//GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
+
+			//mMeshData = new MeshData();
+
+
+			//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinalMesh_Join.fbx");
+			//mMeshData->Load(L"Map\\MeshData\\FinalMesh_Join.meshdata");
+			//
+			//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
 
         
         
@@ -407,13 +429,13 @@ namespace ya
 			//mMeshData->Load(L"Player\\MeshData\\AM_M_9000.meshdata");
 			//mMeshData = MeshData::LoadFromFbx(L"Player\\Mesh\\AM_M_9000.fbx");
 
-			//mMeshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000100.fbx", L"attack1");
-			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
-			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
-			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
-			////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
-			//mMeshData->AnimationSave(L"Player\\AnimationData\\Player.animationdata");
-			//mMeshData->Instantiate(eLayerType::Monster);
+		//mMeshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000100.fbx", L"attack1");
+		////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003007.fbx", L"attack2");			
+		////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_003055.fbx", L"attack3");
+		////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_007310.fbx", L"attack4");
+		////mMeshData->LoadAnimationFromFbx(L"Player\\IInteriorMinistry_Samurai\\Animation\\a000_008051.fbx", L"attack5");
+		//mMeshData->AnimationSave(L"Player\\AnimationData\\Player.animationdata");
+		//mMeshData->Instantiate(eLayerType::Monster);
 
 			//mMeshData = MeshData::LoadFromFbx(L"Monster\\SwordMan\\Mesh\\c1700_SwordMan.fbx");
 			//mMeshData->LoadAnimationFromFbx(L"Monster\\SwordMan\\Animation\\a000_400000.fbx", L"a000_400000");
@@ -485,61 +507,61 @@ namespace ya
 			//mMeshData->AnimationSave(L"Monster\\\SwordMan\\AnimationData\\SwordManAnimation_1.animationdata");
 			//mMeshData->Instantiate(eLayerType::Monster);
 
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_400000.fbx", L"TEST");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_003000.fbx", L"TEST1");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_000700.fbx", L"TEST2");			
-			//mMeshData->AnimationSave(L"Monster\\\MusketeerMan\\Animation\\MusketeerManAnimation_1.animationdata");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_400000.fbx", L"TEST");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_003000.fbx", L"TEST1");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\\MusketeerMan\\Animation\\a300_000700.fbx", L"TEST2");			
+		//mMeshData->AnimationSave(L"Monster\\\MusketeerMan\\Animation\\MusketeerManAnimation_1.animationdata");
 
 
 
-			//mMeshData = std::make_shared<MeshData>();
-			//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700_SpearMan.fbx");
+		//mMeshData = std::make_shared<MeshData>();
+		//mMeshData = MeshData::LoadFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Mesh\\c1700_SpearMan.fbx");
 
-			//mMeshData->Load(L"Monster\\\IInteriorMinistry_Samurai\\MeshData\\c1700_SpearMan.meshdata");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_400000.fbx", L"SpearMan_Boundary_Step1");
+		//mMeshData->Load(L"Monster\\\IInteriorMinistry_Samurai\\MeshData\\c1700_SpearMan.meshdata");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\\IInteriorMinistry_Samurai\\Animation\\a000_400000.fbx", L"SpearMan_Boundary_Step1");
 
-			//mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\SpearManAnimation_1.animationdata");
-			//mMeshData->Instantiate(eLayerType::Monster);
+		//mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\SpearManAnimation_1.animationdata");
+		//mMeshData->Instantiate(eLayerType::Monster);
 
-			//mMeshData = MeshData::LoadFromFbx(L"House\\Mesh\\House.fbx");
-			//mMeshData->Instantiate(eLayerType::Monster);
-
-
-			//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
-			//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
-			//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+		//mMeshData = MeshData::LoadFromFbx(L"House\\Mesh\\House.fbx");
+		//mMeshData->Instantiate(eLayerType::Monster);
 
 
-			//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
+		//mMeshData->GetAnimationCompleteEvent(L"attack1") = std::bind(&TitleScene::Test, this);
+		//mMeshData->GetAnimationStartEvent(L"attack2") = std::bind(&TitleScene::Test, this);
+		//mMeshData->GetAnimationEndEvent(L"attack2") = std::bind(&TitleScene::Test, this);
 
 
-			//MeshData* newMeshData = new MeshData();
-			//newMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
-			//GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
+		//mMeshData->GetAnimationFrameEvent(L"attack2", 10) = std::bind(&TitleScene::Test, this);
 
-			//mMeshData = new MeshData();
 
-			//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinMap.fbx");
-			
-			//mMeshData = std::make_shared<MeshData>();
-			//mMeshData->Load(L"Map\\MeshData\\FinMap.meshdata");
-			//
-			//mMeshData->Instantiate(eLayerType::Ground);
+		//MeshData* newMeshData = new MeshData();
+		//newMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\1700.meshdata");
+		//GameObject* player = newMeshData->Instantiate(eLayerType::Monster);
 
-			//mMeshData = MeshData::LoadFromFbx(L"Monster\\RedOgre\\Mesh\\c5020.fbx");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000402.fbx", L"a000_000402");
-			//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_003001.fbx", L"a000_003001");
-			//mMeshData->AnimationSave(L"Monster\\\RedOgre\\AnimationData\\RedOrge_Animation.animationdata");
-			//
-			//
-			//mMeshData = std::make_shared<MeshData>();
-			//mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
-			//mMeshData->AnimationLoad(L"Monster\\\RedOgre\\AnimationData\\RedOrge_Animation.animationdata");
-			//
-			//
-			//mMeshData->Instantiate(eLayerType::Monster);
+		//mMeshData = new MeshData();
 
-			//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinMap.fbx");
+		//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinMap.fbx");
+
+		//mMeshData = std::make_shared<MeshData>();
+		//mMeshData->Load(L"Map\\MeshData\\FinMap.meshdata");
+		//
+		//mMeshData->Instantiate(eLayerType::Ground);
+
+		//mMeshData = MeshData::LoadFromFbx(L"Monster\\RedOgre\\Mesh\\c5020.fbx");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_000402.fbx", L"a000_000402");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\RedOgre\\Animation\\a000_003001.fbx", L"a000_003001");
+		//mMeshData->AnimationSave(L"Monster\\\RedOgre\\AnimationData\\RedOrge_Animation.animationdata");
+		//
+		//
+		//mMeshData = std::make_shared<MeshData>();
+		//mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
+		//mMeshData->AnimationLoad(L"Monster\\\RedOgre\\AnimationData\\RedOrge_Animation.animationdata");
+		//
+		//
+		//mMeshData->Instantiate(eLayerType::Monster);
+
+		//mMeshData = MeshData::LoadFromFbx(L"Map\\Mesh\\FinMap.fbx");
 
 			//mMeshData = std::make_shared<MeshData>();
 			//mMeshData->Load(L"Map\\MeshData\\FinMap.meshdata");

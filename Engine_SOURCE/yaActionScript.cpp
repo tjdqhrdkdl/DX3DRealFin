@@ -278,10 +278,10 @@ namespace ya
 			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
 			{
 				//mRigidbody->SetVelocity(Vector3::Zero);
-				mForwardBlocked = true;
+				mbForwardBlocked = true;
 			}
 			else
-				mForwardBlocked = false;
+				mbForwardBlocked = false;
 		}
 
 	}

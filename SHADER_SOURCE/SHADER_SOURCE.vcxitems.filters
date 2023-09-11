@@ -121,5 +121,6 @@
     <None Include="$(MSBuildThisFileDirectory)Resource.hlsli" />
     <None Include="$(MSBuildThisFileDirectory)Blur.hlsli" />
     <None Include="$(MSBuildThisFileDirectory)BoneAnimation.hlsli" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\_DX3DRealFin%28Sekiro%29\SHADER_SOURCE\UserInterface.hlsli" />
   </ItemGroup>
 </Project>

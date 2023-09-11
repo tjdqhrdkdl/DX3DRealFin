@@ -12,6 +12,7 @@ namespace ya::graphics
 		, mUAVSlot(0)
 		, mWriteBuffer(nullptr)
 		, mReadBuffer(nullptr)
+		, mbCPUAccess()
 	{
 		
 		
@@ -22,18 +23,18 @@ namespace ya::graphics
 
 	}
 
-	bool StructedBuffer::Create(UINT size, UINT stride, eSRVType type, void* data, bool cpuAccess)
+	bool StructedBuffer::Create(UINT size, UINT count, eSRVType type, void* data, bool cpuAccess)
 	{
 		mType = type;
 		mSize = size;
-		mStride = stride;
-
+		mStride = count;
+		mbCPUAccess = cpuAccess;
 
 		setDiscription();
-		createBuffer(data);
+ 		createBuffer(data);
 		createView();
 
-		if (cpuAccess)
+		if (mbCPUAccess)
 		{
 			createRWBuffer();
 		}
@@ -45,7 +46,7 @@ namespace ya::graphics
 	{
 		if (mStride < bufferCount)
 		{
-			Create(mSize, bufferCount, eSRVType::SRV, data);
+			Create(mSize, bufferCount, eSRVType::SRV, data, mbCPUAccess);
 		}
 		else
 		{
@@ -156,7 +157,7 @@ namespace ya::graphics
 				return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	bool StructedBuffer::createRWBuffer()

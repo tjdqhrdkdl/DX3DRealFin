@@ -12,6 +12,11 @@ namespace ya::graphics
 	{
 	public:
 		Material();
+
+		//복사 생성자(UI에서 사용)
+		Material(const Material& _other) = default;
+		std::shared_ptr<Material> Clone() { return std::make_shared<Material>(*this); }
+
 		virtual ~Material();
 
 		virtual HRESULT Save(const std::wstring& path, FILE* file = nullptr) override;

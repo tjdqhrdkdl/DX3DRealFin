@@ -475,6 +475,7 @@ namespace ya::renderer
 		std::shared_ptr<Shader> uiShader = std::make_shared<Shader>();
 		uiShader->Create(eShaderStage::VS, L"UserInterfaceVS.hlsl", "main");
 		uiShader->Create(eShaderStage::PS, L"UserInterfacePS.hlsl", "main");
+		uiShader->SetBSState(eBSType::AlphaBlend);
 
 		Resources::Insert<Shader>(L"UIShader", uiShader);
 #pragma endregion
@@ -928,6 +929,10 @@ namespace ya::renderer
 		constantBuffers[(UINT)eCBType::LightMatrix] = new ConstantBuffer(eCBType::LightMatrix);
 		constantBuffers[(UINT)eCBType::LightMatrix]->Create(sizeof(LightMatrixCB));
 
+		constantBuffers[(UINT)eCBType::UniformData] = new ConstantBuffer(eCBType::UniformData);
+		constantBuffers[(UINT)eCBType::UniformData]->Create(sizeof(UniformDataCB));
+		
+
 #pragma endregion
 		#pragma region STRUCTED BUFFER
 		lightsBuffer = new graphics::StructedBuffer();
@@ -988,13 +993,11 @@ namespace ya::renderer
 
 #pragma endregion
 		#pragma region UI
-		std::shared_ptr <Texture> uiTexture = Resources::Find<Texture>(L"HPBarTexture");
 		std::shared_ptr<Shader> uiShader = Resources::Find<Shader>(L"UIShader");
 		std::shared_ptr<Material> uiMaterial = std::make_shared<Material>();
 		uiMaterial->SetRenderingMode(eRenderingMode::Transparent);
 	
 		uiMaterial->SetShader(uiShader);
-		uiMaterial->SetTexture(eTextureSlot::Albedo, uiTexture);
 		Resources::Insert<Material>(L"UIMaterial", uiMaterial);
 #pragma endregion
 		#pragma region GRID
