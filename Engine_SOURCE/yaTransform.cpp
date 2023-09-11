@@ -35,7 +35,7 @@ namespace ya
 	void Transform::FixedUpdate()
 	{
 		//렌더링에 사용될 위치값들을 업데이트
-
+			
 		// 월드 행렬 생성
 
 
@@ -75,7 +75,7 @@ namespace ya
 		mMatRotationOffset = rotationOffset;
 
 
-		mWorld = scale * rotationOffset * rotation * position;
+		mWorld = scale * rotation * position;
 		
 
 		if (mbCamera)

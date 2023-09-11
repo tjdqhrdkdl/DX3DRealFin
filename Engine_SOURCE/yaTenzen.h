@@ -48,18 +48,23 @@ namespace ya
         void Defense();
         void Trace();
         
+        void RotateForwardTo(Vector3 dir);
+        float GetDistanceToPlayer();
+        float EyeSightCheck();
+
+
         void DrawSwordEndEvent();
         void DefenseEndEvent();
         void AttackEndEvent();
         void TraceEndEvent();
 
-        void SwingSword1Frame12Event();
 
     private:
         std::shared_ptr<MeshData> mMeshData;
         GameObject* mKatanaCollider;
         Transform* mKatanaObjectTr;
         Transform* mKatanaHandleObjectTr;
+        Transform* mTransform;
         
         Collider2D* mCollider;
         class ActionScript* mActionScript;
@@ -68,6 +73,10 @@ namespace ya
         int mState;
 
         std::wstring mAnimationName;
+
+        float mAlertTime;
+        float mAlertTimeChecker;
+        Vector3 mPlayerLastPosition;
 	};
 
 }

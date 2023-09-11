@@ -26,6 +26,7 @@ namespace ya
 		, mbAnimChanging(false)
 		, mAnimChangeTime(0.2f)
 		, mAnimChangeTimeChecker(0)
+		, mAnimationTailTime(0.1)
 		
 	{
 		mBoneMatrixBuffer = new graphics::StructedBuffer();
@@ -60,14 +61,23 @@ namespace ya
 			std::wstring currentName = mAnimationClips->at(mCurrentClip).name;
 			Events* events = FindEvents(currentName);
 
-			if (mAnimationUpdateTime[mCurrentClip] >= mAnimationClips->at(mCurrentClip).timeLength - 0.05f)
+			if (mAnimationUpdateTime[mCurrentClip] >= mAnimationClips->at(mCurrentClip).timeLength - mAnimationTailTime)
 			{
 				//애니메이션 종료 + 루프 돎
-				mAnimationUpdateTime[mCurrentClip] = 0;
+				if (mAnimationSelfChangeBools[mCurrentClip])
+					mbAnimChanging = true;
+				else
+				{
+					mAnimationUpdateTime[mCurrentClip] = 0;
+					mbAnimChanging = false;
+				}
+				
 				mNextAnimName = currentName;
-				mbAnimChanging = false;
+
 				events->mCompleteEvent();
 				events->mEndEvent();
+
+				mbAnimationComplete = true;
 			}
 
 			mCurrentTime = mAnimationClips->at(mCurrentClip).startTime + mAnimationUpdateTime[mCurrentClip];
@@ -104,7 +114,9 @@ namespace ya
 				Events* events = nullptr;
 				events = FindEvents(mAnimationClips->at(mCurrentClip).name);
 
-				if (events)
+				if (mbAnimationComplete)
+					;
+				else if (events)
 					events->mEndEvent();
 
 				//새로운 애니메이션으로 변경
@@ -113,7 +125,9 @@ namespace ya
 
 				events = FindEvents(mAnimationClips->at(mCurrentClip).name);
 
-				if (events)
+				if (mbAnimationComplete)
+					mbAnimationComplete = false;
+				else if (events)
 					events->mStartEvent();
 
 
@@ -213,7 +227,7 @@ namespace ya
 	{
 		mAnimationClips = clips;
 		mAnimationUpdateTime.resize(mAnimationClips->size());
-		
+		mAnimationSelfChangeBools.resize(mAnimationClips->size());
 		for (size_t i = 0; i < mAnimationUpdateTime.size(); i++)
 		{
 			mAnimationNameAndIndexMap.insert(std::pair(clips->at(i).name, i));
@@ -222,6 +236,8 @@ namespace ya
 			Events* events = new Events();
 			events->mFrameEvents.resize(clips->at(i).endFrame);
 			mEvents.insert(std::make_pair(clips->at(i).name, events));
+
+			mAnimationSelfChangeBools[i] = true;
 		}
 	}
 

@@ -22,7 +22,8 @@ namespace ya
 		{
 			delete mBoneFrameDataVector[i];
 		}
-		delete mBoneOffset;
+		if(mBoneOffset != nullptr)
+			delete mBoneOffset;
 	}
 	std::shared_ptr<MeshData> MeshData::LoadFromFbx(const std::wstring& path)
 	{

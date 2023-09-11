@@ -540,8 +540,8 @@ namespace ya
 			//mMeshData = std::make_shared<MeshData>();
 			//mMeshData->Load(L"Map\\MeshData\\FinMap.meshdata");
 			//mMeshData->Instantiate(eLayerType::Ground);
-		}
-		//object::Instantiate<Tenzen>(eLayerType::Monster);
+		
+		object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 
