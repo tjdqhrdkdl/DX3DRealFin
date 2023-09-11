@@ -42,6 +42,8 @@
 #include "yaRedOgre.h"
 
 #include "UICanvas_InGame.h"
+#include "MapObjects.h"
+
 
 namespace ya
 {
@@ -199,13 +201,10 @@ namespace ya
 		}*/
 
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
+
+		
 
 
 
