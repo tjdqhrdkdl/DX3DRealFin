@@ -90,6 +90,10 @@ namespace ya
 			cameraComp->DisableLayerMasks();
 			cameraComp->TurnLayerMask(eLayerType::UI, true);
 		}
+		{
+			UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
+			ui->SetName(L"UICanvasObj_InGame");
+		}
 
 		{
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
@@ -105,12 +109,7 @@ namespace ya
 			wallCollider->SetType(eColliderType::Box);
 			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
 			wall->AddComponent<WallScript>();
-		{
-			UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
-			ui->SetName(L"UICanvasObj_InGame");
 
-
-		}
 
 		//{
 
