@@ -54,13 +54,33 @@ namespace ya
 
 	void Camera::Render()
 	{
+		sortGameObjects();
+
+		// View proj  행렬 direction light 껄로 바뀌어야한다.
+		Transform* tr = renderer::lights[0]->GetOwner()->GetComponent<Transform>();
+		View = CreateViewMatrix(tr);
+		Projection = CreateProjectionMatrix(eProjectionType::Perspective, 1600, 900, 1.0f, 1000.0f);
+
+		ConstantBuffer* lightCB = renderer::constantBuffers[(UINT)eCBType::LightMatrix];
+
+		LightMatrixCB data = {};
+		data.lightView = View;
+		data.lightProjection = Projection;
+		lightCB->SetData(&data);
+		lightCB->Bind(eShaderStage::VS);
+		lightCB->Bind(eShaderStage::PS);
+
+
+		// shadow
+		renderTargets[(UINT)eRTType::Shadow]->OmSetRenderTarget();
+		renderShadow();
+
 		View = mView;
 		InverseView = View.Invert();
 		Projection = mProjection;
 
 
-		sortGameObjects();
-
+	
 		// deffered opaque render
 		renderTargets[(UINT)eRTType::Deferred]->OmSetRenderTarget();
 		renderDeferred();
@@ -117,6 +137,30 @@ namespace ya
 		mView *= viewRotate;
 	}
 
+	Matrix Camera::CreateViewMatrix(Transform* tr)
+	{
+		Matrix view = Matrix::Identity;
+		Vector3 pos = tr->GetPosition();
+
+		// Crate Translate view matrix
+		view = Matrix::Identity;
+		view *= Matrix::CreateTranslation(-pos);
+		//회전 정보
+
+		Vector3 up = tr->Up();
+		Vector3 right = tr->Right();
+		Vector3 foward = tr->Forward();
+
+		Matrix viewRotate;
+		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
+		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
+		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
+
+		view *= viewRotate;
+
+		return view;
+	}
+
 	void Camera::CreateProjectionMatrix()
 	{
 		RECT winRect;
@@ -140,6 +184,29 @@ namespace ya
 		{
 			mProjection = Matrix::CreateOrthographicLH(width /*/ 100.0f*/, height /*/ 100.0f*/, mNear, mFar);
 		}
+	}
+
+	Matrix Camera::CreateProjectionMatrix(eProjectionType type, float width, float height, float Near, float Far)
+	{
+		Matrix proj = Matrix::Identity;
+
+		float AspectRatio = width / height;
+		if (mType == eProjectionType::Perspective)
+		{
+			proj = Matrix::CreatePerspectiveFieldOfViewLH
+			(
+				XM_2PI / 6.0f
+				, AspectRatio
+				, Near
+				, Far
+			);
+		}
+		else
+		{
+			proj = Matrix::CreateOrthographicLH(width /*/ 100.0f*/, height /*/ 100.0f*/, Near, Far);
+		}
+
+		return proj;
 	}
 
 	void Camera::RegisterCameraInRenderer()
@@ -177,6 +244,44 @@ namespace ya
 				}
 			}
 		}
+	}
+
+	void Camera::renderShadow()
+	{
+		for (GameObject* obj : mDeferredOpaqueGameObjects)
+		{
+			if (obj == nullptr)
+				continue;
+
+			obj->PrevRender();
+		}
+
+		//for (GameObject* obj : mOpaqueGameObjects)
+		//{
+		//	if (obj == nullptr)
+		//		continue;
+
+		//	obj->PrevRender();
+		//}
+
+		//for (GameObject* obj : mTransparentGameObjects)
+		//{
+		//	if (obj == nullptr)
+		//		continue;
+
+		//	obj->PrevRender();
+		//}
+
+		//for (GameObject* obj : mCutoutGameObjects)
+		//{
+		//	if (obj == nullptr)
+		//		continue;
+
+		//	obj->PrevRender();
+		//}
+
+
+
 	}
 
 	void Camera::renderDeferred()

@@ -91,6 +91,17 @@ namespace ya
 		}
 	}
 
+	void GameObject::PrevRender()
+	{
+		for (Component* comp : mComponents)
+		{
+			if (comp == nullptr)
+				continue;
+
+			comp->PrevRender();
+		}
+	}
+
 	void GameObject::Render()
 	{
 		for (Component* comp : mComponents)

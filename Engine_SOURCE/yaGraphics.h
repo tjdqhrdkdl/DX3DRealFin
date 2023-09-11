@@ -20,6 +20,7 @@
 #define CBSLOT_PARTICLESYSTEM	5
 #define CBSLOT_NOISE			6
 #define CBSLOT_BONEANIMATION	7
+#define CBSLOT_LIGHTMATRIX	    8
 
 using namespace ya::math;
 namespace ya::graphics
@@ -140,6 +141,7 @@ namespace ya::graphics
 		ParticleSystem,
 		Noise,
 		Bone,
+		LightMatrix,
 		End,
 	};
 
@@ -172,7 +174,8 @@ namespace ya::graphics
 		SpecularLightTarget,
 
 		Specular,
-
+		Emissive,
+		ShadowMap,
 		//CubeT8,
 		//CubeT9,
 

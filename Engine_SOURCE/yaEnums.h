@@ -15,6 +15,7 @@ namespace ya::enums
 		Camera,
 		Grid,
 		Ground,
+		Wall,
 		Logbridge,
 		HangingObject,
 		Hook,

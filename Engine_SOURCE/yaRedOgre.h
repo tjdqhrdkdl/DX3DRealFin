@@ -4,8 +4,7 @@
 
 namespace ya
 {
-    class RedOgre :
-        public MonsterBase
+    class RedOgre : public MonsterBase
     {
 
     public:
@@ -24,6 +23,11 @@ namespace ya
 
         Collider2D* mCollider;
         class ActionScript* mActionScript;
+
+        int mState;
+        int mBeforeState;
+
+        std::wstring mAnimationName;
     };
 }
 
