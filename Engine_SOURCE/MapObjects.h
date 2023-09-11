@@ -10,7 +10,9 @@ namespace ya
 		MapObjects();
 		virtual ~MapObjects();
 
+		virtual void Initialize() override;
 
+		
 		void LoadMapObject(const std::wstring& _wstrPath, 
 			float _positionX, float _positionY, float _positionZ, 
 			float _rotationX, float _rotationY, float _rotationZ, 

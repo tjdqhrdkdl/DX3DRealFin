@@ -42,6 +42,8 @@
 #include "yaRedOgre.h"
 
 #include "UICanvas_InGame.h"
+#include "MapObjects.h"
+
 
 namespace ya
 {
@@ -106,8 +108,8 @@ namespace ya
 			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
 			wall->AddComponent<WallScript>();
 		{
-			UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
-			ui->SetName(L"UICanvasObj_InGame");
+			//UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
+			//ui->SetName(L"UICanvasObj_InGame");
 
 
 		}
@@ -568,7 +570,8 @@ namespace ya
 			//mMeshData->Instantiate(eLayerType::Ground);
 
 			//object::Instantiate<Tenzen>(eLayerType::Monster);
-
+		
+		object::Instantiate<MapObjects>(eLayerType::Ground);
 		Scene::Initialize();
 	}
 	
