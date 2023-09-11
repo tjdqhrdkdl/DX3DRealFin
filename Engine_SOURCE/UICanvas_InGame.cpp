@@ -26,6 +26,11 @@ namespace ya
 		AddComponent<UIHPBarScript>();
 	}
 
+	void UICanvas_InGame::Render()
+	{
+
+	}
+
 
 	void UICanvas_InGame::CreateHP_HUD()
 	{

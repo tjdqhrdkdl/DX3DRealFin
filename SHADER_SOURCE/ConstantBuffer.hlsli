@@ -66,7 +66,7 @@ cbuffer ParticleSystem : register(b5)
 //    float4 NoiseSize;
 //}
 
-cbuffer UniformDataCB : register(b8)
+cbuffer UniformDataCB : register(b9)
 {
 	int int_0;
 	int int_1;
