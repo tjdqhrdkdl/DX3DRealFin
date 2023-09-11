@@ -69,13 +69,13 @@ namespace ya
 		player->GetComponent<Transform>()->SetPosition(Vector3(-13.0f, 0.0f, -10.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 
-		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
+		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 
-			//camScript->SetTarget(player);
-			//player->SetCamera(cameraObj);
-			//SetPlayer(player);
+		camScript->SetTarget(player);
+		player->SetCamera(cameraObj);
+		SetPlayer(player);
 		
 
 		{
