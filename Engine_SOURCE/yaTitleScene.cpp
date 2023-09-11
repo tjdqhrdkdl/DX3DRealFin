@@ -26,6 +26,7 @@
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaLogBridgeScript.h"
+#include "yaWallScript.h"
 
 #include "yaSpearman.h"
 #include "yaMusketeerman.h"
@@ -77,10 +78,53 @@ namespace ya
 		//SetPlayer(player);
 
 		{
+			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
+			wall->SetName(L"wall");
+			Transform* wallTr = wall->GetComponent<Transform>();
+			wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
+			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
+			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
+			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
+			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* wallCollider = wall->AddComponent<Collider2D>();
+			wallCollider->SetType(eColliderType::Box);
+			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+			wall->AddComponent<WallScript>();
 
-			Spearman* mSpearman = object::Instantiate<Spearman>(eLayerType::Monster);
+			wall = object::Instantiate<GameObject>(eLayerType::Wall);
+			wall->SetName(L"wall1");
+			wallTr = wall->GetComponent<Transform>();
+			wallTr->SetPosition(Vector3(0.f, 10.0f, 30.0f));
+			wallTr->SetScale(Vector3(50.f, 50.f, 4.f));
+			wallTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			wallRenderer = wall->AddComponent<MeshRenderer>();
+			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			wallCollider = wall->AddComponent<Collider2D>();
+			wallCollider->SetType(eColliderType::Box);
+			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+			wall->AddComponent<WallScript>();
+
+			wall = object::Instantiate<GameObject>(eLayerType::Wall);
+			wall->SetName(L"wall2");
+			wallTr = wall->GetComponent<Transform>();
+			wallTr->SetPosition(Vector3(-25.0f, 15.0f, 10.0f));
+			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
+			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
+			wallRenderer = wall->AddComponent<MeshRenderer>();
+			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			wallCollider = wall->AddComponent<Collider2D>();
+			wallCollider->SetType(eColliderType::Box);
+			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+			wall->AddComponent<WallScript>();
+		}
+
+		{
+			//Spearman* mSpearman = object::Instantiate<Spearman>(eLayerType::Monster);
 			//mSpearman->SetPlayerObject(player);
-			camScript->SetLockOnTarget(mSpearman);
+			//camScript->SetLockOnTarget(mSpearman);
 
 			//mSpearman->SetPlayerObject(player);
 			//MeshRenderer* spearmanmr = mSpearman->AddComponent<MeshRenderer>();
@@ -249,14 +293,6 @@ namespace ya
 		//		logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		//		logbridge->AddComponent<LogBridgeScript>();
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
-
-		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
-
-		CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
-
 
 
 		{
@@ -277,23 +313,28 @@ namespace ya
 		//	GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
 		//	directionalLight->SetName(L"PointLight");
 
+			CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
+			CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
-			//{
-			//		GameObject* logbridge = object::Instantiate<GameObject>(eLayerType::Logbridge);
-			//		logbridge->SetName(L"LogBridge");
-			//		Transform* logbridgeTr = logbridge->GetComponent<Transform>();
-			//		logbridgeTr->SetPosition(Vector3(0.0f, -6.0f, 10.0f));
-			//		logbridgeTr->SetScale(Vector3(10.0f, 2.0f, 50.0f));
-			//		logbridgeTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			//		MeshRenderer* logbridgeRenderer = logbridge->AddComponent<MeshRenderer>();
-			//		logbridgeRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//		logbridgeRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"),0);
-			//		Collider2D* logbridgeCollider = logbridge->AddComponent<Collider2D>();
-			//		logbridgeCollider->SetType(eColliderType::Box);
-			//		logbridgeCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			//		logbridge->AddComponent<LogBridgeScript>();
+			CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
+			CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
-		
+			CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
+			CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
+
+			{
+				GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
+				directionalLight->SetName(L"directionalLight");
+
+				directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 100.0f, 0.0f));
+				directionalLight->GetComponent<Transform>()->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
+
+				Light* lightComp = directionalLight->AddComponent<Light>();
+				lightComp->SetType(eLightType::Directional);
+				lightComp->SetDiffuse(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+				lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+				lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+			}
 
 			//{
 			//	GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);

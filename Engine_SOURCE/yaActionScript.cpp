@@ -9,6 +9,7 @@
 #include "yaCollider2D.h"
 
 #include "yaPlayer.h"
+#include "yaWallScript.h"
 
 #include <assert.h>
 
@@ -38,6 +39,7 @@ namespace ya
 		, mRunning(false)
 		, mJumping(false)
 		, mGrounded(false)
+		, mForwardBlocked(false)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
 	{
@@ -61,6 +63,7 @@ namespace ya
 	{
 		assert(GetOwner() != nullptr);
 
+		//ForwardCheck();
 		CheckGround();
 
 		if (mJumpTimer > 0.0f)
@@ -84,6 +87,59 @@ namespace ya
 			swprintf_s(szFloat, 50, L"ground");
 			TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
 		}*/
+	}
+
+	void ActionScript::OnCollisionEnter(Collider2D* collider)
+	{
+		GameObject* colObj = collider->GetOwner();
+		Transform* colTransform = colObj->GetComponent<Transform>();
+
+		GameObject* obj = GetOwner();
+		Transform* objTransform = obj->GetComponent<Transform>();
+
+		// 벽 충돌
+		if (nullptr != colObj->GetScript<WallScript>())
+		{
+			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+
+			Vector3 velocity = objRigidbody->GetVelocity();
+			Vector3 pos = objTransform->GetPosition();
+
+			pos -= velocity * Time::DeltaTime();
+			objTransform->SetPosition(pos);
+		}
+	}
+
+	void ActionScript::OnCollisionStay(Collider2D* collider)
+	{
+		GameObject* colObj = collider->GetOwner();
+		Transform* colTransform = colObj->GetComponent<Transform>();
+
+		GameObject* obj = GetOwner();
+		Transform* objTransform = obj->GetComponent<Transform>();
+
+		// 벽 충돌
+		if (nullptr != colObj->GetScript<WallScript>())
+		{
+			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+
+			Vector3 wallNormal = colTransform->Right();
+
+			Vector3 objVelocity = objRigidbody->GetVelocity();
+			Vector3 objPos = objTransform->GetPosition();
+
+			Vector3 projvec = wallNormal * objVelocity;
+			projvec *= wallNormal;
+
+			objVelocity -= projvec;
+
+			objPos -= objVelocity * Time::DeltaTime();
+			objTransform->SetPosition(objPos);
+		}
+	}
+
+	void ActionScript::OnCollisionExit(Collider2D* collider)
+	{
 	}
 
 	/// <summary>
@@ -189,16 +245,59 @@ namespace ya
 		// 패링 이펙트 발생
 	}
 	
+	void ActionScript::ForwardCheck()
+	{
+		Vector3 position = mTransform->GetPosition();
+		Vector3 scale = mTransform->GetScale();
+		Vector3 colScale = mCollider->GetSize();
+		Vector3 velocity = mRigidbody->GetVelocity();
+
+		colScale *= scale;
+
+		Vector3 top = position;
+		top.y += colScale.y * 0.5f;
+
+		Vector3 middle = position;
+
+		Vector3 bottom = position;
+		bottom.y -= colScale.y * 0.5f;
+
+		Vector3 rayDirection = mTransform->Forward();
+
+		std::vector<eLayerType> layers;
+		layers.push_back(eLayerType::Wall);
+
+		RayHit ForwardHit[3];
+		ForwardHit[0] = CollisionManager::RayCast(GetOwner(), top, rayDirection, layers);
+		ForwardHit[1] = CollisionManager::RayCast(GetOwner(), middle, rayDirection, layers);
+		ForwardHit[2] = CollisionManager::RayCast(GetOwner(), bottom, rayDirection, layers);
+
+		for (int i = 0; i < 3; ++i)
+		{
+			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
+			{
+				//mRigidbody->SetVelocity(Vector3::Zero);
+				mForwardBlocked = true;
+			}
+			else
+				mForwardBlocked = false;
+		}
+
+	}
+
 	// 땅, 경사로 체크. 일단 가운데 레이만 사용함..
 	void ActionScript::CheckGround()
 	{
 		Vector3 position = mTransform->GetPosition();
+		Vector3 objPos = mCollider->GetCenter();
 		Vector3 Scale = mTransform->GetScale();
 		Vector3 objScale = mCollider->GetSize();
+
+		position += objPos;
 		objScale *= Scale;
 
 		// 지형체크용 레이의 시작점은 포지션의 맨아래에서 시작
-		Vector3 rayPosition = mTransform->GetPosition();
+		Vector3 rayPosition = position;//mTransform->GetPosition();
 		rayPosition.y -= objScale.y / 2.f;
 
 		// z의 크기 절반 만큼의 크기를 가진 forward 벡터와 위에서 설정한 위치 벡터를 더하여
@@ -265,12 +364,13 @@ namespace ya
 					// 물체의 y 크기의 절반과 가운데에서 쏜 레이의 길이를 뺐을때
 					// 수치가 0보다 크면 물체는 땅을 뚫었다고 판단.
 					float overPos = objScale.y / 2.f - CorrectionHit.length;
-					Vector3 correctionPos = position;
+					Vector3 correctionPos = mTransform->GetPosition();
 
 					// 땅을 뚫을때
 					if (0.f < overPos)
 					{
 						correctionPos.y += overPos;
+						//correctionPos -= objPos;
 						mTransform->SetPosition(correctionPos);
 					}
 				}

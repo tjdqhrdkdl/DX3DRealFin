@@ -1,6 +1,9 @@
 #include "yaRedOgre.h"
 #include "yaMeshData.h"
 #include "yaActionScript.h"
+#include "yaBoneAnimator.h"
+#include "yaBoneCollider.h"
+#include "yaInput.h"
 
 
 namespace ya
@@ -11,6 +14,8 @@ namespace ya
 		, mRHandCollider(nullptr)
 		, mCollider(nullptr)
 		, mActionScript(nullptr)
+		, mState(0)
+		, mBeforeState(0)
 	{
 	}
 
@@ -70,7 +75,18 @@ namespace ya
 		meshTr->SetRotationOffset(Vector3(0, 1.5, 0));
 		meshTr->SetParent(GetComponent<Transform>());
 
+		//무기 콜라이더 추가
+		//Initialize
+		BoneCollider* LHand = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+		LHand->SetMeshAndBone(mMeshData, L"L_Hand");
 
+		//LHand->SetAnimOffSet(L"a100_003005", Vector3(1, 0.5, 1));
+		LHand->SetColliderActiveFrame(L"a100_003005", 1, 17);
+
+		LHand->SetScale(Vector3(2, 0.3, 0.3));
+		mLHandCollider = LHand;
+
+		// 피격 충돌체
 		Collider2D* mCollider = AddComponent<Collider2D>();
 		mCollider->SetType(eColliderType::Box);
 		mCollider->SetSize(Vector3(1.0, 3.0f, 1.0f));
@@ -79,11 +95,19 @@ namespace ya
 		mActionScript = AddComponent<ActionScript>();
 		assert(mActionScript);
 
+		mAnimationName = L"a100_003005";
+
 		MonsterBase::Initialize();
 	}
 
 	void ya::RedOgre::Update()
 	{
+		if (Input::GetKeyDown(eKeyCode::N_1))
+			mMeshData->Play(L"a000_000401");
+
+		if (Input::GetKeyDown(eKeyCode::N_2))
+			mMeshData->Play(L"a000_000402");
+
 		MonsterBase::Update();
 	}
 
