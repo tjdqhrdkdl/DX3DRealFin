@@ -19,7 +19,7 @@ namespace ya
 	void MapObjects::LoadMapObject(const std::wstring& _wstrPath,
 		float _positionX, float _positionY, float _positionZ,
 		float _rotationX, float _rotationY, float _rotationZ,
-		float _scaleX = 0.f, float _scaleY = 0.f, float _scaleZ = 0.f)
+		float _scaleX, float _scaleY, float _scaleZ)
 	{
 		std::shared_ptr<MeshData> meshdata = Resources::Load<MeshData>(_wstrPath, _wstrPath);
 		assert(nullptr != meshdata);

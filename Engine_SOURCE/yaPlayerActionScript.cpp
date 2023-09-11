@@ -32,14 +32,27 @@ namespace ya
 	{
 		ActionScript::Initialize();
 
+		GameObject* owner = GetOwner();
 		mPlayer = dynamic_cast<Player*>(GetOwner());
 		mPlayerAnim = mPlayer->GetScript<PlayerMeshScript>();
+
+		GetJumpEvent() = [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+			playerAnim->Play(L"a000_201030");
+			player->SetStateFlag(ePlayerState::Jump, true);
+		};
+
+		GetGroundEvent() = [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+			playerAnim->Play(L"a000_201040");
+			player->SetStateFlag(ePlayerState::Jump, false);
+		};
 	}
 
 	void PlayerActionScript::Update()
 	{
-		CheckGround();
-
 		Walk();
 		Run();
 
@@ -64,7 +77,7 @@ namespace ya
 			mPlayerAnim->Play(L"a000_200000");
 		}
 
-		if (Input::GetKey(eKeyCode::SPACE))
+		if (Input::GetKeyDown(eKeyCode::SPACE))
 		{
 			mPlayer->SetStateFlag(ePlayerState::Jump, true);
 			SetJumping(true);

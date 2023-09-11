@@ -108,6 +108,13 @@ namespace ya
 		}
 	}
 
+	void Transform::PrevRender()
+	{
+
+
+
+	}
+
 	void Transform::Render()
 	{
 	}

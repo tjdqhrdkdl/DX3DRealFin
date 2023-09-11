@@ -17,7 +17,7 @@ namespace ya
 		: Script()
 		, mAttackState(eAttackState::None)
 		, mTimer{0.0f}
-		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.3f, 0.3f, 0.3f,  0.8f, 0.8f, 0.1f }
+		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.8f }
 		, mbKeyInput(false)
 	{
 	}
@@ -62,14 +62,7 @@ namespace ya
 				if (player->IsStateFlag(ePlayerState::Jump))
 				{
 					mAttackState = eAttackState::JumpAttack1;
-					if (player->IsStateFlag(ePlayerState::Jump))
-					{
-						playerAnim->Play(L"a050_308000");
-					}
-					else
-					{
-						playerAnim->Play(L"a050_308050");
-					}
+					playerAnim->Play(L"a050_308010");
 				}
 				else if (player->IsStateFlag(ePlayerState::Crouch))
 				{
@@ -277,11 +270,11 @@ namespace ya
 
 					if (player->IsStateFlag(ePlayerState::Jump))
 					{
-						playerAnim->Play(L"a050_308010");
+						playerAnim->Play(L"a050_308000");
 					}
 					else
 					{
-						playerAnim->Play(L"a050_308060");
+						playerAnim->Play(L"a050_308050");
 					}
 				}
 				else
@@ -317,10 +310,10 @@ namespace ya
 			{
 				if (mbKeyInput)
 				{
-					mAttackState = eAttackState::JumpAttack2;
+					mAttackState = eAttackState::JumpAttack3;
 					if (player->IsStateFlag(ePlayerState::Jump))
 					{
-						playerAnim->Play(L"a050_308010");
+						playerAnim->Play(L"a050_308060");
 					}
 					else
 					{
@@ -358,15 +351,32 @@ namespace ya
 		{
 			if (mTimer[(UINT)eAttackState::JumpAttack3] <= 0.0f)
 			{
-				mAttackState = eAttackState::None;
-				if (player->IsStateFlag(ePlayerState::Jump))
+				if (mbKeyInput)
 				{
+					if (player->IsStateFlag(ePlayerState::Jump))
+					{
+						mAttackState = eAttackState::JumpAttack1;
+						playerAnim->Play(L"a050_308010");
+					}
+					else
+					{
+						mAttackState = eAttackState::Attack1;
+						playerAnim->Play(L"a050_300100");
+					}
 				}
 				else
 				{
-					playerAnim->Play(L"a000_000000");
+					mAttackState = eAttackState::None;
+					if (player->IsStateFlag(ePlayerState::Jump))
+					{
+						playerAnim->Play(L"a000_201030");
+					}
+					else
+					{
+						playerAnim->Play(L"a000_000000");
+					}
+					player->SetStateFlag(ePlayerState::Attack, false);
 				}
-				player->SetStateFlag(ePlayerState::Attack, false);
 
 				mTimer[(UINT)eAttackState::JumpAttack3] = mTimerMax[(UINT)eAttackState::JumpAttack3];
 				mbKeyInput = false;
@@ -374,6 +384,11 @@ namespace ya
 			else
 			{
 				mTimer[(UINT)eAttackState::JumpAttack3] -= Time::DeltaTime();
+			}
+
+			if (Input::GetKeyDown(eKeyCode::LBTN))
+			{
+				mbKeyInput = true;
 			}
 		}
 		break;

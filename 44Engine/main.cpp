@@ -80,14 +80,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         else
         {
             application.Run();
-            editor.Run();
+            //editor.Run();
             application.Present();
         }
     }
 
     ya::SceneManager::Release();
     application.Release();
-    editor.Release();
+    //editor.Release();
     return (int) msg.wParam;
 }
 
@@ -147,7 +147,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    application.SetWindow(hWnd, 1600, 900);
    application.Initialize();
-   editor.Initialize();
+   //editor.Initialize();
 
    return TRUE;
 }

@@ -81,6 +81,9 @@ namespace ya
                 meshData->GetAnimationEndEvent(L"a000_000013") = [meshData]() { meshData->Play(L"a000_000500"); };
                 meshData->GetAnimationEndEvent(L"a000_200000") = [meshData]() { meshData->Play(L"a000_000000"); };
                 meshData->GetAnimationEndEvent(L"a000_001510") = [meshData]() { meshData->Play(L"a000_000000"); };
+                meshData->GetAnimationEndEvent(L"a050_308000") = [meshData]() { meshData->Play(L"a000_201030"); };
+                meshData->GetAnimationEndEvent(L"a050_308010") = [meshData]() { meshData->Play(L"a000_201030"); };
+                meshData->GetAnimationEndEvent(L"a000_201040") = [meshData]() { meshData->Play(L"a000_000000"); };
             }
 
             Play(L"a000_000000");
@@ -1382,10 +1385,10 @@ namespace ya
                 meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_02xxxx.animationdata");
                 meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_10xxxx.animationdata");
                 meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_11xxxx.animationdata");
-                meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_19xxxx.animationdata");
+                //meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_19xxxx.animationdata");
                 meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_200xxx.animationdata");
-                /* meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_20xxxx.animationdata");
-                meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_21xxxx.animationdata");
+                meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_20xxxx.animationdata");
+                 /* meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_21xxxx.animationdata");
                 meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_22xxxx.animationdata");
                 meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_25xxxx.animationdata");
                 meshData->AnimationLoad(L"Player\\AnimationData\\" + name + L"_a000_299xxx.animationdata");

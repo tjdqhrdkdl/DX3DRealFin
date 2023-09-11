@@ -110,7 +110,13 @@ namespace ya::renderer
 		BOOL animChange;
 	};
 
-	CBUFFER(UniformDataCB, CBSLOT_BONEANIMATION)
+	CBUFFER(LightMatrixCB, CBSLOT_LIGHTMATRIX)
+	{
+		Matrix lightView;
+		Matrix lightProjection;
+	};
+
+	CBUFFER(UniformDataCB, CBSLOT_UNIFORM_DATA)
 	{
 		int int_0{};
 		int int_1{};
