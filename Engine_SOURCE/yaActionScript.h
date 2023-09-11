@@ -66,6 +66,7 @@ namespace ya
 		bool mbRunning;
 		bool mbJumping;
 		bool mbGrounded;
+		bool mbForwardBlocked;
 
 		/// <summary> 점프 상태가 시작될때 발생하는 이벤트 </summary>
 		std::function<void()> mJumpEvent;
