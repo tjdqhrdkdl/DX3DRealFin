@@ -172,6 +172,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MapObjects.h" />
     <ClInclude Include="UICanvasObj.h" />
     <ClInclude Include="UICanvas_InGame.h" />
     <ClInclude Include="UIHPBarScript.h" />
@@ -266,6 +267,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaBoneCollider.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MapObjects.cpp" />
     <ClCompile Include="UICanvasObj.cpp" />
     <ClCompile Include="UICanvas_InGame.cpp" />
     <ClCompile Include="UIHPBarScript.cpp" />

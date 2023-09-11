@@ -257,6 +257,7 @@
     <ClCompile Include="UIHPBarScript.cpp">
       <Filter>Contents\UI</Filter>
     </ClCompile>
+    <ClCompile Include="MapObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -536,6 +537,7 @@
     <ClInclude Include="UINames.h">
       <Filter>Contents\UI</Filter>
     </ClInclude>
+    <ClInclude Include="MapObjects.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

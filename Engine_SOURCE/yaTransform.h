@@ -31,8 +31,11 @@ namespace ya
 
 
 		void SetPosition(Vector3 position) { mPosition = position; };
+		void SetPosition(float _x, float _y, float _z) { mPosition.x = _x; mPosition.y = _y; mPosition.z = _z; }
 		void SetRotation(Vector3 degree) { mRotation = degree; };
+		void SetRotation(float _x, float _y, float _z) { mRotation.x = _x; mRotation.y = _y; mRotation.z = _z; };
 		void SetScale(Vector3 scale) { mScale = scale; };
+		void SetScale(float _x, float _y, float _z) { mScale.x = _x; mScale.y = _y; mScale.z = _z; };
 		void SetRotationOffset(Vector3 offset) { mRotationOffset = offset; };
 
 		Vector3 Forward() { return mForward; }
