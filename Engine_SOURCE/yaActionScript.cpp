@@ -38,6 +38,7 @@ namespace ya
 		, mbRunning(false)
 		, mbJumping(false)
 		, mbGrounded(false)
+		, mbForwardBlocked(false)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
 		, mJumpEvent(nullptr)
