@@ -84,7 +84,7 @@ void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout Lig
     // Directional
     if (0 == lightInfo.type)
     {
-        viewLightDir = normalize(mul(float4(lightInfo.direction.xyz, 0.0f), view));
+        viewLightDir = normalize(mul(float4(lightInfo.direction.xyz, 0.0f), view)).xyz;;
 
         //view space 상에서 빛의 세기를 구함
         fDiffPow = saturate(dot(-viewLightDir, viewNormal));
@@ -112,7 +112,7 @@ void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout Lig
     else if (1 == lightInfo.type)
     {   
         // view space 상에서 광원의 위치를 알아낸다.
-        float3 vLightViewPos = mul(float4(lightInfo.position.xyz, 1.0f), view);
+        float3 vLightViewPos = mul(float4(lightInfo.position.xyz, 1.0f), view).xyz;;
         
         // 광원의 위치에서 표면을 향하는 벡터
         viewLightDir = viewPos - vLightViewPos;

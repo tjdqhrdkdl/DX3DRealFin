@@ -8,7 +8,7 @@ namespace ya
         public MonsterBase
     {
     public:
-
+        
         virtual void Initialize() override;
         //virtual void Update() override;
         virtual void FixedUpdate() override;

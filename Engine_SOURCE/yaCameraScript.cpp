@@ -270,6 +270,12 @@ namespace ya
 		if (mbLockOn)
 		{
 			Transform* monTr = mLockOnTarget->GetComponent<Transform>();
+			if (monTr == nullptr)
+			{
+				mbLockOn = false;
+				return;
+			}
+
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 dir = mDelayedTargetPos - monPos;
 			dir.Normalize();

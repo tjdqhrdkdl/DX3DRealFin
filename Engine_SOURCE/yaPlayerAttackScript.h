@@ -3,39 +3,34 @@
 
 namespace ya
 {
-	class PlayerAttackScript : public ActionScript
+	class PlayerAttackScript : public Script
 	{
+	public:
 		enum class eAttackState
 		{
 			None,
-			Attack1,	// 7
-			Attack2,	// 2
-			Attack3,	// 3
-			Attack4,	// 9
-			Attack5,	// 5 
 
-			JumpAttack1,
-			JumpAttack2,
+			Attack1,			// a050_300100 // 7	
+			Attack2,			// a050_305101 // 2	
+			Attack3,			// a050_300020 // 3
+			Attack4,			// a050_300030 // 9
+			Attack5,			// a050_300040 // 5 
 
-			CrouchAttack1,
+			JumpAttack1,		// a050_308000  a050_308050
+			JumpAttack2,		// a050_308010	a050_308060
+			JumpAttack3,		// a050_308020	a050_308070
 
-			HangAttack1,
+			CrouchAttack1,		// a050_301050
 
-			Block,
+			HangAttack1,		// a050_314000
+
+			Block,				// a050_002000
 
 			End,
 		};
 
-		/*
-		- 스탠딩 공격
-		- 이동하면서 공격
-		- 점프하면서 공격
-		- 매달린채로 공격
-		
+//		- 가드
 
-		- 가드
-
-		*/
 
 	public:
 		PlayerAttackScript();
@@ -53,6 +48,7 @@ namespace ya
 		eAttackState mAttackState;
 		float mTimer[(UINT)eAttackState::End];
 		float mTimerMax[(UINT)eAttackState::End];
+		bool mbKeyInput;
 
 		class GameObject* mAttackProjectile;
 
