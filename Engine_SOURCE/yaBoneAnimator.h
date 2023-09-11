@@ -53,6 +53,7 @@ namespace ya
 		void CheckBone();
 		void SetBones(const std::vector<BoneMatrix>* bones)
 		{
+			mBoneMatrixBuffer = new graphics::StructedBuffer();
 			mBones = bones;
 			mAnimaitonBoneMatrix.resize(mBones->size());
 		}
@@ -83,6 +84,8 @@ namespace ya
 		bool isChanging() { return mbAnimChanging; }
 
 		void SetAnimationTailTime(float time) { mAnimationTailTime = time; }
+
+		void SetParentAnimator(BoneAnimator* animator) { mParentAnimator = animator; }
 	private:
 		const std::vector<BoneMatrix>* mBones;
 		const std::vector<BoneAnimationClip>* mAnimationClips;
@@ -121,5 +124,7 @@ namespace ya
 		//애니메이션 끝부분 자르기
 		float mAnimationTailTime;
 
+		//부모 본애니메이터
+		BoneAnimator* mParentAnimator;
 	};
 }

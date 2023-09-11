@@ -27,6 +27,10 @@ namespace ya
 	}
 	std::shared_ptr<MeshData> MeshData::LoadFromFbx(const std::wstring& path)
 	{
+		std::shared_ptr<MeshData> ret = Resources::Find<MeshData>(std::filesystem::path(path).stem());
+		if(ret)
+			return ret;
+
 		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
 		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
 		
@@ -713,11 +717,16 @@ namespace ya
 			if (mAnimationClipCount > 0)
 			{
 				BoneAnimator* animator = gameObj->AddComponent<BoneAnimator>();
-				animator->SetBones(&mBones);
-				animator->SetAnimaitionClip(&mAnimClip);
+
 
 				if (i == 0)
-					mRepresentBoneAnimator = animator;
+				{
+					mRepresentBoneAnimator = animator;		
+					animator->SetBones(&mBones);
+					animator->SetAnimaitionClip(&mAnimClip);
+				}
+				else
+					animator->SetParentAnimator(mRepresentBoneAnimator);
 			}
 		}
 		
@@ -727,11 +736,7 @@ namespace ya
 	}
 	void MeshData::Play(const std::wstring animName)
 	{
-		for (size_t i = 0; i < mChildObjects.size(); i++)
-		{
-			BoneAnimator* animator = mChildObjects[i]->GetComponent<BoneAnimator>();
-			animator->Play(animName);
-		}
+		mRepresentBoneAnimator->Play(animName);
 	}
 	std::wstring MeshData::GetPlayAnimationName()
 	{

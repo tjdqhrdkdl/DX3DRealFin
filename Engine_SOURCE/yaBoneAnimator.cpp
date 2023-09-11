@@ -29,14 +29,15 @@ namespace ya
 		, mAnimationTailTime(0.1)
 		
 	{
-		mBoneMatrixBuffer = new graphics::StructedBuffer();
 	}
 
 	BoneAnimator::~BoneAnimator()
 	{
-		delete mBoneMatrixBuffer;
-		mBoneMatrixBuffer = nullptr;
-
+		if (mParentAnimator==nullptr)
+		{
+			delete mBoneMatrixBuffer;
+			mBoneMatrixBuffer = nullptr;
+		}
 		for (auto evt : mEvents)
 		{
 			delete evt.second;
@@ -54,7 +55,7 @@ namespace ya
 
 	void BoneAnimator::FixedUpdate()
 	{
-		if (!mbAnimChanging)
+		if (!mbAnimChanging && !mParentAnimator)
 		{
 			mCurrentTime = 0.0f;
 			mAnimationUpdateTime[mCurrentClip] += Time::DeltaTime();
@@ -100,7 +101,7 @@ namespace ya
 			mRatio = (float)(dFrameIdx - (double)mFrameIdx);
 		}
 		
-		else
+		else if (!mParentAnimator)
 		{
 			mAnimChangeTimeChecker += Time::DeltaTime();
 
@@ -144,7 +145,7 @@ namespace ya
 
 	void BoneAnimator::Binds()
 	{
-		if (!mbFinalMatrixUpdate)
+		if (!mbFinalMatrixUpdate && !mParentAnimator)
 		{
 			//Compute shader
 			std::shared_ptr<BoneShader> boneShader
@@ -178,6 +179,8 @@ namespace ya
 
 			mbFinalMatrixUpdate = true;
 		}
+		else if (mParentAnimator)
+			mBoneMatrixBuffer = mParentAnimator->mBoneMatrixBuffer;
 
 		mBoneMatrixBuffer->BindSRV(eShaderStage::VS, 30);
 	}
