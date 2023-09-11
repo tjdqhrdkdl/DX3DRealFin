@@ -110,6 +110,12 @@ namespace ya::renderer
 		BOOL animChange;
 	};
 
+	CBUFFER(LightMatrixCB, CBSLOT_LIGHTMATRIX)
+	{
+		Matrix lightView;
+		Matrix lightProjection;
+	};
+
 
 	extern Vertex vertexes[4];
 	extern Camera* mainCamera;

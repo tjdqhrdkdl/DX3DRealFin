@@ -3,7 +3,8 @@
 #include "yaTransform.h"
 #include "yaAnimator.h"
 #include "yaBoneAnimator.h"
-
+#include "yaMaterial.h"
+#include "yaResources.h"
 
 namespace ya
 {
@@ -26,6 +27,42 @@ namespace ya
 
 	void MeshRenderer::FixedUpdate()
 	{
+	}
+
+	void MeshRenderer::PrevRender()
+	{
+
+		std::shared_ptr<Material> material
+			= Resources::Find<Material>(L"ShadowMapMaterial");
+
+		material->Bind();
+
+		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
+		BoneAnimator* animator
+			= GetOwner()->GetComponent<BoneAnimator>();
+
+		UINT subSetCount = GetMesh()->GetSubSetCount();
+		for (size_t i = 0; i < subSetCount; i++)
+		{
+			if (animator)
+			{
+				animator->Binds();
+				GetMaterial(i)->SetAnimation(true);
+
+			}
+
+			GetMesh()->BindBuffer(i);
+			GetMaterial(i)->Bind();
+			GetMesh()->Render(i);
+
+			GetMaterial(i)->Clear();
+		}
+
+		if (animator)
+		{
+			animator->ClearData();
+		}
+	
 	}
 
 	void MeshRenderer::Render()

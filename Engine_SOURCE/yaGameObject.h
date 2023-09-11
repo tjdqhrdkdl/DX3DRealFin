@@ -21,6 +21,7 @@ namespace ya
 		virtual void Initialize();
 		virtual void Update();
 		virtual void FixedUpdate();
+		virtual void PrevRender();
 		virtual void Render();
 
 		template <typename T>
