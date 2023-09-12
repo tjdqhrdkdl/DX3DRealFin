@@ -258,6 +258,9 @@
       <Filter>Contents\UI</Filter>
     </ClCompile>
     <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="CSVEditor.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -538,6 +541,9 @@
       <Filter>Contents\UI</Filter>
     </ClInclude>
     <ClInclude Include="MapObjects.h" />
+    <ClInclude Include="CSVEditor.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

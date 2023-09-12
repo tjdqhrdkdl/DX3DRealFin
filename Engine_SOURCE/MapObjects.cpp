@@ -3,6 +3,8 @@
 #include "yaResources.h"
 #include "yaMeshData.h"
 #include "yaTransform.h"
+#include "CSVEditor.h"
+
 
 namespace ya
 {
@@ -19,6 +21,14 @@ namespace ya
 	void MapObjects::Initialize()
 	{
 		SetName(L"map");
+
+		std::fs::path csvPath(gResPath);
+		csvPath /= L"Map";
+		csvPath /= L"SekiroMapMeshData.csv";
+		std::fs::path abs = std::fs::absolute(csvPath);
+		CSVEditor csv{};
+		csv.ReadFile(csvPath);
+
 		LoadMapObject(L"Map\\Mesh\\m11_00_00_00_260000.fbx",
 			90, 3, -40,		 
 			0, 20, 0);
