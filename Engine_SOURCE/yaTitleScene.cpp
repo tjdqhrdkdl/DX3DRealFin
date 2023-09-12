@@ -246,7 +246,7 @@ namespace ya
 			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		}
 
-		//object::Instantiate<Tenzen>(eLayerType::Monster);
+		object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	

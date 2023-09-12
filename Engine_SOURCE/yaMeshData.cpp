@@ -695,17 +695,19 @@ namespace ya
 	}
 
 
-	MeshObject* MeshData::Instantiate(eLayerType type)
+	MeshObject* MeshData::Instantiate(eLayerType type, const std::wstring& name)
 	{
-
+		std::wstring objName = name;
+		if(name == L"")
+			objName = std::filesystem::path(mFullPath).stem();
+		
 		std::vector<GameObject*> ret = {};
-		std::wstring name = std::filesystem::path(mFullPath).stem();
 		MeshObject* meshObject = object::Instantiate<MeshObject>(type);
-		meshObject->SetName(name + L".All");
+		meshObject->SetName(objName + L".All");
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{
 			GameObject* gameObj = object::Instantiate<GameObject>(type);
-			gameObj->SetName(name +L"." + std::to_wstring(i));
+			gameObj->SetName(objName +L"." + std::to_wstring(i));
 			MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
 			mr->SetMesh(mMeshes[i]);
 			mMeshes[i]->SetParentMeshData(this);
