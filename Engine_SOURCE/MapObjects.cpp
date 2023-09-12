@@ -71,7 +71,10 @@ namespace ya
 		float _rotationX, float _rotationY, float _rotationZ,
 		float _scaleX, float _scaleY, float _scaleZ)
 	{
-		std::shared_ptr<MeshData> meshdata = MeshData::LoadFromFbx(_wstrPath);
+		std::fs::path mapMeshPath = gMapPath;
+		mapMeshPath /= _wstrPath;
+		mapMeshPath.replace_extension(L".fbx");
+		std::shared_ptr<MeshData> meshdata = Resources::Load<MeshData>(mapMeshPath.filename(), mapMeshPath);
 		assert(nullptr != meshdata);
 
 		GameObject* obj = meshdata->Instantiate(eLayerType::Ground);
