@@ -84,7 +84,8 @@ namespace ya
 			if (materials[i][0]->GetName() == L"#06#")
 				mKatanaHandleObjectTr = childObjects[i]->GetComponent<Transform>();
 		}
-		mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+		if(mKatanaObjectTr)
+			mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
 		
 		
 

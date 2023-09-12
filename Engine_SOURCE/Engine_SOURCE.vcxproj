@@ -178,6 +178,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="UICanvas_InGame.h" />
     <ClInclude Include="UIHPBarScript.h" />
     <ClInclude Include="UINames.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="yaPlayerAttackScript.h" />
     <ClInclude Include="yaPlayerMeshScript.h" />
     <ClInclude Include="yaBoneAnimator.h" />
@@ -273,6 +274,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="UICanvasObj.cpp" />
     <ClCompile Include="UICanvas_InGame.cpp" />
     <ClCompile Include="UIHPBarScript.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="yaPlayerAttackScript.cpp" />
     <ClCompile Include="yaPlayerMeshScript.cpp" />
     <ClCompile Include="yaBoneAnimator.cpp" />

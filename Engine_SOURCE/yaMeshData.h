@@ -26,7 +26,7 @@ namespace ya
 
 		bool IsAnimMesh() { return !mBones.empty(); }
 
-		MeshObject* Instantiate(eLayerType type);
+		MeshObject* Instantiate(eLayerType type, const std::wstring& name = L"");
 
 
 		void Play(const std::wstring animName);
