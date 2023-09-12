@@ -39,7 +39,7 @@ namespace ya
 	void Transform::FixedUpdate()
 	{
 		//렌더링에 사용될 위치값들을 업데이트
-
+			
 		// 월드 행렬 생성
 
 

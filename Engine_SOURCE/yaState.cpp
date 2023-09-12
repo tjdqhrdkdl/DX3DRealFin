@@ -21,38 +21,38 @@ namespace ya
 	{
 	}
 
-	void State::SetHp(float hp)
-	{
-		if (mHp + hp < 0)
-		{
-			mHp = 0;
-			mSituation = enums::eSituation::Death;
-		}
-		else 
-		{
-			mHp += hp;
-		}
+	//void State::SetHp(float hp)
+	//{
+	//	if (mHp + hp < 0)
+	//	{
+	//		mHp = 0;
+	//		mSituation = enums::eSituation::Death;
+	//	}
+	//	else 
+	//	{
+	//		mHp += hp;
+	//	}
 
-	}
+	//}
 
-	void State::SetDeathBlowCount(float blowcount)
-	{
-		if (mDeathBlowCount + blowcount > mMaxDeathBlowCount || mDeathBlowCount + blowcount < 0)
-		{
-			if(mDeathBlowCount + blowcount > mMaxDeathBlowCount)
-			{
-				mDeathBlowCount = mMaxDeathBlowCount;
-				mSituation = enums::eSituation::Groggy;
-				mbDeathBlow = true;
-				mbDeathBlowOnOff = false;
-			}
-			else if (mDeathBlowCount + blowcount < 0)
-			{
-				mDeathBlowCount = 0.f;
-			}
-		}
-		else
-			mDeathBlowCount += blowcount;	
-	}
+	//void State::SetDeathBlowCount(float blowcount)
+	//{
+	//	if (mDeathBlowCount + blowcount > mMaxDeathBlowCount || mDeathBlowCount + blowcount < 0)
+	//	{
+	//		if(mDeathBlowCount + blowcount > mMaxDeathBlowCount)
+	//		{
+	//			mDeathBlowCount = mMaxDeathBlowCount;
+	//			mSituation = enums::eSituation::Groggy;
+	//			mbDeathBlow = true;
+	//			mbDeathBlowOnOff = false;
+	//		}
+	//		else if (mDeathBlowCount + blowcount < 0)
+	//		{
+	//			mDeathBlowCount = 0.f;
+	//		}
+	//	}
+	//	else
+	//		mDeathBlowCount += blowcount;	
+	//}
 
 }

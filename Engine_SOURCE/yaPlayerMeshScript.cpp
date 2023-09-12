@@ -35,21 +35,21 @@ namespace ya
         }
         else
         {
-            std::shared_ptr<MeshData> arm = std::make_shared<MeshData>();
-            arm->Load(L"Player\\MeshData\\AM_M_9000.meshdata");
-            mMeshDataMap.insert(std::make_pair(L"Arm", arm));
+            //std::shared_ptr<MeshData> arm = std::make_shared<MeshData>();
+            //arm->Load(L"Player\\MeshData\\AM_M_9000.meshdata");
+            //mMeshDataMap.insert(std::make_pair(L"Arm", arm));
 
-            std::shared_ptr<MeshData> body = std::make_shared<MeshData>();
-            body->Load(L"Player\\MeshData\\BD_M_9000.meshdata");
-            mMeshDataMap.insert(std::make_pair(L"Body", body));
+            //std::shared_ptr<MeshData> body = std::make_shared<MeshData>();
+            //body->Load(L"Player\\MeshData\\BD_M_9000.meshdata");
+            //mMeshDataMap.insert(std::make_pair(L"Body", body));
 
-            std::shared_ptr<MeshData> face = std::make_shared<MeshData>();
-            face->Load(L"Player\\MeshData\\FC_M_0100.meshdata");
-            mMeshDataMap.insert(std::make_pair(L"Face", face));
+            //std::shared_ptr<MeshData> face = std::make_shared<MeshData>();
+            //face->Load(L"Player\\MeshData\\FC_M_0100.meshdata");
+            //mMeshDataMap.insert(std::make_pair(L"Face", face));
 
-            std::shared_ptr<MeshData> leg = std::make_shared<MeshData>();
-            leg->Load(L"Player\\MeshData\\LG_M_9000.meshdata");
-            mMeshDataMap.insert(std::make_pair(L"Leg", leg));
+            //std::shared_ptr<MeshData> leg = std::make_shared<MeshData>();
+            //leg->Load(L"Player\\MeshData\\LG_M_9000.meshdata");
+            //mMeshDataMap.insert(std::make_pair(L"Leg", leg));
         }
 
         if (mbUse)
