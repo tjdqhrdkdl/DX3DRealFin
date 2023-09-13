@@ -264,6 +264,9 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Engine\Common</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadPool.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -548,6 +551,9 @@
       <Filter>Engine\Common</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool.h">
       <Filter>Engine\Common</Filter>
     </ClInclude>
   </ItemGroup>
