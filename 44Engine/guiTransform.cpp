@@ -30,7 +30,7 @@ namespace gui
 		mPosisition = tr->GetPosition();
 		mRotation = tr->GetRotation();
 		mScale = tr->GetScale();
-		mRotationOffset = tr->GetRotationOffset();
+		//mRotationOffset = tr->GetRotationOffset();
 
 		mForward = tr->Forward();
 		mRight = tr->Right();
@@ -77,7 +77,7 @@ namespace gui
 			tr->SetPosition(mPosisition);
 			tr->SetRotation(mRotation);
 			tr->SetScale(mScale);
-			tr->SetRotationOffset(mRotationOffset);
+			//tr->SetRotationOffset(mRotationOffset);
 
 			tr->SetForward(mForward);
 			tr->SetRight(mRight);

@@ -65,7 +65,9 @@ namespace ya
 
 		void SaveWString(const std::wstring& _str, FILE* _pFile);
 		void LoadWString(std::wstring& _str, FILE* _pFile);
-
+		
+	private:
+		HRESULT LoadFromFbxToThis(const std::fs::path& _fullPath);
 
 	private:
 		std::vector<std::shared_ptr<Mesh>>  mMeshes;
