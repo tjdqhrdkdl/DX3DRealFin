@@ -10,18 +10,16 @@ namespace ya
 
 	Transform::Transform()
 		: Component(eComponentType::Transform)
-		, mParent(nullptr)
-		, mForward(0.f, 0.f, 1.f)
-		, mRight(1.f, 0.f, 0.f)
-		, mUp(0.f, 1.f, 0.f)
-		, mPosition()
-		, mRotation()
+		, mForward(Vector3::Forward)
+		, mRight(Vector3::Right)
+		, mUp(Vector3::Up)
 		, mScale(Vector3::One)
-		, mFinalScale(Vector3::One)
-		, mbCamera()
-		, mbUpdated(true)
-		, mMatRelativeWorld(Matrix::Identity)
+		, mRotation(Vector3::Zero)
+		, mPosition(Vector3::Zero)
+		, mRotationOffset(Vector3::Zero)
+		, mParent(nullptr)
 	{
+
 	}
 
 	Transform::~Transform()
@@ -41,47 +39,73 @@ namespace ya
 	void Transform::FixedUpdate()
 	{
 		//렌더링에 사용될 위치값들을 업데이트
-		if (mbUpdated)
+
+		// 월드 행렬 생성
+
+
+		// 크기 변환 행렬
+		Vector3 finalScale = mScale;
+		Matrix scale = Matrix::CreateScale(finalScale);
+		mMatScale = scale;
+
+
+
+		// 회전 변환 행렬
+		Matrix rotation = Matrix::Identity;
+
+		Vector3 radian = mRotation * gDegreeToRadFactor;
+		rotation = Matrix::CreateRotationX(radian.x);
+		rotation *= Matrix::CreateRotationY(radian.y);
+		rotation *= Matrix::CreateRotationZ(radian.z);
+
+		mMatRotation = rotation;
+
+
+		// 이동 변환 행렬
+		Matrix position = Matrix::Identity;
+		position.Translation(mPosition);
+		mMatTranslation = position;
+
+		Matrix rotationOffset;
+		rotationOffset.Translation(mRotationOffset);
+		mMatRotationOffset = rotationOffset;
+
+		mWorld = scale * rotationOffset * rotation * position;
+
+
+		if (mbCamera)
 		{
-			//크기
-			mMatRelativeWorld = Matrix::CreateScale(mScale);
-
-			//회전
-			Vector3 radian = mRotation * gDegreeToRadFactor;
-			mMatRelativeWorld *= Matrix::CreateRotationX(radian.x);
-			mMatRelativeWorld *= Matrix::CreateRotationY(radian.y);
-			mMatRelativeWorld *= Matrix::CreateRotationZ(radian.z);
-
-
-			//이동
-			mMatRelativeWorld *= Matrix::CreateTranslation(mPosition);
 		}
+		else
+		{
+			mForward = Vector3::TransformNormal(Vector3::Forward, rotation);
+			mRight = Vector3::TransformNormal(Vector3::Right, rotation);
+			mUp = Vector3::TransformNormal(Vector3::Up, rotation);
+		}
+		// 카메라 컴포넌트에서 세팅해준다
+		// 뷰행렬 세팅
+		// 프로젝션 행렬 세팅
 
-		// 최종 월드 행렬 생성
+
 		if (mParent)
 		{
-			mFinalScale = mParent->GetFinalScale() * mScale;
-			mMatFinalWorld = mParent->GetWorldMatrix() * mMatRelativeWorld;
+			mWorld *= mParent->mWorld;
+			mFinalScale = mScale * mParent->mFinalScale;
+
+			Matrix matScale = Matrix::CreateScale(mFinalScale);
+			Matrix matRT = matScale.Invert() * mWorld;
+			matRT._41 = 0;
+			matRT._42 = 0;
+			matRT._43 = 0;
+
+			mForward = Vector3::TransformNormal(Vector3::Forward, matRT);
+			mRight = Vector3::TransformNormal(Vector3::Right, matRT);
+			mUp = Vector3::TransformNormal(Vector3::Up, matRT);
 		}
 		else
 		{
 			mFinalScale = mScale;
-			mMatFinalWorld = mMatRelativeWorld;
 		}
-
-
-		//방향 설정
-		if (false == mbCamera)
-		{
-			mForward = mMatFinalWorld.Forward();
-			mForward.Normalize();
-			mRight = mMatFinalWorld.Right();
-			mRight.Normalize();
-			mUp =  mMatFinalWorld.Up();
-			mUp.Normalize();
-		}
-		
-		mbUpdated = false;
 	}
 
 	void Transform::PrevRender()
@@ -97,12 +121,15 @@ namespace ya
 
 	void Transform::SetConstantBuffer()
 	{
+
 		renderer::TransformCB trCb = {};
-		trCb.world = mMatRelativeWorld;
-		trCb.inverseWorld = mMatRelativeWorld.Invert();
+		trCb.world = mWorld;
+		trCb.inverseWorld = mWorld.Invert();
 		trCb.view = Camera::GetGpuViewMatrix();
 		trCb.inverseView = trCb.view.Invert();
 		trCb.projection = Camera::GetGpuProjectionMatrix();
+
+
 
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Transform];
 		cb->SetData(&trCb);

@@ -17,65 +17,42 @@ namespace ya
 		virtual void Render() override;
 
 		void SetConstantBuffer();
-		
+
 		void SetParent(Transform* parent) { mParent = parent; }
 		Transform* GetParent() { return mParent; }
 
 		Vector3 GetPosition() { return mPosition; };
 		Vector3 GetRotation() { return mRotation; };
 		Vector3 GetScale() { return mScale; };
-
-		Vector3 Forward() { return mForward; }
-		Vector3 Right() { return mRight; }
-		Vector3 Up() { return mUp; }
-		
-		//Matrix& GetRotationMatrix() { return mMatRotation; };
+		Vector3 GetRotationOffset() { return mRotationOffset; };
+		Matrix& GetRotationMatrix() { return mMatRotation; };
 
 
 		Vector3 GetFinalScale() { return mFinalScale; }
 
-		void SetPosition(Vector3 position) 
-		{ 
-			mPosition = position; mbUpdated = true; 
-		};
 
-		void SetPosition(float _x, float _y, float _z)
-		{
-			mPosition.x = _x; mPosition.y = _y; mPosition.z = _z; mbUpdated = true;
-		};
+		void SetPosition(Vector3 position) { mPosition = position; };
+		void SetPosition(float _x, float _y, float _z) { mPosition.x = _x; mPosition.y = _y; mPosition.z = _z; }
+		void SetRotation(Vector3 degree) { mRotation = degree; };
+		void SetRotation(float _x, float _y, float _z) { mRotation.x = _x; mRotation.y = _y; mRotation.z = _z; };
+		void SetScale(Vector3 scale) { mScale = scale; };
+		void SetScale(float _x, float _y, float _z) { mScale.x = _x; mScale.y = _y; mScale.z = _z; };
+		void SetRotationOffset(Vector3 offset) { mRotationOffset = offset; };
 
-		void SetRotation(Vector3 degree) 
-		{ 
-			mRotation = degree; mbUpdated = true;
-		};
+		Vector3 Forward() { return mForward; }
+		Vector3 Right() { return mRight; }
+		Vector3 Up() { return mUp; }
 
-		void SetRotation(float _x, float _y, float _z) 
-		{ 
-			mRotation.x = _x; mRotation.y = _y; mRotation.z = _z; mbUpdated = true;
-		};
-
-		void SetScale(Vector3 scale) 
-		{ 
-			mScale = scale; mbUpdated = true;
-		};
-
-		void SetScale(float _x, float _y, float _z) 
-		{
-			mScale.x = _x; mScale.y = _y; mScale.z = _z; mbUpdated = true;
-		};
 		void SetForward(Vector3 forward) { mForward = forward; }
 		void SetRight(Vector3 right) { mRight = right; }
 		void SetUp(Vector3 up) { mUp = up; }
 
-		const Matrix& GetRelativeWorldMatrix() { return mMatRelativeWorld; }
-		const Matrix& GetWorldMatrix() { return mMatFinalWorld; }
+		Matrix& GetWorldMatrix() { return mWorld; }
 
 		void IsCamera(bool cam) { mbCamera = cam; }
 
 	private:
 		Transform* mParent;
-
-		
 
 		Vector3 mForward;
 		Vector3 mRight;
@@ -84,13 +61,17 @@ namespace ya
 		Vector3 mPosition;
 		Vector3 mRotation;
 		Vector3 mScale;
+		Vector3 mRotationOffset;
 
 		Vector3 mFinalScale;
 
 		bool mbCamera;
-		bool mbUpdated;
 
-		Matrix mMatRelativeWorld;
-		Matrix mMatFinalWorld;
+		Matrix mMatScale;
+		Matrix mMatTranslation;
+		Matrix mMatRotation;
+		Matrix mMatRotationOffset;
+
+		Matrix mWorld;
 	};
 }
