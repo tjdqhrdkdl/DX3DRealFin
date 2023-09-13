@@ -74,21 +74,23 @@ namespace ya
 		std::vector<std::vector<std::shared_ptr<Material>>> mMaterialsVec;
 		std::vector<GameObject*> mChildObjects;
 
-
 		std::wstring mFullPath;
 
 		//3D Animation 정보
 		std::vector<BoneAnimationClip> mAnimClip;
 		std::vector<BoneMatrix> mBones;
 	
-
-
 		std::vector<graphics::StructedBuffer*> mBoneFrameDataVector; // 전체 본 프레임 정보 ( 크기, 이름, 회전) 프레임 갯수만큼
 		graphics::StructedBuffer* mBoneOffset; // 각 뼈의 offset 행렬 () 각뼈의 위치를 TPOSE로 되돌리는 행렬
 
 		UINT mAnimationClipCount;
 
+		Vector3 mMeshCenter;
+		float mBoundarySphereRadius;
+		
 		class BoneAnimator* mRepresentBoneAnimator;
 		MeshObject* mMeshObject;
+
+
 	};
 }

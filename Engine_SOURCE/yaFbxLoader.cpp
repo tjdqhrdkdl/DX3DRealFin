@@ -16,8 +16,9 @@ namespace ya
 	std::vector<AnimationClip*> FbxLoader::mAnimationClips = {};
 	std::vector<BoneAnimationClip*> FbxLoader::mBoneAnimationClips = {};
 	fbxsdk::FbxNode* FbxLoader::mMasterNode = nullptr;
-
-	
+	Vector3 FbxLoader::mMeshCenter = {};
+	UINT FbxLoader::mVtxCount = 0;
+	float FbxLoader::mMaxDist = 0;
 
 	Matrix GetMatrixFromFbxMatrix(fbxsdk::FbxAMatrix& _mat)
 	{
@@ -180,8 +181,9 @@ namespace ya
 			container.positions[i].x = (float)pFbxPos[i].mData[0];
 			container.positions[i].y = (float)pFbxPos[i].mData[2];
 			container.positions[i].z = (float)pFbxPos[i].mData[1];
+			mMeshCenter += container.positions[i];
 		}
-
+		mVtxCount += iVtxCnt;
 		// 폴리곤 개수
 		int iPolyCnt = _pFbxMesh->GetPolygonCount();
 
@@ -896,5 +898,8 @@ namespace ya
 		}
 		mAnimationClips.clear();
 		mAnimationNames.Clear();
+		mVtxCount = 0;
+		mMeshCenter = {};
+		mMaxDist = 0;
 	}
 }

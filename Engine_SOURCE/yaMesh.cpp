@@ -58,6 +58,8 @@ namespace ya
 				pSys[i].biNormal = container.binormals[i];
 				pSys[i].weight = container.skiningWeights[i];
 				pSys[i].Indices = container.skiningIndices[i];
+				
+				loader->MaxDist(Vector3::Distance(loader->GetMeshCenter(), container.positions[i]));
 			}
 
 			Microsoft::WRL::ComPtr<ID3D11Buffer> pVB = NULL;

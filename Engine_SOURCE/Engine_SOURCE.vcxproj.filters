@@ -267,6 +267,9 @@
     <ClCompile Include="ThreadPool.cpp">
       <Filter>Engine\Common</Filter>
     </ClCompile>
+    <ClCompile Include="yaBoundarySphere.cpp">
+      <Filter>Engine\Component\BoundarySphere</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -556,6 +559,9 @@
     <ClInclude Include="ThreadPool.h">
       <Filter>Engine\Common</Filter>
     </ClInclude>
+    <ClInclude Include="yaBoundarySphere.h">
+      <Filter>Engine\Component\BoundarySphere</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -737,6 +743,9 @@
     </Filter>
     <Filter Include="Contents\UI">
       <UniqueIdentifier>{89ccb457-4d9f-4146-b05b-69c31a195ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\BoundarySphere">
+      <UniqueIdentifier>{5d0c93a7-566b-4b19-aad4-f2082c5feae6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
