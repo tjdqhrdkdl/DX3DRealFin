@@ -72,7 +72,7 @@ namespace ya
 		meshTr->SetRotation(Vector3(180, 180, 0));
 		meshTr->SetPosition(Vector3(0, 0, 0));
 		meshTr->SetScale(Vector3(1, 1, 1));
-		meshTr->SetRotationOffset(Vector3(0, 1.5, 0));
+		//meshTr->SetRotationOffset(Vector3(0, 1.5, 0));
 		meshTr->SetParent(GetComponent<Transform>());
 
 		//무기 콜라이더 추가
