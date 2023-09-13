@@ -48,9 +48,10 @@ namespace ya
 
 			//회전
 			Vector3 radian = mRotation * gDegreeToRadFactor;
-			Matrix matRot = Matrix::CreateRotationX(radian.x);
-			matRot *=		Matrix::CreateRotationY(radian.y);
-			matRot *=		Matrix::CreateRotationZ(radian.z);
+			mMatRelativeWorld *= Matrix::CreateRotationX(radian.x);
+			mMatRelativeWorld *= Matrix::CreateRotationY(radian.y);
+			mMatRelativeWorld *= Matrix::CreateRotationZ(radian.z);
+
 
 			//이동
 			mMatRelativeWorld *= Matrix::CreateTranslation(mPosition);
