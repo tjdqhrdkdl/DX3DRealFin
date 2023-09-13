@@ -33,7 +33,13 @@ namespace ya
                 int frame = animator->GetCurrentFrameIdx();
                 if (clip >= 0 && frame >= 0)
                 {
-                    if (mAnimationColActiveFrame[clip].start < frame && mAnimationColActiveFrame[clip].fin > frame)
+                    bool active = false;
+                    for (size_t i = 0; i < mAnimationColActiveFrame[clip].size(); i++)
+                    {
+                        if (mAnimationColActiveFrame[clip][i].start< frame && mAnimationColActiveFrame[clip][i].fin > frame)
+                            active = true;
+                    }
+                    if (active)
                     {
                         //콜라이더 활성화된 구간
                         col->Active(true);
@@ -111,7 +117,7 @@ namespace ya
     }
     void BoneCollider::SetColliderActiveFrame(UINT animIdx, UINT start, UINT finish)
     {
-        mAnimationColActiveFrame[animIdx] = { start,finish };
+        mAnimationColActiveFrame[animIdx].push_back({ start,finish });
 
     }
     void BoneCollider::SetColliderActiveFrame(const std::wstring& animName, UINT start, UINT finish)
@@ -120,6 +126,6 @@ namespace ya
         int idx = animator->GetAnimationIdxByName(animName);
         if (idx == -1)
             assert(NULL);
-        mAnimationColActiveFrame[idx] = {start,finish};
+        mAnimationColActiveFrame[idx].push_back({start,finish});
     }
 }

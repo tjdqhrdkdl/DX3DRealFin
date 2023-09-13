@@ -39,6 +39,6 @@ namespace ya
 		int mBeforeClipIdx;
 
 		std::vector<Vector3> mAnimationOffsets;
-		std::vector<StartAndFin> mAnimationColActiveFrame;
+		std::vector<std::vector<StartAndFin>> mAnimationColActiveFrame;
 	};
 }

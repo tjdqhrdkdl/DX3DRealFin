@@ -245,8 +245,8 @@ namespace ya
 			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		}
-
-		//object::Instantiate<Tenzen>(eLayerType::Monster);
+		//object::Instantiate<MapObjects>(eLayerType::Ground);
+		object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	

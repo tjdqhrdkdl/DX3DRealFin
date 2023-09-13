@@ -29,8 +29,10 @@ namespace ya
             TenzenState_Defense =        0x00000020,
             TenzenState_Guard =          0x00000040,
             TenzenState_Trace =          0x00000080,
-            TenzenState_OnHit =          0x00000100,
-            TenzenState_Dead =           0x00000200,
+            TenzenState_Move =           0x00000100,
+            TenzenState_OnHit =          0x00000200,
+            TenzenState_LookAt =         0x00000400,
+            TenzenState_Dead =           0x00000800,
         };
     public:
         Tenzen();
@@ -47,7 +49,13 @@ namespace ya
         void Attack();
         void Defense();
         void Trace();
+        void Move();
+        void LookAtPlayer();
         
+        void SetAnimationEvent();
+
+
+
         void RotateForwardTo(Vector3 dir);
         float GetDistanceToPlayer();
         float EyeSightCheck();
@@ -77,6 +85,8 @@ namespace ya
         float mAlertTime;
         float mAlertTimeChecker;
         Vector3 mPlayerLastPosition;
+
+        Vector3 mMoveDir;
 	};
 
 }
