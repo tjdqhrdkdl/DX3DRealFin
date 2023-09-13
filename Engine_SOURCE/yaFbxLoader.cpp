@@ -448,7 +448,7 @@ namespace ya
 					path_filename = vecPath[k].filename();
 					path_dest = path_fbx_texture.wstring() + path_filename.wstring();
 
-					if (false == exists(path_dest))
+					if (exists(path_origin) && false == exists(path_dest))
 					{
 						copy(path_origin, path_dest);
 					}
