@@ -59,7 +59,6 @@ namespace ya
 	{
 		assert(GetOwner() != nullptr);
 
-		//ForwardCheck();
 		CheckGround();
 
 		if (mJumpTimer > 0.0f)
@@ -77,54 +76,54 @@ namespace ya
 	{
 	}
 
-	void ActionScript::OnCollisionEnter(Collider2D* collider)
-	{
-		GameObject* colObj = collider->GetOwner();
-		Transform* colTransform = colObj->GetComponent<Transform>();
+	//void ActionScript::OnCollisionEnter(Collider2D* collider)
+	//{
+	//	GameObject* colObj = collider->GetOwner();
+	//	Transform* colTransform = colObj->GetComponent<Transform>();
 
-		GameObject* obj = GetOwner();
-		Transform* objTransform = obj->GetComponent<Transform>();
+	//	GameObject* obj = GetOwner();
+	//	Transform* objTransform = obj->GetComponent<Transform>();
 
-		// 벽 충돌
-		if (nullptr != colObj->GetScript<WallScript>())
-		{
-			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+	//	// 벽 충돌
+	//	if (nullptr != colObj->GetScript<WallScript>())
+	//	{
+	//		Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
 
-			Vector3 velocity = objRigidbody->GetVelocity();
-			Vector3 pos = objTransform->GetPosition();
+	//		Vector3 velocity = objRigidbody->GetVelocity();
+	//		Vector3 pos = objTransform->GetPosition();
 
-			pos -= velocity * Time::DeltaTime();
-			objTransform->SetPosition(pos);
-		}
-	}
+	//		pos -= velocity * Time::DeltaTime();
+	//		objTransform->SetPosition(pos);
+	//	}
+	//}
 
-	void ActionScript::OnCollisionStay(Collider2D* collider)
-	{
-		GameObject* colObj = collider->GetOwner();
-		Transform* colTransform = colObj->GetComponent<Transform>();
+	//void ActionScript::OnCollisionStay(Collider2D* collider)
+	//{
+	//	GameObject* colObj = collider->GetOwner();
+	//	Transform* colTransform = colObj->GetComponent<Transform>();
 
-		GameObject* obj = GetOwner();
-		Transform* objTransform = obj->GetComponent<Transform>();
+	//	GameObject* obj = GetOwner();
+	//	Transform* objTransform = obj->GetComponent<Transform>();
 
-		// 벽 충돌
-		if (nullptr != colObj->GetScript<WallScript>())
-		{
-			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+	//	// 벽 충돌
+	//	if (nullptr != colObj->GetScript<WallScript>())
+	//	{
+	//		Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
 
-			Vector3 wallNormal = colTransform->Right();
+	//		Vector3 wallNormal = colTransform->Right();
 
-			Vector3 objVelocity = objRigidbody->GetVelocity();
-			Vector3 objPos = objTransform->GetPosition();
+	//		Vector3 objVelocity = objRigidbody->GetVelocity();
+	//		Vector3 objPos = objTransform->GetPosition();
 
-			Vector3 projvec = wallNormal * objVelocity;
-			projvec *= wallNormal;
+	//		Vector3 projvec = wallNormal * objVelocity;
+	//		projvec *= wallNormal;
 
-			objVelocity -= projvec;
+	//		objVelocity -= projvec;
 
-			objPos -= objVelocity * Time::DeltaTime();
-			objTransform->SetPosition(objPos);
-		}
-	}
+	//		objPos -= objVelocity * Time::DeltaTime();
+	//		objTransform->SetPosition(objPos);
+	//	}
+	//}
 
 	void ActionScript::OnCollisionExit(Collider2D* collider)
 	{
@@ -233,12 +232,15 @@ namespace ya
 		// 패링 이펙트 발생
 	}
 	
-	void ActionScript::ForwardCheck()
+	bool ActionScript::ForwardCheck(Vector3 movement)
 	{
 		Vector3 position = mTransform->GetPosition();
 		Vector3 scale = mTransform->GetScale();
 		Vector3 colScale = mCollider->GetSize();
-		Vector3 velocity = mRigidbody->GetVelocity();
+		Vector3 velocity = movement;
+		Vector3 dir = velocity;
+		dir.Normalize();
+		float velocityLength = velocity.Length();
 
 		colScale *= scale;
 
@@ -250,7 +252,7 @@ namespace ya
 		Vector3 bottom = position;
 		bottom.y -= colScale.y * 0.5f;
 
-		Vector3 rayDirection = mTransform->Forward();
+		Vector3 rayDirection = dir;
 
 		std::vector<eLayerType> layers;
 		layers.push_back(eLayerType::Wall);
@@ -262,15 +264,11 @@ namespace ya
 
 		for (int i = 0; i < 3; ++i)
 		{
-			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
-			{
-				//mRigidbody->SetVelocity(Vector3::Zero);
-				mForwardBlocked = true;
-			}
-			else
-				mForwardBlocked = false;
+			if (velocityLength >= ForwardHit[i].length && ForwardHit[i].isHit)
+				return true;
 		}
 
+		return false;
 	}
 
 	// 땅, 경사로 체크. 일단 가운데 레이만 사용함..

@@ -15,8 +15,8 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
-		virtual void OnCollisionEnter(Collider2D* collider) override;
-		virtual void OnCollisionStay(Collider2D* collider) override;
+		//virtual void OnCollisionEnter(Collider2D* collider) override;
+		//virtual void OnCollisionStay(Collider2D* collider) override;
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	public:
@@ -39,7 +39,7 @@ namespace ya
 		void Deflect();
 		void Parrying();
 
-		void ForwardCheck();
+		bool ForwardCheck(Vector3 movement);
 		void CheckGround();
 
 	protected:

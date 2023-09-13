@@ -18,7 +18,7 @@ namespace ya
 
 		Collider2D* col = AddComponent<Collider2D>();
 		col->SetType(eColliderType::Box);
-		col->SetCenter(Vector3(0.f, 5.f, 0.f));
+		col->SetCenter(Vector3(0.f, 0.f, 0.f));
 		col->SetSize(Vector3(1.0, 1.0f, 1.0f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();

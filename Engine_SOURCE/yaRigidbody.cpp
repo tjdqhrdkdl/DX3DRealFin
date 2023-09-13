@@ -120,6 +120,12 @@ namespace ya
 		else
 			velo = mVelocity;
 
+		// 이번 프레임에서 이동시킬 거리
+		Vector3 nextPos = velo * Time::DeltaTime();
+
+		if (mActionScript->ForwardCheck(nextPos) && velo != Vector3::Zero)
+			velo = Vector3::Zero;
+
 		Vector3 pos = tr->GetPosition();
 		pos += velo * Time::DeltaTime();
 		tr->SetPosition(pos);
