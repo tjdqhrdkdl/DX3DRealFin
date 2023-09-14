@@ -35,4 +35,12 @@ namespace ya
 			objTr->SetParent(tr);
 		}
 	}
+	void MeshObject::SetChildRender(bool render)
+	{
+		for (size_t i = 0; i < mGameObjects.size(); i++)
+		{
+			mGameObjects[i]->SetRender(render);
+
+		}
+	}
 }

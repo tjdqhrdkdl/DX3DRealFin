@@ -19,6 +19,7 @@ namespace ya
 		void SetObjectsVector(std::vector<GameObject*> vec) { mGameObjects = vec; }
 
 		void SetParent();
+		void SetChildRender(bool render);
 	private:
 		std::vector<GameObject*> mGameObjects;
 	};

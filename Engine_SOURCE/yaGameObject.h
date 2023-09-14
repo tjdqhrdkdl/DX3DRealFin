@@ -112,6 +112,7 @@ namespace ya
 		eLayerType GetLayerType() { return mType; }
 		void SetLayerType(eLayerType type) { mType = type; }
 
+		void SetRender(bool render) { mbRender = render; }
 	protected:
 		std::vector<Component*> mComponents;
 
@@ -121,6 +122,8 @@ namespace ya
 		std::vector<Script*> mScripts;
 		bool mbDontDestroy;
 		//Scene* mScene;
+
+		bool mbRender;
 	};
 }
 

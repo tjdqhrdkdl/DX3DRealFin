@@ -38,6 +38,8 @@ namespace ya
 		meshAttribute.parent = mTransform->GetParent();
 		meshAttribute.type = eColliderType::Sphere;
 
+		Vector4 pos = Vector4::Transform(Vector4(mCenter.x, mCenter.y, mCenter.z, 1), mTransform->GetWorldMatrix());
+		mPosition = Vector3(pos.x, pos.y, pos.z);
 		renderer::debugMeshes.push_back(meshAttribute);
 	}
 	void BoundarySphere::Render()

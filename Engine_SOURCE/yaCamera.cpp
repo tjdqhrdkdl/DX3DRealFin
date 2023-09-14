@@ -11,6 +11,7 @@
 #include "yaSceneManager.h"
 #include "yaFrustum.h"
 #include "yaBoundarySphere.h"
+#include "yaMeshObject.h"
 
 extern ya::Application application;
 
@@ -246,13 +247,20 @@ namespace ya
 					BoundarySphere* sphere = obj->GetComponent<BoundarySphere>();
 					if (sphere)
 					{
-						Vector3 center = sphere->GetCenter();
+						MeshObject* meshObject = dynamic_cast<MeshObject*>(obj);
+						if (nullptr != meshObject)
+							meshObject->SetChildRender(true);
+						Vector3 center = sphere->GetPosition();
 						if (mFrustum.CheckSphere(center.x, center.y, center.z, sphere->GetRadius()))
 						{
 							pushGameObjectToRenderingModes(obj);
 						}
 						else
+						{
+							if (nullptr != meshObject)
+								meshObject->SetChildRender(false);
 							continue;
+						}
 					}
 
 					pushGameObjectToRenderingModes(obj);
