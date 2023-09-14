@@ -26,6 +26,8 @@ namespace ya
 
 			Block,				// a050_002000
 
+			Move,
+
 			End,
 		};
 
@@ -50,7 +52,6 @@ namespace ya
 		float mTimerMax[(UINT)eAttackState::End];
 		bool mbKeyInput;
 
-		class GameObject* mAttackProjectile;
 
 	};
 }

@@ -258,6 +258,9 @@
       <Filter>Contents\UI</Filter>
     </ClCompile>
     <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="yaPlayerProjectileScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -525,19 +528,14 @@
     <ClInclude Include="yaRedOgre.h">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClInclude>
-    <ClInclude Include="UICanvas_InGame.h">
-      <Filter>Contents\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UICanvasObj.h">
-      <Filter>Contents\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UIHPBarScript.h">
-      <Filter>Contents\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UINames.h">
-      <Filter>Contents\UI</Filter>
-    </ClInclude>
     <ClInclude Include="MapObjects.h" />
+    <ClInclude Include="UICanvasObj.h" />
+    <ClInclude Include="UICanvas_InGame.h" />
+    <ClInclude Include="UIHPBarScript.h" />
+    <ClInclude Include="UINames.h" />
+    <ClInclude Include="yaPlayerProjectileScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -557,9 +555,6 @@
     </Filter>
     <Filter Include="Contents\Ground">
       <UniqueIdentifier>{fd830d37-e4e7-4a1f-b161-8764418e152f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Contents\Player">
-      <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Contents\State">
       <UniqueIdentifier>{62a651e5-4cd6-4a6f-918f-c2ff7ed4f805}</UniqueIdentifier>
@@ -719,6 +714,9 @@
     </Filter>
     <Filter Include="Contents\UI">
       <UniqueIdentifier>{89ccb457-4d9f-4146-b05b-69c31a195ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Player">
+      <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

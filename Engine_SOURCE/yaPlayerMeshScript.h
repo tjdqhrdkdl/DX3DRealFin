@@ -22,6 +22,8 @@ namespace ya
 		void LoadAnimation();
 		void Play(std::wstring name);
 
+		std::shared_ptr<MeshData> FindMeshData(std::wstring name);
+
 	private:
 		bool mbUse;
 		bool mbLoad;

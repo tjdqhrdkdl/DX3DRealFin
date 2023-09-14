@@ -10,6 +10,11 @@
 #include "yaRigidbody.h"
 
 #include "yaPlayerMeshScript.h"
+#include "yaPlayerActionScript.h"
+#include "yaPlayerProjectileScript.h"
+
+#include "yaBoneCollider.h"
+#include "yaObject.h"
 
 namespace ya
 {
@@ -17,7 +22,7 @@ namespace ya
 		: Script()
 		, mAttackState(eAttackState::None)
 		, mTimer{0.0f}
-		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.8f }
+		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.8f, 0.5f}
 		, mbKeyInput(false)
 	{
 	}
@@ -30,26 +35,51 @@ namespace ya
 	{
 		//Transform* tr = GetOwner()->GetComponent<Transform>();
 
-		/*mAttackProjectile = object::Instantiate<GameObject>(eLayerType::PlayerProjectile, tr);
-		mAttackProjectile->SetName(L"player attack projectile");
-		Transform* attackTr = mAttackProjectile->GetComponent<Transform>();
-		attackTr->SetScale(Vector3(10.0f, 2.0f, 2.0f));
-		Collider2D* attackCollider = mAttackProjectile->AddComponent<Collider2D>();
-		attackCollider->SetType(eColliderType::Box);
-		attackCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-		attackCollider->Active(false);
-		mAttackProjectile->AddComponent<PlayerProjectileScript>();*/
-		
 		for (size_t i = 0; i < (UINT)eAttackState::End; i++)
 		{
 			mTimer[i] = mTimerMax[i];
 		}
+
+		//PlayerMeshScript* meshScript = GetOwner()->GetScript<PlayerMeshScript>();
+		//std::shared_ptr<MeshData> weaponMeshData = meshScript->FindMeshData(L"Arm");
+		//weaponMeshData->GetMeshObject()->AddComponent<PlayerProjectileScript>();
+		//if (weaponMeshData != nullptr)
+		//{
+		//	BoneCollider* weaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile);
+		//	weaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
+		//	weaponCollider->SetScale(Vector3(1, 0.2, 0.2));
+
+		//	//weaponCollider->SetAnimOffSet(L"SwingSword1", Vector3(1, 0.5, 1));
+		//	weaponCollider->SetColliderActiveFrame(L"a000_000000", 0, 100);
+		//	/*weaponCollider->SetColliderActiveFrame(L"a050_300100", 0, 100);
+		//	weaponCollider->SetColliderActiveFrame(L"a050_305101", 0, 100);
+		//	weaponCollider->SetColliderActiveFrame(L"a050_300020", 0, 100);
+		//	weaponCollider->SetColliderActiveFrame(L"a050_300030", 0, 100);
+		//	weaponCollider->SetColliderActiveFrame(L"a050_300040", 0, 100);*/
+
+		//	//weaponCollider->SetColliderActiveFrame(L"a050_308010", 0, 100);
+		//	//weaponCollider->SetColliderActiveFrame(L"a050_308000", 0, 100);
+		//	//weaponCollider->SetColliderActiveFrame(L"a050_308050", 0, 100);
+		//	//weaponCollider->SetColliderActiveFrame(L"a050_308060", 0, 100);
+
+		//	////weaponCollider->SetColliderActiveFrame(L"a050_301050", 0, 100);
+		//	//weaponCollider->SetColliderActiveFrame(L"a050_314000", 0, 100);
+		//	//weaponCollider->SetColliderActiveFrame(L"a050_002000", 0, 100);
+		//}
 	}
 
 	void PlayerAttackScript::Update()
 	{
 		Player* player = dynamic_cast<Player*>(GetOwner());
+		Transform* playerTr = player->GetComponent<Transform>();
 		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+		PlayerActionScript* playerAction = player->GetScript<PlayerActionScript>();
+
+		if (mTimer[(UINT)eAttackState::Move] > 0.0f)
+		{
+			mTimer[(UINT)eAttackState::Move] -= Time::DeltaTime();
+			playerAction->Move(playerTr->Forward(), 500.0f);
+		}
 
 		switch (mAttackState)
 		{
@@ -63,12 +93,14 @@ namespace ya
 				{
 					mAttackState = eAttackState::JumpAttack1;
 					playerAnim->Play(L"a050_308010");
+					
 				}
 				else if (player->IsStateFlag(ePlayerState::Crouch))
 				{
 					mAttackState = eAttackState::CrouchAttack1;
 					player->SetStateFlag(ePlayerState::Crouch, false);
 					playerAnim->Play(L"a050_301050");
+					mTimer[(UINT)eAttackState::Move] = mTimerMax[(UINT)eAttackState::Move];
 				}
 				else if (player->IsStateFlag(ePlayerState::Hang))
 				{
@@ -79,9 +111,8 @@ namespace ya
 				{
 					mAttackState = eAttackState::Attack1;
 					playerAnim->Play(L"a050_300100");
+					mTimer[(UINT)eAttackState::Move] = mTimerMax[(UINT)eAttackState::Move];
 				}
-
-				int a = 0;
 			}
 
 			if (Input::GetKeyDown(eKeyCode::RBTN))

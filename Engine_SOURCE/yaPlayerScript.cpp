@@ -19,6 +19,8 @@
 #include "yaSceneManager.h"
 #include "yaScene.h"
 
+#include "yaPlayerMeshScript.h"
+
 
 namespace ya
 {
@@ -47,6 +49,7 @@ namespace ya
 			faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
 
 		}
+
 	}
 
 	void PlayerScript::Update()
@@ -62,13 +65,6 @@ namespace ya
 		ActionScript* action = GetOwner()->GetScript<ActionScript>();
 		Transform* tr = GetOwner()->GetComponent < Transform>();
 
-		// 테스트로 만든 공격 입니다 나중에 지울것
-		if (Input::GetKeyDown(eKeyCode::Q))
-		{
-			/*action->Move(tr->Forward() * 500.f);
-			Player* player = (Player*)GetOwner();
-			player->SetAttack(true);*/
-		}
 		Player* player = (Player*)GetOwner();
 		if (player->IsAttack())
 		{
