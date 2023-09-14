@@ -410,10 +410,10 @@ namespace ya
 					if (0.f < overPos)
 					{
 						correctionPos.y += overPos;
-						//correctionPos -= objPos;
 						mTransform->SetPosition(correctionPos);
 					}
 				}
+				break;
 			}
 		}
 

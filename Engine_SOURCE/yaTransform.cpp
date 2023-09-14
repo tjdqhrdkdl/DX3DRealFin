@@ -19,7 +19,7 @@ namespace ya
 		, mRotationOffset(Vector3::Zero)
 		, mParent(nullptr)
 	{
-		
+
 	}
 
 	Transform::~Transform()
@@ -39,7 +39,7 @@ namespace ya
 	void Transform::FixedUpdate()
 	{
 		//렌더링에 사용될 위치값들을 업데이트
-			
+
 		// 월드 행렬 생성
 
 
@@ -71,7 +71,7 @@ namespace ya
 		mMatRotationOffset = rotationOffset;
 
 		mWorld = scale * rotationOffset * rotation * position;
-		
+
 
 		if (mbCamera)
 		{

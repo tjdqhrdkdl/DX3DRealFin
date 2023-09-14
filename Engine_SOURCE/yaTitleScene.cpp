@@ -80,20 +80,20 @@ namespace ya
 		SetPlayer(player);
 		
 
-		{
-			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera);
-			uiCam->SetName(L"UICamera");
-			uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
-			Camera* cameraComp = uiCam->AddComponent<Camera>();
-			cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
-			cameraComp->DisableLayerMasks();
-			cameraComp->TurnLayerMask(eLayerType::UI, true);
-		}
+		//{
+		//	GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera);
+		//	uiCam->SetName(L"UICamera");
+		//	uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
+		//	Camera* cameraComp = uiCam->AddComponent<Camera>();
+		//	cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
+		//	cameraComp->DisableLayerMasks();
+		//	cameraComp->TurnLayerMask(eLayerType::UI, true);
+		//}
 
-		{
-			UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
-			ui->SetName(L"UICanvasObj_InGame");
-		}
+		//{
+		//	UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
+		//	ui->SetName(L"UICanvasObj_InGame");
+		//}
 
 		{
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
@@ -249,6 +249,11 @@ namespace ya
 			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		}
 
+		{
+			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+		}
+
+		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 		//object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}

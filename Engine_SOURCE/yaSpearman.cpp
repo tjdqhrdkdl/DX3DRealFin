@@ -54,7 +54,7 @@ namespace ya
 		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
 		meshobjtr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
-		meshobjtr->SetRotationOffset(Vector3(-2.0f, 1.0f, 0.0f));
+		//meshobjtr->SetRotationOffset(Vector3(-2.0f, 1.0f, 0.0f));
 		meshobjtr->SetParent(GetComponent<Transform>());
 		
 		KatanaColliderInit();

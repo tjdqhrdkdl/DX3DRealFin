@@ -172,11 +172,14 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CSVEditor.h" />
     <ClInclude Include="MapObjects.h" />
+    <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="UICanvasObj.h" />
     <ClInclude Include="UICanvas_InGame.h" />
     <ClInclude Include="UIHPBarScript.h" />
     <ClInclude Include="UINames.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="yaPlayerAttackScript.h" />
     <ClInclude Include="yaPlayerMeshScript.h" />
     <ClInclude Include="yaBoneAnimator.h" />
@@ -268,10 +271,13 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaBoneCollider.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CSVEditor.cpp" />
     <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="UICanvasObj.cpp" />
     <ClCompile Include="UICanvas_InGame.cpp" />
     <ClCompile Include="UIHPBarScript.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="yaPlayerAttackScript.cpp" />
     <ClCompile Include="yaPlayerMeshScript.cpp" />
     <ClCompile Include="yaBoneAnimator.cpp" />
