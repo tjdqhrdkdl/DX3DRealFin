@@ -38,6 +38,7 @@ namespace ya
 		void Move(const Vector3 dir, float force = -1.0f);
 		void Rotate(const Vector3 dir, float speed = -1.0f);
 		void Jump(float force = -1.0f);
+		void JumpDouble(float force = -1.0f);
 		void Attack();
 		void Deflect();
 		void Parrying();
@@ -67,6 +68,8 @@ namespace ya
 		bool mbJumping;
 		bool mbGrounded;
 		bool mbForwardBlocked;
+		bool mbJumpDouble;
+
 
 		/// <summary> 점프 상태가 시작될때 발생하는 이벤트 </summary>
 		std::function<void()> mJumpEvent;

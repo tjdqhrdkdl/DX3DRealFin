@@ -41,5 +41,7 @@ namespace ya
 		float mDashSpeed;
 		float mDashTimer;
 		float mDashTimerMax;
+
+		bool mbJumpDouble;
 	};
 }

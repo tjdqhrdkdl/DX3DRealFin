@@ -21,6 +21,7 @@ namespace ya
 		, mDashTimer(0.0f)
 		, mFrontTheta(4.0f)
 		, mDashTimerMax(0.2f)
+		, mbJumpDouble(false)
 	{
 	}
 
@@ -75,13 +76,15 @@ namespace ya
 		if (Input::GetKeyDown(eKeyCode::SPACE))
 		{
 			mPlayerAnim->Play(L"a000_200000");
-		}
 
-		if (Input::GetKeyDown(eKeyCode::SPACE))
-		{
 			mPlayer->SetStateFlag(ePlayerState::Jump, true);
 			SetJumping(true);
 			Jump();
+
+			if (mbForwardBlocked && !mbJumpDouble)
+			{
+				mbJumpDouble = true;
+			}
 		}
 
 		if (Input::GetKeyDown(eKeyCode::Q))

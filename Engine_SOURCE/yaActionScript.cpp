@@ -44,6 +44,7 @@ namespace ya
 		, mJumpForce(0.0f)
 		, mJumpEvent(nullptr)
 		, mGroundEvent(nullptr)
+		, mbJumpDouble(false)
 	{
 	}
 
@@ -73,7 +74,7 @@ namespace ya
 			mRigidbody->AddForce(Vector3(0.0f, mJumpForce, 0.0f));
 		}
 
-		CheckGround();
+		ForwardCheck();
 	}
 
 	void ActionScript::FixedUpdate()
@@ -222,6 +223,21 @@ namespace ya
 		}
 	}
 
+	void ActionScript::JumpDouble(float force)
+	{
+		if (mRigidbody == nullptr)
+		{
+			assert(mRigidbody != nullptr);
+			return;
+		}
+
+		mJumpTimer = 0.1f;
+		Jump(force);
+
+		mbJumpDouble = false;
+
+	}
+
 	/// <summary>
 	/// 공격
 	/// </summary>
@@ -278,9 +294,19 @@ namespace ya
 			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
 			{
 				//mRigidbody->SetVelocity(Vector3::Zero);
+				if (!mbForwardBlocked)
+				{
+					mbJumpDouble = true;
+				}
+
 				mbForwardBlocked = true;
 			}
 			else
+				if (mbForwardBlocked)
+				{
+					mbJumpDouble = false;
+				}
+
 				mbForwardBlocked = false;
 		}
 
