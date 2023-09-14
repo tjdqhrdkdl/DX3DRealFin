@@ -26,6 +26,7 @@ namespace ya
         void Idle_Stand();
         void Link_attack();
         void Link_Defense();
+        void Link_Boundary();
 
 
         void KatanaColliderInit();

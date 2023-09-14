@@ -344,7 +344,7 @@ namespace ya::renderer
 		#pragma region Sphere Mesh
 		
 		v = {};
-		fRadius = 0.5f;
+		fRadius = 0.5f;		
 		std::vector<Vertex> sphereVtx;
 	
 
@@ -956,6 +956,7 @@ namespace ya::renderer
 
 		Resources::Load<Texture>(L"Brick", L"Cube\\Brick.jpg");
 		Resources::Load<Texture>(L"Brick_N", L"Cube\\Brick_N.jpg");
+		Resources::Load<Texture>(L"TEST", L"TEST.png");
 
 	#pragma endregion
 		#pragma region DYNAMIC TEXTURE

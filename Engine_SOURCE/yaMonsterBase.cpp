@@ -49,6 +49,7 @@ namespace ya
 		{
 			//Postion 
 			mPlayerPos = mPlayerObject->GetComponent<Transform>()->GetPosition();
+			
 			Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
 			mMonster2PlayerNormalize = mPlayerPos - monsterPos;
@@ -267,12 +268,12 @@ namespace ya
 
 		monDirection *= 180.f / XM_PI;
 
-		tr->SetRotation(Vec3(0.0f, rot.y + monDirection.y, 0.0f));
+		//tr->SetRotation(Vec3(0.0f, rot.y + monDirection.y, 0.0f));
 
 		return monDirection.y;
 	}
 
-	bool MonsterBase::WalkToPlayer(float range)
+	bool MonsterBase::WalkToPlayer(float range, float Speed)
 	{
 		Transform* tr = GetComponent<Transform>();
 		Rigidbody* rigi = GetComponent<Rigidbody>();
@@ -283,8 +284,8 @@ namespace ya
 		}
 		else
 		{
-			TurnToPlayer();
-			rigi->AddForce(tr->Forward() * 70.f);
+			TurnToPlayer();			
+			mActionScript->Move(tr->Forward(), Speed);
 			return false;
 		}
 	}

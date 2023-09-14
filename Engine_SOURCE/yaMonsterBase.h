@@ -12,7 +12,8 @@
 #include "yaMeshData.h"
 #include "yaMeshObject.h"
 #include "yaBoneCollider.h"
-
+#include "yaActionScript.h"
+#include "yaBoneAnimator.h"
 
 #include <time.h>
 
@@ -42,7 +43,7 @@ namespace ya
         void MonsterRotation(Vector3 target_point);
         void TurnToPlayer();
         float TurnToPlayerDir();
-        bool WalkToPlayer(float range);
+        bool WalkToPlayer(float range, float Speed);
         void AlertnessLevel();
 
 
@@ -119,7 +120,7 @@ namespace ya
         std::shared_ptr<MeshData>   mMeshData;
         MeshObject*                 mMeshObject;
         Vec3                        mAnimationOffSet;
-
+        ActionScript*               mActionScript;
 
     private:
 

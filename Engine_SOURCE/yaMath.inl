@@ -1,3 +1,4 @@
+#include "yaMath.h"
 //-------------------------------------------------------------------------------------
 // SimpleMath.inl -- Simplified C++ Math wrapper for DirectXMath
 //
@@ -2669,6 +2670,17 @@ inline Matrix Matrix::CreateLookAt(const Vector3& eye, const Vector3& target, co
     const XMVECTOR targetv = XMLoadFloat3(&target);
     const XMVECTOR upv = XMLoadFloat3(&up);
     XMStoreFloat4x4(&R, XMMatrixLookAtRH(eyev, targetv, upv));
+    return R;
+}
+
+inline Matrix ya::math::Matrix::CreateLookAtLH(const Vector3& eye, const Vector3& target, const Vector3& up) noexcept
+{
+    using namespace DirectX;
+    Matrix R;
+    const XMVECTOR eyev = XMLoadFloat3(&eye);
+    const XMVECTOR targetv = XMLoadFloat3(&target);
+    const XMVECTOR upv = XMLoadFloat3(&up);
+    XMStoreFloat4x4(&R, XMMatrixLookAtLH(eyev, targetv, upv));
     return R;
 }
 
