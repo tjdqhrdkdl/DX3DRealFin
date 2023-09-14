@@ -270,6 +270,7 @@
     <ClCompile Include="yaBoundarySphere.cpp">
       <Filter>Engine\Component\BoundarySphere</Filter>
     </ClCompile>
+    <ClCompile Include="yaFrustum.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -562,6 +563,7 @@
     <ClInclude Include="yaBoundarySphere.h">
       <Filter>Engine\Component\BoundarySphere</Filter>
     </ClInclude>
+    <ClInclude Include="yaFrustum.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

@@ -19,10 +19,12 @@ namespace ya
 		void SetCenter(Vector3 center) { mCenter = center; }
 		void SetRadius(float radius) { mRadius = radius; }
 
+		Vector3 GetCenter() { return mCenter; }
+		float GetRadius() { return mRadius; }
+
 	private:
 		float mRadius;
 		Vector3 mCenter;
-		Vector3 mPositionOffSet;
 		class Transform* mTransform;
 	};
 }

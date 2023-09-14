@@ -182,9 +182,9 @@ namespace gui
 		
 		ya::Transform* tr = debugObj->GetComponent<ya::Transform>();
 		tr->SetPosition(mesh.position);
-		tr->SetRotation(mesh.rotatation);
+		tr->SetRotation(mesh.rotation);
 		tr->SetParent((ya::Transform*)mesh.parent);
-
+		tr->SetRotationOffset(mesh.rotationOffset);
 		if (mesh.type == eColliderType::Rect)
 			tr->SetScale(mesh.scale);
 		else if (mesh.type == eColliderType::Box)

@@ -25,13 +25,16 @@ namespace ya
 		float maxScale = scale.x;
 		maxScale = max(maxScale, scale.y);
 		maxScale = max(maxScale, scale.z);
+		Vector3 rotation = mTransform->GetRotation();
 
 		Vector3 position = mTransform->GetPosition();
-		Vector3 centerPos = position + Vector3(mCenter.x, mCenter.y, mCenter.z);
+		Vector3 centerPos = position + Vector3(mCenter.x * scale.x, mCenter.y * scale.y, mCenter.z * scale.z);
 
 		DebugMesh meshAttribute = {};
-		meshAttribute.position = Vector3(centerPos.x, centerPos.y, centerPos.z);
+		meshAttribute.position = position;
 		meshAttribute.radius = mRadius * maxScale;
+		meshAttribute.rotation = rotation;
+		meshAttribute.rotationOffset = Vector3(mCenter.x * scale.x, mCenter.y * scale.y, mCenter.z * scale.z);
 		meshAttribute.parent = mTransform->GetParent();
 		meshAttribute.type = eColliderType::Sphere;
 

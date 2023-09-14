@@ -15,6 +15,16 @@ namespace ya
 
 		GameObject::Update();
 	}
+	void MeshObject::Render()
+	{
+		GameObject::Render();
+
+	}
+	void MeshObject::FixedUpdate()
+	{
+		GameObject::FixedUpdate();
+
+	}
 	void MeshObject::SetParent()
 	{
 		Transform* tr = GetComponent<Transform>();

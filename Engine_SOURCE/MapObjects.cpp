@@ -54,13 +54,13 @@ namespace ya
 			created->SetName(objID);
 		}
 
-		//LoadMapObject(L"Map\\Mesh\\m11_00_00_00_260000.fbx",
-		//	90, 3, -40,		 
+		//LoadMapObject(L"m11_00_00_00_260000.fbx",
+		//	0, 0, 0,		 
 		//	0, 20, 0);
-		//LoadMapObject(L"Map\\Mesh\\m11_00_00_00_002300.fbx",	
+		//LoadMapObject(L"m11_00_00_00_002300.fbx",	
 		//	186.870, -58.937, 119.039,
 		//	0, -96.000, 0);
-		//LoadMapObject(L"Map\\Mesh\\m11_00_00_00_002301.fbx",	
+		//LoadMapObject(L"m11_00_00_00_002301.fbx",	
 		//	186.870, -58.924, 119.039,
 		//	0, 84.000, 0);
 		GameObject::Initialize();
@@ -85,7 +85,6 @@ namespace ya
 		childTr->SetPosition(_positionX, _positionZ, _positionY);
 		childTr->SetRotation(-_rotationX, -_rotationZ, -_rotationY);
 		childTr->SetScale(_scaleX, _scaleZ, _scaleY);
-
 		return obj;
 	}
 }

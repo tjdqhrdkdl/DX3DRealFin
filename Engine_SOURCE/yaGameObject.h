@@ -7,7 +7,7 @@ namespace ya
 {
 	class GameObject : public Entity
 	{
-
+		
 	public:
 		enum eState
 		{

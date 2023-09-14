@@ -11,6 +11,8 @@ namespace ya
 		virtual ~MeshObject();
 
 		virtual void Update() override;
+		virtual void Render() override;
+		virtual void FixedUpdate() override;
 
 
 		void PushBackObject(GameObject* obj) { mGameObjects.push_back(obj); }

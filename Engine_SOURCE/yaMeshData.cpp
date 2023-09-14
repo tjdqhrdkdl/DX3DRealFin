@@ -715,7 +715,7 @@ namespace ya
 			objName = std::filesystem::path(mFullPath).stem();
 		
 		std::vector<GameObject*> ret = {};
-		MeshObject* meshObject = object::Instantiate<MeshObject>(type);
+		MeshObject* meshObject = object::Instantiate<MeshObject>(type);	
 		meshObject->SetName(objName + L".All");
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{
@@ -745,7 +745,9 @@ namespace ya
 					animator->SetParentAnimator(mRepresentBoneAnimator);
 			}
 		}
-		
+		BoundarySphere* sphere = meshObject->AddComponent<BoundarySphere>();
+		sphere->SetCenter(mMeshCenter);
+		sphere->SetRadius(mBoundarySphereRadius*2);
 		meshObject->SetParent();
 		mMeshObject = meshObject;
 		return meshObject;
