@@ -306,7 +306,7 @@ namespace ya
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\SwordMan\\Animation\\a000_605000.fbx", L"SwordMan_Hit_Molotov_Cocktail");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\SwordMan\\Animation\\a100_003000.fbx", L"SwordMan_Evasion_Left");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\SwordMan\\Animation\\a100_003001.fbx", L"SwordMan_Evasion_Right");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\SwordMan\\Animation\\a000_400000.fbx", L"SwordMan_Boundary_Step1");
+
 		//mMeshData->AnimationSave(L"Monster\\SwordMan\\AnimationData\\SwordManAnimation_1.animationdata");
 		//
 		//mMeshData->Instantiate(eLayerType::Monster);
