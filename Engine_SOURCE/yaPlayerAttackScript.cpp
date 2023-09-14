@@ -75,11 +75,11 @@ namespace ya
 		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 		PlayerActionScript* playerAction = player->GetScript<PlayerActionScript>();
 
-		if (mTimer[(UINT)eAttackState::Move] > 0.0f)
+		/*if (mTimer[(UINT)eAttackState::Move] > 0.0f)
 		{
 			mTimer[(UINT)eAttackState::Move] -= Time::DeltaTime();
 			playerAction->Move(playerTr->Forward(), 500.0f);
-		}
+		}*/
 
 		switch (mAttackState)
 		{
@@ -100,7 +100,7 @@ namespace ya
 					mAttackState = eAttackState::CrouchAttack1;
 					player->SetStateFlag(ePlayerState::Crouch, false);
 					playerAnim->Play(L"a050_301050");
-					mTimer[(UINT)eAttackState::Move] = mTimerMax[(UINT)eAttackState::Move];
+					//mTimer[(UINT)eAttackState::Move] = mTimerMax[(UINT)eAttackState::Move];
 				}
 				else if (player->IsStateFlag(ePlayerState::Hang))
 				{
@@ -111,7 +111,7 @@ namespace ya
 				{
 					mAttackState = eAttackState::Attack1;
 					playerAnim->Play(L"a050_300100");
-					mTimer[(UINT)eAttackState::Move] = mTimerMax[(UINT)eAttackState::Move];
+					//mTimer[(UINT)eAttackState::Move] = mTimerMax[(UINT)eAttackState::Move];
 				}
 			}
 

@@ -54,10 +54,10 @@ namespace ya
 			//weaponCollider->SetAnimOffSet(L"SwingSword1", Vector3(1, 0.5, 1));
 			weaponCollider->SetColliderActiveFrame(L"a000_000000", 0, 90);
 			weaponCollider->SetColliderActiveFrame(L"a050_300100", 0, 20);
-			/*weaponCollider->SetColliderActiveFrame(L"a050_305101", 0, 20);
+			weaponCollider->SetColliderActiveFrame(L"a050_305101", 0, 20);
 			weaponCollider->SetColliderActiveFrame(L"a050_300020", 0, 20);
 			weaponCollider->SetColliderActiveFrame(L"a050_300030", 0, 20);
-			weaponCollider->SetColliderActiveFrame(L"a050_300040", 0, 20);*/
+			weaponCollider->SetColliderActiveFrame(L"a050_300040", 0, 20);
 																	  
 			//weaponCollider->SetColliderActiveFrame(L"a050_308010", 0, 20);
 			//weaponCollider->SetColliderActiveFrame(L"a050_308000", 0, 20);

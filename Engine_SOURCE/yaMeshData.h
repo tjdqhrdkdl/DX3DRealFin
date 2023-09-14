@@ -21,7 +21,7 @@ namespace ya
 		virtual HRESULT Load(const std::wstring& path, FILE* file = nullptr);
 
 		virtual HRESULT AnimationSave(const std::wstring& path, FILE* file = nullptr);
-		virtual HRESULT AnimationLoad(const std::wstring& path, FILE* file = nullptr);
+		virtual HRESULT AnimationLoad(const std::wstring& path, FILE* file = nullptr, bool bLast = true);
 
 
 		bool IsAnimMesh() { return !mBones.empty(); }
@@ -87,6 +87,7 @@ namespace ya
 		graphics::StructedBuffer* mBoneOffset; // 각 뼈의 offset 행렬 () 각뼈의 위치를 TPOSE로 되돌리는 행렬
 
 		UINT mAnimationClipCount;
+		UINT mIFrameCount;
 
 		class BoneAnimator* mRepresentBoneAnimator;
 		MeshObject* mMeshObject;

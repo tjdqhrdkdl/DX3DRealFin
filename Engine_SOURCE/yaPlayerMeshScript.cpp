@@ -7,7 +7,7 @@ namespace ya
 {
     PlayerMeshScript::PlayerMeshScript()
         : Script()
-        , mbUse(false)
+        , mbUse(true)
         , mbLoad(false)
         , mMeshDataMap{}
     {
