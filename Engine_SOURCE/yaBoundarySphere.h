@@ -21,10 +21,12 @@ namespace ya
 
 		Vector3 GetCenter() { return mCenter; }
 		Vector3 GetPosition() { return mPosition; }
-		float GetRadius() { return mRadius; }
+		float GetRadius() { return mMaxScale * mRadius; }
 		
 	private:
 		float mRadius;
+		float mMaxScale;
+
 		Vector3 mCenter;
 		Vector3 mPosition;
 		class Transform* mTransform;

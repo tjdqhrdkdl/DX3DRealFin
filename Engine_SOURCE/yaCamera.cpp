@@ -251,6 +251,7 @@ namespace ya
 						if (nullptr != meshObject)
 							meshObject->SetChildRender(true);
 						Vector3 center = sphere->GetPosition();
+						float ra = sphere->GetRadius();
 						if (mFrustum.CheckSphere(center.x, center.y, center.z, sphere->GetRadius()))
 						{
 							pushGameObjectToRenderingModes(obj);
