@@ -91,7 +91,7 @@ namespace ya
 					mTime = 0.f;
 				}
 			}
-
+		
 			//체간 게이지 차서 그로기 걸렸을때는 3초
 			if(GetSituation() == enums::eSituation::Groggy)
 			{
@@ -102,15 +102,22 @@ namespace ya
 					SetDeathBlow(false);
 					mTime = 0.f;
 				}
+			}		
+
+			if (IsDeathBlow())
+			{
+				Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+				Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
+				marktr->SetPosition(pos + mDeathBlowMarkOffSet);
+			}
+			else
+			{
+				Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+				marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
 			}
 
-			//Death
 
-			//if (GetSituation() == enums::eSituation::Death)
-			//{
-			//	this->Death();
-			//}
-
+			
 		}
 
 
@@ -396,6 +403,45 @@ namespace ya
 		}
 	}
 
+	Vector3 MonsterBase::Convert3DTo2DScreenPos(Transform* tr)
+	{
+		Matrix viewMatrix;         // 뷰 매트릭스   (카메라의 위치와 방향 정보)
+		Matrix worldMatrix;         // 월드 매트릭스 (몬스터의 위치 정보가 담긴 매트릭스)
+		Matrix projectionMatrix;   // 3D 공간을 2D 화면으로 투영하는데 사용 하는 설정(가로,세로,비율,시야각)
+
+		UINT width = application.GetWidth();
+		UINT height = application.GetHeight();
+
+		
+		worldMatrix = Matrix::CreateWorld(tr->GetPosition(), tr->Forward(), tr->Up());
+		
+		Transform* cameratr = mainCamera->GetOwner()->GetComponent<Transform>();
+
+		viewMatrix = mainCamera->GetViewMatrix();
+		projectionMatrix = mainCamera->GetProjectionMatrix();
+		
+
+		Matrix worldViewProjection = worldMatrix * viewMatrix * projectionMatrix;
+		Vector3 MonsterNDCPos = Vector3::Transform(tr->GetPosition(), worldViewProjection);
+		
+		Vector3 monsterScreenPosition;
+
+		monsterScreenPosition.x = (MonsterNDCPos.x + 1.0f) * 0.5f * (float)width;
+		monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (float)height;
+		monsterScreenPosition.z = 1.0f;
+
+		float LeftMax = -800;
+		float RightMax = 800;
+		float TopMax = -450;
+		float BottomMax = 450;
+		
+		monsterScreenPosition.x = (MonsterNDCPos.x + 1.0f) * 0.5f * (RightMax - LeftMax) + LeftMax;
+		monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (TopMax - BottomMax) + BottomMax;
+
+
+		return monsterScreenPosition;
+	}
+
 
 
 	void MonsterBase::CreateMonsterState()
@@ -418,6 +464,27 @@ namespace ya
 
 
 
+
+
+	}
+
+	void MonsterBase::CreateDeathBlowMark()
+	{
+		
+		Transform* tr = GetComponent<Transform>();
+		mDeathBlowMark = object::Instantiate<GameObject>(eLayerType::UI);
+		mDeathBlowMark->SetName(L"DeathBlowMark");
+		
+		Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+		marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
+		//marktr->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+		marktr->SetScale(Vector3(100.0f, 100.0f, 100.0f));
+		MeshRenderer* faceRenderer = mDeathBlowMark->AddComponent<MeshRenderer>();
+		faceRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
+
+		faceRenderer->SetMaterial(mat, 0);
+		mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"TEST"));
 
 
 	}

@@ -67,7 +67,8 @@ namespace ya::graphics
 
 		ID3D11Device* GetID3D11Device() { return mDevice.Get(); }
 		ID3D11DeviceContext* GetID3D11DeviceContext() { return mContext.Get(); }
-		
+		D3D11_VIEWPORT GetViewPort() { return mViewPort; }
+
 	private:
 		Microsoft::WRL::ComPtr <ID3D11Device> mDevice;
 		Microsoft::WRL::ComPtr <ID3D11DeviceContext> mContext;

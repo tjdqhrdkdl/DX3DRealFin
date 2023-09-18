@@ -15,6 +15,7 @@
 #include "yaActionScript.h"
 #include "yaBoneAnimator.h"
 
+
 #include <time.h>
 
 namespace ya
@@ -52,6 +53,7 @@ namespace ya
 
         void OnceAniamtion(const std::wstring& animation);
 
+        Vector3 Convert3DTo2DScreenPos(Transform* tr);
 
 #pragma region State_GetSet
 
@@ -99,6 +101,7 @@ namespace ya
         Vec3 GetPlayerPos() { return mPlayerPos; }
         Vec3 GetMonster2PlayerNormalize() { return mMonster2PlayerNormalize; }
         Vec3 GetPlayer2MonsterNormalize() { return mPlayer2MonsterNormalize; }
+        Vec3 GetDeathBlowMarkOffSet() { return mDeathBlowMarkOffSet; }
         bool IsPlayerFront() { return mbPlayerFront; }
         //bool IsPlayerFieldview() { return mbPlayerFieldview; }
         bool IsDefense() { return mbDefense; }
@@ -108,12 +111,15 @@ namespace ya
         void SetPlayerObject(GameObject* target) { mPlayerObject = target; }
 
         void SetPlayerPos(Vec3 pos) { mPlayerPos = pos; }
-		void SetMonster2PlayerNormalize(Vec3 mormal) { mMonster2PlayerNormalize = mormal; }
-		void SetPlayer2MonsterNormalize(Vec3 mormal) { mPlayer2MonsterNormalize = mormal; }
+		void SetMonster2PlayerNormalize(Vec3 normal) { mMonster2PlayerNormalize = normal; }
+		void SetPlayer2MonsterNormalize(Vec3 normal) { mPlayer2MonsterNormalize = normal; }
+        void SetDeathBlowMarkOffSet(Vec3 offset) { mDeathBlowMarkOffSet = offset; }
         void SetPlayerFront(bool front) {  mbPlayerFront = front; }
         //void SetPlayerFieldview(bool view) { mbPlayerFieldview = view; }
         void SetDefense(bool defense) { mbDefense = defense; }
         void SetOnceAnimation(bool animation) { mbOnceAnimation = animation; }
+
+        void CreateDeathBlowMark();
 
     protected:
 
@@ -121,6 +127,7 @@ namespace ya
         MeshObject*                 mMeshObject;
         Vec3                        mAnimationOffSet;
         ActionScript*               mActionScript;
+        GameObject*                 mDeathBlowMark;
 
     private:
 
@@ -130,7 +137,7 @@ namespace ya
         Vec3                mPlayerPos;
         Vec3                mMonster2PlayerNormalize;
         Vec3                mPlayer2MonsterNormalize;
-
+        Vec3                mDeathBlowMarkOffSet;
 
 
         bool                mbPlayerFront;

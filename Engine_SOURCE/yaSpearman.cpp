@@ -18,13 +18,16 @@ namespace ya
 
 	void Spearman::Initialize()
 	{
-		
+
 		GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
 		GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
 		SetName(L"Spearman");
 
+		MeshRenderer* mr = AddComponent<MeshRenderer>();
+		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 
-
+		
 		Collider2D* spearmancol = AddComponent <Collider2D>();
 		spearmancol->SetType(eColliderType::Box);
 		spearmancol->SetSize(Vector3(1.0, 2.2f, 1.0f));
@@ -44,28 +47,16 @@ namespace ya
 		//animator->SetAnimationTailTime(0.1f);
 
 		Transform* tr = GetComponent<Transform>();
-		{
-			Transform* tr = GetComponent<Transform>();
-			GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
-			face->SetName(L"TEST");
-			TEST = face->GetComponent<Transform>();
-			TEST->SetPosition(Vector3(100.0f, 100.0f, 100.0f));
-			TEST->SetScale(Vector3(1.3f, 1.3f, 0.3f));
-			MeshRenderer* faceRenderer = face->AddComponent<MeshRenderer>();
-			faceRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
-
-			faceRenderer->SetMaterial(mat, 0);
-			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"TEST"));
-			
-		}
 
 
+
+		CreateDeathBlowMark();
+		SetDeathBlowMarkOffSet(Vector3(60.0f, 80.0f, 1.0f));
 		mMeshData = std::make_shared<MeshData>();
 		mMeshData->Load(L"Monster\\SwordMan\\MeshData\\c1700_SwordMan.meshdata");
-		
+
 		mMeshData->AnimationLoad(L"Monster\\SwordMan\\AnimationData\\SwordManAnimation_1.animationdata");
-		
+
 		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
 
 		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
@@ -73,12 +64,12 @@ namespace ya
 		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
 		meshobjtr->SetRotationOffset(Vector3(0.0f, 1.0f, 0.0f));
 		meshobjtr->SetParent(GetComponent<Transform>());
-		
+
 		KatanaColliderInit();
-		
+
 		Animation_Event();
-		
-		
+
+
 		mMeshData->Play(L"SwordMan_Idle_Stand");
 
 		CreateMonsterState();
@@ -86,9 +77,10 @@ namespace ya
 
 		mAttackRange = 8.0f;
 		mTime = 0.f;
-		
+
 		//몬스터 할일 있나
-	
+
+
 		MonsterBase::Initialize();
 
 	}
@@ -104,40 +96,28 @@ namespace ya
 		Vec3 playerPos = GetPlayerPos();
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
-		//Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
-		//meshobjtr->SetPosition(tr->GetPosition());
-		
-		//meshobjtr->SetRotation(tr->GetRotation());
-		
-		Vector3 test = TEST->GetRotation();
-		TEST->SetRotation(Vector3(test.x, TurnToPlayerDir(), test.z));
-
 		
 		
 
-		if (IsDeathBlow())
+		if (Input::GetKeyDown(eKeyCode::U))
 		{
-			TEST->SetPosition(Vector3(0.0f, 2.0f, 0.0f));
-		}
-		else
-		{
-			TEST->SetPosition(Vector3(100.0f, 100.0f, 100.0f));
+			SetDeathBlow(!IsDeathBlow());
 		}
 
-
+		
 		switch (GetSituation())
 		{
-		//몬스터 처음 상태로 인식을 한번이라도 하면 None상태는 더 안함
+			//몬스터 처음 상태로 인식을 한번이라도 하면 None상태는 더 안함
 		case ya::enums::eSituation::None:
 		{
 			//플레이어가 가까운 거리에 있으면서 뒤에 있을경우 은신 가능 상태로 변경
 			if (NavigationPlayer(3.0f) && !IsPlayerFront())
 			{
-				SetDeathBlow(true);
+				//SetDeathBlow(true);
 			}
 			else
 			{
-				SetDeathBlow(false);				
+				//SetDeathBlow(false);
 			}
 
 			//플레이어가 시야각안에 있다.
@@ -147,8 +127,8 @@ namespace ya
 				if (NavigationPlayer(15.0f))
 				{
 					//배틀로 상태 변경					
-					OnceAniamtion(L"SwordMan_Boundary_Start");
-					
+					OnceAniamtion(L"SwordMan_Boundary_Start1");
+
 				}
 			}
 			//플레이어가 시야각에서 벗어나 있는 경우?
@@ -157,9 +137,9 @@ namespace ya
 				if (IsPlayerFront())
 				{
 					if (!NavigationPlayer(10.0f))
-					{						
+					{
 						OnceAniamtion(L"SwordMan_Boundary_Start2");
-						//SetSituation(enums::eSituation::Boundary, true);
+						SetSituation(enums::eSituation::Boundary, true);
 					}
 
 
@@ -175,10 +155,21 @@ namespace ya
 			//바운더리는 플레이어가 아직 가까이 있음 하지만 안보일때 바운더리 유지
 			OnceAniamtion(L"SwordMan_Boundary_Step1");
 			mTime += Time::DeltaTime();
-			if (mTime >= 0.8f)
+			if (mTime >= 1.5f)
 			{
-				SetSituation(enums::eSituation::Battle, true);
-				mTime = 0.f;
+				TurnToPlayer();
+				mRandom = RandomNumber(1, 2);
+				if (mRandom == 1)
+				{
+					SetSituation(enums::eSituation::Battle, true);
+					mTime = 0.f;
+				}
+				else if (mRandom == 2)
+				{
+					SetSituation(enums::eSituation::Chase, true);
+					mTime = 0.f;
+				}
+				
 			}
 
 
@@ -189,7 +180,7 @@ namespace ya
 		{
 			if (IsPlayerFront())
 			{
-				if(IsPlayerFieldview(45.0f, 135.0f))
+				if (IsPlayerFieldview(45.0f, 135.0f))
 				{
 
 				}
@@ -206,14 +197,46 @@ namespace ya
 				{
 					SetSituation(enums::eSituation::Battle, true);
 				}
-				
+
 			}
 
 
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Chase:
-			break;
+		{
+			mTime += Time::DeltaTime();
+			if (mTime >= 3.0f)
+			{
+				Idle_Stand();
+				mTime = 0.f;
+			}
+			//Left
+			if (mRandom == 1)
+			{
+				OnceAniamtion(L"SwordMan_1Default_Defense_Left");
+				mActionScript->Move(-(tr->Right()), 68.f);				
+			}
+			//Right
+			if (mRandom == 2)
+			{
+				OnceAniamtion(L"SwordMan_1Default_Defense_Right");
+				mActionScript->Move((tr->Right()), 68.f);
+			}
+			//Back
+			if (mRandom == 3)
+			{
+				OnceAniamtion(L"SwordMan_1Default_Defense_Back");
+				mActionScript->Move(-(tr->Forward()), 68.f);
+			}
+			//Front
+			if (mRandom == 4)
+			{
+				OnceAniamtion(L"SwordMan_1Default_Defense_Forward");
+				mActionScript->Move((tr->Forward()), 68.f);
+			}
+		}
+		break;
 		case ya::enums::eSituation::Battle:
 		{
 			mRandom = RandomNumber(2, 8);
@@ -243,9 +266,9 @@ namespace ya
 			}
 			else if (mRandom > 3)
 			{
-				
+
 				OnceAniamtion(L"SwordMan_Walk");
-				if(WalkToPlayer(3.0f, 800.0f))
+				if (WalkToPlayer(4.0f, 500.0f))
 				{
 					TurnToPlayer();
 					SetSituation(enums::eSituation::Attack, true);
@@ -257,7 +280,7 @@ namespace ya
 		break;
 		case ya::enums::eSituation::Run:
 		{
-			
+
 			//오른쪽 방향
 			if (mRandomXY.x > mWlakFixPos.x)
 			{
@@ -325,9 +348,8 @@ namespace ya
 				{
 					WalkToPlayer(3.0f, 1000.0f);
 				}
-			}		
-
-			if (!NavigationPlayer(5.0f))
+			}
+			if (!NavigationPlayer(8.0f))
 			{
 				Idle_Stand();
 			}
@@ -389,12 +411,12 @@ namespace ya
 		attackcol->SetType(eColliderType::Box);
 		attackcol->SetSize(Vector3(3.0, 2.0f, 4.0f));
 
-	
+
 
 	}
 
 	void Spearman::Idle_Stand()
-	{			
+	{
 		OnceAniamtion(L"SwordMan_Boundary_Step1");
 		SetSituation(enums::eSituation::Idle, true);
 	}
@@ -405,7 +427,7 @@ namespace ya
 
 
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_1Default_Attack1")
-		{			
+		{
 			OnceAniamtion(L"SwordMan_1Default_Attack2");
 		}
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_1Default_Attack2")
@@ -413,11 +435,11 @@ namespace ya
 			Idle_Stand();
 		}
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_2Default_Attack1")
-		{			
+		{
 			OnceAniamtion(L"SwordMan_2Default_Attack2");
 		}
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_2Default_Attack2")
-		{			
+		{
 			OnceAniamtion(L"SwordMan_2Default_Attack3");
 		}
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_2Default_Attack3")
@@ -425,7 +447,7 @@ namespace ya
 			Idle_Stand();
 		}
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_3Default_Attack1")
-		{			
+		{
 			OnceAniamtion(L"SwordMan_3Default_Attack2");
 		}
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_3Default_Attack2")
@@ -437,7 +459,15 @@ namespace ya
 			if (NavigationPlayer(16.0f))
 			{
 				TurnToPlayer();
-				SetSituation(enums::eSituation::Battle, true);
+				if (NavigationPlayer(8.0f))
+				{
+					SetSituation(enums::eSituation::Battle, true);
+				}
+				else if (NavigationPlayer(16.0f))
+				{					
+					mRandom = RandomNumber(1, 4);
+					SetSituation(enums::eSituation::Chase, true);
+				}				
 			}
 			else if (NavigationPlayer(22.0f))
 			{
@@ -457,7 +487,7 @@ namespace ya
 		}
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_Boundary_Start2")
 		{
-
+			OnceAniamtion(L"SwordMan_Boundary_Step2");
 		}
 		if (mMeshData->GetPlayAnimationName() == L"SwordMan_Start_Attack2")
 		{
@@ -506,22 +536,22 @@ namespace ya
 	{
 
 #pragma region	Attack_1
-		
-			BoneCollider* Rkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
-			Rkatana->SetMeshAndBone(mMeshData, L"R_Katana");
-			Rkatana->SetAnimOffSet(L"SwordMan_1Default_Attack1", Vector3(2.0f, 0.5f, 0.0f));
-			Rkatana->SetColliderActiveFrame(L"SwordMan_1Default_Attack1", 20, 23);		
-		
-			BoneCollider* Lkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
-			Lkatana->SetMeshAndBone(mMeshData, L"L_Katana");
-			Lkatana->SetAnimOffSet(L"SwordMan_1Default_Attack1", Vector3(2.0f, 0.5f, 0.0f));
-			Lkatana->SetColliderActiveFrame(L"SwordMan_1Default_Attack1", 36, 38);
-		
-		{			
+
+		BoneCollider* Rkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+		Rkatana->SetMeshAndBone(mMeshData, L"R_Katana");
+		Rkatana->SetAnimOffSet(L"SwordMan_1Default_Attack1", Vector3(2.0f, 0.5f, 0.0f));
+		Rkatana->SetColliderActiveFrame(L"SwordMan_1Default_Attack1", 20, 23);
+
+		BoneCollider* Lkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+		Lkatana->SetMeshAndBone(mMeshData, L"L_Katana");
+		Lkatana->SetAnimOffSet(L"SwordMan_1Default_Attack1", Vector3(2.0f, 0.5f, 0.0f));
+		Lkatana->SetColliderActiveFrame(L"SwordMan_1Default_Attack1", 36, 38);
+
+		{
 			Rkatana->SetAnimOffSet(L"SwordMan_1Default_Attack2", Vector3(0.7f, 0.8f, 0.0f));
 			Rkatana->SetColliderActiveFrame(L"SwordMan_1Default_Attack2", 28, 31);
 		}
-		{			
+		{
 			Lkatana->SetAnimOffSet(L"SwordMan_1Default_Attack2", Vector3(0.7, 0.8, 0));
 			Lkatana->SetColliderActiveFrame(L"SwordMan_1Default_Attack2", 28, 31);
 		}
@@ -529,22 +559,22 @@ namespace ya
 
 #pragma region	Attack_2
 
-		{			
+		{
 			Lkatana->SetAnimOffSet(L"SwordMan_2Default_Attack1", Vector3(1.8f, 0.5f, 0.0f));
 			Lkatana->SetColliderActiveFrame(L"SwordMan_2Default_Attack1", 33, 37);
 		}
 
 
-		{			
+		{
 			Rkatana->SetAnimOffSet(L"SwordMan_2Default_Attack2", Vector3(1.0f, 0.5f, 0.0f));
 			Rkatana->SetColliderActiveFrame(L"SwordMan_2Default_Attack2", 27, 30);
 		}
 
-		{			
+		{
 			Rkatana->SetAnimOffSet(L"SwordMan_2Default_Attack3", Vector3(0.9f, 1.0f, 0.0f));
 			Rkatana->SetColliderActiveFrame(L"SwordMan_2Default_Attack3", 27, 29);
 		}
-		{			
+		{
 			Lkatana->SetAnimOffSet(L"SwordMan_2Default_Attack3", Vector3(0.9f, 1.0f, 0.0f));
 			Lkatana->SetColliderActiveFrame(L"SwordMan_2Default_Attack3", 27, 29);
 		}
@@ -552,7 +582,7 @@ namespace ya
 
 #pragma region	Attack_3
 
-		{			
+		{
 			Lkatana->SetAnimOffSet(L"SwordMan_3Default_Attack1", Vector3(0.9f, 1.0f, 0.0f));
 			Lkatana->SetColliderActiveFrame(L"SwordMan_3Default_Attack1", 45, 47);
 		}
