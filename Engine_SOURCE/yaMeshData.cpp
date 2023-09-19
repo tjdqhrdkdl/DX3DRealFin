@@ -9,7 +9,7 @@
 #include "yaBoneAnimator.h"
 #include "Utils.h"
 #include "CommonInclude.h"
-
+#include "yaBoundarySphere.h"
 namespace ya
 {
 	MeshData::MeshData()
@@ -37,10 +37,12 @@ namespace ya
 		FbxLoader loader;
 		loader.Initialize();
 		loader.LoadFbx(fullPath);
+		meshSharedPtr->mMeshCenter = loader.GetMeshCenter();
 
 		// 메시들 가져오기
 		std::vector<std::shared_ptr<Mesh>> meshes = Mesh::CreateFromContainer(&loader);
 		std::vector<std::vector<std::shared_ptr<Material>>>  materialsVec = {};
+		meshSharedPtr->mBoundarySphereRadius = loader.GetMaxDist();
 
 		std::shared_ptr<Mesh> mesh = nullptr;
 		for (size_t i = 0; i < meshes.size(); i++)
@@ -179,7 +181,6 @@ namespace ya
 		//std::wstring name = std::filesystem::path(fullPath).stem();
 		//name += L".mesh" + std::to_wstring(i);
 		
-	
 		meshSharedPtr->Save(path);
 
 		loader.Release();
@@ -368,6 +369,9 @@ namespace ya
 			}		
 		}		
 
+		fwrite(&mMeshCenter, sizeof(Vector3), 1, file);
+		fwrite(&mBoundarySphereRadius, sizeof(float), 1, file);
+
 		fclose(file);
 
 		return S_OK;	
@@ -477,6 +481,8 @@ namespace ya
 		mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
 		mBoneOffset->GetSize();
 
+		fread(&mMeshCenter, sizeof(Vector3), 1, file);
+		fread(&mBoundarySphereRadius, sizeof(float), 1, file);
 
 		fclose(file);
 
@@ -709,7 +715,7 @@ namespace ya
 			objName = std::filesystem::path(mFullPath).stem();
 		
 		std::vector<GameObject*> ret = {};
-		MeshObject* meshObject = object::Instantiate<MeshObject>(type);
+		MeshObject* meshObject = object::Instantiate<MeshObject>(type);	
 		meshObject->SetName(objName + L".All");
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{
@@ -739,7 +745,9 @@ namespace ya
 					animator->SetParentAnimator(mRepresentBoneAnimator);
 			}
 		}
-		
+		BoundarySphere* sphere = meshObject->AddComponent<BoundarySphere>();
+		sphere->SetCenter(mMeshCenter);
+		sphere->SetRadius(mBoundarySphereRadius*2);
 		meshObject->SetParent();
 		mMeshObject = meshObject;
 		return meshObject;
@@ -803,6 +811,8 @@ namespace ya
 		// 메시들 가져오기
 		std::vector<std::shared_ptr<Mesh>> meshes = Mesh::CreateFromContainer(&loader);
 		std::vector<std::vector<std::shared_ptr<Material>>>  materialsVec = {};
+		mMeshCenter = loader.GetMeshCenter();
+		mBoundarySphereRadius = loader.GetMaxDist();
 
 		std::shared_ptr<Mesh> mesh = nullptr;
 		for (size_t i = 0; i < meshes.size(); i++)

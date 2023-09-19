@@ -7,6 +7,7 @@ namespace ya
 		: mState(eState::Active)
 		, mType(eLayerType::None)
 		, mbDontDestroy(false)
+		, mbRender(true)
 	{
 		mComponents.resize((UINT)eComponentType::End);
 		AddComponent(new Transform());
@@ -104,20 +105,23 @@ namespace ya
 
 	void GameObject::Render()
 	{
-		for (Component* comp : mComponents)
+		if (mbRender)
 		{
-			if (comp == nullptr)
-				continue;
+			for (Component* comp : mComponents)
+			{
+				if (comp == nullptr)
+					continue;
 
-			comp->Render();
-		}
+				comp->Render();
+			}
 
-		for (Component* script : mScripts)
-		{
-			if (script == nullptr)
-				continue;
+			for (Component* script : mScripts)
+			{
+				if (script == nullptr)
+					continue;
 
-			script->Render();
+				script->Render();
+			}
 		}
 	}
 

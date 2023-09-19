@@ -46,6 +46,7 @@ namespace ya::enums
 		AudioListener,
 		AudioSource,
 		Light,
+		BoundarySphere,
 		UI,
 		//FadeOut,FadeIn
 		Script,
