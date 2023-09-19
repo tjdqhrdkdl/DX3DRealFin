@@ -59,7 +59,7 @@ namespace ya
         State* GetState() { return mMonsterState; }
         enums::eSituation GetSituation() { return mMonsterState->GetSituation(); }
         float GetHP() { return mMonsterState->GetHP(); }
-        float GetMaxHP() { return mMonsterState->GetMaxHP(); }
+        float GetMaxHP() { return mMonsterState->GetHPMax(); }
         float GetSpeed() { return mMonsterState->GetSpeed(); }
         float GetDeathBlowCount() { return mMonsterState->GetDeathBlowCount(); }
         float GetMaxDeathBlowCount() { return mMonsterState->GetMaxDeathBlowCount(); }
@@ -77,7 +77,7 @@ namespace ya
             mbOnceAnimation = OnceAniamtion;
         }
         void SetHp(float hp) { mMonsterState->SetHp(hp);}
-        void SetMaxHP(float maxhp) { mMonsterState->SetMaxHP(maxhp); }
+        void SetMaxHP(float maxhp) { mMonsterState->SetHPMax(maxhp); }
         void SetSpeed(float speed) { mMonsterState->SetSpeed(speed); }
         void SetDeathBlowCount(float blowcount) { mMonsterState->SetDeathBlowCount(blowcount); }
         void SetMaxDeathBlowCount(float maxblowcount) { mMonsterState->SetMaxDeathBlowCount(maxblowcount); }
