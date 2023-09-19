@@ -467,12 +467,6 @@
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
-    <ClInclude Include="yaSekiroEnums.h">
-      <Filter>Contents\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="yaSekiroCommon.h">
-      <Filter>Contents\Common</Filter>
-    </ClInclude>
     <ClInclude Include="yaMonsterScript.h">
       <Filter>Contents\Monster\Script</Filter>
     </ClInclude>
@@ -560,6 +554,9 @@
     </ClInclude>
     <ClInclude Include="ThreadPool.h">
       <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Contents\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -748,5 +745,10 @@
     <None Include="yaMath.inl">
       <Filter>Engine\Common\Math</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="loadanimation.txt">
+      <Filter>Contents\Player</Filter>
+    </Text>
   </ItemGroup>
 </Project>

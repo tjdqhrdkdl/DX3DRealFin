@@ -253,7 +253,6 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaScene.h" />
     <ClInclude Include="yaSceneManager.h" />
     <ClInclude Include="yaScript.h" />
-    <ClInclude Include="yaSekiroCommon.h" />
     <ClInclude Include="yaSekiroEnums.h" />
     <ClInclude Include="yaShader.h" />
     <ClInclude Include="yaSpearman_Sting.h" />
@@ -364,6 +363,9 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="loadanimation.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

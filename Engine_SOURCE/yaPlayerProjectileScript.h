@@ -3,6 +3,8 @@
 
 namespace ya
 {
+	class Player;
+	class PlayerMeshScript;
 	class PlayerProjectileScript : public Script
 	{
 	public:
@@ -21,5 +23,11 @@ namespace ya
 		virtual void OnTriggerEnter(Collider2D* collider);
 		virtual void OnTriggerStay(Collider2D* collider);
 		virtual void OnTriggerExit(Collider2D* collider);
+
+	private:
+		Player* mPlayer;
+		PlayerMeshScript* mPlayerAnim;
+
+		bool mbBlock;
 	};
 }

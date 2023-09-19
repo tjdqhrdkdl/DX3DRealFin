@@ -3,6 +3,8 @@
 
 namespace ya
 {
+	class Player;
+	class PlayerMeshScript;
 	class PlayerAttackScript : public Script
 	{
 	public:
@@ -47,6 +49,9 @@ namespace ya
 
 
 	private:
+		Player* mPlayer;
+		PlayerMeshScript* mPlayerAnim;
+
 		eAttackState mAttackState;
 		float mTimer[(UINT)eAttackState::End];
 		float mTimerMax[(UINT)eAttackState::End];

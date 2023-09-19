@@ -25,8 +25,13 @@ namespace ya
 		virtual void Render() override;
 		
 	private:
+		void Idle();
 		void Walk();
-		void Run();
+		void Sprint();
+		void PlayerJump();
+		void Hang();
+		void Crouch();
+		void Hit();
 
 	private:
 		Player* mPlayer;
@@ -41,6 +46,9 @@ namespace ya
 		float mDashSpeed;
 		float mDashTimer;
 		float mDashTimerMax;
+
+		float mHitTimer;
+		float mHitTimerMax;
 
 		bool mbJumpDouble;
 	};
