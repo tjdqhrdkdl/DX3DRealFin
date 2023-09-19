@@ -4,12 +4,15 @@
 #include "yaInput.h"
 #include "yaCollisionManager.h"
 
+#include "yaObject.h"
 #include "yaRigidbody.h"
 #include "yaTransform.h"
 #include "yaCollider2D.h"
 
 #include "yaPlayer.h"
 #include "yaWallScript.h"
+#include "yaWallCheckObject.h"
+#include "yaWallCheckScript.h"
 
 #include <assert.h>
 
@@ -20,6 +23,7 @@ namespace ya
 	ActionScript::ActionScript()
 		: Script()
 		, mTarget(nullptr)
+		, mCheck(nullptr)
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
 		, mCollider(nullptr)
@@ -53,6 +57,19 @@ namespace ya
 		mTransform = obj->GetComponent<Transform>();
 		mRigidbody = obj->GetComponent<Rigidbody>();
 		mCollider = obj->GetComponent<Collider2D>();
+
+		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::Player);
+		assert(checkObj != nullptr);
+		mCheck = checkObj;
+		checkObj->SetName(L"WallCheck");
+		checkObj->SetParentObj(obj);
+
+		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
+		Transform* checkTransform = mCheck->GetComponent<Transform>();
+
+		checkCol->SetType(eColliderType::Box);
+		checkCol->SetCenter(Vector3(0.f, 0.f, 0.f));
+		checkCol->SetSize(Vector3(1.0, 1.0f, 1.0f));
 	}
 
 	void ActionScript::Update()
@@ -76,54 +93,96 @@ namespace ya
 	{
 	}
 
-	//void ActionScript::OnCollisionEnter(Collider2D* collider)
-	//{
-	//	GameObject* colObj = collider->GetOwner();
-	//	Transform* colTransform = colObj->GetComponent<Transform>();
+	void ActionScript::OnCollisionEnter(Collider2D* collider)
+	{
+		GameObject* colObj = collider->GetOwner();
+		Transform* colTransform = colObj->GetComponent<Transform>();
 
-	//	GameObject* obj = GetOwner();
-	//	Transform* objTransform = obj->GetComponent<Transform>();
+		GameObject* obj = GetOwner();
+		Transform* objTransform = obj->GetComponent<Transform>();
 
-	//	// 벽 충돌
-	//	if (nullptr != colObj->GetScript<WallScript>())
-	//	{
-	//		Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+		// 벽 충돌
+		if (nullptr != colObj->GetScript<WallScript>())
+		{
+			//Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
 
-	//		Vector3 velocity = objRigidbody->GetVelocity();
-	//		Vector3 pos = objTransform->GetPosition();
+			//// 충돌한 벽의 Right 벡터에 이동 벡터를 내적하여 투영된 벡터의 길이를 얻음
+			//Vector3 wallNormal = colTransform->Right();
+			//wallNormal.Normalize();
 
-	//		pos -= velocity * Time::DeltaTime();
-	//		objTransform->SetPosition(pos);
-	//	}
-	//}
+			//Vector3 objVelocity = objRigidbody->GetVelocity();
+			//Vector3 objPos = objTransform->GetPosition();
 
-	//void ActionScript::OnCollisionStay(Collider2D* collider)
-	//{
-	//	GameObject* colObj = collider->GetOwner();
-	//	Transform* colTransform = colObj->GetComponent<Transform>();
+			//float projLength = objVelocity.Dot(wallNormal);
 
-	//	GameObject* obj = GetOwner();
-	//	Transform* objTransform = obj->GetComponent<Transform>();
+			//Vector3 projVelocity = wallNormal * projLength;
 
-	//	// 벽 충돌
-	//	if (nullptr != colObj->GetScript<WallScript>())
-	//	{
-	//		Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+			//// 투영한 속도 적용
+			//objRigidbody->SetVelocity(projVelocity);
 
-	//		Vector3 wallNormal = colTransform->Right();
+			// 그 전 프레임에서 적용되어 벽 뚫는 속도
+			//objPos -= objVelocity * Time::DeltaTime();
+			//objTransform->SetPosition(objPos);
 
-	//		Vector3 objVelocity = objRigidbody->GetVelocity();
-	//		Vector3 objPos = objTransform->GetPosition();
+		//	//Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
 
-	//		Vector3 projvec = wallNormal * objVelocity;
-	//		projvec *= wallNormal;
+		//	//Vector3 velocity = objRigidbody->GetVelocity();
+		//	//Vector3 pos = objTransform->GetPosition();
 
-	//		objVelocity -= projvec;
+		//	//pos -= velocity * Time::DeltaTime();
+		//	//objTransform->SetPosition(pos);
+		//	Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
 
-	//		objPos -= objVelocity * Time::DeltaTime();
-	//		objTransform->SetPosition(objPos);
-	//	}
-	//}
+		//	Vector3 wallNormal = colTransform->Right();
+
+		//	Vector3 objVelocity = objRigidbody->GetVelocity();
+		//	Vector3 objPos = objTransform->GetPosition();
+
+		//	Vector3 projvec = wallNormal * objVelocity;
+		//	projvec *= wallNormal;
+
+		//	objVelocity -= projvec;
+
+		//	objPos -= objVelocity * Time::DeltaTime();
+		//	objTransform->SetPosition(objPos);
+		}
+	}
+
+	void ActionScript::OnCollisionStay(Collider2D* collider)
+	{
+		GameObject* colObj = collider->GetOwner();
+		Transform* colTransform = colObj->GetComponent<Transform>();
+
+		GameObject* obj = GetOwner();
+		Transform* objTransform = obj->GetComponent<Transform>();
+
+		// 벽 충돌
+		if (nullptr != colObj->GetScript<WallScript>())
+		{
+			//Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+
+			//// 충돌한 벽의 Right 벡터에 이동 벡터를 내적하여 투영된 벡터의 길이를 얻음
+			//Vector3 wallNormal = colTransform->Right();
+			//wallNormal.Normalize();
+
+			//Vector3 objVelocity = objRigidbody->GetVelocity();
+			//Vector3 objPos = objTransform->GetPosition();
+
+			//float projLength = objVelocity.Dot(wallNormal);
+			//
+			//Vector3 projVelocity = wallNormal * projLength;
+
+			//objRigidbody->SetVelocity(projVelocity);
+
+			//Vector3 projvec = wallNormal * objVelocity;
+			//projvec *= wallNormal;
+
+			//objVelocity -= projVelocity;
+
+			//objPos -= objVelocity * Time::DeltaTime();
+			//objTransform->SetPosition(objPos);
+		}
+	}
 
 	void ActionScript::OnCollisionExit(Collider2D* collider)
 	{

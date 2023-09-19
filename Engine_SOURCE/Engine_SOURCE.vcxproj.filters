@@ -248,6 +248,12 @@
     <ClCompile Include="yaRedOgre.cpp">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClCompile>
+    <ClCompile Include="yaWallCheckObject.cpp">
+      <Filter>Contents\Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="yaWallCheckScript.cpp">
+      <Filter>Contents\Contents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -514,6 +520,12 @@
     </ClInclude>
     <ClInclude Include="yaRedOgre.h">
       <Filter>Contents\Monster\RedOgre</Filter>
+    </ClInclude>
+    <ClInclude Include="yaWallCheckObject.h">
+      <Filter>Contents\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="yaWallCheckScript.h">
+      <Filter>Contents\Contents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

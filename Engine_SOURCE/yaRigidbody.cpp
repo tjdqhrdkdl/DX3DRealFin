@@ -34,10 +34,6 @@ namespace ya
 
 	void Rigidbody::FixedUpdate()
 	{
-	}
-
-	void Rigidbody::Update()
-	{
 		// F = M X A
 		// A = F / M
 
@@ -88,17 +84,17 @@ namespace ya
 		// 마찰력 조건 : 적용된 힘이 없고, 속도가 0이 아닐때
 		if (!(mVelocity == Vector3::Zero))
 		{
-			 //속도에 반대 방향
+			//속도에 반대 방향
 			Vector3 friction = -mVelocity;
 			friction.Normalize();
 			friction = friction * mFriction * mMass * Time::DeltaTime();
 
-			 //마찰력으로 인한 속도 감소량이 현재 속도보다 더 큰 경우
+			//마찰력으로 인한 속도 감소량이 현재 속도보다 더 큰 경우
 			if (mVelocity.Length() < friction.Length())
-				 //속도를 0 로 만든다.
+				//속도를 0 로 만든다.
 				mVelocity = Vector3::Zero;
 			else
-				 //속도에서 마찰력으로 인한 반대방향으로 속도를 차감한다.
+				//속도에서 마찰력으로 인한 반대방향으로 속도를 차감한다.
 				mVelocity += friction;
 		}
 
@@ -131,6 +127,11 @@ namespace ya
 		tr->SetPosition(pos);
 
 		ClearForce();
+	}
+
+	void Rigidbody::Update()
+	{
+		
 	}
 
 	void Rigidbody::Render()

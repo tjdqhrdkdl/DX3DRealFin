@@ -43,12 +43,16 @@ namespace ya
 		void SetRight(Vector3 right)		{ mRight = right;}
 		void SetUp(Vector3 up)		{ mUp = up;}
 
+		Matrix& GetTranslationMatrix() { return mMatTranslation; }
 		Matrix& GetWorldMatrix() { return mWorld; }
 
 		void IsCamera(bool cam) { mbCamera = cam; }
 
+		void SetRelativeRotate(bool rot) { mbRelativeRotate = rot; }
+
 	private:
 		Transform* mParent;
+		bool mbRelativeRotate;
 
 		Vector3 mForward;
 		Vector3 mRight;

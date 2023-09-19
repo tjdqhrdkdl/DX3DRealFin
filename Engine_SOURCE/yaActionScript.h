@@ -15,8 +15,8 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
-		//virtual void OnCollisionEnter(Collider2D* collider) override;
-		//virtual void OnCollisionStay(Collider2D* collider) override;
+		virtual void OnCollisionEnter(Collider2D* collider) override;
+		virtual void OnCollisionStay(Collider2D* collider) override;
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	public:
@@ -44,6 +44,7 @@ namespace ya
 
 	protected:
 		GameObject* mTarget;
+		GameObject* mCheck;
 
 		class Transform* mTransform;
 		class Rigidbody* mRigidbody;

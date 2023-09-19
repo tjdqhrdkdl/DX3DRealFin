@@ -97,9 +97,9 @@ namespace ya
 			wall = object::Instantiate<GameObject>(eLayerType::Wall);
 			wall->SetName(L"wall1");
 			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(0.f, 10.0f, 30.0f));
+			wallTr->SetPosition(Vector3(0.f, 15.0f, 100.0f));
 			wallTr->SetScale(Vector3(50.f, 50.f, 4.f));
-			wallTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
 			wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -207,6 +207,22 @@ namespace ya
 			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
 			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
 			groundTr->SetRotation(Vector3(30.0f, 0.0f, 0.0f));
+			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			ground->AddComponent<GroundScript>();
+		}
+
+		{
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground->SetName(L"Ground2");
+			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(0.0f, -5.0f, -15.0f));
+			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
+			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
