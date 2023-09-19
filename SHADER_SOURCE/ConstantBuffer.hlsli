@@ -65,3 +65,31 @@ cbuffer ParticleSystem : register(b5)
 //{
 //    float4 NoiseSize;
 //}
+
+cbuffer UniformDataCB : register(b9)
+{
+	int int_0;
+	int int_1;
+	int int_2;
+	int int_3;
+    
+	float float_0;
+	float float_1;
+	float float_2;
+	float float_3;
+    
+	float2 float2_0;
+	float2 float2_1;
+	float2 float2_2;
+	float2 float2_3;
+
+	float4 float4_0;
+	float4 float4_1;
+	float4 flaot4_2;
+	float4 float4_3;
+
+	row_major matrix mat_0;
+	row_major matrix mat_1;
+	row_major matrix mat_2;
+	row_major matrix mat_3;
+}

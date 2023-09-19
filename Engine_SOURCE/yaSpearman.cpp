@@ -1,5 +1,6 @@
 #include "yaSpearman.h"
 #include "yaSpearman_Sting.h"
+#include "yaMonsterScript.h"
 
 namespace ya
 {
@@ -16,6 +17,18 @@ namespace ya
 	void Spearman::Initialize()
 	{
 		
+		GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+		GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		SetName(L"Spearman");
+
+		
+
+		Collider2D* spearmancol = AddComponent <Collider2D>();
+		spearmancol->SetType(eColliderType::Box);
+		spearmancol->SetSize(Vector3(1.0, 2.0f, 1.0f));
+		AddComponent<MonsterScript>();
+	
+
 		Transform* tr = GetComponent<Transform>();
 		{
 			Transform* tr = GetComponent<Transform>();
@@ -29,17 +42,19 @@ namespace ya
 			faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 		}
 
-		mMeshData = std::make_shared<MeshData>();
-		mMeshData->Load(L"Monster\\IInteriorMinistry_Samurai\\MeshData\\c1700_SpearMan.meshdata");
 		
-		mMeshData->AnimationLoad(L"Monster\\IInteriorMinistry_Samurai\\AnimationData\\SpearManAnimation_1.animationdata");
+
+		mMeshData = std::make_shared<MeshData>();
+		mMeshData->Load(L"Monster\\SwordMan\\MeshData\\c1700_SwordMan.meshdata");
+		
+		mMeshData->AnimationLoad(L"Monster\\SwordMan\\AnimationData\\SwordManAnimation_1.animationdata");
 		
 		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
 
 		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
 		meshobjtr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
-		meshobjtr->SetRotationOffset(Vector3(-2.0f, 1.0f, 0.0f));
+		//meshobjtr->SetRotationOffset(Vector3(-2.0f, 1.0f, 0.0f));
 		meshobjtr->SetParent(GetComponent<Transform>());
 		
 		KatanaColliderInit();

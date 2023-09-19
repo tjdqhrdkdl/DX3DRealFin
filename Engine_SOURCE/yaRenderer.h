@@ -110,6 +110,40 @@ namespace ya::renderer
 		BOOL animChange;
 	};
 
+	CBUFFER(LightMatrixCB, CBSLOT_LIGHTMATRIX)
+	{
+		Matrix lightView;
+		Matrix lightProjection;
+	};
+
+	CBUFFER(UniformDataCB, CBSLOT_UNIFORM_DATA)
+	{
+		int int_0{};
+		int int_1{};
+		int int_2{};
+		int int_3{};
+
+		float float_0{};
+		float float_1{};
+		float float_2{};
+		float float_3{};
+
+		Vector2 float2_0{};
+		Vector2 float2_1{};
+		Vector2 float2_2{};
+		Vector2 float2_3{};
+
+		Vector4 float4_0{};
+		Vector4 float4_1{};
+		Vector4 flaot4_2{};
+		Vector4 float4_3{};
+
+		Matrix mat_0{};
+		Matrix mat_1{};
+		Matrix mat_2{};
+		Matrix mat_3{};
+	};
+
 
 	extern Vertex vertexes[4];
 	extern Camera* mainCamera;

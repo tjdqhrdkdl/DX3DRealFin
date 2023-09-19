@@ -7,6 +7,7 @@
 #include "yaCollisionManager.h"
 #include "yaFmod.h"
 #include "yaFontWrapper.h"
+#include "ThreadPool.h"
 
 namespace ya
 {
@@ -28,6 +29,7 @@ namespace ya
 
 	void Application::Initialize()
 	{
+		ThreadPool::Initialize((size_t)std::thread::hardware_concurrency());
 		Time::Initialize();
 		Input::Initialize();
 		Fmod::Initialize();
@@ -88,6 +90,7 @@ namespace ya
 
 	void Application::Release()
 	{
+		ThreadPool::Release();
 		Resources::deleteTest();
 		Fmod::Release();
 		FontWrapper::Release();

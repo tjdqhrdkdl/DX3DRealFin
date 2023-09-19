@@ -8,6 +8,9 @@ namespace ya
 	{
 	public:
 		Resource(eResourceType type);
+
+		Resource(const Resource& _other) = default;
+
 		virtual ~Resource();
 
 		virtual HRESULT Save(const std::wstring& path, FILE* file = nullptr) { return S_OK; };

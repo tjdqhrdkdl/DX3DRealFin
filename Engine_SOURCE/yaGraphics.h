@@ -20,6 +20,8 @@
 #define CBSLOT_PARTICLESYSTEM	5
 #define CBSLOT_NOISE			6
 #define CBSLOT_BONEANIMATION	7
+#define CBSLOT_LIGHTMATRIX	    8
+#define CBSLOT_UNIFORM_DATA		9
 
 using namespace ya::math;
 namespace ya::graphics
@@ -140,6 +142,8 @@ namespace ya::graphics
 		ParticleSystem,
 		Noise,
 		Bone,
+		LightMatrix,
+		UniformData,
 		End,
 	};
 
@@ -172,7 +176,8 @@ namespace ya::graphics
 		SpecularLightTarget,
 
 		Specular,
-
+		Emissive,
+		ShadowMap,
 		//CubeT8,
 		//CubeT9,
 
@@ -192,8 +197,9 @@ namespace ya::graphics
 	{
 		enums::eColliderType type;
 		math::Vector3 position;
-		math::Vector3 rotatation;
+		math::Vector3 rotation;
 		math::Vector3 scale;
+		math::Vector3 rotationOffset;
 		
 		void* parent;
 

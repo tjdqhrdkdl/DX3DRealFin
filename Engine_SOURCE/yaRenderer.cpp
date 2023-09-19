@@ -447,10 +447,10 @@ namespace ya::renderer
 			indexes.push_back(iBottomIdx - (i + 1));
 		}
 
-		//std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
-		//Resources::Insert<Mesh>(L"SphereMesh", sphereMesh);
-		//sphereMesh->CreateVertexBuffer(sphereVtx.data(), sphereVtx.size());
-		//sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
+		std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
+		Resources::Insert<Mesh>(L"SphereMesh", sphereMesh);
+		sphereMesh->CreateVertexBuffer(sphereVtx.data(), sphereVtx.size());
+		sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
 		#pragma endregion
 	}
@@ -475,6 +475,7 @@ namespace ya::renderer
 		std::shared_ptr<Shader> uiShader = std::make_shared<Shader>();
 		uiShader->Create(eShaderStage::VS, L"UserInterfaceVS.hlsl", "main");
 		uiShader->Create(eShaderStage::PS, L"UserInterfacePS.hlsl", "main");
+		uiShader->SetBSState(eBSType::AlphaBlend);
 
 		Resources::Insert<Shader>(L"UIShader", uiShader);
 #pragma endregion
@@ -570,6 +571,30 @@ namespace ya::renderer
 		MergeShader->SetBSState(eBSType::Default);
 
 		Resources::Insert<Shader>(L"MergeShader", MergeShader);
+#pragma endregion
+
+#pragma region Shadow
+		std::shared_ptr<Shader> shadowShader = std::make_shared<Shader>();
+		shadowShader->Create(eShaderStage::VS, L"DepthMapVS.hlsl", "main");
+		shadowShader->Create(eShaderStage::PS, L"DepthMapPS.hlsl", "main");
+
+		shadowShader->SetRSState(eRSType::SolidBack);
+		shadowShader->SetDSState(eDSType::Less);
+		shadowShader->SetBSState(eBSType::Default);
+
+		Resources::Insert<Shader>(L"ShadowShader", shadowShader);
+#pragma endregion
+
+
+
+#pragma region SKYBOX SHADER
+		std::shared_ptr<Shader> skyBoxShader = std::make_shared<Shader>();
+		skyBoxShader->Create(eShaderStage::VS, L"SkyBoxVS.hlsl", "main");
+		skyBoxShader->Create(eShaderStage::PS, L"SkyBoxPS.hlsl", "main");
+		skyBoxShader->SetRSState(eRSType::SolidFront);
+		skyBoxShader->SetDSState(eDSType::Less);
+		skyBoxShader->SetBSState(eBSType::Default);
+		Resources::Insert<Shader>(L"SkyBoxShader", skyBoxShader);
 #pragma endregion
 
 		//Compute
@@ -716,6 +741,18 @@ namespace ya::renderer
 			, mergeShader->GetVSBlobBufferSize()
 			, mergeShader->GetInputLayoutAddressOf());
 
+		std::shared_ptr<Shader> skyBoxShader = Resources::Find<Shader>(L"SkyBoxShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
+			, skyBoxShader->GetVSBlobBufferPointer()
+			, skyBoxShader->GetVSBlobBufferSize()
+			, skyBoxShader->GetInputLayoutAddressOf());
+
+		//std::shared_ptr<Shader> shadowShader = Resources::Find<Shader>(L"ShadowShader");
+		//GetDevice()->CreateInputLayout(arrLayoutDesc, 8
+		//	, shadowShader->GetVSBlobBufferPointer()
+		//	, shadowShader->GetVSBlobBufferSize()
+		//	, shadowShader->GetInputLayoutAddressOf());
+
 #pragma endregion
 		#pragma region sampler state
 		D3D11_SAMPLER_DESC samplerDesc = {};
@@ -815,9 +852,25 @@ namespace ya::renderer
 #pragma endregion
 		#pragma region Blend State
 		//None
-		blendStates[(UINT)eBSType::Default] = nullptr;
+		//blendStates[(UINT)eBSType::Default] = nullptr;
 
 		D3D11_BLEND_DESC bsDesc = {};
+		bsDesc.AlphaToCoverageEnable = false;
+		bsDesc.IndependentBlendEnable = false;
+
+		bsDesc.RenderTarget[0].BlendEnable = true;
+		bsDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		bsDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+		bsDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
+
+		bsDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		bsDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		bsDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+
+		bsDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		GetDevice()->CreateBlendState(&bsDesc, blendStates[(UINT)eBSType::Default].GetAddressOf());
+		//blendStates[(UINT)eBSType::Default] = nullptr;
+
 		bsDesc.AlphaToCoverageEnable = false;
 		bsDesc.IndependentBlendEnable = false;
 		bsDesc.RenderTarget[0].BlendEnable = true;
@@ -872,6 +925,13 @@ namespace ya::renderer
 
 		constantBuffers[(UINT)eCBType::Bone] = new ConstantBuffer(eCBType::Bone);
 		constantBuffers[(UINT)eCBType::Bone]->Create(sizeof(BoneAnimationCB));
+
+		constantBuffers[(UINT)eCBType::LightMatrix] = new ConstantBuffer(eCBType::LightMatrix);
+		constantBuffers[(UINT)eCBType::LightMatrix]->Create(sizeof(LightMatrixCB));
+
+		constantBuffers[(UINT)eCBType::UniformData] = new ConstantBuffer(eCBType::UniformData);
+		constantBuffers[(UINT)eCBType::UniformData]->Create(sizeof(UniformDataCB));
+		
 
 #pragma endregion
 		#pragma region STRUCTED BUFFER
@@ -930,15 +990,14 @@ namespace ya::renderer
 		spriteMaterial->SetShader(spriteShader);
 		spriteMaterial->SetTexture(eTextureSlot::Albedo, spriteTexture);
 		Resources::Insert<Material>(L"SpriteMaterial", spriteMaterial);
+
 #pragma endregion
 		#pragma region UI
-		std::shared_ptr <Texture> uiTexture = Resources::Find<Texture>(L"HPBarTexture");
 		std::shared_ptr<Shader> uiShader = Resources::Find<Shader>(L"UIShader");
 		std::shared_ptr<Material> uiMaterial = std::make_shared<Material>();
 		uiMaterial->SetRenderingMode(eRenderingMode::Transparent);
 	
 		uiMaterial->SetShader(uiShader);
-		uiMaterial->SetTexture(eTextureSlot::Albedo, uiTexture);
 		Resources::Insert<Material>(L"UIMaterial", uiMaterial);
 #pragma endregion
 		#pragma region GRID
@@ -1020,6 +1079,8 @@ namespace ya::renderer
 		lightMaterial->SetTexture(eTextureSlot::NormalTarget, albedo);
 		albedo = Resources::Find<Texture>(L"SpecularTarget");
 		lightMaterial->SetTexture(eTextureSlot::SpecularTarget, albedo);
+		albedo = Resources::Find<Texture>(L"ShadowMapTarget");
+		lightMaterial->SetTexture(eTextureSlot::ShadowMap, albedo);
 
 		Resources::Insert<Material>(L"LightPointMaterial", lightMaterial);
 #pragma endregion
@@ -1043,6 +1104,30 @@ namespace ya::renderer
 
 		Resources::Insert<Material>(L"MergeMaterial", mergeMaterial);
 #pragma endregion
+
+#pragma region SKYBOX
+		std::shared_ptr<Shader> skyBoxShader = Resources::Find<Shader>(L"SkyBoxShader");
+		std::shared_ptr<Material> skyBoxMaterial = std::make_shared<Material>();
+		skyBoxMaterial->SetRenderingMode(eRenderingMode::Opaque);
+		skyBoxMaterial->SetShader(skyBoxShader);
+		Resources::Insert<Material>(L"SkyBoxMaterial", skyBoxMaterial);
+
+		std::shared_ptr<Texture> skyBoxTexture = Resources::Load<Texture>(L"Sky01", L"SkyBox\\SkyWater.dds");
+		skyBoxTexture->BindShaderResource(eShaderStage::PS, 11);
+
+#pragma endregion
+#pragma region SHADOW
+		std::shared_ptr<Shader> shadowShader = Resources::Find<Shader>(L"ShadowShader");
+		std::shared_ptr<Material> shadowMaterial = std::make_shared<Material>();
+		shadowMaterial->SetRenderingMode(eRenderingMode::None);
+		shadowMaterial->SetShader(shadowShader);
+
+		albedo = Resources::Find<Texture>(L"ShadowMapTarget");
+		shadowMaterial->SetTexture(eTextureSlot::ShadowMap, albedo);
+
+		Resources::Insert<Material>(L"ShadowMapMaterial", shadowMaterial);
+#pragma endregion
+
 
 	}
 
@@ -1170,6 +1255,24 @@ namespace ya::renderer
 
 			renderTargets[(UINT)eRTType::Light] = new MultiRenderTarget();
 			renderTargets[(UINT)eRTType::Light]->Create(arrRTTex, nullptr);
+		}
+
+		{
+			std::shared_ptr<Texture> arrRTTex[8] = { };
+			std::shared_ptr<Texture> depthMap = std::make_shared<Texture>();
+
+			Resources::Insert<Texture>(L"ShadowMapTarget", depthMap);
+			arrRTTex[0] = depthMap;
+			arrRTTex[0]->Create(1600, 900, DXGI_FORMAT_R32G32B32A32_FLOAT
+				, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
+
+			std::shared_ptr<Texture> depthStencilTex = std::make_shared<Texture>();
+			depthStencilTex->Create(1600, 900, DXGI_FORMAT_D32_FLOAT
+				, D3D11_BIND_DEPTH_STENCIL);
+
+			renderTargets[(UINT)eRTType::Shadow] = new MultiRenderTarget();
+			renderTargets[(UINT)eRTType::Shadow]->Create(arrRTTex, depthStencilTex);
 		}
 	}
 

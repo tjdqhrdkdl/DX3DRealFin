@@ -7,13 +7,15 @@
 #include "yaMeshRenderer.h"
 #include "yaMeshObject.h"
 #include "yaBoneAnimator.h"
-
-
+#include "Utils.h"
+#include "CommonInclude.h"
+#include "yaBoundarySphere.h"
 namespace ya
 {
 	MeshData::MeshData()
 		: Resource(eResourceType::MeshData)
 		, mAnimationClipCount(0)
+		, mBoneOffset(nullptr)
 	{
 	}
 	MeshData::~MeshData()
@@ -22,22 +24,25 @@ namespace ya
 		{
 			delete mBoneFrameDataVector[i];
 		}
-		delete mBoneOffset;
+		if(mBoneOffset != nullptr)
+			delete mBoneOffset;
 	}
 	std::shared_ptr<MeshData> MeshData::LoadFromFbx(const std::wstring& path)
 	{
-		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
-		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
+		std::filesystem::path fullPath = std::fs::absolute(gResPath);
+		fullPath /= path;
 		
 		std::shared_ptr<MeshData> meshSharedPtr = std::make_shared<MeshData>();
 
 		FbxLoader loader;
 		loader.Initialize();
 		loader.LoadFbx(fullPath);
+		meshSharedPtr->mMeshCenter = loader.GetMeshCenter();
 
 		// 메시들 가져오기
 		std::vector<std::shared_ptr<Mesh>> meshes = Mesh::CreateFromContainer(&loader);
 		std::vector<std::vector<std::shared_ptr<Material>>>  materialsVec = {};
+		meshSharedPtr->mBoundarySphereRadius = loader.GetMaxDist();
 
 		std::shared_ptr<Mesh> mesh = nullptr;
 		for (size_t i = 0; i < meshes.size(); i++)
@@ -176,18 +181,17 @@ namespace ya
 		//std::wstring name = std::filesystem::path(fullPath).stem();
 		//name += L".mesh" + std::to_wstring(i);
 		
-	
 		meshSharedPtr->Save(path);
 
 		loader.Release();
 		return meshSharedPtr;
 	}
 
+
+
 	void MeshData::LoadAnimationFromFbx(const std::wstring& path, const std::wstring& name)
 	{
-
-		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
-		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + path;
+		std::filesystem::path fullPath = std::fs::absolute(gResPath) / path;
 
 		FbxLoader loader;
 		loader.Initialize();
@@ -298,27 +302,25 @@ namespace ya
 
 	HRESULT MeshData::Save(const std::wstring& path, FILE* file)
 	{	
+		std::filesystem::path filePath = std::fs::absolute(gResPath);
 
-		std::string strPath(path.begin(), path.end());
-
-		std::filesystem::path CurparentPath = std::filesystem::current_path().parent_path();
-		CurparentPath += L"\\Resources\\";
-
-		std::filesystem::path parentPath = strPath;
+		std::filesystem::path parentPath(path);
 		parentPath = parentPath.parent_path().parent_path();		
-		parentPath += L"\\MeshData\\";
+		parentPath /= L"MeshData";
 
-		CurparentPath += parentPath;
+		filePath /= parentPath;
+		if (false == std::fs::exists(filePath))
+		{
+			std::fs::create_directories(filePath);
+		}
 
-		std::wstring name = std::filesystem::path(path).stem();
-		name += L".meshdata";
+		filePath /= std::fs::path(path).filename();
 
-		CurparentPath += name;
-		
-		std::wstring fullPath = CurparentPath;
+		filePath.replace_extension(L".meshdata");
+
 
 		file = nullptr;
-		_wfopen_s(&file, fullPath.c_str(), L"wb");
+		_wfopen_s(&file, filePath.wstring().c_str(), L"wb");
 		if (file == nullptr)
 			return S_FALSE;
 
@@ -329,7 +331,7 @@ namespace ya
 
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{			
-			mMeshes[i]->Save(name, file);
+			mMeshes[i]->Save(filePath.filename().wstring(), file);
 
 			//메테리얼 개수 저장
 			UINT  mMaterial_ICount = mMaterialsVec.size();
@@ -345,7 +347,7 @@ namespace ya
 					std::wstring matName = mMaterialsVec[j][k]->GetName();
 					std::wstring matkey = mMaterialsVec[j][k]->GetKey();
 					SaveWString(matkey, file);
-					mMaterialsVec[j][k]->Save(name, file);
+					mMaterialsVec[j][k]->Save(filePath.filename().wstring(), file);
 					eRenderingMode renderingmode = mMaterialsVec[j][k]->GetRenderingMode();
 					fwrite(&renderingmode, sizeof(eRenderingMode), 1, file);
 				}
@@ -367,6 +369,9 @@ namespace ya
 			}		
 		}		
 
+		fwrite(&mMeshCenter, sizeof(Vector3), 1, file);
+		fwrite(&mBoundarySphereRadius, sizeof(float), 1, file);
+
 		fclose(file);
 
 		return S_OK;	
@@ -375,20 +380,35 @@ namespace ya
 
 	HRESULT MeshData::Load(const std::wstring& path, FILE* file)
 	{
-		std::string strPath(path.begin(), path.end());
+		std::fs::path filePath(path);
+		std::wstring extension = filePath.extension();
+		extension = utils::String::UpperCase(extension);
 
-		std::filesystem::path CurparentPath = std::filesystem::current_path().parent_path();
-		CurparentPath += L"\\Resources\\";
+		//FBX일 경우 변환된 meshdata가 존재하는지 확인한다
+		if (L".FBX" == extension)
+		{
+			std::fs::path meshDataPath = std::fs::absolute(gResPath) / filePath.parent_path().parent_path();
+			meshDataPath /= L"MeshData";
+			meshDataPath /= filePath.filename();
+			meshDataPath.replace_extension(L".meshdata");
 
-		std::filesystem::path parentPath = strPath;		
-
-		CurparentPath += parentPath;
-
-		std::wstring name = std::filesystem::path(path).stem();
-		name += L".meshdata";
+			//meshdata 파일 있으면 그걸로 로드, 아니면 FBX로부터 로드
+			if (false == std::fs::exists(meshDataPath))
+			{
+				if(FAILED(LoadFromFbxToThis(std::fs::absolute(gResPath) / filePath)))
+					return E_FAIL;
+				
+				return S_OK;
+			}
+			filePath = meshDataPath;
+		}
+		else
+		{
+			filePath = std::fs::absolute(gResPath) / filePath;
+		}
 
 		file = nullptr;
-		_wfopen_s(&file, CurparentPath.c_str(), L"rb");
+		_wfopen_s(&file, filePath.c_str(), L"rb");
 		if (file == nullptr)
 			return S_FALSE;
 
@@ -404,8 +424,7 @@ namespace ya
 		for (size_t i = 0; i < meshSize; i++)
 		{
 			mMeshes[i] = std::make_shared<Mesh>();
-			//mMeshes[i]->SetParentMeshData(this);
-			mMeshes[i]->Load(name, file);
+			mMeshes[i]->Load(filePath, file);
 
 			std::wstring name = std::filesystem::path(path).stem();
 			name += L".mesh" + std::to_wstring(i);
@@ -462,6 +481,8 @@ namespace ya
 		mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
 		mBoneOffset->GetSize();
 
+		fread(&mMeshCenter, sizeof(Vector3), 1, file);
+		fread(&mBoundarySphereRadius, sizeof(float), 1, file);
 
 		fclose(file);
 
@@ -470,7 +491,7 @@ namespace ya
 		mMeshes;
 		mAnimClip;
 
-		mFullPath = CurparentPath;
+		//mFullPath = CurparentPath;
 
 		
 
@@ -481,14 +502,13 @@ namespace ya
 	{
 		std::string strPath(path.begin(), path.end());
 
-		std::filesystem::path CurparentPath = std::filesystem::current_path().parent_path();
-		CurparentPath += L"\\Resources\\";
+		std::filesystem::path CurparentPath = std::fs::absolute(gResPath);
 
 		std::filesystem::path parentPath = strPath;
 		parentPath = parentPath.parent_path().parent_path();
 		parentPath += L"\\AnimationData\\";
 
-		CurparentPath += parentPath;
+		CurparentPath /= parentPath;
 
 		std::wstring name = std::filesystem::path(path).stem();
 		name += L".animationdata";
@@ -561,14 +581,13 @@ namespace ya
 
 		std::string strPath(path.begin(), path.end());
 
-		std::filesystem::path CurparentPath = std::filesystem::current_path().parent_path();
-		CurparentPath += L"\\Resources\\";
+		std::filesystem::path CurparentPath = std::fs::absolute(gResPath);
 
 		std::filesystem::path parentPath = strPath;
 		parentPath = parentPath.parent_path().parent_path();
 		parentPath += L"\\AnimationData\\";
 
-		CurparentPath += parentPath;
+		CurparentPath /= parentPath;
 
 		std::wstring name = std::filesystem::path(path).stem();
 		name += L".animationdata";
@@ -689,17 +708,19 @@ namespace ya
 	}
 
 
-	MeshObject* MeshData::Instantiate(eLayerType type)
+	MeshObject* MeshData::Instantiate(eLayerType type, const std::wstring& name)
 	{
-
+		std::wstring objName = name;
+		if(name == L"")
+			objName = std::filesystem::path(mFullPath).stem();
+		
 		std::vector<GameObject*> ret = {};
-		std::wstring name = std::filesystem::path(mFullPath).stem();
-		MeshObject* meshObject = object::Instantiate<MeshObject>(type);
-		meshObject->SetName(name + L".All");
+		MeshObject* meshObject = object::Instantiate<MeshObject>(type);	
+		meshObject->SetName(objName + L".All");
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{
 			GameObject* gameObj = object::Instantiate<GameObject>(type);
-			gameObj->SetName(name +L"." + std::to_wstring(i));
+			gameObj->SetName(objName +L"." + std::to_wstring(i));
 			MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
 			mr->SetMesh(mMeshes[i]);
 			mMeshes[i]->SetParentMeshData(this);
@@ -712,25 +733,28 @@ namespace ya
 			if (mAnimationClipCount > 0)
 			{
 				BoneAnimator* animator = gameObj->AddComponent<BoneAnimator>();
-				animator->SetBones(&mBones);
-				animator->SetAnimaitionClip(&mAnimClip);
+
 
 				if (i == 0)
-					mRepresentBoneAnimator = animator;
+				{
+					mRepresentBoneAnimator = animator;		
+					animator->SetBones(&mBones);
+					animator->SetAnimaitionClip(&mAnimClip);
+				}
+				else
+					animator->SetParentAnimator(mRepresentBoneAnimator);
 			}
 		}
-		
+		BoundarySphere* sphere = meshObject->AddComponent<BoundarySphere>();
+		sphere->SetCenter(mMeshCenter);
+		sphere->SetRadius(mBoundarySphereRadius*2);
 		meshObject->SetParent();
 		mMeshObject = meshObject;
 		return meshObject;
 	}
 	void MeshData::Play(const std::wstring animName)
 	{
-		for (size_t i = 0; i < mChildObjects.size(); i++)
-		{
-			BoneAnimator* animator = mChildObjects[i]->GetComponent<BoneAnimator>();
-			animator->Play(animName);
-		}
+		mRepresentBoneAnimator->Play(animName);
 	}
 	std::wstring MeshData::GetPlayAnimationName()
 	{
@@ -773,5 +797,159 @@ namespace ya
 		wchar_t szBuff[256] = {};
 		fread(szBuff, sizeof(wchar_t), iLen, _pFile);
 		_str = szBuff;
+	}
+
+
+	HRESULT MeshData::LoadFromFbxToThis(const std::fs::path& _fullPath)
+	{
+		FbxLoader loader;
+		loader.Initialize();
+
+		if (false == loader.LoadFbx(_fullPath))
+			return E_FAIL;
+
+		// 메시들 가져오기
+		std::vector<std::shared_ptr<Mesh>> meshes = Mesh::CreateFromContainer(&loader);
+		std::vector<std::vector<std::shared_ptr<Material>>>  materialsVec = {};
+		mMeshCenter = loader.GetMeshCenter();
+		mBoundarySphereRadius = loader.GetMaxDist();
+
+		std::shared_ptr<Mesh> mesh = nullptr;
+		for (size_t i = 0; i < meshes.size(); i++)
+		{
+			mesh = meshes[i];
+
+			// 리소스에 넣어주기
+			std::wstring name = _fullPath.stem();
+			name += L".mesh" + std::to_wstring(i);
+			Resources::Insert(name, mesh);
+
+			// 메테리얼 가져오기
+			std::vector<std::shared_ptr<Material>> materials = {};
+			for (size_t k = 0; k < loader.GetContainer(i).materials.size(); k++)
+			{
+				size_t test = loader.GetContainer(i).materials.size();
+				std::shared_ptr<Material> material
+					= Resources::Find<Material>(loader.GetContainer(i).materials[k].name);
+				std::wstring wtest = loader.GetContainer(i).materials[k].name;
+				materials.push_back(material);
+			}
+			materialsVec.push_back(materials);
+		}
+
+
+		//3d Animation 로직
+		std::vector<BoneAnimationClip> animClip;
+		std::vector<BoneMatrix> bones;
+
+		std::vector<Bone*>& vecBone = loader.GetBones();
+		UINT iFrameCount = 0;
+		for (UINT i = 0; i < vecBone.size(); ++i)
+		{
+			BoneMatrix bone = {};
+			bone.depth = vecBone[i]->depth;
+			bone.parentIdx = vecBone[i]->parentIdx;
+			bone.bone = GetMatrixFromFbxMatrix(vecBone[i]->boneMatrix);
+			bone.offset = GetMatrixFromFbxMatrix(vecBone[i]->offsetMatrix);
+			bone.name = vecBone[i]->name;
+
+			//for (UINT j = 0; j < vecBone[i]->keyFrames.size(); ++j)
+			//{
+			//	BoneKeyFrame tKeyframe = {};
+			//	tKeyframe.time = vecBone[i]->keyFrames[j].time;
+			//	tKeyframe.frame = j;
+			//	tKeyframe.translate.x = (float)vecBone[i]->keyFrames[j].transform.GetT().mData[0];
+			//	tKeyframe.translate.y = (float)vecBone[i]->keyFrames[j].transform.GetT().mData[1];
+			//	tKeyframe.translate.z = (float)vecBone[i]->keyFrames[j].transform.GetT().mData[2];
+
+			//	tKeyframe.scale.x = (float)vecBone[i]->keyFrames[j].transform.GetS().mData[0];
+			//	tKeyframe.scale.y = (float)vecBone[i]->keyFrames[j].transform.GetS().mData[1];
+			//	tKeyframe.scale.z = (float)vecBone[i]->keyFrames[j].transform.GetS().mData[2];
+
+			//	tKeyframe.rotation.x = (float)vecBone[i]->keyFrames[j].transform.GetQ().mData[0];
+			//	tKeyframe.rotation.y = (float)vecBone[i]->keyFrames[j].transform.GetQ().mData[1];
+			//	tKeyframe.rotation.z = (float)vecBone[i]->keyFrames[j].transform.GetQ().mData[2];
+			//	tKeyframe.rotation.w = (float)vecBone[i]->keyFrames[j].transform.GetQ().mData[3];
+
+			//	bone.keyFrames.push_back(tKeyframe);
+			//}
+
+			//iFrameCount = max(iFrameCount, (UINT)bone.keyFrames.size());
+
+			bones.push_back(bone);
+		}
+		std::vector<AnimationClip*>& vecAnimClip = loader.GetAnimClip();
+
+		for (UINT i = 0; i < vecAnimClip.size(); ++i)
+		{
+			BoneAnimationClip tClip = {};
+
+			tClip.name = vecAnimClip[i]->name;
+			tClip.startTime = vecAnimClip[i]->startTime.GetSecondDouble();
+			tClip.endTime = vecAnimClip[i]->endTime.GetSecondDouble();
+			tClip.timeLength = tClip.endTime - tClip.startTime;
+
+			tClip.startFrame = (int)vecAnimClip[i]->startTime.GetFrameCount(vecAnimClip[i]->mode);
+			tClip.endFrame = (int)vecAnimClip[i]->endTime.GetFrameCount(vecAnimClip[i]->mode);
+			tClip.frameLength = tClip.endFrame - tClip.startFrame;
+			tClip.mode = vecAnimClip[i]->mode;
+
+			animClip.push_back(tClip);
+		}
+
+		mMeshes = meshes;
+		mMaterialsVec = materialsVec;
+		mFullPath = _fullPath;
+		mAnimClip = animClip;
+		mBones = bones;
+
+
+		// Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
+		if (IsAnimMesh())
+		{
+			// BoneOffet 행렬
+			std::vector<Matrix> vecOffset;
+			//std::vector<BoneFrameTransform> vecFrameTrans;
+			//vecFrameTrans.resize((UINT)meshData->mBones.size() * iFrameCount);
+
+			for (size_t i = 0; i < mBones.size(); ++i)
+			{
+				vecOffset.push_back(mBones[i].offset);
+
+				/*			for (size_t j = 0; j < meshData->mBones[i].keyFrames.size(); ++j)
+							{
+								vecFrameTrans[(UINT)meshData->mBones.size() * j + i]
+									= BoneFrameTransform
+								{
+									Vector4(meshData->mBones[i].keyFrames[j].translate.x
+										, meshData->mBones[i].keyFrames[j].translate.y
+										, meshData->mBones[i].keyFrames[j].translate.z, 0.f)
+									, Vector4(meshData->mBones[i].keyFrames[j].scale.x
+										, meshData->mBones[i].keyFrames[j].scale.y
+										, meshData->mBones[i].keyFrames[j].scale.z, 0.f)
+									, meshData->mBones[i].keyFrames[j].rotation
+								};
+							}*/
+			}
+
+
+			mBoneOffset = new graphics::StructedBuffer();
+			mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
+			mBoneOffset->GetSize();
+
+			//meshData->mBoneFrameData = new StructedBuffer();
+			//meshData->mBoneFrameData->Create(sizeof(BoneFrameTransform), (UINT)vecOffset.size() * iFrameCount
+			//	, eSRVType::SRV, vecFrameTrans.data(), false);
+		}
+		const std::wstring meshDataName
+			= _fullPath.stem().wstring();
+
+		std::fs::path keyPath = _fullPath.lexically_relative(std::fs::absolute(gResPath));
+
+		Save(keyPath);
+
+		loader.Release();
+
+		return S_OK;
 	}
 }

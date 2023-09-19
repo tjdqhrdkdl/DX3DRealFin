@@ -35,6 +35,7 @@ namespace ya::graphics
 
 		void SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D> texture) { mTexture = texture; }
 
+		Vector2 GetSize() { return Vector2((float)mDesc.Width, (float)mDesc.Height); }
 		size_t GetHeight() { return mDesc.Height; }
 		size_t GetWidth() { return mDesc.Width; }
 
