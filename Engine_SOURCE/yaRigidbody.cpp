@@ -34,6 +34,11 @@ namespace ya
 
 	void Rigidbody::FixedUpdate()
 	{
+		
+	}
+
+	void Rigidbody::Update()
+	{
 		// F = M X A
 		// A = F / M
 
@@ -119,19 +124,14 @@ namespace ya
 		// 이번 프레임에서 이동시킬 거리
 		Vector3 nextPos = velo * Time::DeltaTime();
 
-		if (mActionScript->ForwardCheck(nextPos) && velo != Vector3::Zero)
-			velo = Vector3::Zero;
+		//if (mActionScript->ForwardCheck(nextPos) && velo != Vector3::Zero)
+		//	velo = Vector3::Zero;
 
 		Vector3 pos = tr->GetPosition();
 		pos += velo * Time::DeltaTime();
 		tr->SetPosition(pos);
 
 		ClearForce();
-	}
-
-	void Rigidbody::Update()
-	{
-		
 	}
 
 	void Rigidbody::Render()

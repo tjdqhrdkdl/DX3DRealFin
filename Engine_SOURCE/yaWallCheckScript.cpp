@@ -32,6 +32,8 @@ namespace ya
 	void WallCheckScript::OnCollisionEnter(Collider2D* collider)
 	{
 		WallCheckObject* obj = (WallCheckObject*)GetOwner();
+		Transform* checkTransform = obj->GetComponent<Transform>();
+
 		GameObject* ownerObj = obj->GetParentObj();
 		Transform* objTransform = ownerObj->GetComponent<Transform>();
 		Rigidbody* objRigidbody = ownerObj->GetComponent<Rigidbody>();
@@ -42,7 +44,6 @@ namespace ya
 
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
-			// 충돌한 벽의 Right 벡터에 이동 벡터를 내적하여 투영된 벡터의 길이를 얻음
 			Vector3 wallNormal = colTransform->Right();
 
 			Vector3 objVelocity = objRigidbody->GetVelocity();
@@ -52,17 +53,24 @@ namespace ya
 
 			Vector3 projVelocity = wallNormal * projLength;
 
-			//objVelocity += projVelocity;
+			//Vector3 force = objRigidbody->GetForce();
+			//float forceLength = force.Length();
 
-			//objRigidbody->SetVelocity(projVelocity);
+			//Vector3 wallForce = velo * forceLength;
+			//objRigidbody->SetForce(wallForce);
 
+			objPos -= objVelocity * Time::DeltaTime();
 			objPos += projVelocity * Time::DeltaTime();
+
 			objTransform->SetPosition(objPos);
+			checkTransform->SetPosition(objPos);
 		}
 	}
 	void WallCheckScript::OnCollisionStay(Collider2D* collider)
 	{
 		WallCheckObject* obj = (WallCheckObject*)GetOwner();
+		Transform* checkTransform = obj->GetComponent<Transform>();
+
 		GameObject* ownerObj = obj->GetParentObj();
 		Transform* objTransform = ownerObj->GetComponent<Transform>();
 		Rigidbody* objRigidbody = ownerObj->GetComponent<Rigidbody>();
@@ -83,9 +91,12 @@ namespace ya
 			float projLength = objVelocity.Dot(wallNormal);
 
 			Vector3 projVelocity = wallNormal * projLength;
-
+			
+			objPos -= objVelocity * Time::DeltaTime();
 			objPos += projVelocity * Time::DeltaTime();
+
 			objTransform->SetPosition(objPos);
+			checkTransform->SetPosition(objPos);
 		}
 	}
 	void WallCheckScript::OnCollisionExit(Collider2D* collider)

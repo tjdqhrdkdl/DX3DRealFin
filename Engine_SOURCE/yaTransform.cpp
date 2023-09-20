@@ -18,7 +18,6 @@ namespace ya
 		, mPosition(Vector3::Zero)
 		, mRotationOffset(Vector3::Zero)
 		, mParent(nullptr)
-		, mbRelativeRotate(false)
 	{
 
 	}
@@ -103,14 +102,6 @@ namespace ya
 			mRight = Vector3::TransformNormal(Vector3::Right, matRT);
 			mUp = Vector3::TransformNormal(Vector3::Up, matRT);
 		}
-		//else if (mParent && mbRelativeRotate)
-		//{
-		//	mFinalScale = mParent->mFinalScale;
-		//	Matrix matScale = Matrix::CreateScale(mFinalScale);
-		//	Matrix matTrans = mParent->GetTranslationMatrix();
-		//	
-		//	mWorld = matScale * mMatRotation * matTrans;
-		//}
 		else
 		{
 			mFinalScale = mScale;
