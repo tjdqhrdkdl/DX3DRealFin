@@ -42,11 +42,12 @@ namespace ya
 		void Deflect();
 		void Parrying();
 
-		void ForwardCheck();
+		bool ForwardCheck(Vector3 movement);
 		void CheckGround();
 
 	protected:
 		GameObject* mTarget;
+		GameObject* mCheck;
 
 		class Transform* mTransform;
 		class Rigidbody* mRigidbody;
