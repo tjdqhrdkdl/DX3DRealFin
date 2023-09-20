@@ -248,6 +248,12 @@
     <ClCompile Include="yaRedOgre.cpp">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClCompile>
+    <ClCompile Include="yaWallCheckObject.cpp">
+      <Filter>Contents\Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="yaWallCheckScript.cpp">
+      <Filter>Contents\Contents</Filter>
+    </ClCompile>
     <ClCompile Include="UICanvas_InGame.cpp">
       <Filter>Contents\UI</Filter>
     </ClCompile>
@@ -544,6 +550,18 @@
     <ClInclude Include="UINames.h" />
     <ClInclude Include="yaPlayerProjectileScript.h">
       <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaWallCheckObject.h">
+      <Filter>Contents\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="yaWallCheckScript.h">
+      <Filter>Contents\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="UICanvas_InGame.h">
+      <Filter>Contents\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UICanvasObj.h">
+      <Filter>Contents\UI</Filter>
     </ClInclude>
     <ClInclude Include="UIHPBarScript.h">
       <Filter>Contents\UI</Filter>

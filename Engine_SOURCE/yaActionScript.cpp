@@ -4,12 +4,15 @@
 #include "yaInput.h"
 #include "yaCollisionManager.h"
 
+#include "yaObject.h"
 #include "yaRigidbody.h"
 #include "yaTransform.h"
 #include "yaCollider2D.h"
 
 #include "yaPlayer.h"
 #include "yaWallScript.h"
+#include "yaWallCheckObject.h"
+#include "yaWallCheckScript.h"
 
 #include <assert.h>
 
@@ -24,6 +27,7 @@ namespace ya
 	ActionScript::ActionScript()
 		: Script()
 		, mTarget(nullptr)
+		, mCheck(nullptr)
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
 		, mCollider(nullptr)
@@ -60,6 +64,19 @@ namespace ya
 		mTransform = obj->GetComponent<Transform>();
 		mRigidbody = obj->GetComponent<Rigidbody>();
 		mCollider = obj->GetComponent<Collider2D>();
+
+		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::Player);
+		assert(checkObj != nullptr);
+		mCheck = checkObj;
+		checkObj->SetName(L"WallCheck");
+		checkObj->SetParentObj(obj);
+
+		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
+		Transform* checkTransform = mCheck->GetComponent<Transform>();
+
+		checkCol->SetType(eColliderType::Box);
+		checkCol->SetCenter(Vector3(0.f, 0.f, 0.f));
+		checkCol->SetSize(Vector3(1.0, 1.0f, 1.0f));
 	}
 
 	void ActionScript::Update()
@@ -102,13 +119,47 @@ namespace ya
 		// 벽 충돌
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
-			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+			//Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
 
-			Vector3 velocity = objRigidbody->GetVelocity();
-			Vector3 pos = objTransform->GetPosition();
+			//// 충돌한 벽의 Right 벡터에 이동 벡터를 내적하여 투영된 벡터의 길이를 얻음
+			//Vector3 wallNormal = colTransform->Right();
+			//wallNormal.Normalize();
 
-			pos -= velocity * Time::DeltaTime();
-			objTransform->SetPosition(pos);
+			//Vector3 objVelocity = objRigidbody->GetVelocity();
+			//Vector3 objPos = objTransform->GetPosition();
+
+			//float projLength = objVelocity.Dot(wallNormal);
+
+			//Vector3 projVelocity = wallNormal * projLength;
+
+			//// 투영한 속도 적용
+			//objRigidbody->SetVelocity(projVelocity);
+
+			// 그 전 프레임에서 적용되어 벽 뚫는 속도
+			//objPos -= objVelocity * Time::DeltaTime();
+			//objTransform->SetPosition(objPos);
+
+		//	//Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+
+		//	//Vector3 velocity = objRigidbody->GetVelocity();
+		//	//Vector3 pos = objTransform->GetPosition();
+
+		//	//pos -= velocity * Time::DeltaTime();
+		//	//objTransform->SetPosition(pos);
+		//	Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+
+		//	Vector3 wallNormal = colTransform->Right();
+
+		//	Vector3 objVelocity = objRigidbody->GetVelocity();
+		//	Vector3 objPos = objTransform->GetPosition();
+
+		//	Vector3 projvec = wallNormal * objVelocity;
+		//	projvec *= wallNormal;
+
+		//	objVelocity -= projvec;
+
+		//	objPos -= objVelocity * Time::DeltaTime();
+		//	objTransform->SetPosition(objPos);
 		}
 	}
 
@@ -123,20 +174,28 @@ namespace ya
 		// 벽 충돌
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
-			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+			//Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
 
-			Vector3 wallNormal = colTransform->Right();
+			//// 충돌한 벽의 Right 벡터에 이동 벡터를 내적하여 투영된 벡터의 길이를 얻음
+			//Vector3 wallNormal = colTransform->Right();
+			//wallNormal.Normalize();
 
-			Vector3 objVelocity = objRigidbody->GetVelocity();
-			Vector3 objPos = objTransform->GetPosition();
+			//Vector3 objVelocity = objRigidbody->GetVelocity();
+			//Vector3 objPos = objTransform->GetPosition();
 
-			Vector3 projvec = wallNormal * objVelocity;
-			projvec *= wallNormal;
+			//float projLength = objVelocity.Dot(wallNormal);
+			//
+			//Vector3 projVelocity = wallNormal * projLength;
 
-			objVelocity -= projvec;
+			//objRigidbody->SetVelocity(projVelocity);
 
-			objPos -= objVelocity * Time::DeltaTime();
-			objTransform->SetPosition(objPos);
+			//Vector3 projvec = wallNormal * objVelocity;
+			//projvec *= wallNormal;
+
+			//objVelocity -= projVelocity;
+
+			//objPos -= objVelocity * Time::DeltaTime();
+			//objTransform->SetPosition(objPos);
 		}
 	}
 
@@ -244,12 +303,15 @@ namespace ya
 
 	}
 
-	void ActionScript::ForwardCheck()
+	bool ActionScript::ForwardCheck(Vector3 movement)
 	{
 		Vector3 position = mTransform->GetPosition();
 		Vector3 scale = mTransform->GetScale();
 		Vector3 colScale = mCollider->GetSize();
-		Vector3 velocity = mRigidbody->GetVelocity();
+		Vector3 velocity = movement;
+		Vector3 dir = velocity;
+		dir.Normalize();
+		float velocityLength = velocity.Length();
 
 		colScale *= scale;
 
@@ -261,7 +323,7 @@ namespace ya
 		Vector3 bottom = position;
 		bottom.y -= colScale.y * 0.5f;
 
-		Vector3 rayDirection = mTransform->Forward();
+		Vector3 rayDirection = dir;
 
 		std::vector<eLayerType> layers;
 		layers.push_back(eLayerType::Wall);
@@ -292,6 +354,7 @@ namespace ya
 				mbForwardBlocked = false;
 		}
 
+		return false;
 	}
 
 	// 땅, 경사로 체크. 일단 가운데 레이만 사용함..

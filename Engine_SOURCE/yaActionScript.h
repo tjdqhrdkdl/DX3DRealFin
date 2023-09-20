@@ -42,11 +42,12 @@ namespace ya
 		void Jump(float force = -1.0f);
 		void JumpDouble(float force = -1.0f);
 
-		void ForwardCheck();
+		bool ForwardCheck(Vector3 movement);
 		void CheckGround();
 
 	protected:
 		GameObject* mTarget;
+		GameObject* mCheck;
 
 		class Transform* mTransform;
 		class Rigidbody* mRigidbody;
