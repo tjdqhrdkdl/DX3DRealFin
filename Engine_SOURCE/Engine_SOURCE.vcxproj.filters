@@ -581,6 +581,7 @@
     </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents\Common</Filter>
+	</ClInclude>
     <ClInclude Include="yaBoundarySphere.h">
       <Filter>Engine\Component\BoundarySphere</Filter>
     </ClInclude>
