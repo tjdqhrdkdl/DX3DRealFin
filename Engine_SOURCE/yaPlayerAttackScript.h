@@ -3,6 +3,8 @@
 
 namespace ya
 {
+	class Player;
+	class PlayerMeshScript;
 	class PlayerAttackScript : public Script
 	{
 	public:
@@ -26,6 +28,8 @@ namespace ya
 
 			Block,				// a050_002000
 
+			Move,
+
 			End,
 		};
 
@@ -45,12 +49,14 @@ namespace ya
 
 
 	private:
+		Player* mPlayer;
+		PlayerMeshScript* mPlayerAnim;
+
 		eAttackState mAttackState;
 		float mTimer[(UINT)eAttackState::End];
 		float mTimerMax[(UINT)eAttackState::End];
 		bool mbKeyInput;
 
-		class GameObject* mAttackProjectile;
 
 	};
 }
