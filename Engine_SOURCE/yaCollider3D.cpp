@@ -57,7 +57,7 @@
 //		DebugMesh meshAttribute = {};
 //		meshAttribute.position = Vector3(colliderPos.x, colliderPos.y, colliderPos.z);
 //		meshAttribute.radius = mRadius;
-//		meshAttribute.rotatation = rotation;
+//		meshAttribute.rotation = rotation;
 //		meshAttribute.scale = scale;
 //		meshAttribute.type = mType;
 //

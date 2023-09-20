@@ -254,6 +254,31 @@
     <ClCompile Include="yaWallCheckScript.cpp">
       <Filter>Contents\Contents</Filter>
     </ClCompile>
+    <ClCompile Include="UICanvas_InGame.cpp">
+      <Filter>Contents\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UICanvasObj.cpp">
+      <Filter>Contents\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIHPBarScript.cpp">
+      <Filter>Contents\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="CSVEditor.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPool.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBoundarySphere.cpp">
+      <Filter>Engine\Component\BoundarySphere</Filter>
+    </ClCompile>
+    <ClCompile Include="yaFrustum.cpp">
+      <Filter>Engine\Component\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -527,6 +552,34 @@
     <ClInclude Include="yaWallCheckScript.h">
       <Filter>Contents\Contents</Filter>
     </ClInclude>
+    <ClInclude Include="UICanvas_InGame.h">
+      <Filter>Contents\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UICanvasObj.h">
+      <Filter>Contents\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHPBarScript.h">
+      <Filter>Contents\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UINames.h">
+      <Filter>Contents\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MapObjects.h" />
+    <ClInclude Include="CSVEditor.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBoundarySphere.h">
+      <Filter>Engine\Component\BoundarySphere</Filter>
+    </ClInclude>
+    <ClInclude Include="yaFrustum.h">
+      <Filter>Engine\Component\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -705,6 +758,12 @@
     </Filter>
     <Filter Include="Contents\Monster\RedOgre">
       <UniqueIdentifier>{5076058c-ee45-4a04-bd59-18a6048b01b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\UI">
+      <UniqueIdentifier>{89ccb457-4d9f-4146-b05b-69c31a195ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\BoundarySphere">
+      <UniqueIdentifier>{5d0c93a7-566b-4b19-aad4-f2082c5feae6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

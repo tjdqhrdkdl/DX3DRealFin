@@ -4,6 +4,10 @@
 
 namespace ya
 {
+	constexpr float gDegreeToRadFactor = XM_PI / 180.f;
+	constexpr float gRadToDegreeFactor = 180.f / XM_PI;
+
+
 	Transform::Transform()
 		: Component(eComponentType::Transform)
 		, mForward(Vector3::Forward)
@@ -15,7 +19,7 @@ namespace ya
 		, mRotationOffset(Vector3::Zero)
 		, mParent(nullptr)
 	{
-		
+
 	}
 
 	Transform::~Transform()
@@ -47,13 +51,9 @@ namespace ya
 
 
 		// 회전 변환 행렬
-		Matrix rotation;
+		Matrix rotation = Matrix::Identity;
 
-		Vector3 finalRotation = mRotation;
-		Vector3 radian(finalRotation.x * (XM_PI / 180)
-			, finalRotation.y * (XM_PI / 180)
-			, finalRotation.z * (XM_PI / 180));
-
+		Vector3 radian = mRotation * gDegreeToRadFactor;
 		rotation = Matrix::CreateRotationX(radian.x);
 		rotation *= Matrix::CreateRotationY(radian.y);
 		rotation *= Matrix::CreateRotationZ(radian.z);
@@ -61,22 +61,17 @@ namespace ya
 		mMatRotation = rotation;
 
 
-
-
 		// 이동 변환 행렬
-		Matrix position;
-		Vector3 finalPosition = mPosition;
-		position.Translation(finalPosition);
-
+		Matrix position = Matrix::Identity;
+		position.Translation(mPosition);
 		mMatTranslation = position;
 
 		Matrix rotationOffset;
 		rotationOffset.Translation(mRotationOffset);
 		mMatRotationOffset = rotationOffset;
 
-
 		mWorld = scale * rotationOffset * rotation * position;
-		
+
 
 		if (mbCamera)
 		{
@@ -111,6 +106,13 @@ namespace ya
 		{
 			mFinalScale = mScale;
 		}
+	}
+
+	void Transform::PrevRender()
+	{
+
+
+
 	}
 
 	void Transform::Render()

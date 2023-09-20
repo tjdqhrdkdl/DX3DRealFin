@@ -13,6 +13,7 @@
 #include "yaMeshObject.h"
 #include "yaBoneCollider.h"
 
+
 #include <time.h>
 
 namespace ya
@@ -32,6 +33,7 @@ namespace ya
         virtual void Update() override;
         virtual void FixedUpdate() = 0;
         virtual void Render() override;
+
 
     public:
 

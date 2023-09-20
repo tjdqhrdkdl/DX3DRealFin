@@ -1,6 +1,6 @@
 #pragma once
 #include "yaComponent.h"
-
+#include "yaFrustum.h"
 namespace ya
 {
 	using namespace math;
@@ -28,7 +28,9 @@ namespace ya
 
 
 		void CreateViewMatrix();
+		Matrix CreateViewMatrix(class Transform* tr);
 		void CreateProjectionMatrix();
+		Matrix CreateProjectionMatrix(eProjectionType type, float width, float height, float Near, float Far);
 		void RegisterCameraInRenderer();
 
 		void TurnLayerMask(eLayerType layer, bool enable = true);
@@ -42,6 +44,7 @@ namespace ya
 
 	private:
 		void sortGameObjects();
+		void renderShadow();
 		void renderDeferred();
 		void renderOpaque();
 		void renderCutout();
@@ -71,5 +74,6 @@ namespace ya
 		std::vector<GameObject*> mTransparentGameObjects;
 		std::vector<GameObject*> mPostProcessGameObjects;
 
+		Frustum mFrustum;
 	};
 }

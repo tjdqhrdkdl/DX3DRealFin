@@ -26,10 +26,13 @@ namespace ya
 		void SetDirection(const Vector3 dir) { mDirection = dir; }
 		Vector3 GetDirection() const { return mDirection; }
 
-		void SetJumping(bool jumping) { mJumping = jumping; }
-		bool IsJumping() { return mJumping; }
-		void SetGrounded(bool grounded) { mGrounded = grounded; }
-		bool IsGrounded() { return mGrounded; }
+		void SetJumping(bool jumping) { mbJumping = jumping; }
+		bool IsJumping() { return mbJumping; }
+		void SetGrounded(bool grounded) { mbGrounded = grounded; }
+		bool IsGrounded() { return mbGrounded; }
+
+		std::function<void()>& GetJumpEvent() { return mJumpEvent; }
+		std::function<void()>& GetGroundEvent() { return mGroundEvent; }
 
 	public:
 		void Move(const Vector3 dir, float force = -1.0f);
@@ -60,11 +63,17 @@ namespace ya
 		float mGroundSlopeAngle;
 		float mForwardSlopeAngle;
 
-		bool mMoving;
-		bool mRunning;
-		bool mJumping;
-		bool mGrounded;
-		bool mForwardBlocked;
+		bool mbMoving;
+		bool mbRunning;
+		bool mbJumping;
+		bool mbGrounded;
+		bool mbForwardBlocked;
+
+		/// <summary> 점프 상태가 시작될때 발생하는 이벤트 </summary>
+		std::function<void()> mJumpEvent;
+
+		/// <summary> 점프가 끝나고 착지한 상태가 될 때 발생하는 이벤트 </summary>
+		std::function<void()> mGroundEvent;
 
 	private:
 		float mJumpTimer;

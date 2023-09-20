@@ -7,6 +7,7 @@ namespace ya
 {
 	class GameObject : public Entity
 	{
+		
 	public:
 		enum eState
 		{
@@ -21,6 +22,7 @@ namespace ya
 		virtual void Initialize();
 		virtual void Update();
 		virtual void FixedUpdate();
+		virtual void PrevRender();
 		virtual void Render();
 
 		template <typename T>
@@ -110,6 +112,7 @@ namespace ya
 		eLayerType GetLayerType() { return mType; }
 		void SetLayerType(eLayerType type) { mType = type; }
 
+		void SetRender(bool render) { mbRender = render; }
 	protected:
 		std::vector<Component*> mComponents;
 
@@ -119,6 +122,8 @@ namespace ya
 		std::vector<Script*> mScripts;
 		bool mbDontDestroy;
 		//Scene* mScene;
+
+		bool mbRender;
 	};
 }
 

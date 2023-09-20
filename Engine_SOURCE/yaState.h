@@ -32,12 +32,12 @@ namespace ya
 
 		void SetSituation(enums::eSituation situation, bool OnceAniamtion = false) { mSituation = situation; }
 
-		void SetHp(float hp);
-		void SetMaxHP(float maxhp) { mMaxHp += maxhp; }
+		void SetHp(float hp) { mHp = hp; }
+		void SetMaxHP(float maxhp) { mMaxHp = maxhp; }
 		void SetSpeed(float speed) { mSpeed = speed; }
-		void SetDeathBlowCount(float blowcount);
-		void SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount =+ maxblowcount; }
-		void SetAlertnessCount(float count) { mAlertnessCount += count; }
+		void SetDeathBlowCount(float blowcount) { mDeathBlowCount = blowcount; }
+		void SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount = maxblowcount; }
+		void SetAlertnessCount(float count) { mAlertnessCount = count; }
 
 		void SetDeathBlow(bool deathblow) { mbDeathBlow = deathblow; }
 		//void SetStartBlow(bool blow) { mbStartBlow = blow; }

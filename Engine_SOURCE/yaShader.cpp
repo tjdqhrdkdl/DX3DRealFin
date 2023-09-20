@@ -44,11 +44,11 @@ namespace ya
 								, mVSBlob.GetAddressOf()
 								, mErrorBlob.GetAddressOf());
 
-			//if (mErrorBlob)
-			//{
-			//	OutputDebugStringA((char*)mErrorBlob->GetBufferPointer());
-			//	mErrorBlob->Release();
-			//}
+			if (mErrorBlob.Get())
+			{
+				OutputDebugStringA((char*)mErrorBlob->GetBufferPointer());
+				mErrorBlob = nullptr;
+			}
 
 			GetDevice()->CreateVertexShader(mVSBlob->GetBufferPointer()
 														, mVSBlob->GetBufferSize()

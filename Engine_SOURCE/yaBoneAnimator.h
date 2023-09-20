@@ -53,6 +53,7 @@ namespace ya
 		void CheckBone();
 		void SetBones(const std::vector<BoneMatrix>* bones)
 		{
+			mBoneMatrixBuffer = new graphics::StructedBuffer();
 			mBones = bones;
 			mAnimaitonBoneMatrix.resize(mBones->size());
 		}
@@ -75,6 +76,16 @@ namespace ya
 		int GetAnimationIdxByName(const std::wstring& name) { if (mAnimationNameAndIndexMap.find(name) == mAnimationNameAndIndexMap.end()) return -1; else return mAnimationNameAndIndexMap[name]; }
 		
 		std::wstring GetPlayAnimationName() { return mAnimationClips->at(mCurrentClip).name; }
+
+		
+		void SetAnimationSelfChange(UINT idx, bool change) { mAnimationSelfChangeBools[idx] = change; }
+		void SetAnimationSelfChange(const std::wstring& name, bool change) { mAnimationSelfChangeBools[GetAnimationIdxByName(name)] = change; }
+		
+		bool isChanging() { return mbAnimChanging; }
+
+		void SetAnimationTailTime(float time) { mAnimationTailTime = time; }
+
+		void SetParentAnimator(BoneAnimator* animator) { mParentAnimator = animator; }
 	private:
 		const std::vector<BoneMatrix>* mBones;
 		const std::vector<BoneAnimationClip>* mAnimationClips;
@@ -105,5 +116,15 @@ namespace ya
 		float mAnimChangeTime;
 		float mAnimChangeTimeChecker;
 		std::wstring mNextAnimName;
+
+		bool mbAnimationComplete;
+
+		std::vector<bool> mAnimationSelfChangeBools;
+
+		//애니메이션 끝부분 자르기
+		float mAnimationTailTime;
+
+		//부모 본애니메이터
+		BoneAnimator* mParentAnimator;
 	};
 }
