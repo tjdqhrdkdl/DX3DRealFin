@@ -8,6 +8,7 @@
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaPlayerMeshScript.h"
+#include "yaPlayerProjectileScript.h"
 
 #include "yaBoneCollider.h"
 #include "yaObject.h"
@@ -19,6 +20,7 @@ namespace ya
 	Player::Player()
 		: mCamera(nullptr)
 		, mProsthetic(eProsthetics::None)
+		, mWeaponCollider(nullptr)
 		, mStartStateEvent {}
 		, mEndStateEvent {}
 	{
@@ -38,7 +40,20 @@ namespace ya
 		mState->SetPostureMax(100);
 		mState->SetPosture(mState->GetPostureMax());
 
-		AddComponent<PlayerMeshScript>();	// 메쉬, 애니메이션이므로 먼저 load
+		PlayerMeshScript* meshScript = AddComponent<PlayerMeshScript>();	// 메쉬, 애니메이션이므로 먼저 load
+
+		std::shared_ptr<MeshData> weaponMeshData = meshScript->FindMeshData(L"Arm");
+		if (weaponMeshData != nullptr)
+		{
+			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile);
+			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
+			mWeaponCollider->SetScale(Vector3(1.6, 0.2, 0.2));
+
+			PlayerProjectileScript* projectileScript = mWeaponCollider->AddComponent<PlayerProjectileScript>();
+			projectileScript->SetPlayer(this);
+		}
+
+
 		AddComponent<PlayerScript>();
 		AddComponent<PlayerActionScript>();
 		AddComponent<PlayerAttackScript>();

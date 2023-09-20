@@ -35,11 +35,8 @@ namespace ya
 	}
 	void PlayerProjectileScript::OnCollisionEnter(Collider2D* collider)
 	{
-		// 몬스터 공격
-		int a = 0;
-
-		//Player* player = dynamic_cast<Player*>(GetOwner());
-
+		if (!mPlayer->IsStateFlag(ePlayerState::Block))
+			return;
 
 		// 패링
 		GameObject* obj = collider->GetOwner();
@@ -47,25 +44,35 @@ namespace ya
 		BoneCollider* c = dynamic_cast<BoneCollider*>(obj);
 		if (c != nullptr)
 		{
-			//if (player->IsStateFlag(ePlayerState::Block))
-			if(mbBlock)
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
 				mPlayer->SetStateFlag(ePlayerState::Parrying, true);
 				mPlayer->SetStateFlag(ePlayerState::Block, false);
 
-				mPlayer->GetState()->AddPosture(10);
+				mPlayer->GetState()->AddPosture(-10);
 
-				// 튕겨나는 애니메이션
-				//mPlayerAnim->Play(L"");
+				Transform* playerTr = mPlayer->GetComponent<Transform>();
+				Vector3 playerPos = playerTr->GetPosition();
+				Vector3 playerDir = playerTr->Forward();
 
-				// 패링 발동
-				// 패링상태로 변경, 체간 증가
+				Vector3 colliderPos = collider->GetPosition();
 
-				// 패링 애니메이션
+				// 플레이어의 방향과 collider간의 각도를 구한다.
+				Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));
+				Vector3 quaterToEuler = quater.ToEuler();
+				Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
-				// 패링 이펙트 
-
-				mbBlock = false;
+				// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+				if (theta.y > -45.0f && theta.y <= 45.0f)
+					mPlayerAnim->Play(L"a050_120101");
+				else if (theta.y > 45.0f && theta.y <= 135.0f)
+					mPlayerAnim->Play(L"a050_120100");
+				else if (theta.y > 135.0f && theta.y <= 180.0f)
+					mPlayerAnim->Play(L"a050_120103");
+				else if (theta.y > -180.0f && theta.y <= -135.0f)
+					mPlayerAnim->Play(L"a050_120103");
+				else if (theta.y > -135.0f && theta.y <= -45.0f)
+					mPlayerAnim->Play(L"a050_120102");
 			}
 		}
 	}
@@ -83,5 +90,10 @@ namespace ya
 	}
 	void PlayerProjectileScript::OnTriggerExit(Collider2D* collider)
 	{
+	}
+	void PlayerProjectileScript::SetPlayer(Player* player)
+	{
+		mPlayer = player;
+		mPlayerAnim = player->GetScript<PlayerMeshScript>();
 	}
 }

@@ -20,7 +20,9 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	public:
-		void SetSpeed(const float speed) { mSpeed = speed; }
+		void Velocity(const float velocity = 40.0f);
+
+		void SetSpeed(const float speed = 400.0f) { mSpeed = speed; }
 		float GetSpeed() const { return mSpeed; }
 
 		void SetDirection(const Vector3 dir) { mDirection = dir; }
@@ -39,9 +41,6 @@ namespace ya
 		void Rotate(const Vector3 dir, float speed = -1.0f);
 		void Jump(float force = -1.0f);
 		void JumpDouble(float force = -1.0f);
-		void Attack();
-		void Deflect();
-		void Parrying();
 
 		void ForwardCheck();
 		void CheckGround();

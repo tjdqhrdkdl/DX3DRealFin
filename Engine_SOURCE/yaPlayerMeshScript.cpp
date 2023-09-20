@@ -110,6 +110,12 @@ namespace ya
                 meshData->GetAnimationEndEvent(L"a000_100101") = [meshData]() { meshData->Play(L"a000_000000"); };
                 meshData->GetAnimationEndEvent(L"a000_100102") = [meshData]() { meshData->Play(L"a000_000000"); };
                 meshData->GetAnimationEndEvent(L"a000_100103") = [meshData]() { meshData->Play(L"a000_000000"); };
+                
+                //패링
+                meshData->GetAnimationEndEvent(L"a050_120100") = [meshData]() { meshData->Play(L"a000_000000"); };
+                meshData->GetAnimationEndEvent(L"a050_120101") = [meshData]() { meshData->Play(L"a000_000000"); };
+                meshData->GetAnimationEndEvent(L"a050_120102") = [meshData]() { meshData->Play(L"a000_000000"); };
+                meshData->GetAnimationEndEvent(L"a050_120103") = [meshData]() { meshData->Play(L"a000_000000"); };
             }
 
             Play(L"a000_000000");

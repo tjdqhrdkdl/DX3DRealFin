@@ -9,6 +9,7 @@
 #include "yaRigidbody.h"
 #include "yaCameraScript.h"
 #include "yaPlayerMeshScript.h"
+#include "yaBoneCollider.h"
 
 namespace ya
 {
@@ -22,7 +23,7 @@ namespace ya
 		, mDashSpeed(300.0f)
 		, mDashTimer(0.0f)
 		, mHitTimer(1.0f)
-		, mFrontTheta(4.0f)
+		, mFrontTheta(10.0f)
 		, mDashTimerMax(0.2f)
 		, mbJumpDouble(false)
 	{
@@ -65,6 +66,39 @@ namespace ya
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Idle, true);
 			player->SetStateFlag(ePlayerState::Walk, true);
+		}));
+
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			BoneCollider* waeponCollider = player->GetWeaponCollider();
+			Transform* weaponColliderTr = waeponCollider->GetComponent<Transform>();
+			Vector3 scale = weaponColliderTr->GetScale();
+			waeponCollider->SetScale(Vector3(1.2f, 0.2f, 1.2f));
+
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity(30.0f);
+			
+		}));
+
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			BoneCollider* waeponCollider = player->GetWeaponCollider();
+			waeponCollider->SetScale(Vector3(1.6f, 0.2f, 0.2f));
+
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity();
+		}));
+
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity(20.0f);
+		}));
+
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity();
 		}));
 	}
 
@@ -160,9 +194,9 @@ namespace ya
 			else
 			{	// 진행하려는 방향과 player의 forward가 비슷해질 때 까지 회전한다. theta 각에 따라 회전 방향을 결정한다.
 				if (theta.y > 0.0f)
-					Rotate(Vector3(0.0f, 1.0f, 0.0f));
+					Rotate(Vector3(0.0f, 0.1f, 0.0f));
 				else
-					Rotate(Vector3(0.0f, -1.0f, 0.0f));
+					Rotate(Vector3(0.0f, -0.1f, 0.0f));
 			}
 		}
 
@@ -170,7 +204,11 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			 if (mPlayer->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002200");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
@@ -186,7 +224,11 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			if (mPlayer->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002200");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
 
 			}
@@ -217,7 +259,11 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			if (mPlayer->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002200");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
 
 			}
@@ -247,7 +293,11 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			if (mPlayer->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002200");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
 
 			}
@@ -408,8 +458,7 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 
-			Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
-			mRigidbody->SetLimitVelocity(Vector3(70.0f, limitVelocity.y, 70.0f));
+			Velocity(70.0f);
 
 			mbDash = true;
 
@@ -430,8 +479,7 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Sprint, false);
 
-			Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
-			mRigidbody->SetLimitVelocity(Vector3(40.0f, limitVelocity.y, 40.0f));
+			Velocity();
 
 			mbDash = false;
 		}

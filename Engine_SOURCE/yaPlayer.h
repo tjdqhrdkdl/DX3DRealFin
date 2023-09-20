@@ -2,6 +2,7 @@
 #include "yaGameObject.h"
 #include "yaSekiroEnums.h"
 #include "yaState.h"
+#include "yaBoneCollider.h"
 
 namespace ya
 {
@@ -27,6 +28,9 @@ namespace ya
 		void SetProsthetic(eProsthetics prosthetic) { mProsthetic = prosthetic; }
 		eProsthetics GetProsthetic() { return mProsthetic; }
 
+		void SetWeaponCollider(BoneCollider* collider) { mWeaponCollider = collider; }
+		BoneCollider* GetWeaponCollider() { return mWeaponCollider; }
+
 		void SetStateFlag(ePlayerState state, bool on = true);
 		UINT GetStateFlag() { return mStateFlag; }
 		bool IsStateFlag(ePlayerState state) { return (GetStateFlag() & (UINT)state) ? true : false; }
@@ -51,6 +55,7 @@ namespace ya
 		State* mState;
 		UINT mStateFlag;
 		eProsthetics mProsthetic;
+		BoneCollider* mWeaponCollider;
 
 		bool mbStealth;	// 은신
 

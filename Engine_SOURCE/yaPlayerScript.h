@@ -23,6 +23,10 @@ namespace ya
 		Player* mPlayer;
 		PlayerMeshScript* mPlayerAnim;
 
+		float mMoveTimer;
+		float mMoveTimerMax;
+		Vector3 mHitDirection;
+
 		float TESTTime;
 
 	};

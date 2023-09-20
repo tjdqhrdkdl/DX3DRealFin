@@ -27,6 +27,9 @@ namespace ya
 {
 	PlayerScript::PlayerScript()
 		: Script()
+		, mMoveTimer(0.0f)
+		, mMoveTimerMax(0.1f)
+		, mHitDirection(Vector3::Zero)
 	{
 	}
 
@@ -53,7 +56,6 @@ namespace ya
 
 		mPlayer = dynamic_cast<Player*>(GetOwner());
 		mPlayerAnim = mPlayer->GetScript<PlayerMeshScript>();
-
 	}
 
 	void PlayerScript::Update()
@@ -69,29 +71,12 @@ namespace ya
 		ActionScript* action = GetOwner()->GetScript<ActionScript>();
 		Transform* tr = GetOwner()->GetComponent < Transform>();
 
-		Player* player = (Player*)GetOwner();
-		if (player->IsAttack())
+		if (mMoveTimer > 0.0f)
 		{
-			TESTTime += Time::DeltaTime();
-			if (TESTTime >= 1.5f)
-			{
-				player->SetAttack(false);
-				TESTTime = 0.f;
-			}
+			mMoveTimer -= Time::DeltaTime();
+			//if (mMoveTimer < 1.0f)
+				action->Move(mHitDirection, 200.0f);
 		}
-		if (player->IsWalk())
-		{
-			action->Move(-(tr->Forward() * 250.f));
-			TESTTime += Time::DeltaTime();
-			if (TESTTime >= 0.5f)
-			{
-				player->SetWalk(false);
-				TESTTime = 0.f;
-			}
-		}
-
-
-
 	}
 
 
@@ -131,6 +116,13 @@ namespace ya
 				mPlayerAnim->Play(L"a000_100103");
 			else if(theta.y > -135.0f && theta.y <= -45.0f)
 				mPlayerAnim->Play(L"a000_100101");
+		
+			if(mMoveTimer <= 0.0f)
+			{
+				mMoveTimer = mMoveTimerMax;
+				//mHitDirection = Vector3(-theta.x, 0.0f, -theta.z);
+				mHitDirection = -playerTr->Forward();
+			}
 		}
 
 	}

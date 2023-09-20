@@ -24,6 +24,9 @@ namespace ya
 		virtual void OnTriggerStay(Collider2D* collider);
 		virtual void OnTriggerExit(Collider2D* collider);
 
+	public:
+		void SetPlayer(Player* player);
+
 	private:
 		Player* mPlayer;
 		PlayerMeshScript* mPlayerAnim;
