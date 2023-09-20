@@ -4,6 +4,9 @@
 using namespace ya::math;
 namespace ya
 {	/// 물리
+
+	class WallCheckObject;
+
 	class Rigidbody : public Component
 	{
 	public:
@@ -32,7 +35,12 @@ namespace ya
 		void SetRotateDirection(Matrix dir) { mRotateDirection = dir; }
 
 	private:
+		Vector3 GetForce() { return mForce; }
+		void SetForce(Vector3 force) { mForce = force; }
+
+	private:
 		class ActionScript* mActionScript;
+		friend class WallCheckScript;
 
 		// 힘과 마찰력을 이용한 이동
 		float mMass;		/// 무게

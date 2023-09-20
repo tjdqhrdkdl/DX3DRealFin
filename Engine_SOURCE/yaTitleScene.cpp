@@ -83,8 +83,8 @@ namespace ya
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
 			wall->SetName(L"wall");
 			Transform* wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
+			wallTr->SetPosition(Vector3(33.0f, 15.0f, 10.0f));
+			wallTr->SetScale(Vector3(50.0f, 50.0f, 1.0f));
 			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
 			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -97,8 +97,8 @@ namespace ya
 			wall = object::Instantiate<GameObject>(eLayerType::Wall);
 			wall->SetName(L"wall1");
 			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(0.f, 15.0f, 100.0f));
-			wallTr->SetScale(Vector3(50.f, 50.f, 4.f));
+			wallTr->SetPosition(Vector3(16.f, 15.0f, 52.0f));
+			wallTr->SetScale(Vector3(50.f, 50.f, 1.f));
 			wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
 			wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -373,6 +373,8 @@ namespace ya
 			CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
 			CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
+			CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::PlayerProjectile, true);
+
 			CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
 			{

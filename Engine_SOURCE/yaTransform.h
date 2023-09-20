@@ -48,11 +48,8 @@ namespace ya
 
 		void IsCamera(bool cam) { mbCamera = cam; }
 
-		void SetRelativeRotate(bool rot) { mbRelativeRotate = rot; }
-
 	private:
 		Transform* mParent;
-		bool mbRelativeRotate;
 
 		Vector3 mForward;
 		Vector3 mRight;
