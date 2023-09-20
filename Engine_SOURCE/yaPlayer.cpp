@@ -48,9 +48,6 @@ namespace ya
 			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile);
 			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
 			mWeaponCollider->SetScale(Vector3(1.6, 0.2, 0.2));
-
-			PlayerProjectileScript* projectileScript = mWeaponCollider->AddComponent<PlayerProjectileScript>();
-			projectileScript->SetPlayer(this);
 		}
 
 

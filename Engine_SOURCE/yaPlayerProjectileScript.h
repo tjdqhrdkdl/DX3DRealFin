@@ -30,7 +30,5 @@ namespace ya
 	private:
 		Player* mPlayer;
 		PlayerMeshScript* mPlayerAnim;
-
-		bool mbBlock;
 	};
 }

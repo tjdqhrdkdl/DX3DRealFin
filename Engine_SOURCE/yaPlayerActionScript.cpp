@@ -70,10 +70,10 @@ namespace ya
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
-			BoneCollider* waeponCollider = player->GetWeaponCollider();
+			/*BoneCollider* waeponCollider = player->GetWeaponCollider();
 			Transform* weaponColliderTr = waeponCollider->GetComponent<Transform>();
 			Vector3 scale = weaponColliderTr->GetScale();
-			waeponCollider->SetScale(Vector3(1.2f, 0.2f, 1.2f));
+			waeponCollider->SetScale(Vector3(1.2f, 0.2f, 1.2f));*/
 
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity(30.0f);
@@ -82,8 +82,8 @@ namespace ya
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
-			BoneCollider* waeponCollider = player->GetWeaponCollider();
-			waeponCollider->SetScale(Vector3(1.6f, 0.2f, 0.2f));
+			/*BoneCollider* waeponCollider = player->GetWeaponCollider();
+			waeponCollider->SetScale(Vector3(1.6f, 0.2f, 0.2f));*/
 
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity();
