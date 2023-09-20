@@ -404,7 +404,7 @@ namespace ya
 			mMonsterState = new State();
 
 			mMonsterState->SetSituation(enums::eSituation::None);
-			mMonsterState->SetMaxHP(10.0f);				//HP 총 량
+			mMonsterState->SetHPMax(10.0f);				//HP 총 량
 			mMonsterState->SetHp(10.0f);				//
 			mMonsterState->SetSpeed(5.0f);				//기본 이동속도
 			mMonsterState->SetDeathBlowCount(0.f);		//현재 체간 상태
