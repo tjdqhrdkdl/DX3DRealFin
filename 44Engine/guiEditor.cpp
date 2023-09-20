@@ -60,6 +60,15 @@ namespace gui
 
 		renderer->SetMaterial(material, 0);
 
+		std::shared_ptr<ya::Mesh> sphereMesh = ya::Resources::Find<ya::Mesh>(L"SphereMesh");
+
+		mDebugObjects[(UINT)eColliderType::Sphere] = new DebugObject();
+		renderer
+			= mDebugObjects[(UINT)eColliderType::Sphere]->AddComponent<ya::MeshRenderer>();
+		renderer->SetMesh(sphereMesh);
+
+		renderer->SetMaterial(material, 0);
+
 		//그리드 이쪽으로 옮겨줘야 한다.
 		// Grid Object
 		//EditorObject* gridObject = new EditorObject();
@@ -164,6 +173,7 @@ namespace gui
 		delete mDebugObjects[(UINT)eColliderType::Rect];
 		delete mDebugObjects[(UINT)eColliderType::Circle];
 		delete mDebugObjects[(UINT)eColliderType::Box];
+		delete mDebugObjects[(UINT)eColliderType::Sphere];
 	}
 
 	void Editor::DebugRender(ya::graphics::DebugMesh& mesh)
@@ -172,14 +182,16 @@ namespace gui
 		
 		ya::Transform* tr = debugObj->GetComponent<ya::Transform>();
 		tr->SetPosition(mesh.position);
-		tr->SetRotation(mesh.rotatation);
+		tr->SetRotation(mesh.rotation);
 		tr->SetParent((ya::Transform*)mesh.parent);
-
+		tr->SetRotationOffset(mesh.rotationOffset);
 		if (mesh.type == eColliderType::Rect)
 			tr->SetScale(mesh.scale);
 		else if (mesh.type == eColliderType::Box)
 			tr->SetScale(mesh.scale);
-		else if(mesh.type == eColliderType::Circle)
+		else if (mesh.type == eColliderType::Circle)
+			tr->SetScale(Vector3(mesh.radius));
+		else if (mesh.type == eColliderType::Sphere)
 			tr->SetScale(Vector3(mesh.radius));
 
 		ya::BaseRenderer* renderer = debugObj->GetComponent<ya::BaseRenderer>();

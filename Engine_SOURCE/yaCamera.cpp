@@ -9,6 +9,9 @@
 #include "yaMaterial.h"
 #include "yaBaseRenderer.h"
 #include "yaSceneManager.h"
+#include "yaFrustum.h"
+#include "yaBoundarySphere.h"
+#include "yaMeshObject.h"
 
 extern ya::Application application;
 
@@ -35,7 +38,6 @@ namespace ya
 
 	void Camera::Initialize()
 	{
-
 		RegisterCameraInRenderer();
 	}
 
@@ -48,6 +50,8 @@ namespace ya
 	{
 		CreateViewMatrix();
 		CreateProjectionMatrix();
+		//절두체 구성
+		mFrustum.ConstructFrustum(1000.0f,mProjection,mView);
 
 		RegisterCameraInRenderer();
 	}
@@ -240,6 +244,26 @@ namespace ya
 
 				for (GameObject* obj : gameObjects)
 				{
+					BoundarySphere* sphere = obj->GetComponent<BoundarySphere>();
+					if (sphere)
+					{
+						MeshObject* meshObject = dynamic_cast<MeshObject*>(obj);
+						if (nullptr != meshObject)
+							meshObject->SetChildRender(true);
+						Vector3 center = sphere->GetPosition();
+						float ra = sphere->GetRadius();
+						if (mFrustum.CheckSphere(center.x, center.y, center.z, sphere->GetRadius()))
+						{
+							pushGameObjectToRenderingModes(obj);
+						}
+						else
+						{
+							if (nullptr != meshObject)
+								meshObject->SetChildRender(false);
+							continue;
+						}
+					}
+
 					pushGameObjectToRenderingModes(obj);
 				}
 			}
@@ -335,6 +359,13 @@ namespace ya
 		{
 			if (obj == nullptr)
 				continue;
+			BoundarySphere* sphere = obj->GetComponent<BoundarySphere>();
+			if (sphere)
+			{
+				Vector3 center = sphere->GetCenter();
+				if (mFrustum.CheckSphere(center.x, center.y, center.z, sphere->GetRadius()))
+					continue;
+			}
 			renderer::CopyRenderTarget();
 			obj->Render();
 		}

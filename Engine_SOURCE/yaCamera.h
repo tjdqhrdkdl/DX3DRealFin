@@ -1,6 +1,6 @@
 #pragma once
 #include "yaComponent.h"
-
+#include "yaFrustum.h"
 namespace ya
 {
 	using namespace math;
@@ -74,5 +74,6 @@ namespace ya
 		std::vector<GameObject*> mTransparentGameObjects;
 		std::vector<GameObject*> mPostProcessGameObjects;
 
+		Frustum mFrustum;
 	};
 }

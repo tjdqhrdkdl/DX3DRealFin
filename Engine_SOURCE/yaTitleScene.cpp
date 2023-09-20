@@ -43,7 +43,7 @@
 
 #include "UICanvas_InGame.h"
 #include "MapObjects.h"
-
+#include "yaBoundarySphere.h"
 
 namespace ya
 {
@@ -74,6 +74,8 @@ namespace ya
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
+
+		BoundarySphere* boundarySphere = player->AddComponent<BoundarySphere>();
 
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);

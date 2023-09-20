@@ -270,6 +270,12 @@
     <ClCompile Include="ThreadPool.cpp">
       <Filter>Engine\Common</Filter>
     </ClCompile>
+    <ClCompile Include="yaBoundarySphere.cpp">
+      <Filter>Engine\Component\BoundarySphere</Filter>
+    </ClCompile>
+    <ClCompile Include="yaFrustum.cpp">
+      <Filter>Engine\Component\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -557,6 +563,11 @@
     </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents\Common</Filter>
+    <ClInclude Include="yaBoundarySphere.h">
+      <Filter>Engine\Component\BoundarySphere</Filter>
+    </ClInclude>
+    <ClInclude Include="yaFrustum.h">
+      <Filter>Engine\Component\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -739,6 +750,9 @@
     </Filter>
     <Filter Include="Contents\Player">
       <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\BoundarySphere">
+      <UniqueIdentifier>{5d0c93a7-566b-4b19-aad4-f2082c5feae6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
