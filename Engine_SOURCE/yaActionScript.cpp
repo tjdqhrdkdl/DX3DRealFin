@@ -91,8 +91,6 @@ namespace ya
  			mJumpTimer -= Time::DeltaTime();
 			mRigidbody->AddForce(Vector3(0.0f, mJumpForce, 0.0f));
 		}
-
-		CheckGround();
 	}
 
 	void ActionScript::FixedUpdate()
