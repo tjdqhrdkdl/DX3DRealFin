@@ -248,6 +248,7 @@ namespace ya
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::WallCheckCollision, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
 		{
@@ -265,7 +266,7 @@ namespace ya
 		}
 
 		{
-			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
 		}
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");

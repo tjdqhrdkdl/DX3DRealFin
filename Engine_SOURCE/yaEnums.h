@@ -23,6 +23,7 @@ namespace ya::enums
 		MonsterProjectile,
 		Player,
 		PlayerProjectile,
+		WallCheckCollision,
 		Particle,
 		PostProcess,
 		UI,
