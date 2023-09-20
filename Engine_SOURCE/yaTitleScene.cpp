@@ -96,6 +96,8 @@ namespace ya
 		//	UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
 		//	ui->SetName(L"UICanvasObj_InGame");
 		//}
+	
+
 
 		{
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
