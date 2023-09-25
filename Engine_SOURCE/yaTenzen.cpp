@@ -399,6 +399,10 @@ namespace ya
 	float Tenzen::EyeSightCheck()
 	{
 		Vector3 pos = mTransform->GetPosition();
+
+		if (GetPlayerObject() == nullptr)
+			return 0.0f;
+
 		Transform* playerTr = GetPlayerObject()->GetComponent<Transform>();
 		Vector3 playerPos = playerTr->GetPosition();
 

@@ -282,6 +282,9 @@
     <ClCompile Include="yaFrustum.cpp">
       <Filter>Engine\Component\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="yaLoadingScene.cpp">
+      <Filter>Contents\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -434,9 +437,6 @@
     <ClInclude Include="yaPaintShader.h">
       <Filter>Engine\Resource\Shader\CS</Filter>
     </ClInclude>
-    <ClInclude Include="yaResource.h">
-      <Filter>Engine\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="yaFmod.h">
       <Filter>Engine\Component\Audio</Filter>
     </ClInclude>
@@ -581,11 +581,18 @@
     </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents\Common</Filter>
+    </ClInclude>
     <ClInclude Include="yaBoundarySphere.h">
       <Filter>Engine\Component\BoundarySphere</Filter>
     </ClInclude>
     <ClInclude Include="yaFrustum.h">
       <Filter>Engine\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="yaResource.h">
+      <Filter>Engine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="yaLoadingScene.h">
+      <Filter>Contents\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

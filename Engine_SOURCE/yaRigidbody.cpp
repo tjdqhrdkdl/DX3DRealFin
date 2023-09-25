@@ -52,7 +52,7 @@ namespace ya
 		// 속도에 가속도를 더해준다.
 		mVelocity += (mAccelation * Time::DeltaTime());
 
-		if (mActionScript->IsGrounded() && !mActionScript->IsJumping())
+		if (mActionScript != nullptr && mActionScript->IsGrounded() && !mActionScript->IsJumping())
 		{ // 땅
 			Vector3 gravity = mGravity;
 			gravity.Normalize();
@@ -106,7 +106,7 @@ namespace ya
 		// 속도에 맞춰 물체를 이동시킨다.
 		Vector3 velo;
 
-		if (mActionScript->IsGrounded()) //&& ePlayerState::Jump != (ePlayerState)player->GetStateFlag())
+		if (mActionScript != nullptr && mActionScript->IsGrounded()) //&& ePlayerState::Jump != (ePlayerState)player->GetStateFlag())
 		{
 			Vector3 dir = mVelocity;
 			float length = dir.Length();

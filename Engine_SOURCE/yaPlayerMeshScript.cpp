@@ -3,6 +3,9 @@
 #include "yaMeshData.h"
 #include "yaInput.h"
 
+#include "yaSceneManager.h"
+#include "yaScene.h"
+
 namespace ya
 {
     PlayerMeshScript::PlayerMeshScript()
@@ -69,8 +72,8 @@ namespace ya
 
         if (mbUse)
         {
-        }
             LoadAnimation();
+        }
 
         Player* player = dynamic_cast<Player*>(GetOwner());
         Transform* playerTr = player->GetComponent<Transform>();
@@ -79,7 +82,9 @@ namespace ya
         {
             std::shared_ptr<MeshData> meshData = iter->second;
 
-            meshData->Instantiate(eLayerType::Player);
+            Scene* scene = SceneManager::GetScene(eSceneType::Tilte);
+
+            meshData->Instantiate(eLayerType::Player, scene);
 
             Transform* meshTr = meshData->GetMeshObject()->GetComponent<Transform>();
             meshTr->SetPosition(Vector3(0.0f, -0.5f, 0.0f));
@@ -151,7 +156,7 @@ namespace ya
                 std::wstring name = iter->first;
                 std::shared_ptr<MeshData> meshData = iter->second;
 
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000000.fbx", L"a000_000000");
+                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000000.fbx", L"a000_000000");
 
 #pragma region 1차 통합
                 /*meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_000000.fbx", L"a000_000000");

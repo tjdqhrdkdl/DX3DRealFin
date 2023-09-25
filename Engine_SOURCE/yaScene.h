@@ -31,9 +31,17 @@ namespace ya
 		void SetPlayer(Player* player) { mPlayer = player; }
 		Player* GetPlayer() { return mPlayer; }
 
+		void SetThreadLoad(bool thread) { mbThreadLoad = thread; }
+		bool IsThreadLoad() { return mbThreadLoad; }
+
+		std::function<void()>& GetThreadCallBack() { return mThreadCallBack; }
+
 	private:
 		std::vector<Layer> mLayers;
 		eSceneType mType;
 		Player* mPlayer;
+
+		bool mbThreadLoad;
+		std::function<void()> mThreadCallBack;
 	};
 }

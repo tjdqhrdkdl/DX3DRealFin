@@ -15,6 +15,7 @@ namespace ya
 
 		static void LoadScene(eSceneType type);
 		static Scene* GetActiveScene() { return mActiveScene; }
+		static Scene* GetScene(eSceneType type) { return mScenes[(UINT)type]; }
 
 	private:
 		static std::vector<Scene*> mScenes;

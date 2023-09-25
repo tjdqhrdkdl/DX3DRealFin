@@ -11,11 +11,16 @@
 #include "yaGridScript.h"
 #include "yaTitleScene.h"
 #include "yaPlayScene.h"
+#include "yaLoadingScene.h"
+#include "ThreadPool.h"
+#include "yaInput.h"
 
 namespace ya
 {
 	std::vector<Scene*> SceneManager::mScenes = {};
 	Scene* SceneManager::mActiveScene = nullptr;
+
+	std::vector<std::future<std::function<void()>>> futures = {};
 
 	void SceneManager::Initialize()
 	{
@@ -23,16 +28,42 @@ namespace ya
 
 		mScenes[(UINT)eSceneType::Tilte] = new TitleScene();
 		mScenes[(UINT)eSceneType::Tilte]->SetName(L"TitleScene");
+		mScenes[(UINT)eSceneType::Tilte]->SetThreadLoad(true);
+		mScenes[(UINT)eSceneType::Tilte]->GetThreadCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Tilte);
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
 		mScenes[(UINT)eSceneType::Play]->SetName(L"PlayScene");
 
-		mActiveScene = mScenes[(UINT)eSceneType::Tilte];
+		mScenes[(UINT)eSceneType::Loading] = new LoadingScene();
+		mScenes[(UINT)eSceneType::Loading]->SetName(L"LoadingScene");
 
 		for (Scene* scene : mScenes)
 		{
-			scene->Initialize();
+			mActiveScene = scene;
+
+			if (scene->IsThreadLoad())
+			{
+				futures.emplace_back(ThreadPool::EnqueueJob([scene]() -> std::function<void()> {
+					printf("scene : %d \n", scene->GetSceneType());
+					scene->Initialize();
+					return scene->GetThreadCallBack();
+				}));
+			}
+			else
+			{
+				scene->Initialize();
+				printf("result : %d \n", (UINT)scene->GetSceneType());
+			}
 		}
+
+		mActiveScene = mScenes[(UINT)eSceneType::Loading];
+
+		for (auto& f : futures)
+		{
+			std::function<void()> result = f.get();
+			result();
+		}
+
 	}
 
 	void SceneManager::Update()
