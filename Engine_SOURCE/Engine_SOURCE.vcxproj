@@ -264,6 +264,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaStructedBuffer.h" />
     <ClInclude Include="yaSwordsman.h" />
     <ClInclude Include="yaTenzen.h" />
+    <ClInclude Include="yaTenzenCollisionScript.h" />
     <ClInclude Include="yaTexture.h" />
     <ClInclude Include="yaTime.h" />
     <ClInclude Include="yaTitleScene.h" />
@@ -360,6 +361,7 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaStructedBuffer.cpp" />
     <ClCompile Include="yaSwordsman.cpp" />
     <ClCompile Include="yaTenzen.cpp" />
+    <ClCompile Include="yaTenzenCollisionScript.cpp" />
     <ClCompile Include="yaTexture.cpp" />
     <ClCompile Include="yaTime.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />

@@ -282,6 +282,9 @@
     <ClCompile Include="yaFrustum.cpp">
       <Filter>Engine\Component\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="yaTenzenCollisionScript.cpp">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -581,12 +584,15 @@
     </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents\Common</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="yaBoundarySphere.h">
       <Filter>Engine\Component\BoundarySphere</Filter>
     </ClInclude>
     <ClInclude Include="yaFrustum.h">
       <Filter>Engine\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTenzenCollisionScript.h">
+      <Filter>Contents\Monster\Tenzen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
