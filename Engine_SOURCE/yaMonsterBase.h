@@ -12,6 +12,8 @@
 #include "yaMeshData.h"
 #include "yaMeshObject.h"
 #include "yaBoneCollider.h"
+#include "yaActionScript.h"
+#include "yaBoneAnimator.h"
 
 
 #include <time.h>
@@ -37,12 +39,12 @@ namespace ya
 
     public:
 
-        
+
         bool NavigationPlayer(float range);
         void MonsterRotation(Vector3 target_point);
         void TurnToPlayer();
         float TurnToPlayerDir();
-        bool WalkToPlayer(float range);
+        bool WalkToPlayer(float range, float Speed);
         void AlertnessLevel();
 
 
@@ -51,6 +53,7 @@ namespace ya
 
         void OnceAniamtion(const std::wstring& animation);
 
+        Vector3 Convert3DTo2DScreenPos(Transform* tr);
 
 #pragma region State_GetSet
 
@@ -59,7 +62,7 @@ namespace ya
         State* GetState() { return mMonsterState; }
         enums::eSituation GetSituation() { return mMonsterState->GetSituation(); }
         float GetHP() { return mMonsterState->GetHP(); }
-        float GetMaxHP() { return mMonsterState->GetMaxHP(); }
+        //float GetMaxHP() { return mMonsterState->GetMaxHP(); }
         float GetSpeed() { return mMonsterState->GetSpeed(); }
         float GetDeathBlowCount() { return mMonsterState->GetDeathBlowCount(); }
         float GetMaxDeathBlowCount() { return mMonsterState->GetMaxDeathBlowCount(); }
@@ -71,13 +74,13 @@ namespace ya
 
 
         void SetState(State* state) { mMonsterState = state; }
-        void SetSituation(enums::eSituation situation, bool OnceAniamtion = false) 
-        { 
+        void SetSituation(enums::eSituation situation, bool OnceAniamtion = false)
+        {
             mMonsterState->SetSituation(situation);
             mbOnceAnimation = OnceAniamtion;
         }
-        void SetHp(float hp) { mMonsterState->SetHp(hp);}
-        void SetMaxHP(float maxhp) { mMonsterState->SetMaxHP(maxhp); }
+        void SetHp(float hp) { mMonsterState->SetHp(hp); }
+        //void SetMaxHP(float maxhp) { mMonsterState->SetMaxHP(maxhp); }
         void SetSpeed(float speed) { mMonsterState->SetSpeed(speed); }
         void SetDeathBlowCount(float blowcount) { mMonsterState->SetDeathBlowCount(blowcount); }
         void SetMaxDeathBlowCount(float maxblowcount) { mMonsterState->SetMaxDeathBlowCount(maxblowcount); }
@@ -93,43 +96,52 @@ namespace ya
 
     public:
 
-        GameObject* GetPlayerObject() { return mPlayerObject ; }  
+        GameObject* GetPlayerObject() { return mPlayerObject; }
 
         Vec3 GetPlayerPos() { return mPlayerPos; }
         Vec3 GetMonster2PlayerNormalize() { return mMonster2PlayerNormalize; }
         Vec3 GetPlayer2MonsterNormalize() { return mPlayer2MonsterNormalize; }
+        Vec3 GetDeathBlowMarkOffSet() { return mDeathBlowMarkOffSet; }
         bool IsPlayerFront() { return mbPlayerFront; }
         //bool IsPlayerFieldview() { return mbPlayerFieldview; }
         bool IsDefense() { return mbDefense; }
 
-      
+
 
         void SetPlayerObject(GameObject* target) { mPlayerObject = target; }
 
         void SetPlayerPos(Vec3 pos) { mPlayerPos = pos; }
-		void SetMonster2PlayerNormalize(Vec3 mormal) { mMonster2PlayerNormalize = mormal; }
-		void SetPlayer2MonsterNormalize(Vec3 mormal) { mPlayer2MonsterNormalize = mormal; }
-        void SetPlayerFront(bool front) {  mbPlayerFront = front; }
+        void SetMonster2PlayerNormalize(Vec3 normal) { mMonster2PlayerNormalize = normal; }
+        void SetPlayer2MonsterNormalize(Vec3 normal) { mPlayer2MonsterNormalize = normal; }
+        void SetDeathBlowMarkOffSet(Vec3 offset) { mDeathBlowMarkOffSet = offset; }
+        void SetPlayerFront(bool front) { mbPlayerFront = front; }
         //void SetPlayerFieldview(bool view) { mbPlayerFieldview = view; }
         void SetDefense(bool defense) { mbDefense = defense; }
         void SetOnceAnimation(bool animation) { mbOnceAnimation = animation; }
 
+        void CreateDeathBlowMark();
+
+        bool IsParrying() { return mbParrying; }
+
     protected:
 
         std::shared_ptr<MeshData>   mMeshData;
-        MeshObject*                 mMeshObject;
+        MeshObject* mMeshObject;
         Vec3                        mAnimationOffSet;
+        ActionScript* mActionScript;
+        GameObject* mDeathBlowMark;
+        bool                        mbParrying;
 
 
     private:
 
-        GameObject*         mPlayerObject;
-        State*              mMonsterState;
+        GameObject* mPlayerObject;
+        State* mMonsterState;
 
         Vec3                mPlayerPos;
         Vec3                mMonster2PlayerNormalize;
         Vec3                mPlayer2MonsterNormalize;
-
+        Vec3                mDeathBlowMarkOffSet;
 
 
         bool                mbPlayerFront;
@@ -137,7 +149,7 @@ namespace ya
         bool                mbDefense;
         bool                mbOnceAnimation;
 
-        
+
 
         float               mTime;
         float               mRecoveryTime;

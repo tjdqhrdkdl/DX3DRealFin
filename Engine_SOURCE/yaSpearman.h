@@ -8,7 +8,7 @@ namespace ya
         public MonsterBase
     {
     public:
-        
+
         virtual void Initialize() override;
         //virtual void Update() override;
         virtual void FixedUpdate() override;
@@ -21,11 +21,12 @@ namespace ya
 
         void Attack_sting();
 
-        bool IsParrying() { return mbParrying; }
-        
+
+
         void Idle_Stand();
         void Link_attack();
         void Link_Defense();
+        void Link_Boundary();
 
 
         void KatanaColliderInit();
@@ -38,12 +39,12 @@ namespace ya
         Vec3                    mRandomXY;
         Vec3                    mRandomFinPos;
         Vec3                    mWlakFixPos;
-        
+
         UINT                    mRandom;
 
-        bool                    mbParrying;
 
-       
+
+
 
         //지울거에요 안씀
         class Transform* TEST;

@@ -152,6 +152,11 @@ namespace ya::graphics
 		std::filesystem::path parentPath = std::filesystem::current_path().parent_path();
 		std::wstring fullPath = parentPath.wstring() + L"\\Resources\\" + name;
 
+		if (false == std::fs::exists(fullPath))
+		{
+			return E_FAIL;
+		}
+
 		LoadFile(fullPath);
 		InitializeResource();
 

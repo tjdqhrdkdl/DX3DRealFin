@@ -20,7 +20,9 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	public:
-		void SetSpeed(const float speed) { mSpeed = speed; }
+		void Velocity(const float velocity = 40.0f);
+
+		void SetSpeed(const float speed = 400.0f) { mSpeed = speed; }
 		float GetSpeed() const { return mSpeed; }
 
 		void SetDirection(const Vector3 dir) { mDirection = dir; }
@@ -38,15 +40,14 @@ namespace ya
 		void Move(const Vector3 dir, float force = -1.0f);
 		void Rotate(const Vector3 dir, float speed = -1.0f);
 		void Jump(float force = -1.0f);
-		void Attack();
-		void Deflect();
-		void Parrying();
+		void JumpDouble(float force = -1.0f);
 
-		void ForwardCheck();
+		bool ForwardCheck(Vector3 movement);
 		void CheckGround();
 
 	protected:
 		GameObject* mTarget;
+		GameObject* mCheck;
 
 		class Transform* mTransform;
 		class Rigidbody* mRigidbody;
@@ -67,6 +68,8 @@ namespace ya
 		bool mbJumping;
 		bool mbGrounded;
 		bool mbForwardBlocked;
+		bool mbJumpDouble;
+
 
 		/// <summary> 점프 상태가 시작될때 발생하는 이벤트 </summary>
 		std::function<void()> mJumpEvent;

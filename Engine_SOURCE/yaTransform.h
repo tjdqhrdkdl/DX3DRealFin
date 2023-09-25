@@ -17,7 +17,7 @@ namespace ya
 		virtual void Render() override;
 
 		void SetConstantBuffer();
-		
+
 		void SetParent(Transform* parent) { mParent = parent; }
 		Transform* GetParent() { return mParent; }
 
@@ -43,10 +43,11 @@ namespace ya
 		Vector3 Right() { return mRight; }
 		Vector3 Up() { return mUp; }
 
-		void SetForward(Vector3 forward)	{ mForward = forward;	}
-		void SetRight(Vector3 right)		{ mRight = right;}
-		void SetUp(Vector3 up)		{ mUp = up;}
+		void SetForward(Vector3 forward) { mForward = forward; }
+		void SetRight(Vector3 right) { mRight = right; }
+		void SetUp(Vector3 up) { mUp = up; }
 
+		Matrix& GetTranslationMatrix() { return mMatTranslation; }
 		Matrix& GetWorldMatrix() { return mWorld; }
 
 		void IsCamera(bool cam) { mbCamera = cam; }

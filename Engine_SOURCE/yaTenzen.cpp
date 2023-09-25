@@ -71,7 +71,7 @@ namespace ya
 
 		////fbx 로드
 		mMeshData = std::make_shared<MeshData>();
-		mMeshData->Load(L"Monster\\Boss_tenzen\\MeshData\\c1020.meshdata");
+		mMeshData->Load(L"Monster\\Boss_tenzen\\Mesh\\c1020.fbx");
 		mMeshData->AnimationLoad(L"Monster\\Boss_tenzen\\AnimationData\\tenzen.animationdata");
 		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster);
 
@@ -86,7 +86,8 @@ namespace ya
 			if (materials[i][0]->GetName() == L"#06#")
 				mKatanaHandleObjectTr = childObjects[i]->GetComponent<Transform>();
 		}
-		mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+		if(mKatanaObjectTr)
+			mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
 		
 		
 

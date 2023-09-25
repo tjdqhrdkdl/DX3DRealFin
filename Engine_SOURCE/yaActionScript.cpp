@@ -4,12 +4,15 @@
 #include "yaInput.h"
 #include "yaCollisionManager.h"
 
+#include "yaObject.h"
 #include "yaRigidbody.h"
 #include "yaTransform.h"
 #include "yaCollider2D.h"
 
 #include "yaPlayer.h"
 #include "yaWallScript.h"
+#include "yaWallCheckObject.h"
+#include "yaWallCheckScript.h"
 
 #include <assert.h>
 
@@ -24,10 +27,11 @@ namespace ya
 	ActionScript::ActionScript()
 		: Script()
 		, mTarget(nullptr)
+		, mCheck(nullptr)
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
 		, mCollider(nullptr)
-		, mSpeed(100.0f)
+		, mSpeed(400.0f)
 		, mDirection(Vector3::Zero)
 		, mRotateDirection(Vector3::Zero)
 		, mGroundDistance(0.f)
@@ -44,6 +48,7 @@ namespace ya
 		, mJumpForce(0.0f)
 		, mJumpEvent(nullptr)
 		, mGroundEvent(nullptr)
+		, mbJumpDouble(false)
 	{
 	}
 
@@ -59,6 +64,21 @@ namespace ya
 		mTransform = obj->GetComponent<Transform>();
 		mRigidbody = obj->GetComponent<Rigidbody>();
 		mCollider = obj->GetComponent<Collider2D>();
+
+		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::WallCheckCollision);
+		assert(checkObj != nullptr);
+		mCheck = checkObj;
+		checkObj->SetName(L"WallCheck");
+		checkObj->SetParentObj(obj);
+
+		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
+		Transform* checkTransform = mCheck->GetComponent<Transform>();
+		
+		checkTransform->SetScale(Vector3(5.f, 5.f ,5.f));
+
+		checkCol->SetType(eColliderType::Box);
+		checkCol->SetCenter(Vector3(0.f, 0.f, 0.f));
+		checkCol->SetSize(Vector3(1.0, 1.0f, 1.0f));
 	}
 
 	void ActionScript::Update()
@@ -73,7 +93,6 @@ namespace ya
 			mRigidbody->AddForce(Vector3(0.0f, mJumpForce, 0.0f));
 		}
 
-		CheckGround();
 	}
 
 	void ActionScript::FixedUpdate()
@@ -92,60 +111,46 @@ namespace ya
 
 	void ActionScript::OnCollisionEnter(Collider2D* collider)
 	{
-		GameObject* colObj = collider->GetOwner();
-		Transform* colTransform = colObj->GetComponent<Transform>();
+		//GameObject* colObj = collider->GetOwner();
+		//Transform* colTransform = colObj->GetComponent<Transform>();
 
-		GameObject* obj = GetOwner();
-		Transform* objTransform = obj->GetComponent<Transform>();
+		//GameObject* obj = GetOwner();
+		//Transform* objTransform = obj->GetComponent<Transform>();
 
-		// 벽 충돌
-		if (nullptr != colObj->GetScript<WallScript>())
-		{
-			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
-
-			Vector3 velocity = objRigidbody->GetVelocity();
-			Vector3 pos = objTransform->GetPosition();
-
-			pos -= velocity * Time::DeltaTime();
-			objTransform->SetPosition(pos);
-		}
+		//// 벽 충돌
+		//if (nullptr != colObj->GetScript<WallScript>())
+		//{
+		//}
 	}
 
 	void ActionScript::OnCollisionStay(Collider2D* collider)
 	{
-		GameObject* colObj = collider->GetOwner();
-		Transform* colTransform = colObj->GetComponent<Transform>();
+		//GameObject* colObj = collider->GetOwner();
+		//Transform* colTransform = colObj->GetComponent<Transform>();
 
-		GameObject* obj = GetOwner();
-		Transform* objTransform = obj->GetComponent<Transform>();
+		//GameObject* obj = GetOwner();
+		//Transform* objTransform = obj->GetComponent<Transform>();
 
-		// 벽 충돌
-		if (nullptr != colObj->GetScript<WallScript>())
-		{
-			Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
-
-			Vector3 wallNormal = colTransform->Right();
-
-			Vector3 objVelocity = objRigidbody->GetVelocity();
-			Vector3 objPos = objTransform->GetPosition();
-
-			Vector3 projvec = wallNormal * objVelocity;
-			projvec *= wallNormal;
-
-			objVelocity -= projvec;
-
-			objPos -= objVelocity * Time::DeltaTime();
-			objTransform->SetPosition(objPos);
-		}
+		//// 벽 충돌
+		//if (nullptr != colObj->GetScript<WallScript>())
+		//{
+		//	Rigidbody* objRigidbody = obj->GetComponent<Rigidbody>();
+		//}
 	}
 
 	void ActionScript::OnCollisionExit(Collider2D* collider)
 	{
 	}
 
-	/// <summary>
-	/// owner rigidbody를 통한 이동
-	/// </summary>
+	/// <summary> limit velocity를 늘려서 최대 속도를 변경한다. 인자없을시 default값(40.0f)으로 설정됨. </summary>
+	/// <param name="velocity">최대속도</param>
+	void ActionScript::Velocity(const float velocity)
+	{
+		Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
+		mRigidbody->SetLimitVelocity(Vector3(velocity, limitVelocity.y, velocity));
+	}
+
+	/// <summary> owner rigidbody를 통한 이동 </summary>
 	/// <param name="dir">방향</param>
 	/// <param name="speed">속도</param>
 	void ActionScript::Move(const Vector3 dir, float speed)
@@ -222,36 +227,30 @@ namespace ya
 		}
 	}
 
-	/// <summary>
-	/// 공격
-	/// </summary>
-	void ActionScript::Attack()
+	void ActionScript::JumpDouble(float force)
 	{
+		if (mRigidbody == nullptr)
+		{
+			assert(mRigidbody != nullptr);
+			return;
+		}
+
+		mJumpTimer = 0.1f;
+		Jump(force);
+
+		mbJumpDouble = false;
+
 	}
 
-	/// <summary>
-	/// 막기
-	/// </summary>
-	void ActionScript::Deflect()
-	{
-	}
-
-	/// <summary>
-	/// 패링
-	/// </summary>
-	void ActionScript::Parrying()
-	{
-		// 체간 증가
-
-		// 패링 이펙트 발생
-	}
-	
-	void ActionScript::ForwardCheck()
+	bool ActionScript::ForwardCheck(Vector3 movement)
 	{
 		Vector3 position = mTransform->GetPosition();
 		Vector3 scale = mTransform->GetScale();
 		Vector3 colScale = mCollider->GetSize();
-		Vector3 velocity = mRigidbody->GetVelocity();
+		Vector3 velocity = movement;
+		Vector3 dir = velocity;
+		dir.Normalize();
+		float velocityLength = velocity.Length();
 
 		colScale *= scale;
 
@@ -263,7 +262,7 @@ namespace ya
 		Vector3 bottom = position;
 		bottom.y -= colScale.y * 0.5f;
 
-		Vector3 rayDirection = mTransform->Forward();
+		Vector3 rayDirection = dir;
 
 		std::vector<eLayerType> layers;
 		layers.push_back(eLayerType::Wall);
@@ -278,12 +277,23 @@ namespace ya
 			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
 			{
 				//mRigidbody->SetVelocity(Vector3::Zero);
+				if (!mbForwardBlocked)
+				{
+					mbJumpDouble = true;
+				}
+
 				mbForwardBlocked = true;
 			}
 			else
+				if (mbForwardBlocked)
+				{
+					mbJumpDouble = false;
+				}
+
 				mbForwardBlocked = false;
 		}
 
+		return false;
 	}
 
 	// 땅, 경사로 체크. 일단 가운데 레이만 사용함..
@@ -384,10 +394,10 @@ namespace ya
 					if (0.f < overPos)
 					{
 						correctionPos.y += overPos;
-						//correctionPos -= objPos;
 						mTransform->SetPosition(correctionPos);
 					}
 				}
+				break;
 			}
 		}
 
