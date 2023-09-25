@@ -11,6 +11,7 @@ namespace ya
 		: Resource(eResourceType::Mesh)
 		, mVBDesc{}
 		, mIndexInfos{}
+		, pVtxSysMem(nullptr)
 	{
 	}
 
@@ -21,8 +22,8 @@ namespace ya
 			delete mIndexInfos[i].pIdxSysMem;
 		} 
 
-		delete pVtxSysMem;
-
+		if (pVtxSysMem)
+			delete pVtxSysMem;
 	}
 
 	std::vector<std::shared_ptr<Mesh>> Mesh::CreateFromContainer(FbxLoader* loader)
@@ -204,8 +205,8 @@ namespace ya
 		if (!GetDevice()->CreateBuffer(&mVBDesc, &subData, mVertexBuffer.GetAddressOf()))
 			return false;
 
-		pVtxSysMem = new graphics::Vertex[count];
-		memcpy(pVtxSysMem, data, sizeof(graphics::Vertex) * count);
+		//pVtxSysMem = new graphics::Vertex[count];
+		//memcpy(pVtxSysMem, data, sizeof(graphics::Vertex) * count);
 
 		return true;
 	}

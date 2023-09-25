@@ -77,6 +77,8 @@ namespace ya
         float mAlertTime;
         float mAlertTimeChecker;
         Vector3 mPlayerLastPosition;
+
+        class NavMesh* mNavMesh;
 	};
 
 }

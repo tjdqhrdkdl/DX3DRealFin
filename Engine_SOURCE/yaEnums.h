@@ -42,6 +42,7 @@ namespace ya::enums
 		SpriteRenderer,
 		Animator,
 		BoneAnimator,
+		NavMesh,
 		ParticleSystem,
 		AudioListener,
 		AudioSource,

@@ -470,12 +470,12 @@ namespace ya
 				vecOffset.push_back(matrix);
 			}
 
+
+			mBoneOffset = new graphics::StructedBuffer();
+			mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
+			mBoneOffset->GetSize();
 			
 		}
-	
-		mBoneOffset = new graphics::StructedBuffer();
-		mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
-		mBoneOffset->GetSize();
 
 
 		fclose(file);

@@ -44,6 +44,8 @@
 #include "UICanvas_InGame.h"
 #include "MapObjects.h"
 
+#include "yaNavMeshTool.h"
+#include "yaNavMesh.h"
 
 namespace ya
 {
@@ -53,6 +55,7 @@ namespace ya
 	}
 	TitleScene::~TitleScene()
 	{
+		NavMeshTool::DestroyInst();
 	}
 	void TitleScene::Initialize()
 	{
@@ -68,9 +71,9 @@ namespace ya
 
 
 		Player* player = object::Instantiate<Player>(eLayerType::Player);
-		player->GetComponent<Transform>()->SetPosition(Vector3(-13.0f, 0.0f, -10.0f));
-		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-
+		player->GetComponent<Transform>()->SetPosition(Vector3(-5.0f, -8.0f, -20.0f));
+		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+		player->AddComponent<NavMesh>();
 		MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -94,7 +97,7 @@ namespace ya
 		//	UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
 		//	ui->SetName(L"UICanvasObj_InGame");
 		//}
-
+		//-8 , -34 / -5 -20 / -8.5
 		{
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
 			wall->SetName(L"wall");
@@ -182,7 +185,7 @@ namespace ya
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
 		}
-
+		
 
 		/*{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
@@ -248,10 +251,15 @@ namespace ya
 
 		{
 			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			NavMeshTool* m = NavMeshTool::GetInst();
+			m->SetMapMeshTr(obj->GetComponent<Transform>());
+			obj->GetComponent<Transform>()->SetRotation(Vector3(-90, 0, 0));
+			obj->GetComponent<Transform>()->SetPosition(Vector3(-200.000, 50.200, 120.0));
+			m->Init();
 		}
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		//object::Instantiate<Tenzen>(eLayerType::Monster);
+		object::Instantiate<Tenzen>(eLayerType::Monster);
 		Scene::Initialize();
 	}
 	

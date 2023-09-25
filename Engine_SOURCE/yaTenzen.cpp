@@ -94,7 +94,7 @@ namespace ya
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
 		tr->SetPosition(Vector3(0, 100, 0));
-		tr->SetScale(Vector3(10, 10, 10));
+		tr->SetScale(Vector3(1, 1, 1));
 		mTransform = tr;
 
 		//메시 데이터 트랜스폼
@@ -128,7 +128,7 @@ namespace ya
 		mCollider = AddComponent<Collider2D>();
 		mCollider->SetType(eColliderType::Box);
 		mCollider->SetSize(Vector3(1, 2, 0.5));
-		mCollider->SetCenter(Vector3(0, 10, 0));
+		mCollider->SetCenter(Vector3(0, 0, 0));
 
 		//리지드 바디 , 액션 스크립트
 		AddComponent<Rigidbody>();
@@ -264,6 +264,9 @@ namespace ya
 			{
 				dir.Normalize();
 				mActionScript->Move(dir, GetSpeed() / 3);
+
+				//mNavMesh->RenewPath(mPlayerLastPosition);
+				//mNavMesh->SetSpeed(GetSpeed() / 3);
 			}
 			
 
@@ -433,12 +436,21 @@ namespace ya
 		Vec3 theta = quater.ToEuler();
 
 		theta *= 180.f / XM_PI;
-		if (fabsf(theta.y) > 10)
+		if (fabsf(theta.y) > 1)
 			if (theta.y > 0)
-				mActionScript->Rotate(mTransform->Up(), GetSpeed() / 2);
+			{
+				if (theta.y > 5)
+					mActionScript->Rotate(mTransform->Up(), GetSpeed() / 2);
+				else
+					mActionScript->Rotate(mTransform->Up(), GetSpeed() / 10);
+			}
 			else
-				mActionScript->Rotate(-mTransform->Up(), GetSpeed() / 2);
-
+			{
+				if (theta.y < -5)
+					mActionScript->Rotate(-mTransform->Up(), GetSpeed() / 2);
+				else
+					mActionScript->Rotate(-mTransform->Up(), GetSpeed() / 10);
+			}
 	}
 	void Tenzen::DrawSwordEndEvent()
 	{
