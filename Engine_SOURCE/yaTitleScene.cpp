@@ -244,12 +244,12 @@ namespace ya
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
+		//CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
+		//CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::WallCheckCollision, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
+		//CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
 		{
 			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);

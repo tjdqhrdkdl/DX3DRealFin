@@ -36,14 +36,14 @@ namespace ya
 		mPlayer = dynamic_cast<Player*>(GetOwner());
 		mPlayerAnim = mPlayer->GetScript<PlayerMeshScript>();
 
-		GetJumpEvent() = [owner]() {
+		mRigidbody->GetJumpEvent() = [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			playerAnim->Play(L"a000_201030");
 			player->SetStateFlag(ePlayerState::Jump, true);
 		};
 
-		GetGroundEvent() = [owner]() {
+		mRigidbody->GetGroundEvent() = [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			playerAnim->Play(L"a000_201040");
@@ -80,7 +80,7 @@ namespace ya
 		if (Input::GetKeyDown(eKeyCode::SPACE))
 		{
 			mPlayer->SetStateFlag(ePlayerState::Jump, true);
-			SetJumping(true);
+			mRigidbody->SetJumping(true);
 			Jump();
 		}
 
