@@ -29,7 +29,7 @@ namespace ya
 		mScenes[(UINT)eSceneType::Tilte] = new TitleScene();
 		mScenes[(UINT)eSceneType::Tilte]->SetName(L"TitleScene");
 		mScenes[(UINT)eSceneType::Tilte]->SetThreadLoad(true);
-		mScenes[(UINT)eSceneType::Tilte]->GetThreadCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Tilte);
+		mScenes[(UINT)eSceneType::Tilte]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Tilte);
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
 		mScenes[(UINT)eSceneType::Play]->SetName(L"PlayScene");
@@ -43,27 +43,17 @@ namespace ya
 
 			if (scene->IsThreadLoad())
 			{
-				futures.emplace_back(ThreadPool::EnqueueJob([scene]() -> std::function<void()> {
-					printf("scene : %d \n", scene->GetSceneType());
+				ThreadPool::EnqueueJob([scene]() {
 					scene->Initialize();
-					return scene->GetThreadCallBack();
-				}));
+				});
 			}
 			else
 			{
 				scene->Initialize();
-				printf("result : %d \n", (UINT)scene->GetSceneType());
 			}
 		}
 
 		mActiveScene = mScenes[(UINT)eSceneType::Loading];
-
-		for (auto& f : futures)
-		{
-			std::function<void()> result = f.get();
-			result();
-		}
-
 	}
 
 	void SceneManager::Update()

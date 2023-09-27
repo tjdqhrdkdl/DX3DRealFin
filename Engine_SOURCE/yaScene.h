@@ -34,14 +34,14 @@ namespace ya
 		void SetThreadLoad(bool thread) { mbThreadLoad = thread; }
 		bool IsThreadLoad() { return mbThreadLoad; }
 
-		std::function<void()>& GetThreadCallBack() { return mThreadCallBack; }
+		std::function<void()>& GetCallBack() { return mInitCallBack; }
 
 	private:
 		std::vector<Layer> mLayers;
 		eSceneType mType;
 		Player* mPlayer;
 
-		bool mbThreadLoad;
-		std::function<void()> mThreadCallBack;
+		bool mbThreadLoad;						// 스레드로 로드할지 여부
+		std::function<void()> mInitCallBack;	// initialize 완료 후 callback
 	};
 }

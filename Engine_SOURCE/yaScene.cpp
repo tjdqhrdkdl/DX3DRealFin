@@ -6,7 +6,7 @@ namespace ya
 	Scene::Scene(eSceneType type)
 		: mType(type)
 		, mbThreadLoad(false)
-		, mThreadCallBack(nullptr)
+		, mInitCallBack(nullptr)
 		, mPlayer(nullptr)
 	{
 		mLayers.resize((UINT)eLayerType::End);
@@ -14,7 +14,6 @@ namespace ya
 
 	Scene::~Scene()
 	{
-
 	}
 
 	void Scene::Initialize()
@@ -23,6 +22,9 @@ namespace ya
 		{
 			layer.Initialize();
 		}
+		
+		if(mInitCallBack != nullptr)
+			mInitCallBack();
 	}
 	void Scene::Update()
 	{
