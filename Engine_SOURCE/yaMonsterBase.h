@@ -23,6 +23,20 @@ namespace ya
     class MonsterBase :
         public GameObject
     {
+    public:
+        enum SpecialAttack
+        {
+            None,
+            Kick,
+            Catch,
+            UpwardSlash,
+        };
+        struct Attack
+        {
+            float damage;
+            bool unGuardable;
+            SpecialAttack special;
+        };
 
     public:
         MonsterBase();
@@ -122,7 +136,7 @@ namespace ya
         void CreateDeathBlowMark();
 
         bool IsParrying() { return mbParrying; }
-
+        Attack GetAttackParams() { return mAttackParams; }
     protected:
 
         std::shared_ptr<MeshData>   mMeshData;
@@ -131,7 +145,7 @@ namespace ya
         ActionScript* mActionScript;
         GameObject* mDeathBlowMark;
         bool                        mbParrying;
-
+        Attack                      mAttackParams;
 
     private:
 

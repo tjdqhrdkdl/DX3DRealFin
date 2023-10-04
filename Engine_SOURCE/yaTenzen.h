@@ -28,11 +28,15 @@ namespace ya
             TenzenState_Attack =         0x00000010,
             TenzenState_Defense =        0x00000020,
             TenzenState_Guard =          0x00000040,
-            TenzenState_Trace =          0x00000080,
-            TenzenState_Move =           0x00000100,
-            TenzenState_OnHit =          0x00000200,
-            TenzenState_LookAt =         0x00000400,
-            TenzenState_Dead =           0x00000800,
+            TenzenState_GuardSuccess =   0x00000080,
+            TenzenState_GuardLeft =      0x00000100,
+            TenzenState_Trace =          0x00000200,
+            TenzenState_Move =           0x00000400,
+            TenzenState_OnHit =          0x00000800,
+            TenzenState_OnHitFront =     0x00001000,
+            TenzenState_SuperArmor =     0x00002000,
+            TenzenState_LookAt =         0x00004000,
+            TenzenState_Dead =           0x00008000,
         };
     public:
         Tenzen();
@@ -49,6 +53,9 @@ namespace ya
         void Attack();
         void Defense();
         void Trace();
+        void Guard();
+        void OnHit();
+
         void Move();
         void LookAtPlayer();
         
@@ -66,6 +73,9 @@ namespace ya
         void AttackEndEvent();
         void TraceEndEvent();
 
+        void OnCollisionEnter(Collider2D* collider);
+        void OnCollisionStay(Collider2D* collider);
+        void OnCollisionExit(Collider2D* collider);
 
     private:
         std::shared_ptr<MeshData> mMeshData;
@@ -87,6 +97,7 @@ namespace ya
         Vector3 mPlayerLastPosition;
 
         Vector3 mMoveDir;
+        bool mbAnimReset;
 	};
 
 }
