@@ -264,6 +264,9 @@
       <Filter>Contents\UI</Filter>
     </ClCompile>
     <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="yaPlayerProjectileScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
     <ClCompile Include="CSVEditor.cpp">
       <Filter>Engine\Common</Filter>
     </ClCompile>
@@ -476,12 +479,6 @@
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
-    <ClInclude Include="yaSekiroEnums.h">
-      <Filter>Contents\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="yaSekiroCommon.h">
-      <Filter>Contents\Common</Filter>
-    </ClInclude>
     <ClInclude Include="yaMonsterScript.h">
       <Filter>Contents\Monster\Script</Filter>
     </ClInclude>
@@ -546,6 +543,14 @@
     <ClInclude Include="yaRedOgre.h">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClInclude>
+    <ClInclude Include="MapObjects.h" />
+    <ClInclude Include="UICanvasObj.h" />
+    <ClInclude Include="UICanvas_InGame.h" />
+    <ClInclude Include="UIHPBarScript.h" />
+    <ClInclude Include="UINames.h" />
+    <ClInclude Include="yaPlayerProjectileScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
     <ClInclude Include="yaWallCheckObject.h">
       <Filter>Contents\Contents</Filter>
     </ClInclude>
@@ -574,6 +579,9 @@
     <ClInclude Include="ThreadPool.h">
       <Filter>Engine\Common</Filter>
     </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Contents\Common</Filter>
+	</ClInclude>
     <ClInclude Include="yaBoundarySphere.h">
       <Filter>Engine\Component\BoundarySphere</Filter>
     </ClInclude>
@@ -599,9 +607,6 @@
     </Filter>
     <Filter Include="Contents\Ground">
       <UniqueIdentifier>{fd830d37-e4e7-4a1f-b161-8764418e152f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Contents\Player">
-      <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Contents\State">
       <UniqueIdentifier>{62a651e5-4cd6-4a6f-918f-c2ff7ed4f805}</UniqueIdentifier>
@@ -762,6 +767,9 @@
     <Filter Include="Contents\UI">
       <UniqueIdentifier>{89ccb457-4d9f-4146-b05b-69c31a195ef3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Player">
+      <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\Component\BoundarySphere">
       <UniqueIdentifier>{5d0c93a7-566b-4b19-aad4-f2082c5feae6}</UniqueIdentifier>
     </Filter>
@@ -770,5 +778,10 @@
     <None Include="yaMath.inl">
       <Filter>Engine\Common\Math</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="loadanimation.txt">
+      <Filter>Contents\Player</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -31,11 +31,14 @@ namespace ya
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
 		, mCollider(nullptr)
-		, mSpeed(100.0f)
+		, mSpeed(400.0f)
 		, mDirection(Vector3::Zero)
 		, mRotateDirection(Vector3::Zero)
 		, mJumpTimer(0.0f)
 		, mJumpForce(0.0f)
+		, mJumpEvent(nullptr)
+		, mGroundEvent(nullptr)
+		, mbJumpDouble(false)
 	{
 	}
 
@@ -77,6 +80,7 @@ namespace ya
  			mJumpTimer -= Time::DeltaTime();
 			mRigidbody->AddForce(Vector3(0.0f, mJumpForce, 0.0f));
 		}
+
 	}
 
 	void ActionScript::FixedUpdate()
@@ -105,9 +109,15 @@ namespace ya
 	{
 	}
 
-	/// <summary>
-	/// owner rigidbody를 통한 이동
-	/// </summary>
+	/// <summary> limit velocity를 늘려서 최대 속도를 변경한다. 인자없을시 default값(40.0f)으로 설정됨. </summary>
+	/// <param name="velocity">최대속도</param>
+	void ActionScript::Velocity(const float velocity)
+	{
+		Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
+		mRigidbody->SetLimitVelocity(Vector3(velocity, limitVelocity.y, velocity));
+	}
+
+	/// <summary> owner rigidbody를 통한 이동 </summary>
 	/// <param name="dir">방향</param>
 	/// <param name="speed">속도</param>
 	void ActionScript::Move(const Vector3 dir, float speed)
@@ -186,30 +196,21 @@ namespace ya
 		}
 	}
 
-	/// <summary>
-	/// 공격
-	/// </summary>
-	void ActionScript::Attack()
+	void ActionScript::JumpDouble(float force)
 	{
+		if (mRigidbody == nullptr)
+		{
+			assert(mRigidbody != nullptr);
+			return;
+		}
+
+		mJumpTimer = 0.1f;
+		Jump(force);
+
+		mbJumpDouble = false;
+
 	}
 
-	/// <summary>
-	/// 막기
-	/// </summary>
-	void ActionScript::Deflect()
-	{
-	}
-
-	/// <summary>
-	/// 패링
-	/// </summary>
-	void ActionScript::Parrying()
-	{
-		// 체간 증가
-
-		// 패링 이펙트 발생
-	}
-	
 	bool ActionScript::ForwardCheck(Vector3 movement)
 	{
 		Vector3 position = mTransform->GetPosition();
@@ -246,12 +247,28 @@ namespace ya
 
 		for (int i = 0; i < 3; ++i)
 		{
-			if (velocity.Length() >= ForwardHit[i].length && ForwardHit[i].isHit)
-				return true;
+			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
+			{
+				//mRigidbody->SetVelocity(Vector3::Zero);
+				if (!mbForwardBlocked)
+				{
+					mbJumpDouble = true;
+				}
 
-			return false;
+				mbForwardBlocked = true;
+			}
+			else
+				if (mbForwardBlocked)
+				{
+					mbJumpDouble = false;
+				}
+
+				mbForwardBlocked = false;
 		}
+
+		return false;
 	}
+
 
 	//// 땅, 경사로 체크. 일단 가운데 레이만 사용함..
 	//void ActionScript::CheckGround()

@@ -6,7 +6,7 @@ namespace ya
 	{
 		mSituation = enums::eSituation::None;
 		mHp = 0.f;
-		mMaxHp = 0.f;
+		mHpMax = 0.f;
 		mSpeed = 0.f;
 		mDeathBlowCount = 0.f;
 		mMaxDeathBlowCount = 0.f;
@@ -19,6 +19,22 @@ namespace ya
 
 	State::~State()
 	{
+	}
+
+	void State::AddHp(float hp)
+	{
+		mHp += hp; 
+
+		if (mHp < 0)
+			mbDeath = true;
+	}
+
+	void State::AddPosture(float posture)
+	{
+		mPosture += posture;
+
+		if (mPosture < 0)
+			mbDeathBlow = true;
 	}
 
 	//void State::SetHp(float hp)
