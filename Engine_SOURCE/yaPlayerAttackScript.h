@@ -57,6 +57,8 @@ namespace ya
 		float mTimerMax[(UINT)eAttackState::End];
 		bool mbKeyInput;
 
+		float mblockTime;
+
 
 	};
 }

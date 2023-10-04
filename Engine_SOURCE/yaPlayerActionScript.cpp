@@ -791,7 +791,7 @@ namespace ya
 
 		if(mPlayer->IsStateFlag(ePlayerState::Hang))
 		{
-			if (IsGrounded())
+			if (mRigidbody->IsGrounded())
 			{
 				mPlayer->SetStateFlag(ePlayerState::Hang, false);
 				mPlayerAnim->Play(L"a000_000000");
@@ -836,7 +836,7 @@ namespace ya
 	{
 		if (Input::GetKeyDown(eKeyCode::SPACE))
 		{
-			SetJumping(true);
+			mRigidbody->SetJumping(true);
 			Jump();
 
 			if (mbForwardBlocked && !mbJumpDouble)

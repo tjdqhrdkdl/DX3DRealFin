@@ -3,7 +3,7 @@
 
 using namespace ya::math;
 namespace ya
-{	/// 물리
+{	/// 물리 
 
 	class WallCheckObject;
 

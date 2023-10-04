@@ -22,7 +22,7 @@ extern ya::Application application;
 
 namespace ya
 {
-	const float defaultJumpForce = 450.0f;
+	const float defaultJumpForce = 400.0f;
 
 	ActionScript::ActionScript()
 		: Script()
@@ -64,11 +64,11 @@ namespace ya
 		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
 		Transform* checkTransform = mCheck->GetComponent<Transform>();
 		
-		checkTransform->SetScale(Vector3(5.f, 5.f ,5.f));
+		checkTransform->SetScale(Vector3(1.f, 1.f ,1.f));
 
 		checkCol->SetType(eColliderType::Box);
-		checkCol->SetCenter(Vector3(0.f, 0.f, 0.f));
-		checkCol->SetSize(Vector3(1.0, 1.0f, 1.0f));
+		checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
+		checkCol->SetSize(Vector3(1.0, 3.0f, 1.0f));
 	}
 
 	void ActionScript::Update()
@@ -192,7 +192,7 @@ namespace ya
 
 		if (mRigidbody->IsGrounded())
 		{
-			mJumpTimer = 0.1f;
+			mJumpTimer = 0.15f;
 		}
 	}
 
