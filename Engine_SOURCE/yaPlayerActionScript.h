@@ -23,6 +23,9 @@ namespace ya
 		virtual void Update() override;
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
+
+	public:
+		void AdjustState();
 		
 	private:
 		void Idle();
@@ -49,6 +52,10 @@ namespace ya
 
 		float mHitTimer;
 		float mHitTimerMax;
+
+		bool mbTurn;
+		float mTurnTimer;
+		float mTurnTimerMax;
 
 		bool mbJumpDouble;
 	};
