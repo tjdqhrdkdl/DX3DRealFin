@@ -3,7 +3,7 @@
 
 using namespace ya::math;
 namespace ya
-{	/// 물리
+{	/// 물리 
 
 	class WallCheckObject;
 
@@ -32,13 +32,27 @@ namespace ya
 		Vector3 GetLimitVelocity() { return mLimitVelocity; }
 		void SetLimitVelocity(Vector3 limit) { mLimitVelocity = limit; }
 
-		void SetRotateDirection(Matrix dir) { mRotateDirection = dir; }
+		void SetRightWallDir(Vector3 dir) { mRightWallDir = dir; }
+
+	public:
+		void SetJumping(bool jumping) { mbJumping = jumping; }
+		bool IsJumping() { return mbJumping; }
+		void SetGrounded(bool grounded) { mbGrounded = grounded; }
+		bool IsGrounded() { return mbGrounded; }
+		void SetForwardBlocked(bool forward) { mbForwardBlocked = forward; }
+		bool IsForwardBlocked() { return mbForwardBlocked; }
+
+		std::function<void()>& GetJumpEvent() { return mJumpEvent; }
+		std::function<void()>& GetGroundEvent() { return mGroundEvent; }
 
 	private:
 		Vector3 GetForce() { return mForce; }
 		void SetForce(Vector3 force) { mForce = force; }
+		void CheckGround();
 
 	private:
+		class Transform* mTransform;
+		class Collider2D* mCollider;
 		class ActionScript* mActionScript;
 		friend class WallCheckScript;
 
@@ -53,5 +67,25 @@ namespace ya
 		Vector3 mGravity;	/// 중력 크기
 		Vector3 mLimitVelocity;	/// 떨어지는 속도 한계값
 		Matrix mRotateDirection; /// 경사 회전 행렬
+
+		Vector3 mRightWallDir;
+
+		Vector3 mGroundNormal;
+		Vector3 mGroundCross;
+		float mGroundDistance;
+		float mGroundSlopeAngle;
+		float mForwardSlopeAngle;
+
+		bool mbMoving;
+		bool mbRunning;
+		bool mbJumping;
+		bool mbGrounded;
+		bool mbForwardBlocked;
+
+		/// <summary> 점프 상태가 시작될때 발생하는 이벤트 </summary>
+		std::function<void()> mJumpEvent;
+
+		/// <summary> 점프가 끝나고 착지한 상태가 될 때 발생하는 이벤트 </summary>
+		std::function<void()> mGroundEvent;
 	};
 }

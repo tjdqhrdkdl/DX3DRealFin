@@ -285,6 +285,9 @@
     <ClCompile Include="yaTenzenCollisionScript.cpp">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClCompile>
+    <ClCompile Include="yaTenzenSwordScript.cpp">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -592,6 +595,9 @@
       <Filter>Engine\Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="yaTenzenCollisionScript.h">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTenzenSwordScript.h">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClInclude>
   </ItemGroup>

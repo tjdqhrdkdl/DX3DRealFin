@@ -69,7 +69,7 @@ namespace ya
 
 		Player* player = object::Instantiate<Player>(eLayerType::Player);
 		player->GetComponent<Transform>()->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
-		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -249,12 +249,12 @@ namespace ya
 			CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::MonsterProjectile, true);
 			CollisionManager::CollisionLayerCheck(eLayerType::PlayerProjectile, eLayerType::MonsterProjectile, true);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
+		//CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
+		//CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::WallCheckCollision, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
+		//CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
 		{
 			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
@@ -271,7 +271,7 @@ namespace ya
 		}
 
 		{
-			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
 		}
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");

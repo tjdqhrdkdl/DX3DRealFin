@@ -33,11 +33,13 @@ namespace ya
                 int frame = animator->GetCurrentFrameIdx();
                 if (clip >= 0 && frame >= 0)
                 {
+
                     bool active = false;
                     for (size_t i = 0; i < mAnimationColActiveFrame[clip].size(); i++)
                     {
                         if (mAnimationColActiveFrame[clip][i].start< frame && mAnimationColActiveFrame[clip][i].fin > frame)
                             active = true;
+
                     }
                     if (active)
                     {
@@ -53,7 +55,11 @@ namespace ya
                         tr->SetRotation(rot * 180 / XM_PI);
                     }
                     else
+                    {
+                        if (mHitObjects.size() > 0)
+                            mHitObjects.clear();
                         col->Active(false);
+                    }
 
                 }
             }
@@ -69,8 +75,9 @@ namespace ya
         GameObject::Render();
     }
 
-    void BoneCollider::SetMeshAndBone(std::shared_ptr<MeshData> meshData, std::wstring bone)
+    void BoneCollider::SetMeshAndBone(std::shared_ptr<MeshData> meshData, std::wstring bone, GameObject* owner)
     {
+        mOwner = owner;
         mMeshData = meshData;
         MeshObject* meshObject = mMeshData->GetMeshObject();
         bool noBoneNameAssert = true;
@@ -127,5 +134,14 @@ namespace ya
         if (idx == -1)
             assert(NULL);
         mAnimationColActiveFrame[idx].push_back({start,finish});
+    }
+    bool BoneCollider::CheckHitObjects(GameObject* obj)
+    {
+        for (size_t i = 0; i < mHitObjects.size(); i++)
+        {
+            if (obj == mHitObjects[i])
+                return true;
+        }
+        return false;
     }
 }

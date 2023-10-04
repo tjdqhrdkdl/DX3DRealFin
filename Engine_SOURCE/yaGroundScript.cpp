@@ -25,7 +25,6 @@ namespace ya
 
 	void GroundScript::Update()
 	{
-		int a = 0;
 	}
 
 	void GroundScript::Render()
@@ -34,35 +33,14 @@ namespace ya
 
 	void GroundScript::OnCollisionEnter(Collider2D* collider)
 	{
-		GameObject* obj = collider->GetOwner();
-		Rigidbody* rigidbody = obj->GetComponent<Rigidbody>();
-
-		if(rigidbody != nullptr)
-		{
-			//rigidbody->SetGround(true);
-		}
 	}
 
 	void GroundScript::OnCollisionStay(Collider2D* collider)
 	{
-		GameObject* obj = collider->GetOwner();
-		Rigidbody* rigidbody = obj->GetComponent<Rigidbody>();
-
-		if (rigidbody != nullptr)
-		{
-			//rigidbody->SetGround(true);
-		}
 	}
 
 	void GroundScript::OnCollisionExit(Collider2D* collider)
 	{
-		GameObject* obj = collider->GetOwner();
-		Rigidbody* rigidbody = obj->GetComponent<Rigidbody>();
-
-		if (rigidbody != nullptr)
-		{
-			//rigidbody->SetGround(false);
-		}
 	}
 
 	void GroundScript::Start()
