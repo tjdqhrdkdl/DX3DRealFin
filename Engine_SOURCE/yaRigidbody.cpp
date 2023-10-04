@@ -34,7 +34,7 @@ namespace ya
 		, mGroundEvent(nullptr)
 	{
 		mGravity = Vector3(0.0f, -160.0f, 0.0f);
-		mLimitVelocity = Vector3(18.0f, 30.0f, 18.0f);
+		mLimitVelocity = Vector3(18.0f, 28.0f, 18.0f);
 	}
 
 	Rigidbody::~Rigidbody()
@@ -264,8 +264,8 @@ namespace ya
 					// jumpTimer가 0.0f 보다 크면 jump를 시작한 것이므로 jump 상태를 false로 바꾸지 않는다.
 					mbJumping = false;
 
-					//if (mGroundEvent != nullptr)
-					//	mGroundEvent();
+					if (mGroundEvent != nullptr)
+						mGroundEvent();
 				}
 
 				mbGrounded = true;
