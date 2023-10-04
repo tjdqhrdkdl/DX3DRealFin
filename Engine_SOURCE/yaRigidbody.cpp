@@ -301,7 +301,6 @@ namespace ya
 			Vector3 axis = mGroundCross;
 
 			mRotateDirection = Matrix::CreateFromAxisAngle(axis, -mGroundSlopeAngle);
-
 		}
 	}
 }
