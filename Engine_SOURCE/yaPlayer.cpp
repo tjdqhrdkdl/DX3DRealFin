@@ -3,11 +3,11 @@
 #include "yaRigidbody.h"
 
 #include "yaPlayerScript.h"
-#include "yaPlayerActionScript.h"
-#include "yaPlayerAttackScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaPlayerMeshScript.h"
+#include "yaPlayerActionScript.h"
+#include "yaPlayerAttackScript.h"
 #include "yaPlayerProjectileScript.h"
 
 #include "yaBoneCollider.h"
@@ -29,8 +29,8 @@ namespace ya
 		Collider2D* col = AddComponent<Collider2D>();
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
-		col->SetCenter(Vector3(0.f, 5.4f, 0.f));
-		col->SetSize(Vector3(0.6, 3.2f, 0.6f));
+		col->SetCenter(Vector3(0.f, 0.85f, 0.f));
+		col->SetSize(Vector3(0.3f, 2.7f, 0.3f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
@@ -42,7 +42,7 @@ namespace ya
 
 		PlayerMeshScript* meshScript = AddComponent<PlayerMeshScript>();	// 메쉬, 애니메이션이므로 먼저 load
 
-		std::shared_ptr<MeshData> weaponMeshData = meshScript->FindMeshData(L"Arm");
+		std::shared_ptr<MeshData> weaponMeshData = meshScript->FindMeshData(ARM);
 		if (weaponMeshData != nullptr)
 		{
 			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile);
@@ -59,6 +59,8 @@ namespace ya
 
 	Player::~Player()
 	{
+		delete mState;
+		mState = nullptr;
 	}
 
 	void Player::Initialize()

@@ -23,6 +23,9 @@ namespace ya
 		, mDashSpeed(300.0f)
 		, mDashTimer(0.0f)
 		, mHitTimer(1.0f)
+		, mbTurn(false)
+		, mTurnTimer(0.0f)
+		, mTurnTimerMax(0.4f)
 		, mFrontTheta(10.0f)
 		, mDashTimerMax(0.2f)
 		, mbJumpDouble(false)
@@ -46,45 +49,41 @@ namespace ya
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 
 			playerAnim->Play(L"a000_200000");
-			//playerAnim->Play(L"a000_201030");
 			player->SetStateFlag(ePlayerState::Jump, true);
 		};
 
 		mRigidbody->GetGroundEvent() = [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
-			playerAnim->Play(L"a000_201040");
 			player->SetStateFlag(ePlayerState::Jump, false);
+
+			if (player->IsStateFlag(ePlayerState::Walk))
+				playerAnim->Play(L"a000_000500");
+			else
+				playerAnim->Play(L"a000_201040");
 		};
 
-		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Jump, [owner]() {
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
-			player->SetStateFlag(ePlayerState::Idle, false);
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity(40.0f);
 			player->SetStateFlag(ePlayerState::Walk, false);
 		}));
-		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Jump, [owner]() {
+
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
-			player->SetStateFlag(ePlayerState::Idle, true);
-			player->SetStateFlag(ePlayerState::Walk, true);
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity();
 		}));
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
-			/*BoneCollider* waeponCollider = player->GetWeaponCollider();
-			Transform* weaponColliderTr = waeponCollider->GetComponent<Transform>();
-			Vector3 scale = weaponColliderTr->GetScale();
-			waeponCollider->SetScale(Vector3(1.2f, 0.2f, 1.2f));*/
-
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(30.0f);
-			
+			action->Velocity(10.0f);
 		}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
-			/*BoneCollider* waeponCollider = player->GetWeaponCollider();
-			waeponCollider->SetScale(Vector3(1.6f, 0.2f, 0.2f));*/
-
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity();
 		}));
@@ -92,7 +91,7 @@ namespace ya
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(20.0f);
+			action->Velocity(5.0f);
 		}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
@@ -108,11 +107,14 @@ namespace ya
 		{
 			Idle();
 			Walk();
-			Sprint();
-			PlayerJump();
-			Crouch();
-			Walk();
-			Hang();
+
+			if (!mPlayer->IsStateFlag(ePlayerState::Attack))
+			{
+				Sprint();
+				PlayerJump();
+				Crouch();
+				Hang();
+			}
 		}
 
 		Hit();
@@ -129,6 +131,36 @@ namespace ya
 	void PlayerActionScript::Render()
 	{
 		ActionScript::Render();
+	}
+
+	void PlayerActionScript::AdjustState()
+	{
+		if (Input::GetKey(eKeyCode::W) || Input::GetKey(eKeyCode::A) || Input::GetKey(eKeyCode::S) || Input::GetKey(eKeyCode::D))
+			mPlayer->SetStateFlag(ePlayerState::Walk, true);
+
+		GameObject* camera = mPlayer->GetCamera();
+		CameraScript* cameraScript = camera->GetScript<CameraScript>();
+		bool bLockOn = cameraScript->IsLockOn();
+
+		if (mPlayer->IsStateFlag(ePlayerState::Walk))
+		{
+			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
+			{
+				mPlayerAnim->Play(L"a000_005000");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a000_000500");
+			}
+			else
+			{
+				mPlayerAnim->Play(L"a000_000500");
+			}
+		}
+		else
+		{
+			mPlayerAnim->Play(L"a000_000000");
+		}
 	}
 
 	void PlayerActionScript::Idle()
@@ -152,6 +184,8 @@ namespace ya
 		CameraScript* cameraScript = camera->GetScript<CameraScript>();
 		Transform* cameraTr = camera->GetComponent<Transform>();
 		Vector3 cameraPos = cameraTr->GetPosition();
+		Vector3 cameraForward = cameraTr->Forward();
+		Vector3 cameraRight = cameraTr->Right();
 		bool bLockOn = cameraScript->IsLockOn();
 
 		Vector3 theta = Vector3::Zero;
@@ -182,22 +216,9 @@ namespace ya
 			Quaternion quater = Quaternion::FromToRotation(dir, Vector3(cameraPos.x - pos.x, pos.y, cameraPos.z - pos.z));
 			Vector3 quaterToEuler = quater.ToEuler();
 			theta = quaterToEuler * 180.0f / XM_PI;
-		}
 
-		if (mbRotate)
-		{
-			if (abs(theta.y) < mFrontTheta)
-			{	// 회전 종료. 진행하려는 방향과 player의 forward가 비슷해지면 회전이 끝난다.
-				mbRotate = false;
-				mTransform->SetRotation(Vector3(0.0f, rot.y + theta.y, 0.0f));
-			}
-			else
-			{	// 진행하려는 방향과 player의 forward가 비슷해질 때 까지 회전한다. theta 각에 따라 회전 방향을 결정한다.
-				if (theta.y > 0.0f)
-					Rotate(Vector3(0.0f, 0.1f, 0.0f));
-				else
-					Rotate(Vector3(0.0f, -0.1f, 0.0f));
-			}
+			if(abs(theta.y) > mFrontTheta)
+				mbTurn = true;
 		}
 
 		if (Input::GetKeyDown(eKeyCode::W))
@@ -217,7 +238,22 @@ namespace ya
 			}
 			else
 			{
-				mPlayerAnim->Play(L"a000_000500");
+				Vector3 cameraDir = Vector3(cameraForward.x, 0.0f, cameraForward.z);
+				cameraDir.Normalize();
+				float faceTheta = mTransform->Forward().Dot(cameraDir);
+				faceTheta = acos(faceTheta);
+				faceTheta *= 180.0f / XM_PI;
+
+				if (faceTheta > 90.0f)
+					mPlayerAnim->Play(L"a000_000012");
+				else if (faceTheta < -90.0f)
+					mPlayerAnim->Play(L"a000_000013");
+				else if (faceTheta > 30.0f)
+					mPlayerAnim->Play(L"a000_000010");
+				else if (faceTheta < -30.0f)
+					mPlayerAnim->Play(L"a000_000011");
+				else
+					mPlayerAnim->Play(L"a000_000400");
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::A))
@@ -226,7 +262,11 @@ namespace ya
 
 			if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
-				mPlayerAnim->Play(L"a050_002200");
+				if (bLockOn)
+					mPlayerAnim->Play(L"a050_002200");
+				else
+					mPlayerAnim->Play(L"a050_002202");
+
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
@@ -243,14 +283,26 @@ namespace ya
 			{
 				if (bLockOn)
 				{
-					mPlayerAnim->Play(L"a000_000503");
+					mPlayerAnim->Play(L"a000_000403");
 				}
 				else
 				{
-					if (abs(theta.y) < mFrontTheta)
-						mPlayerAnim->Play(L"a000_000500");
-					else
+					Vector3 cameraDir = Vector3(-cameraRight.x, 0.0f, -cameraRight.z);
+					cameraDir.Normalize();
+					float faceTheta = mTransform->Forward().Dot(cameraDir);
+					faceTheta = acos(faceTheta);
+					faceTheta *= 180.0f / XM_PI;
+
+					if (faceTheta > 90.0f)
+						mPlayerAnim->Play(L"a000_000012");
+					else if (faceTheta < -90.0f)
+						mPlayerAnim->Play(L"a000_000013");
+					else if (faceTheta > 30.0f)
 						mPlayerAnim->Play(L"a000_000010");
+					else if (faceTheta < -30.0f)
+						mPlayerAnim->Play(L"a000_000011");
+					else
+						mPlayerAnim->Play(L"a000_000400");
 				}
 				
 			}
@@ -261,7 +313,10 @@ namespace ya
 
 			if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
-				mPlayerAnim->Play(L"a050_002200");
+				if (bLockOn)
+					mPlayerAnim->Play(L"a050_002200");
+				else
+					mPlayerAnim->Play(L"a050_002201");
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
@@ -278,14 +333,26 @@ namespace ya
 			{
 				if (bLockOn)
 				{
-					mPlayerAnim->Play(L"a000_000501");
+					mPlayerAnim->Play(L"a000_000401");
 				}
 				else
 				{
-					if (abs(theta.y) < mFrontTheta)
-						mPlayerAnim->Play(L"a000_000500");
-					else
+					Vector3 cameraDir = Vector3(cameraForward.x, 0.0f, cameraForward.z);
+					cameraDir.Normalize();
+					float faceTheta = mTransform->Forward().Dot(cameraDir);
+					faceTheta = acos(faceTheta);
+					faceTheta *= 180.0f / XM_PI;
+
+					if (faceTheta > 90.0f)
+						mPlayerAnim->Play(L"a000_000012");
+					else if (faceTheta < -90.0f)
+						mPlayerAnim->Play(L"a000_000013");
+					else if (faceTheta > 30.0f)
+						mPlayerAnim->Play(L"a000_000010");
+					else if (faceTheta < -30.0f)
 						mPlayerAnim->Play(L"a000_000011");
+					else
+						mPlayerAnim->Play(L"a000_000400");
 				}
 			}
 		}
@@ -295,7 +362,10 @@ namespace ya
 
 			if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
-				mPlayerAnim->Play(L"a050_002200");
+				if (bLockOn)
+					mPlayerAnim->Play(L"a050_002200");
+				else
+					mPlayerAnim->Play(L"a050_002203");
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
@@ -312,110 +382,277 @@ namespace ya
 			{
 				if (bLockOn)
 				{
-					mPlayerAnim->Play(L"a000_000502");
+					mPlayerAnim->Play(L"a000_000402");
 				}
 				else
 				{
-					if (abs(theta.y) < mFrontTheta)
-						mPlayerAnim->Play(L"a000_000500");
-					else
+					Vector3 cameraDir = Vector3(cameraRight.x, 0.0f, cameraRight.z);
+					cameraDir.Normalize();
+					float faceTheta = mTransform->Forward().Dot(cameraDir);
+					faceTheta = acos(faceTheta);
+					faceTheta *= 180.0f / XM_PI;
+
+					if (faceTheta > 90.0f)
 						mPlayerAnim->Play(L"a000_000012");
+					else if (faceTheta < -90.0f)
+						mPlayerAnim->Play(L"a000_000013");
+					else if (faceTheta > 30.0f)
+						mPlayerAnim->Play(L"a000_000010");
+					else if (faceTheta < -30.0f)
+						mPlayerAnim->Play(L"a000_000011");
+					else
+						mPlayerAnim->Play(L"a000_000400");
 				}
 			}
 		}
 
-		if (Input::GetKey(eKeyCode::W))
+		if (!mPlayer->IsStateFlag(ePlayerState::Attack))
 		{
-			if (bLockOn)
+			if (Input::GetKey(eKeyCode::W))
 			{
-				Move(mTransform->Forward());
-			}
-			else
-			{
-				if (abs(theta.y) > mFrontTheta)
-				{	// 진행하려는 방향과 각도 차이가 날때 회전시킨다.
-					mbRotate = true;
+				if (bLockOn)
+				{
+					Move(mTransform->Forward());
 				}
 				else
-				{	// 진행하려는 방향과 각도 차이가 없으면 player의 forward 방향으로 이동시킨다.
-					if (mbDash)
-						Move(mTransform->Forward(), mDashSpeed);
+				{
+					if (abs(theta.y) > mFrontTheta)
+					{	// 진행하려는 방향과 각도 차이가 날때 회전시킨다.
+						mbRotate = true;
+					}
 					else
-						Move(mTransform->Forward());
-				}
+					{	// 진행하려는 방향과 각도 차이가 없으면 player의 forward 방향으로 이동시킨다.
+						if (mbDash)
+							Move(mTransform->Forward(), mDashSpeed);
+						else
+							Move(mTransform->Forward());
+					}
 
-				mLastDir = eDirection::Forward;
+					mLastDir = eDirection::Forward;
+				}
+			}
+
+			if (Input::GetKey(eKeyCode::S))
+			{
+				if (bLockOn)
+				{
+					Move(-mTransform->Forward());
+				}
+				else
+				{
+					if (abs(theta.y) > mFrontTheta)
+					{
+						mbRotate = true;
+					}
+					else
+					{
+						if (mbDash)
+							Move(mTransform->Forward(), mDashSpeed);
+						else
+							Move(mTransform->Forward());
+					}
+
+					mLastDir = eDirection::Back;
+				}
+			}
+
+			if (Input::GetKey(eKeyCode::D))
+			{
+				if (bLockOn)
+				{
+					Move(mTransform->Right());
+				}
+				else
+				{
+					mLastDir = eDirection::Right;
+
+					if (abs(theta.y) > mFrontTheta)
+					{
+						mbRotate = true;
+					}
+					else
+					{
+						if (mbDash)
+							Move(mTransform->Forward(), mDashSpeed);
+						else
+							Move(mTransform->Forward());
+					}
+				}
+			}
+			if (Input::GetKey(eKeyCode::A))
+			{
+				if (bLockOn)
+				{
+					Move(-mTransform->Right());
+				}
+				else
+				{
+					mLastDir = eDirection::Left;
+
+					if (abs(theta.y) > mFrontTheta)
+					{
+						mbRotate = true;
+					}
+					else
+					{
+						if (mbDash)
+							Move(mTransform->Forward(), mDashSpeed);
+						else
+							Move(mTransform->Forward());
+					}
+				}
 			}
 		}
 
-		if (Input::GetKey(eKeyCode::S))
+		if (Input::GetKeyUp(eKeyCode::W))
 		{
-			if (bLockOn)
+			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
-				Move(-mTransform->Forward());
+				mPlayerAnim->Play(L"a000_005300");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002000");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
+			{
+				mPlayerAnim->Play(L"a000_001510");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Walk))
+			{
+				mPlayerAnim->Play(L"a000_000600");
 			}
 			else
 			{
-				if (abs(theta.y) > mFrontTheta)
-				{
-					mbRotate = true;
-				}
+				mPlayerAnim->Play(L"a000_000000");
+			}
+		}
+		if (Input::GetKeyUp(eKeyCode::A))
+		{
+			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_005302");
 				else
-				{
-					if (mbDash)
-						Move(mTransform->Forward(), mDashSpeed);
-					else
-						Move(mTransform->Forward());
-				}
-
-				mLastDir = eDirection::Back;
+					mPlayerAnim->Play(L"a000_005300");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002000");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_001511");
+				else
+					mPlayerAnim->Play(L"a000_001510");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Walk))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_000602");
+				else
+					mPlayerAnim->Play(L"a000_000600");
+			}
+			else
+			{
+				mPlayerAnim->Play(L"a000_000000");
+			}
+		}
+		if (Input::GetKeyUp(eKeyCode::S))
+		{
+			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_005301");
+				else
+					mPlayerAnim->Play(L"a000_005300");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002000");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_001510");
+				else
+					mPlayerAnim->Play(L"a000_001510");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Walk))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_000601");
+				else
+					mPlayerAnim->Play(L"a000_000600");
+			}
+			else
+			{
+				mPlayerAnim->Play(L"a000_000000");
+			}
+		}
+		if (Input::GetKeyUp(eKeyCode::D))
+		{
+			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_005303");
+				else
+					mPlayerAnim->Play(L"a000_005300");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002000");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_001512");
+				else
+					mPlayerAnim->Play(L"a000_001510");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Walk))
+			{
+				if (bLockOn)
+					mPlayerAnim->Play(L"a000_000603");
+				else
+					mPlayerAnim->Play(L"a000_000600");
+			}
+			else
+			{
+				mPlayerAnim->Play(L"a000_000000");
 			}
 		}
 
-		if (Input::GetKey(eKeyCode::D))
+
+		if (mbRotate)
 		{
-			if (bLockOn)
-			{
-				Move(mTransform->Right());
+			if (abs(theta.y) < mFrontTheta)
+			{	// 회전 종료. 진행하려는 방향과 player의 forward가 비슷해지면 회전이 끝난다.
+				mbRotate = false;
+				mTransform->SetRotation(Vector3(0.0f, rot.y + theta.y, 0.0f));
 			}
 			else
-			{
-				mLastDir = eDirection::Right;
-
-				if (abs(theta.y) > mFrontTheta)
-				{
-					mbRotate = true;
-				}
-				else
-				{
-					if (mbDash)
-						Move(mTransform->Forward(), mDashSpeed);
-					else
-						Move(mTransform->Forward());
-				}
+			{	// 진행하려는 방향과 player의 forward가 비슷해질 때 까지 회전한다. theta 각에 따라 회전 방향을 결정한다.
+				Rotate(Vector3(0.0f, theta.y / 30.0f, 0.0f));
 			}
 		}
-		if (Input::GetKey(eKeyCode::A))
+
+		if (mbTurn)
 		{
-			if (bLockOn)
+			if (mTurnTimer > 0.0f)
 			{
-				Move(-mTransform->Right());
+				mTurnTimer -= Time::DeltaTime();
 			}
 			else
 			{
-				mLastDir = eDirection::Left;
+				mbTurn = false;
+				mTurnTimer = mTurnTimerMax;
 
-				if (abs(theta.y) > mFrontTheta)
-				{
-					mbRotate = true;
-				}
-				else
-				{
-					if (mbDash)
-						Move(mTransform->Forward(), mDashSpeed);
-					else
-						Move(mTransform->Forward());
-				}
+				if (mPlayer->IsStateFlag(ePlayerState::Walk))
+					mPlayerAnim->Play(L"a000_000500");
+				else if (mPlayer->IsStateFlag(ePlayerState::Idle))
+					mPlayerAnim->Play(L"a000_000000");
 			}
 		}
 
@@ -434,44 +671,89 @@ namespace ya
 			}
 			else
 			{
-				if (bLockOn)
+				/*if (bLockOn)
 				{
 					mPlayerAnim->Play(L"a000_000501");
 				}
 				else
 				{
 					mPlayerAnim->Play(L"a000_000000");
-				}
+				}*/
 			}
 		}
 	}
 
 	void PlayerActionScript::Sprint()
 	{
-		if (mDashTimer > 0.0f)
+		if (mPlayer->IsStateFlag(ePlayerState::Attack))
+			return;
+
+		if(mbDash)
 		{
-			Move(mTransform->Forward(), mDashSpeed);
-			mDashTimer -= Time::DeltaTime();
+			if (mDashTimer > 0.0f)
+			{
+				Move(mTransform->Forward(), mDashSpeed);
+				mDashTimer -= Time::DeltaTime();
+			}
+			else
+			{
+				if (!Input::GetKey(eKeyCode::LSHIFT)
+					|| !(Input::GetKey(eKeyCode::W) || Input::GetKey(eKeyCode::S) || Input::GetKey(eKeyCode::A) || Input::GetKey(eKeyCode::D)))
+				{
+					mbDash = false;
+
+					mPlayerAnim->Play(L"a000_001510");
+					Velocity();
+				}
+			}
 		}
 
 		if (Input::GetKeyDown(eKeyCode::LSHIFT))
 		{
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 
-			Velocity(70.0f);
+			Velocity(40.0f);
 
 			mbDash = true;
 
 			if(mDashTimer <= 0.0f)
 				mDashTimer = mDashTimerMax;
 			
-			if (mPlayer->IsStateFlag(ePlayerState::Walk))
+			/*if (Input::GetKey(eKeyCode::A))
+				mPlayerAnim->Play(L"a000_001402");
+			else if (Input::GetKey(eKeyCode::D))
+				mPlayerAnim->Play(L"a000_001403");
+			else*/
+				mPlayerAnim->Play(L"a000_001151");
+		}
+		
+		if (Input::GetKey(eKeyCode::LSHIFT))
+		{
+			if (Input::GetKeyDown(eKeyCode::A))
 			{
-				mPlayerAnim->Play(L"a000_001200");
+				mPlayerAnim->Play(L"a000_001402");
+
+				mPlayer->SetStateFlag(ePlayerState::Sprint, true);
+
+				Velocity(40.0f);
+
+				mbDash = true;
+
+				if (mDashTimer <= 0.0f)
+					mDashTimer = mDashTimerMax;
 			}
-			else if(mDashTimer == mDashTimerMax)
+			else if (Input::GetKeyDown(eKeyCode::D))
 			{
-				//mPlayerAnim->Play(L"a000_001510");
+				mPlayerAnim->Play(L"a000_001403");
+
+				mPlayer->SetStateFlag(ePlayerState::Sprint, true);
+
+				Velocity(40.0f);
+
+				mbDash = true;
+
+				if (mDashTimer <= 0.0f)
+					mDashTimer = mDashTimerMax;
 			}
 		}
 
@@ -479,9 +761,13 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Sprint, false);
 
-			Velocity();
+			if (Input::GetKey(eKeyCode::W) || Input::GetKey(eKeyCode::S) || Input::GetKey(eKeyCode::A) || Input::GetKey(eKeyCode::D))
+			{
+				mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			mbDash = false;
+				mPlayerAnim->Play(L"a000_000500");
+			}
+
 		}
 	}
 

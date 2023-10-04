@@ -33,8 +33,8 @@ namespace ya
 		, mJumpEvent(nullptr)
 		, mGroundEvent(nullptr)
 	{
-		mGravity = Vector3(0.0f, -200.0f, 0.0f);
-		mLimitVelocity = Vector3(40.0f, 100.0f, 40.0f);
+		mGravity = Vector3(0.0f, -160.0f, 0.0f);
+		mLimitVelocity = Vector3(18.0f, 30.0f, 18.0f);
 	}
 
 	Rigidbody::~Rigidbody()

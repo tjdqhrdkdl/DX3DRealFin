@@ -581,12 +581,15 @@
     </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents\Common</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="yaBoundarySphere.h">
       <Filter>Engine\Component\BoundarySphere</Filter>
     </ClInclude>
     <ClInclude Include="yaFrustum.h">
       <Filter>Engine\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroCommons.h">
+      <Filter>Contents\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

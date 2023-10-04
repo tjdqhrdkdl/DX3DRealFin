@@ -18,7 +18,7 @@ namespace ya
 		, mChildPos(Vector3(0, 0, -40))
 		, mThetaAxisY(1.57)
 		, mThetaAxisX(1.57)
-		, mDistFromTarget(40)
+		, mDistFromTarget(7)
 		, mDelayTime(0.2f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
