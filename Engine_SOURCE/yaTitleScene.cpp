@@ -266,7 +266,7 @@ namespace ya
 		}
 
 		{
-			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
 		}
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
