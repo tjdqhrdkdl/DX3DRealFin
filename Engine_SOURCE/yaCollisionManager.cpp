@@ -97,6 +97,8 @@ namespace ya
 					continue;
 				if (left->GetComponent<Collider2D>() == nullptr)
 					continue;
+				if (!left->GetComponent<Collider2D>()->IsActive())
+					continue;
 
 				for (GameObject* right : rights)
 				{
@@ -105,6 +107,8 @@ namespace ya
 					if (right->GetComponent<Collider2D>() == nullptr)
 						continue;
 					if (left == right)
+						continue;
+					if (!right->GetComponent<Collider2D>()->IsActive())
 						continue;
 
 					ColliderCollision(left->GetComponent<Collider2D>(), right->GetComponent<Collider2D>());

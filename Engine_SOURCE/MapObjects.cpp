@@ -26,7 +26,7 @@ namespace ya
 		std::fs::path csvPath(gResPath);
 		csvPath /= L"Map";
 		csvPath /= L"SekiroMapMeshData.csv";
-		CSVEditor csv{};
+		CSVEditor csv{};	
 		csv.ReadFile(csvPath);
 
 		size_t size = csv.GetRowCount();
@@ -69,6 +69,7 @@ namespace ya
 	GameObject* MapObjects::LoadMapObject(const std::wstring& _wstrPath,
 		float _positionX, float _positionY, float _positionZ,
 		float _rotationX, float _rotationY, float _rotationZ,
+
 		float _scaleX, float _scaleY, float _scaleZ)
 	{
 		std::fs::path mapMeshPath = gMapPath;

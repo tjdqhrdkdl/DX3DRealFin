@@ -28,14 +28,6 @@ namespace ya
 		void SetDirection(const Vector3 dir) { mDirection = dir; }
 		Vector3 GetDirection() const { return mDirection; }
 
-		void SetJumping(bool jumping) { mbJumping = jumping; }
-		bool IsJumping() { return mbJumping; }
-		void SetGrounded(bool grounded) { mbGrounded = grounded; }
-		bool IsGrounded() { return mbGrounded; }
-
-		std::function<void()>& GetJumpEvent() { return mJumpEvent; }
-		std::function<void()>& GetGroundEvent() { return mGroundEvent; }
-
 	public:
 		void Move(const Vector3 dir, float force = -1.0f);
 		void Rotate(const Vector3 dir, float speed = -1.0f);
@@ -43,7 +35,6 @@ namespace ya
 		void JumpDouble(float force = -1.0f);
 
 		bool ForwardCheck(Vector3 movement);
-		void CheckGround();
 
 	protected:
 		GameObject* mTarget;
