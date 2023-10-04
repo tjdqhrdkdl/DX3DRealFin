@@ -22,7 +22,7 @@ extern ya::Application application;
 
 namespace ya
 {
-	const float defaultJumpForce = 1000.0f;
+	const float defaultJumpForce = 450.0f;
 
 	ActionScript::ActionScript()
 		: Script()
@@ -31,7 +31,7 @@ namespace ya
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
 		, mCollider(nullptr)
-		, mSpeed(400.0f)
+		, mSpeed(200.0f)
 		, mDirection(Vector3::Zero)
 		, mRotateDirection(Vector3::Zero)
 		, mGroundDistance(0.f)

@@ -69,7 +69,7 @@ namespace ya
 
 		Player* player = object::Instantiate<Player>(eLayerType::Player);
 		player->GetComponent<Transform>()->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
-		player->GetComponent<Transform>()->SetScale(Vector3(5.0f, 5.0f, 5.0f));
+		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
