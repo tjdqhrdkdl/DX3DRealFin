@@ -9,18 +9,23 @@
 #include "yaRigidbody.h"
 #include "yaCameraScript.h"
 #include "yaPlayerMeshScript.h"
+#include "yaBoneCollider.h"
 
 namespace ya
 {
 	PlayerActionScript::PlayerActionScript()
 		: ActionScript()
+		, mPlayer(nullptr)
+		, mPlayerAnim(nullptr)
 		, mbRotate(false)
 		, mLastDir(eDirection::Forward)
 		, mbDash(false)
 		, mDashSpeed(300.0f)
 		, mDashTimer(0.0f)
-		, mFrontTheta(4.0f)
+		, mHitTimer(1.0f)
+		, mFrontTheta(10.0f)
 		, mDashTimerMax(0.2f)
+		, mbJumpDouble(false)
 	{
 	}
 
@@ -39,7 +44,9 @@ namespace ya
 		mRigidbody->GetJumpEvent() = [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
-			playerAnim->Play(L"a000_201030");
+
+			playerAnim->Play(L"a000_200000");
+			//playerAnim->Play(L"a000_201030");
 			player->SetStateFlag(ePlayerState::Jump, true);
 		};
 
@@ -49,54 +56,66 @@ namespace ya
 			playerAnim->Play(L"a000_201040");
 			player->SetStateFlag(ePlayerState::Jump, false);
 		};
+
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Jump, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			player->SetStateFlag(ePlayerState::Idle, false);
+			player->SetStateFlag(ePlayerState::Walk, false);
+		}));
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Jump, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			player->SetStateFlag(ePlayerState::Idle, true);
+			player->SetStateFlag(ePlayerState::Walk, true);
+		}));
+
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			/*BoneCollider* waeponCollider = player->GetWeaponCollider();
+			Transform* weaponColliderTr = waeponCollider->GetComponent<Transform>();
+			Vector3 scale = weaponColliderTr->GetScale();
+			waeponCollider->SetScale(Vector3(1.2f, 0.2f, 1.2f));*/
+
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity(30.0f);
+			
+		}));
+
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			/*BoneCollider* waeponCollider = player->GetWeaponCollider();
+			waeponCollider->SetScale(Vector3(1.6f, 0.2f, 0.2f));*/
+
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity();
+		}));
+
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity(20.0f);
+		}));
+
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity();
+		}));
 	}
 
 	void PlayerActionScript::Update()
 	{
-		Walk();
-		Run();
-
-		// 매달리기 임시
-		if (Input::GetKeyDown(eKeyCode::H))
+		if(!mPlayer->IsStateFlag(ePlayerState::Hit))
 		{
-			// TODO: 매달리기 -> 떨어지기, 올라가기 만들어야함
-			if (mPlayer->IsStateFlag(ePlayerState::Hang))
-			{
-				mPlayer->SetStateFlag(ePlayerState::Hang, false);
-				mPlayerAnim->Play(L"a000_000000");
-			}
-			else
-			{
-				mPlayer->SetStateFlag(ePlayerState::Hang, true);
-				mPlayerAnim->Play(L"a000_020000");
-			}
+			Idle();
+			Walk();
+			Sprint();
+			PlayerJump();
+			Crouch();
+			Walk();
+			Hang();
 		}
 
-		if (Input::GetKeyDown(eKeyCode::SPACE))
-		{
-			mPlayerAnim->Play(L"a000_200000");
-		}
-
-		if (Input::GetKeyDown(eKeyCode::SPACE))
-		{
-			mPlayer->SetStateFlag(ePlayerState::Jump, true);
-			mRigidbody->SetJumping(true);
-			Jump();
-		}
-
-		if (Input::GetKeyDown(eKeyCode::Q))
-		{
-			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
-			{
-				mPlayer->SetStateFlag(ePlayerState::Crouch, false);
-				mPlayerAnim->Play(L"a000_000000");
-			}
-			else
-			{
-				mPlayer->SetStateFlag(ePlayerState::Crouch, true);
-				mPlayerAnim->Play(L"a000_005000");
-			}
-		}
+		Hit();
 
 		ActionScript::Update();
 	}
@@ -112,18 +131,24 @@ namespace ya
 		ActionScript::Render();
 	}
 
+	void PlayerActionScript::Idle()
+	{
+
+
+	}
+
 	void PlayerActionScript::Walk()
 	{
 		if (mDashTimer > 0.0f)
 			return;
 
-		Player* player = dynamic_cast<Player*>(GetOwner());
-		PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+		if (mPlayer->IsStateFlag(ePlayerState::Jump))
+			return;
 
 		Vector3 pos = mTransform->GetPosition();
 		Vector3 rot = mTransform->GetRotation();
 
-		GameObject* camera = player->GetCamera();
+		GameObject* camera = mPlayer->GetCamera();
 		CameraScript* cameraScript = camera->GetScript<CameraScript>();
 		Transform* cameraTr = camera->GetComponent<Transform>();
 		Vector3 cameraPos = cameraTr->GetPosition();
@@ -169,116 +194,132 @@ namespace ya
 			else
 			{	// 진행하려는 방향과 player의 forward가 비슷해질 때 까지 회전한다. theta 각에 따라 회전 방향을 결정한다.
 				if (theta.y > 0.0f)
-					Rotate(Vector3(0.0f, 1.0f, 0.0f));
+					Rotate(Vector3(0.0f, 0.1f, 0.0f));
 				else
-					Rotate(Vector3(0.0f, -1.0f, 0.0f));
+					Rotate(Vector3(0.0f, -0.1f, 0.0f));
 			}
 		}
 
 		if (Input::GetKeyDown(eKeyCode::W))
 		{
-			player->SetStateFlag(ePlayerState::Walk, true);
+			mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			 if (player->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002200");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
 			}
-			else if (player->IsStateFlag(ePlayerState::Crouch))
+			else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
-				playerAnim->Play(L"a000_005100");
+				mPlayerAnim->Play(L"a000_005100");
 			}
 			else
 			{
-				playerAnim->Play(L"a000_000500");
+				mPlayerAnim->Play(L"a000_000500");
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::A))
 		{
-			player->SetStateFlag(ePlayerState::Walk, true);
+			mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			if (player->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002200");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
 
 			}
-			else if (player->IsStateFlag(ePlayerState::Crouch))
+			else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
 				if (bLockOn)
-					playerAnim->Play(L"a000_005102");
+					mPlayerAnim->Play(L"a000_005102");
 				else
-					playerAnim->Play(L"a000_005100");
+					mPlayerAnim->Play(L"a000_005100");
 			}
 			else
 			{
 				if (bLockOn)
 				{
-					playerAnim->Play(L"a000_000503");
+					mPlayerAnim->Play(L"a000_000503");
 				}
 				else
 				{
 					if (abs(theta.y) < mFrontTheta)
-						playerAnim->Play(L"a000_000500");
+						mPlayerAnim->Play(L"a000_000500");
 					else
-						playerAnim->Play(L"a000_000010");
+						mPlayerAnim->Play(L"a000_000010");
 				}
 				
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::S))
 		{
-			player->SetStateFlag(ePlayerState::Walk, true);
+			mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			if (player->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002200");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
 
 			}
-			else if (player->IsStateFlag(ePlayerState::Crouch))
+			else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
 				if (bLockOn)
-					playerAnim->Play(L"a000_005101");
+					mPlayerAnim->Play(L"a000_005101");
 				else
-					playerAnim->Play(L"a000_005100");
+					mPlayerAnim->Play(L"a000_005100");
 			}
 			else
 			{
 				if (bLockOn)
 				{
-					playerAnim->Play(L"a000_000501");
+					mPlayerAnim->Play(L"a000_000501");
 				}
 				else
 				{
 					if (abs(theta.y) < mFrontTheta)
-						playerAnim->Play(L"a000_000500");
+						mPlayerAnim->Play(L"a000_000500");
 					else
-						playerAnim->Play(L"a000_000011");
+						mPlayerAnim->Play(L"a000_000011");
 				}
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::D))
 		{
-			player->SetStateFlag(ePlayerState::Walk, true);
+			mPlayer->SetStateFlag(ePlayerState::Walk, true);
 
-			if (player->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			{
+				mPlayerAnim->Play(L"a050_002200");
+			}
+			else if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
 
 			}
-			else if (player->IsStateFlag(ePlayerState::Crouch))
+			else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
 				if (bLockOn)
-					playerAnim->Play(L"a000_005103");
+					mPlayerAnim->Play(L"a000_005103");
 				else
-					playerAnim->Play(L"a000_005100");
+					mPlayerAnim->Play(L"a000_005100");
 			}
 			else
 			{
 				if (bLockOn)
 				{
-					playerAnim->Play(L"a000_000502");
+					mPlayerAnim->Play(L"a000_000502");
 				}
 				else
 				{
 					if (abs(theta.y) < mFrontTheta)
-						playerAnim->Play(L"a000_000500");
+						mPlayerAnim->Play(L"a000_000500");
 					else
-						playerAnim->Play(L"a000_000012");
+						mPlayerAnim->Play(L"a000_000012");
 				}
 			}
 		}
@@ -378,36 +419,35 @@ namespace ya
 			}
 		}
 
-		if (Input::GetKeyUp(eKeyCode::W) || Input::GetKeyUp(eKeyCode::W) || Input::GetKeyUp(eKeyCode::S) || Input::GetKeyUp(eKeyCode::D))
+		if (mPlayer->IsStateFlag(ePlayerState::Walk) &&
+			Input::GetKeyNone(eKeyCode::W) && Input::GetKeyNone(eKeyCode::A) && Input::GetKeyNone(eKeyCode::S) && Input::GetKeyNone(eKeyCode::D))
 		{
-			player->SetStateFlag(ePlayerState::Walk, false);
+			mPlayer->SetStateFlag(ePlayerState::Walk, false);
 
-			if (player->IsStateFlag(ePlayerState::Hang))
+			if (mPlayer->IsStateFlag(ePlayerState::Hang))
 			{
-				playerAnim->Play(L"a000_020000");
+				mPlayerAnim->Play(L"a000_020000");
 			}
-			else if (player->IsStateFlag(ePlayerState::Crouch))
+			else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
-				playerAnim->Play(L"a000_005000");
+				mPlayerAnim->Play(L"a000_005000");
 			}
 			else
 			{
 				if (bLockOn)
 				{
-					playerAnim->Play(L"a000_000501");
+					mPlayerAnim->Play(L"a000_000501");
 				}
 				else
 				{
-					playerAnim->Play(L"a000_000000");
+					mPlayerAnim->Play(L"a000_000000");
 				}
 			}
 		}
 	}
 
-	void PlayerActionScript::Run()
+	void PlayerActionScript::Sprint()
 	{
-		PlayerMeshScript* playerAnim = GetOwner()->GetScript<PlayerMeshScript>();
-
 		if (mDashTimer > 0.0f)
 		{
 			Move(mTransform->Forward(), mDashSpeed);
@@ -418,8 +458,7 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 
-			Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
-			mRigidbody->SetLimitVelocity(Vector3(50.0f, limitVelocity.y, 50.0f));
+			Velocity(70.0f);
 
 			mbDash = true;
 
@@ -432,7 +471,7 @@ namespace ya
 			}
 			else if(mDashTimer == mDashTimerMax)
 			{
-				mPlayerAnim->Play(L"a000_001510");
+				//mPlayerAnim->Play(L"a000_001510");
 			}
 		}
 
@@ -440,10 +479,92 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Sprint, false);
 
-			Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
-			mRigidbody->SetLimitVelocity(Vector3(40.0f, limitVelocity.y, 40.0f));
+			Velocity();
 
 			mbDash = false;
+		}
+	}
+
+	void PlayerActionScript::Hang()
+	{
+		// 매달리기 임시
+		if (Input::GetKeyDown(eKeyCode::H))
+		{
+			// TODO: 매달리기 -> 떨어지기, 올라가기 만들어야함
+			if (mPlayer->IsStateFlag(ePlayerState::Hang))
+			{
+				mPlayer->SetStateFlag(ePlayerState::Hang, false);
+				mPlayerAnim->Play(L"a000_000000");
+			}
+			else
+			{
+				mPlayer->SetStateFlag(ePlayerState::Hang, true);
+				mPlayerAnim->Play(L"a000_020000");
+			}
+		}
+
+		if(mPlayer->IsStateFlag(ePlayerState::Hang))
+		{
+			if (IsGrounded())
+			{
+				mPlayer->SetStateFlag(ePlayerState::Hang, false);
+				mPlayerAnim->Play(L"a000_000000");
+			}
+		}
+	}
+
+	void PlayerActionScript::Crouch()
+	{
+		if (Input::GetKeyDown(eKeyCode::Q))
+		{
+			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
+			{
+				mPlayer->SetStateFlag(ePlayerState::Crouch, false);
+				mPlayerAnim->Play(L"a000_000000");
+			}
+			else
+			{
+				mPlayer->SetStateFlag(ePlayerState::Crouch, true);
+				mPlayerAnim->Play(L"a000_005000");
+			}
+		}
+	}
+
+	void PlayerActionScript::Hit()
+	{
+		if(mPlayer->IsStateFlag(ePlayerState::Hit))
+		{
+			if (mHitTimer > 0.0f)
+			{
+				mHitTimer -= Time::DeltaTime();
+			}
+			else
+			{
+				mPlayer->SetStateFlag(ePlayerState::Hit, false);
+				mHitTimer = 1.0f;
+			}
+		}
+	}
+
+	void PlayerActionScript::PlayerJump()
+	{
+		if (Input::GetKeyDown(eKeyCode::SPACE))
+		{
+			SetJumping(true);
+			Jump();
+
+			if (mbForwardBlocked && !mbJumpDouble)
+			{
+				mbJumpDouble = true;
+			}
+		}
+
+		if (mPlayer->IsStateFlag(ePlayerState::Jump))
+		{
+			if (Input::GetKey(eKeyCode::W) || Input::GetKey(eKeyCode::A) || Input::GetKey(eKeyCode::S) || Input::GetKey(eKeyCode::D))
+			{
+				Move(mTransform->Forward(), 200.0f);
+			}
 		}
 	}
 }

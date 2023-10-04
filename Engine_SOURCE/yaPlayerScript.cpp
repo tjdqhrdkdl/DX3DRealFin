@@ -19,11 +19,17 @@
 #include "yaSceneManager.h"
 #include "yaScene.h"
 
+#include "yaPlayerMeshScript.h"
+#include "yaState.h"
+
 
 namespace ya
 {
 	PlayerScript::PlayerScript()
 		: Script()
+		, mMoveTimer(0.0f)
+		, mMoveTimerMax(0.1f)
+		, mHitDirection(Vector3::Zero)
 	{
 	}
 
@@ -47,6 +53,9 @@ namespace ya
 			faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
 
 		}
+
+		mPlayer = dynamic_cast<Player*>(GetOwner());
+		mPlayerAnim = mPlayer->GetScript<PlayerMeshScript>();
 	}
 
 	void PlayerScript::Update()
@@ -62,36 +71,12 @@ namespace ya
 		ActionScript* action = GetOwner()->GetScript<ActionScript>();
 		Transform* tr = GetOwner()->GetComponent < Transform>();
 
-		// 테스트로 만든 공격 입니다 나중에 지울것
-		if (Input::GetKeyDown(eKeyCode::Q))
+		if (mMoveTimer > 0.0f)
 		{
-			/*action->Move(tr->Forward() * 500.f);
-			Player* player = (Player*)GetOwner();
-			player->SetAttack(true);*/
+			mMoveTimer -= Time::DeltaTime();
+			//if (mMoveTimer < 1.0f)
+				action->Move(mHitDirection, 200.0f);
 		}
-		Player* player = (Player*)GetOwner();
-		if (player->IsAttack())
-		{
-			TESTTime += Time::DeltaTime();
-			if (TESTTime >= 1.5f)
-			{
-				player->SetAttack(false);
-				TESTTime = 0.f;
-			}
-		}
-		if (player->IsWalk())
-		{
-			action->Move(-(tr->Forward() * 250.f));
-			TESTTime += Time::DeltaTime();
-			if (TESTTime >= 0.5f)
-			{
-				player->SetWalk(false);
-				TESTTime = 0.f;
-			}
-		}
-
-
-
 	}
 
 
@@ -101,45 +86,76 @@ namespace ya
 
 	void PlayerScript::OnCollisionEnter(Collider2D* collider)
 	{
-		//Scene* test = SceneManager::GetActiveScene();
-		//test->GetGameObjects(enums::eLayerType::Monster);
+		GameObject* obj = collider->GetOwner();
 
-		if (dynamic_cast<GameObject*>(collider->GetOwner()))
+		BoneCollider* boneCollider = dynamic_cast<BoneCollider*>(obj);
+		if(boneCollider != nullptr)
 		{
-			GameObject* ground = (GameObject*)collider->GetOwner();
+			if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
-				if (L"Ground1" == ground->GetName())
-				{
-					
-					Transform* playertr = GetOwner()->GetComponent<Transform>();
-					Transform* groundtr = ground->GetComponent<Transform>();
+				mPlayer->SetStateFlag(ePlayerState::Parrying, true);
+				mPlayer->SetStateFlag(ePlayerState::Block, false);
 
-					Vector3 goundUp = groundtr->Up();
-					Vector3 playerUp = playertr->Up();
+				mPlayer->GetState()->AddPosture(-10);
 
+				Transform* playerTr = mPlayer->GetComponent<Transform>();
+				Vector3 playerPos = playerTr->GetPosition();
+				Vector3 playerDir = playerTr->Forward();
 
-		
-					int a = 0;
+				Vector3 colliderPos = collider->GetPosition();
 
+				// 플레이어의 방향과 collider간의 각도를 구한다.
+				Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));
+				Vector3 quaterToEuler = quater.ToEuler();
+				Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
-				}
-
-
+				// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+				if (theta.y > -45.0f && theta.y <= 45.0f)
+					mPlayerAnim->Play(L"a050_120101");
+				else if (theta.y > 45.0f && theta.y <= 135.0f)
+					mPlayerAnim->Play(L"a050_120100");
+				else if (theta.y > 135.0f && theta.y <= 180.0f)
+					mPlayerAnim->Play(L"a050_120103");
+				else if (theta.y > -180.0f && theta.y <= -135.0f)
+					mPlayerAnim->Play(L"a050_120103");
+				else if (theta.y > -135.0f && theta.y <= -45.0f)
+					mPlayerAnim->Play(L"a050_120102");
 			}
-		}
+			else
+			{
+				mPlayer->GetState()->AddHp(-10);
+				mPlayer->SetStateFlag(ePlayerState::Hit, true); // 경직상태
 
-		
-		if (dynamic_cast<MonsterBase*>(collider->GetOwner()))
-		{
+				Transform* playerTr = mPlayer->GetComponent<Transform>();
+				Vector3 playerPos = playerTr->GetPosition();
+				Vector3 playerDir = playerTr->Forward();
 
-		}
-		if (dynamic_cast<Spearman*>(collider->GetOwner()))
-		{
-		
-		}
-		if (dynamic_cast<Swordsman*>(collider->GetOwner()))
-		{
-		
+				Vector3 colliderPos = collider->GetPosition();
+
+				// 플레이어의 방향과 collider간의 각도를 구한다.
+				Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));
+				Vector3 quaterToEuler = quater.ToEuler();
+				Vector3 theta = quaterToEuler * 180.0f / XM_PI;
+
+				// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+				if (theta.y > -45.0f && theta.y <= 45.0f)
+					mPlayerAnim->Play(L"a000_100102");
+				else if (theta.y > 45.0f && theta.y <= 135.0f)
+					mPlayerAnim->Play(L"a000_100100");
+				else if (theta.y > 135.0f && theta.y <= 180.0f)
+					mPlayerAnim->Play(L"a000_100103");
+				else if (theta.y > -180.0f && theta.y <= -135.0f)
+					mPlayerAnim->Play(L"a000_100103");
+				else if (theta.y > -135.0f && theta.y <= -45.0f)
+					mPlayerAnim->Play(L"a000_100101");
+
+				if (mMoveTimer <= 0.0f)
+				{
+					mMoveTimer = mMoveTimerMax;
+					//mHitDirection = Vector3(-theta.x, 0.0f, -theta.z);
+					mHitDirection = -playerTr->Forward();
+				}
+			}
 		}
 
 	}
