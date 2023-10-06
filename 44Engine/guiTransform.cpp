@@ -72,7 +72,7 @@ namespace gui
 		if (GetTarget())
 		{
 			ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
-			ya::Collider2D* col = GetTarget()->GetComponent<ya::Collider2D>();
+			//ya::Collider2D* col = GetTarget()->GetComponent<ya::Collider2D>();
 
 			tr->SetPosition(mPosisition);
 			tr->SetRotation(mRotation);
@@ -83,8 +83,11 @@ namespace gui
 			tr->SetRight(mRight);
 			tr->SetUp(mUp);
 
-			if (col)
-				col->SetCenter(mColliderCenter);
+			//if (col)
+			{
+				//col->SetSize();
+				//col->SetCenter(mColliderCenter);
+			}
 		}
 	}
 

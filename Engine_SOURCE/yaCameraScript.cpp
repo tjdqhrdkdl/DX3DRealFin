@@ -212,12 +212,12 @@ namespace ya
 						//카메라 오브젝트의 회전을 바꿔준다.
 
 						//구 이동
-						mChildPos -= 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+						mChildPos -= 2 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 						mChildPos.Normalize();
 						mChildPos *= mDistFromTarget;
 
 
-						mChildPos -= 30 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+						mChildPos -= 1 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 						mChildPos.Normalize();
 						mChildPos *= mDistFromTarget;
 

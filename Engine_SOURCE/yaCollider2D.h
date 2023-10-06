@@ -26,6 +26,7 @@ namespace ya
 		void SetType(eColliderType type) { mType = type; }
 		void SetSize(Vector3 size) { mSize = size; }
 		void SetCenter(Vector3 center) { mCenter = center; }
+		void SetRotation(Vector3 rotation) { mRotation = rotation; }
 		void SetRadius(float radius) { mRadius = radius; }
 		bool IsTriiger() { return mbTrigger; }
 		UINT GetID() { return mID; }
@@ -46,6 +47,8 @@ namespace ya
 		Vector3 mSize;
 		Vector3 mCenter;
 		Vector3 mPosition;
+		Vector3 mRotation;
+
 		float mRadius;
 		bool mbTrigger;
 		bool mbActive;

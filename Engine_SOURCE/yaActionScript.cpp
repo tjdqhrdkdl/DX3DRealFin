@@ -223,8 +223,6 @@ namespace ya
 		float velocityLength = velocity.Length();
 		float positionLength = position.Length();
 
-		position += dir * 5.f;
-
 		colScale *= scale;
 
 		Vector3 top = position;
@@ -238,7 +236,7 @@ namespace ya
 		Vector3 rayDirection = dir;
 
 		std::vector<eLayerType> layers;
-		layers.push_back(eLayerType::Wall);
+		layers.push_back(eLayerType::Monster);
 
 		RayHit ForwardHit[3];
 		ForwardHit[0] = CollisionManager::RayCast(GetOwner(), top, rayDirection, layers);
@@ -248,21 +246,8 @@ namespace ya
 		for (int i = 0; i < 3; ++i)
 		{
 			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
-			{
-				//mRigidbody->SetVelocity(Vector3::Zero);
-				if (!mbForwardBlocked)
-				{
-					mbJumpDouble = true;
-				}
-
 				mbForwardBlocked = true;
-			}
 			else
-				if (mbForwardBlocked)
-				{
-					mbJumpDouble = false;
-				}
-
 				mbForwardBlocked = false;
 		}
 
