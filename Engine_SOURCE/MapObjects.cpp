@@ -52,6 +52,7 @@ namespace ya
 
 			GameObject* created = LoadMapObject(fileName, posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
 			created->SetName(objID);
+
 		}
 
 		//LoadMapObject(L"m11_00_00_00_260000.fbx",

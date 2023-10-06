@@ -104,17 +104,17 @@ namespace ya
 				}
 			}
 
-			if (IsDeathBlow())
-			{
-				Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-				Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
-				marktr->SetPosition(pos + mDeathBlowMarkOffSet);
-			}
-			else
-			{
-				Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-				marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
-			}
+			//if (IsDeathBlow())
+			//{
+			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+			//	Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
+			//	marktr->SetPosition(pos + mDeathBlowMarkOffSet);
+			//}
+			//else
+			//{
+			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+			//	marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
+			//}
 
 
 

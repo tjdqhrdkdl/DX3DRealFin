@@ -24,21 +24,25 @@ namespace ya
 		void Render()		override;
 
 
-		void SetMeshAndBone(std::shared_ptr<MeshData> meshData, std::wstring bone);
+		void SetMeshAndBone(std::shared_ptr<MeshData> meshData, std::wstring bone, GameObject* owner = nullptr);
 		void SetScale(Vector3 scale);
 		void SetAnimOffSet(UINT animIdx, Vector3 offset);
 		void SetAnimOffSet(const std::wstring& animName, Vector3 offset);
 
 		void SetColliderActiveFrame(UINT animIdx,  UINT start, UINT finish);
 		void SetColliderActiveFrame(const std::wstring& animName, UINT start, UINT finish);
-
-
+		
+		void AddHitObjects(GameObject* obj) { mHitObjects.push_back(obj); }
+		bool CheckHitObjects(GameObject* obj);
 	private:
+		GameObject* mOwner;
 		std::shared_ptr<MeshData> mMeshData;
 		graphics::BoneMatrix mBoneMat;
 		int mBeforeClipIdx;
 
 		std::vector<Vector3> mAnimationOffsets;
-		std::vector<StartAndFin> mAnimationColActiveFrame;
+		std::vector<std::vector<StartAndFin>> mAnimationColActiveFrame;
+
+		std::vector<GameObject*> mHitObjects;
 	};
 }

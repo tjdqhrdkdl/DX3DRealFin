@@ -106,6 +106,8 @@ namespace ya
 						continue;
 					if (right->GetComponent<Collider2D>() == nullptr)
 						continue;
+					if (!right->GetComponent<Collider2D>()->IsActive())
+						continue;
 					if (left == right)
 						continue;
 					if (!right->GetComponent<Collider2D>()->IsActive())
