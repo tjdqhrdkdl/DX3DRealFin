@@ -39,6 +39,7 @@ namespace ya
 		, mJumpEvent(nullptr)
 		, mGroundEvent(nullptr)
 		, mbJumpDouble(false)
+		, mJumpTime(0.2f)
 	{
 	}
 
@@ -192,7 +193,7 @@ namespace ya
 
 		if (mRigidbody->IsGrounded())
 		{
-			mJumpTimer = 0.15f;
+			mJumpTimer = mJumpTime;
 		}
 	}
 

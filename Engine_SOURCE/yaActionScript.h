@@ -28,6 +28,7 @@ namespace ya
 		void SetDirection(const Vector3 dir) { mDirection = dir; }
 		Vector3 GetDirection() const { return mDirection; }
 
+		void SetJumpTime(float time) { mJumpTime = time; }
 	public:
 		void Move(const Vector3 dir, float force = -1.0f);
 		void Rotate(const Vector3 dir, float speed = -1.0f);
@@ -70,6 +71,7 @@ namespace ya
 
 	private:
 		float mJumpTimer;
+		float mJumpTime;
 		float mJumpForce;
 	};
 }
