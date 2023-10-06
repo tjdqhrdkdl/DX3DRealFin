@@ -26,7 +26,7 @@ namespace ya
 		, mbTurn(false)
 		, mTurnTimer(0.0f)
 		, mTurnTimerMax(0.4f)
-		, mFrontTheta(10.0f)
+		, mFrontTheta(4.0f)
 		, mDashTimerMax(0.2f)
 		, mbJumpDouble(false)
 	{
@@ -188,7 +188,8 @@ namespace ya
 		Vector3 cameraRight = cameraTr->Right();
 		bool bLockOn = cameraScript->IsLockOn();
 
-		Vector3 theta = Vector3::Zero;
+		float theta = 0.0;
+		Vector3 cross = Vector3::Zero;
 		if (bLockOn)
 		{	// lockon 상태인 경우 항상 lockon 타겟을 바라본다.
 			GameObject* lockOnTarget = cameraScript->GetLockOnTarget();
@@ -196,30 +197,56 @@ namespace ya
 
 			Quaternion quater = Quaternion::FromToRotation(mTransform->Forward(), Vector3(lockOnTargetPos.x - pos.x, pos.y, lockOnTargetPos.z - pos.z));
 			Vector3 quaterToEuler = quater.ToEuler();
-			theta = quaterToEuler * 180.0f / XM_PI;
+			Vector3 quaterTheta = quaterToEuler * 180.0f / XM_PI;
+
+			theta = quaterTheta.y;
 
 			mbRotate = true;
 		}
 		else
 		{	// lockon 상태가 아닌 경우 카메라를 등진다.
-			Vector3 dir = -mTransform->Forward();
+			Vector3 dir = mTransform->Forward();
 			if (mLastDir == eDirection::Forward)
 				dir = -mTransform->Forward();
 			if (mLastDir == eDirection::Back)
 				dir = mTransform->Forward();
+			if (mLastDir == eDirection::Back)
+				dir = -mTransform->Forward();
 			if (mLastDir == eDirection::Right)
 				dir = mTransform->Right();
 			if (mLastDir == eDirection::Left)
 				dir = -mTransform->Right();
+			if (mLastDir == eDirection::Left)
+				dir = mTransform->Right();
 
 			// player가 바라볼 방향과 camera 사이의 각도를 구한다.
-			Quaternion quater = Quaternion::FromToRotation(dir, Vector3(cameraPos.x - pos.x, pos.y, cameraPos.z - pos.z));
-			Vector3 quaterToEuler = quater.ToEuler();
-			theta = quaterToEuler * 180.0f / XM_PI;
+			Vector3 cameraDir = Vector3(cameraForward.x, 0.0f, cameraForward.z);
+			cameraDir.Normalize();
+			theta = dir.Dot(cameraDir);
+			cross = dir.Cross(cameraDir);
+			theta = acos(theta);
+			theta *= 180.0f / XM_PI;
 
-			if(abs(theta.y) > mFrontTheta)
+			if (theta > mFrontTheta)
 				mbTurn = true;
 		}
+
+		if (mbRotate)
+		{
+			if (theta < mFrontTheta)
+			{	// 회전 종료. 진행하려는 방향과 player의 forward가 비슷해지면 회전이 끝난다.
+				mbRotate = false;
+				mTransform->SetRotation(Vector3(0.0f, rot.y + theta, 0.0f));
+			}
+			else
+			{	// 진행하려는 방향과 player의 forward가 비슷해질 때 까지 회전한다. theta 각에 따라 회전 방향을 결정한다.
+				if(cross.y < 0.0f && theta > 5.0f)
+					Rotate(Vector3(0.0f, -1.0f, 0.0f));
+				else 	
+					Rotate(Vector3(0.0f, 1.0f, 0.0f));
+			}
+		}
+
 
 		if (Input::GetKeyDown(eKeyCode::W))
 		{
@@ -416,7 +443,7 @@ namespace ya
 				}
 				else
 				{
-					if (abs(theta.y) > mFrontTheta)
+					if (abs(theta) > mFrontTheta)
 					{	// 진행하려는 방향과 각도 차이가 날때 회전시킨다.
 						mbRotate = true;
 					}
@@ -440,7 +467,7 @@ namespace ya
 				}
 				else
 				{
-					if (abs(theta.y) > mFrontTheta)
+					if (abs(theta) > mFrontTheta)
 					{
 						mbRotate = true;
 					}
@@ -466,7 +493,7 @@ namespace ya
 				{
 					mLastDir = eDirection::Right;
 
-					if (abs(theta.y) > mFrontTheta)
+					if (abs(theta) > mFrontTheta)
 					{
 						mbRotate = true;
 					}
@@ -489,7 +516,7 @@ namespace ya
 				{
 					mLastDir = eDirection::Left;
 
-					if (abs(theta.y) > mFrontTheta)
+					if (abs(theta) > mFrontTheta)
 					{
 						mbRotate = true;
 					}
