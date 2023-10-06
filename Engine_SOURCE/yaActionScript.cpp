@@ -247,9 +247,7 @@ namespace ya
 		for (int i = 0; i < 3; ++i)
 		{
 			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
-				mbForwardBlocked = true;
-			else
-				mbForwardBlocked = false;
+				return true;
 		}
 
 		return false;

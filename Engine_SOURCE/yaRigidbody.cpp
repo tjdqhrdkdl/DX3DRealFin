@@ -164,6 +164,11 @@ namespace ya
 		if (ForwardCheck(velo))
 		{
 			velo = Vector3::Zero;
+
+			Vector3 objPos = mTransform->GetPosition();
+			objPos -= mVelocity * Time::DeltaTime();
+
+			mTransform->SetPosition(objPos);
 		}
 
 		Vector3 pos = tr->GetPosition();
@@ -317,22 +322,25 @@ namespace ya
 		Vector3 dir = movement;
 		dir.Normalize();
 
+		float rayLength = scale.z / 2.f;
+
 		float velocityLength = velocity.Length();
 		float positionLength = position.Length();
 
-		colScale *= scale;
+		scale *= colScale;
 
 		Vector3 top = position;
-		top.y += colScale.y * 0.5f;
+		top.y += scale.y / 2.f;
 
 		Vector3 middle = position;
 
 		Vector3 bottom = position;
-		bottom.y -= colScale.y * 0.5f;
+		bottom.y -= scale.y / 2.f;
 
 		Vector3 rayDirection = dir;
 
 		std::vector<eLayerType> layers;
+		layers.push_back(eLayerType::Player);
 		layers.push_back(eLayerType::Monster);
 
 		RayHit ForwardHit[3];
@@ -342,10 +350,9 @@ namespace ya
 
 		for (int i = 0; i < 3; ++i)
 		{
-			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
-				mbForwardBlocked = true;
-			else
-				mbForwardBlocked = false;
+			//if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
+			if(rayLength >= ForwardHit[i].length && ForwardHit[i].isHit)
+				return true;
 		}
 
 		return false;

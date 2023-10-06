@@ -263,10 +263,10 @@ namespace ya
 		//CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
 		{
-			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
-			Transform* objTransform = obj->GetComponent<Transform>();
-			objTransform->SetPosition(-85.f, 35.f, 130.f);
-			objTransform->SetRotation(-90.f, 0.f, 0.f);
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			//Transform* objTransform = obj->GetComponent<Transform>();
+			//objTransform->SetPosition(-85.f, 35.f, 130.f);
+			//objTransform->SetRotation(-90.f, 0.f, 0.f);
 		}
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
