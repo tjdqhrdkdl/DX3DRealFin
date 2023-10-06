@@ -48,8 +48,10 @@ namespace ya
 			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile);
 			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
 			mWeaponCollider->SetScale(Vector3(1.6, 0.2, 0.2));
-		}
 
+			PlayerProjectileScript* projectileScript = mWeaponCollider->AddComponent<PlayerProjectileScript>();
+			projectileScript->SetPlayer(this);
+		}
 
 		AddComponent<PlayerScript>();
 		AddComponent<PlayerActionScript>();
@@ -114,21 +116,12 @@ namespace ya
 		}
 	}
 
-	//std::function<void()>& Player::GetStartStateEvent(ePlayerState state)
-	//{
-	//	std::map<ePlayerState, std::function<void()>>::iterator iter = mStartStateEvent.find(state);
-
-	//	if (iter == mStartStateEvent.end())
-	//	{
-	//		return nullptr;
-	//	}
-
-	//	return iter->second;
-	//}
-
-	//std::function<void()>& Player::GetEndStateEvent(ePlayerState state)
-	//{
-	//	// TODO: 여기에 return 문을 삽입합니다.
-	//}
-
+	float Player::GetBlockTime()
+	{
+		PlayerAttackScript* attack = GetComponent<PlayerAttackScript>();
+		if (attack == nullptr)
+			return 0.0f;
+		else
+			return attack->GetBlockTime();
+	}
 }

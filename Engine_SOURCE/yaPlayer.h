@@ -43,6 +43,8 @@ namespace ya
 		bool IsStealth() { return mbStealth; }
 		void SetStealth(bool stealth) { mbStealth = stealth; }
 
+		float GetBlockTime();
+
 		/*std::function<void()>& GetStartStateEvent() { return mStartStateEvent; }
 		std::function<void()>& GetEndStateEvent() { return mEndStateEvent; }*/
 

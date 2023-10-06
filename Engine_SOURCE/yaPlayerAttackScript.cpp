@@ -28,7 +28,7 @@ namespace ya
 		, mTimer{0.0f}
 		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.8f, 0.4f}
 		, mbKeyInput(false)
-		, mblockTime(0.0f)
+		, mBlockTime(0.0f)
 	{
 	}
 
@@ -52,7 +52,7 @@ namespace ya
 		{
 			std::wstring arm = ARM;
 			//weaponCollider->SetAnimOffSet(L"SwingSword1", Vector3(1, 0.5, 1));
-			weaponCollider->SetColliderActiveFrame(L"a050_300100_" + arm, 0, 40);
+			weaponCollider->SetColliderActiveFrame(L"a050_300100_" + arm, 5, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_305101_" + arm, 5, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_300020_" + arm, 5, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_300030_" + arm, 5, 40);
@@ -320,7 +320,7 @@ namespace ya
 		break;
 		case ya::PlayerAttackScript::eAttackState::Block:
 		{
-			mblockTime += Time::DeltaTime();
+			mBlockTime += Time::DeltaTime();
 
 			if (Input::GetKeyUp(eKeyCode::RBTN))
 			{
@@ -354,10 +354,7 @@ namespace ya
 					mPlayerAnim->Play(L"a050_002000");
 				}
 
-
-
-
-				mblockTime = 0.0f;
+				mBlockTime = 0.0f;
 			}
 		}
 		break;
