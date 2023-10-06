@@ -4,8 +4,8 @@
 namespace ya
 {
     class MeshData;
-	class Tenzen : public MonsterBase
-	{
+    class Tenzen : public MonsterBase
+    {
         //몬스터의 상태
         //뭐뭐있을까 ?
         //아무일도 없는경우 팔짱끼고 idle
@@ -18,27 +18,29 @@ namespace ya
         //방어 모션도 활용한다.
         //
         //
+
+    public:
         enum eTenzenState
         {
-            TenzenState_None =           0x00000000,
-            TenzenState_Idle =           0x00000001,
-            TenzenState_Alert =          0x00000002,
-            TenzenState_Recognize =      0x00000004,
-            TenzenState_DrawSword =      0x00000008,
-            TenzenState_Attack =         0x00000010,
-            TenzenState_Defense =        0x00000020,
-            TenzenState_Guard =          0x00000040,
-            TenzenState_GuardSuccess =   0x00000080,
-            TenzenState_GuardLeft =      0x00000100,
-            TenzenState_Trace =          0x00000200,
-            TenzenState_Move =           0x00000400,
-            TenzenState_OnHit =          0x00000800,
-            TenzenState_OnHitFront =     0x00001000,
-            TenzenState_SuperArmor =     0x00002000,
-            TenzenState_LookAt =         0x00004000,
-            TenzenState_Dead =           0x00008000,
+            TenzenState_None = 0x00000000,
+            TenzenState_Idle = 0x00000001,
+            TenzenState_Alert = 0x00000002,
+            TenzenState_Recognize = 0x00000004,
+            TenzenState_DrawSword = 0x00000008,
+            TenzenState_Attack = 0x00000010,
+            TenzenState_Defense = 0x00000020,
+            TenzenState_Guard = 0x00000040,
+            TenzenState_GuardSuccess = 0x00000080,
+            TenzenState_GuardLeft = 0x00000100,
+            TenzenState_Trace = 0x00000200,
+            TenzenState_Move = 0x00000400,
+            TenzenState_OnHit = 0x00000800,
+            TenzenState_OnHitFront = 0x00001000,
+            TenzenState_AttackBlocked = 0x00002000,
+            TenzenState_SuperArmor = 0x00004000,
+            TenzenState_LookAt = 0x00008000,
+            TenzenState_Dead = 0x00010000,
         };
-    public:
         Tenzen();
         virtual ~Tenzen();
 
@@ -58,7 +60,7 @@ namespace ya
 
         void Move();
         void LookAtPlayer();
-        
+
         void SetAnimationEvent();
 
 
@@ -77,6 +79,10 @@ namespace ya
         void OnCollisionStay(Collider2D* collider);
         void OnCollisionExit(Collider2D* collider);
 
+        void SetAnimationName(const std::wstring& name) { mAnimationName = name; }
+        void AddTenzenState(eTenzenState state);
+		
+        void SetAnimationChangeTime(float time ){ mMeshData->GetAnimator()->SetAnimationChangeTime(time); }
     private:
         std::shared_ptr<MeshData> mMeshData;
         GameObject* mKatanaCollider;
@@ -98,6 +104,8 @@ namespace ya
 
         Vector3 mMoveDir;
         bool mbAnimReset;
+
+        class TenzenSwordScript* mSwordScript;
 	};
 
 }

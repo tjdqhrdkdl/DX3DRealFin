@@ -65,7 +65,7 @@ namespace ya
 
 			//weaponCollider->SetColliderActiveFrame(L"a050_301050_" + arm, 0, 100);
 			weaponCollider->SetColliderActiveFrame(L"a050_314000_" + arm, 0, 20);
-			weaponCollider->SetColliderActiveFrame(L"a050_002000_" + arm, 0, 100);
+			//weaponCollider->SetColliderActiveFrame(L"a050_002000_" + arm, 0, 100);
 		}
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Attack, [owner]() {

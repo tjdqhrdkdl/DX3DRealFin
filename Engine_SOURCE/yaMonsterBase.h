@@ -84,7 +84,10 @@ namespace ya
         bool IsDeathBlow() { return mMonsterState->IsDeathBlow(); }
         //bool IsStartBlow() { return mMonsterState->IsStartBlow(); }
         bool IsDeathBlowOnOff() { return mMonsterState->IsDeathBlowOnOff(); }
-
+        float GetPosture() { mMonsterState->GetPosture(); }
+        float GetPostureMax() { mMonsterState->GetPostureMax(); }
+        int		GetResurrectionCount() { return mMonsterState->GetResurrectionCount(); }
+        int		GetResurrectionCountMax() { return mMonsterState->GetResurrectionCountMax(); }
 
 
         void SetState(State* state) { mMonsterState = state; }
@@ -102,8 +105,11 @@ namespace ya
         void SetDeathBlow(bool deathblow) { mMonsterState->SetDeathBlow(deathblow); }
         //void SetStartBlow(bool blow) { mMonsterState->SetStartBlow(blow); }
         void SetDeathBlowonoff(bool onoff) { mMonsterState->SetDeathBlowonoff(onoff); }
+        void SetPosture(float posture) { mMonsterState->SetPosture(posture); }
+        void SetPostureMax(float postureMax) { mMonsterState->SetPostureMax(postureMax); }
 
-
+        void		SetResurrectionCount(int count) {  mMonsterState->SetResurrectionCount(count); }
+        void		SetResurrectionCountMax(int count) {  mMonsterState->SetResurrectionCountMax(count); }
 
 #pragma endregion
 
