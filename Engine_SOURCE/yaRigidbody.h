@@ -49,6 +49,7 @@ namespace ya
 		Vector3 GetForce() { return mForce; }
 		void SetForce(Vector3 force) { mForce = force; }
 		void CheckGround();
+		bool ForwardCheck(Vector3 movement);
 
 	private:
 		class Transform* mTransform;

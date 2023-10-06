@@ -161,6 +161,16 @@ namespace ya
 			velo.z = 0.f;
 		}
 
+		if (ForwardCheck(velo))
+		{
+			velo = Vector3::Zero;
+
+			Vector3 objPos = mTransform->GetPosition();
+			objPos -= mVelocity * Time::DeltaTime();
+
+			mTransform->SetPosition(objPos);
+		}
+
 		Vector3 pos = tr->GetPosition();
 		pos += velo * Time::DeltaTime();
 		tr->SetPosition(pos);
@@ -302,5 +312,49 @@ namespace ya
 
 			mRotateDirection = Matrix::CreateFromAxisAngle(axis, -mGroundSlopeAngle);
 		}
+	}
+	bool Rigidbody::ForwardCheck(Vector3 movement)
+	{
+		Vector3 position = mTransform->GetPosition();
+		Vector3 scale = mTransform->GetScale();
+		Vector3 colScale = mCollider->GetSize();
+		Vector3 velocity = movement * Time::DeltaTime();
+		Vector3 dir = movement;
+		dir.Normalize();
+
+		float rayLength = scale.z / 2.f;
+
+		float velocityLength = velocity.Length();
+		float positionLength = position.Length();
+
+		scale *= colScale;
+
+		Vector3 top = position;
+		top.y += scale.y / 2.f;
+
+		Vector3 middle = position;
+
+		Vector3 bottom = position;
+		bottom.y -= scale.y / 2.f;
+
+		Vector3 rayDirection = dir;
+
+		std::vector<eLayerType> layers;
+		layers.push_back(eLayerType::Player);
+		layers.push_back(eLayerType::Monster);
+
+		RayHit ForwardHit[3];
+		ForwardHit[0] = CollisionManager::RayCast(GetOwner(), top, rayDirection, layers);
+		ForwardHit[1] = CollisionManager::RayCast(GetOwner(), middle, rayDirection, layers);
+		ForwardHit[2] = CollisionManager::RayCast(GetOwner(), bottom, rayDirection, layers);
+
+		for (int i = 0; i < 3; ++i)
+		{
+			//if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
+			if(rayLength >= ForwardHit[i].length && ForwardHit[i].isHit)
+				return true;
+		}
+
+		return false;
 	}
 }
