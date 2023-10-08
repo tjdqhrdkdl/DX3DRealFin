@@ -35,6 +35,7 @@ namespace ya
 		void Hang();
 		void Crouch();
 		void Hit();
+		void Death();
 
 	private:
 		Player* mPlayer;
@@ -56,7 +57,5 @@ namespace ya
 		bool mbTurn;
 		float mTurnTimer;
 		float mTurnTimerMax;
-
-		bool mbJumpDouble;
 	};
 }
