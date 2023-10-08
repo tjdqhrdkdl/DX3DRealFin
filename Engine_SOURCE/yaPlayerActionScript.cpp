@@ -185,6 +185,9 @@ namespace ya
 		if (mDashTimer > 0.0f)
 			return;
 
+		if (mPlayer->IsStateFlag(ePlayerState::Attack))
+			return;
+
 		Vector3 pos = mTransform->GetPosition();
 		Vector3 rot = mTransform->GetRotation();
 
@@ -230,9 +233,6 @@ namespace ya
 			cross = dir.Cross(cameraDir);
 			theta = acos(theta);
 			theta *= 180.0f / XM_PI;
-
-			if (theta > mFrontTheta)
-				mbTurn = true;
 		}
 
 		if (mbRotate)
@@ -285,6 +285,9 @@ namespace ya
 					mPlayerAnim->Play(L"a000_000011");
 				else
 					mPlayerAnim->Play(L"a000_000400");
+
+				if (abs(faceTheta) > 30.0f)
+					mbTurn = true;
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::A))
@@ -334,8 +337,10 @@ namespace ya
 						mPlayerAnim->Play(L"a000_000011");
 					else
 						mPlayerAnim->Play(L"a000_000400");
-				}
 
+					if (abs(faceTheta) > 30.0f)
+						mbTurn = true;
+				}
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::S))
@@ -384,6 +389,9 @@ namespace ya
 						mPlayerAnim->Play(L"a000_000011");
 					else
 						mPlayerAnim->Play(L"a000_000400");
+
+					if (abs(faceTheta) > 30.0f)
+						mbTurn = true;
 				}
 			}
 		}
@@ -433,6 +441,9 @@ namespace ya
 						mPlayerAnim->Play(L"a000_000011");
 					else
 						mPlayerAnim->Play(L"a000_000400");
+
+					if (abs(faceTheta) > 30.0f)
+						mbTurn = true;
 				}
 			}
 		}

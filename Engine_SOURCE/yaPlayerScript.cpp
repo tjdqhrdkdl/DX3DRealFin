@@ -28,7 +28,7 @@ namespace ya
 	PlayerScript::PlayerScript()
 		: Script()
 		, mMoveTimer(0.0f)
-		, mMoveTimerMax(0.1f)
+		, mMoveTimerMax(0.15f)
 		, mHitDirection(Vector3::Zero)
 	{
 	}
@@ -40,19 +40,6 @@ namespace ya
 	void PlayerScript::Initialize()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		{
-			// 플레이어의 forward를 구분하기위한 object
-			// 후에 mesh 씌우면 없앨 예정
-			/*GameObject* face = object::Instantiate<GameObject>(eLayerType::Player, tr);
-			face->SetName(L"face");
-			Transform* faceTr = face->GetComponent<Transform>();
-			faceTr->SetPosition(Vector3(0.0f, 0.5f, 0.5f));
-			faceTr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
-			MeshRenderer* faceRenderer = face->AddComponent<MeshRenderer>();
-			faceRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			faceRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
-
-		}
 
 		mPlayer = dynamic_cast<Player*>(GetOwner());
 		mPlayerAnim = mPlayer->GetScript<PlayerMeshScript>();
@@ -74,11 +61,9 @@ namespace ya
 		if (mMoveTimer > 0.0f)
 		{
 			mMoveTimer -= Time::DeltaTime();
-			//if (mMoveTimer < 1.0f)
-				action->Move(mHitDirection, 200.0f);
+			action->Move(mHitDirection, 200.0f);
 		}
 	}
-
 
 	void PlayerScript::Render()
 	{
@@ -93,7 +78,6 @@ namespace ya
 		{
 			if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
-				mPlayer->SetStateFlag(ePlayerState::Parrying, true);
 				mPlayer->SetStateFlag(ePlayerState::Block, false);
 
 				mPlayer->GetState()->AddPosture(-10);
@@ -152,7 +136,6 @@ namespace ya
 				if (mMoveTimer <= 0.0f)
 				{
 					mMoveTimer = mMoveTimerMax;
-					//mHitDirection = Vector3(-theta.x, 0.0f, -theta.z);
 					mHitDirection = -playerTr->Forward();
 				}
 			}

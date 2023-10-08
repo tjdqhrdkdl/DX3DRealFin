@@ -46,7 +46,8 @@ namespace ya
 		virtual void Render() override;
 
 	public:
-
+		eAttackState GetAttackState() { return mAttackState; }
+		float GetBlockTime() { return mBlockTime; }
 
 	private:
 		Player* mPlayer;
@@ -57,7 +58,7 @@ namespace ya
 		float mTimerMax[(UINT)eAttackState::End];
 		bool mbKeyInput;
 
-		float mblockTime;
+		float mBlockTime;
 
 
 	};
