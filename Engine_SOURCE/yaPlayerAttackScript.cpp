@@ -74,12 +74,14 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Walk, false);
 			player->SetStateFlag(ePlayerState::Sprint, false);
 			player->SetStateFlag(ePlayerState::Block, false);
-			player->SetStateFlag(ePlayerState::Parrying, false);
 			player->SetStateFlag(ePlayerState::Wall, false);
 		}));
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Attack, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Idle, true);
+
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->AdjustState();
 		}));
 	}
 
