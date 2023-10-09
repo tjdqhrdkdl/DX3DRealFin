@@ -77,32 +77,32 @@ namespace ya
 
 
 
-			//DeathBlowRecovery
-			if (IsDeathBlowOnOff())
-			{
-				SetDeathBlowCount(-(Time::DeltaTime() / 2));
-			}
-			else
-			{
-				mTime += Time::DeltaTime();
-				if (mTime >= 3.0f)
-				{
-					SetDeathBlowonoff(true);
-					mTime = 0.f;
-				}
-			}
+			////DeathBlowRecovery
+			//if (IsDeathBlowOnOff())
+			//{
+			//	SetDeathBlowCount(-(Time::DeltaTime() / 2));
+			//}
+			//else
+			//{
+			//	mTime += Time::DeltaTime();
+			//	if (mTime >= 3.0f)
+			//	{
+			//		SetDeathBlowonoff(true);
+			//		mTime = 0.f;
+			//	}
+			//}
 
-			//체간 게이지 차서 그로기 걸렸을때는 3초
-			if (GetSituation() == enums::eSituation::Groggy)
-			{
-				mTime += Time::DeltaTime();
-				if (mTime >= mRecoveryTime)
-				{
-					SetSituation(enums::eSituation::None);
-					SetDeathBlow(false);
-					mTime = 0.f;
-				}
-			}
+			////체간 게이지 차서 그로기 걸렸을때는 3초
+			//if (GetSituation() == enums::eSituation::Groggy)
+			//{
+			//	mTime += Time::DeltaTime();
+			//	if (mTime >= mRecoveryTime)
+			//	{
+			//		SetSituation(enums::eSituation::None);
+			//		SetDeathBlow(false);
+			//		mTime = 0.f;
+			//	}
+			//}
 
 			//if (IsDeathBlow())
 			//{

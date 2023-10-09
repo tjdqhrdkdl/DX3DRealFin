@@ -76,7 +76,7 @@ namespace ya
         State* GetState() { return mMonsterState; }
         enums::eSituation GetSituation() { return mMonsterState->GetSituation(); }
         float GetHP() { return mMonsterState->GetHP(); }
-        //float GetMaxHP() { return mMonsterState->GetMaxHP(); }
+        float GetMaxHP() { return mMonsterState->GetHPMax(); }
         float GetSpeed() { return mMonsterState->GetSpeed(); }
         float GetDeathBlowCount() { return mMonsterState->GetDeathBlowCount(); }
         float GetMaxDeathBlowCount() { return mMonsterState->GetMaxDeathBlowCount(); }
@@ -84,10 +84,11 @@ namespace ya
         bool IsDeathBlow() { return mMonsterState->IsDeathBlow(); }
         //bool IsStartBlow() { return mMonsterState->IsStartBlow(); }
         bool IsDeathBlowOnOff() { return mMonsterState->IsDeathBlowOnOff(); }
-        float GetPosture() { mMonsterState->GetPosture(); }
-        float GetPostureMax() { mMonsterState->GetPostureMax(); }
+        float GetPosture() { return mMonsterState->GetPosture(); }
+        float GetPostureMax() { return mMonsterState->GetPostureMax(); }
         int		GetResurrectionCount() { return mMonsterState->GetResurrectionCount(); }
         int		GetResurrectionCountMax() { return mMonsterState->GetResurrectionCountMax(); }
+        bool GetDeathBlowStart() {return mbDeathBlowStart; }
 
 
         void SetState(State* state) { mMonsterState = state; }
@@ -97,7 +98,7 @@ namespace ya
             mbOnceAnimation = OnceAniamtion;
         }
         void SetHp(float hp) { mMonsterState->SetHp(hp); }
-        //void SetMaxHP(float maxhp) { mMonsterState->SetMaxHP(maxhp); }
+        void SetMaxHP(float maxhp) { mMonsterState->SetHPMax(maxhp); }
         void SetSpeed(float speed) { mMonsterState->SetSpeed(speed); }
         void SetDeathBlowCount(float blowcount) { mMonsterState->SetDeathBlowCount(blowcount); }
         void SetMaxDeathBlowCount(float maxblowcount) { mMonsterState->SetMaxDeathBlowCount(maxblowcount); }
@@ -107,10 +108,9 @@ namespace ya
         void SetDeathBlowonoff(bool onoff) { mMonsterState->SetDeathBlowonoff(onoff); }
         void SetPosture(float posture) { mMonsterState->SetPosture(posture); }
         void SetPostureMax(float postureMax) { mMonsterState->SetPostureMax(postureMax); }
-
         void		SetResurrectionCount(int count) {  mMonsterState->SetResurrectionCount(count); }
         void		SetResurrectionCountMax(int count) {  mMonsterState->SetResurrectionCountMax(count); }
-
+        void SetDeathBlowStart(bool start) { mbDeathBlowStart = start; }
 #pragma endregion
 
 
@@ -169,7 +169,7 @@ namespace ya
         bool                mbDefense;
         bool                mbOnceAnimation;
 
-
+        bool                mbDeathBlowStart;
 
         float               mTime;
         float               mRecoveryTime;

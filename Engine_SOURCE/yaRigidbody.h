@@ -29,6 +29,8 @@ namespace ya
 		void SetGravity(Vector3 gravity) { mGravity = gravity; }
 		Vector3 GetGravity() { return mGravity; }
 
+		void SetFriction(float friction) { mFriction = friction; }
+
 		Vector3 GetLimitVelocity() { return mLimitVelocity; }
 		void SetLimitVelocity(Vector3 limit) { mLimitVelocity = limit; }
 

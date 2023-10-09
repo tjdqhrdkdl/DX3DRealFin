@@ -55,7 +55,7 @@ namespace ya
 
 	void BoneAnimator::FixedUpdate()
 	{
-		if (!mbAnimChanging && !mParentAnimator)
+		if (!mbAnimChanging && !mParentAnimator && !mbStop)
 		{
 			mCurrentTime = 0.0f;
 			mAnimationUpdateTime[mCurrentClip] += Time::DeltaTime();
@@ -101,7 +101,7 @@ namespace ya
 			mRatio = (float)(dFrameIdx - (double)mFrameIdx);
 		}
 		
-		else if (!mParentAnimator)
+		else if (!mParentAnimator && !mbStop)
 		{
 			mAnimChangeTimeChecker += Time::DeltaTime();
 
