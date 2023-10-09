@@ -65,6 +65,7 @@ namespace ya
 		void SetAnimationTailTime(float time) { mAnimationTailTime = time; }
 		void SetParentAnimator(BoneAnimator* animator) { mParentAnimator = animator; }
 		void SetAnimationChangeTime(float time) { mAnimChangeTime = time; }
+		void SetStop(bool stop) { mbStop = stop; }
 
 		std::function<void()>& GetStartEvent(const std::wstring& name);
 		std::function<void()>& GetCompleteEvent(const std::wstring& name);
@@ -75,7 +76,7 @@ namespace ya
 		int GetAnimationIdxByName(const std::wstring& name) { if (mAnimationNameAndIndexMap.find(name) == mAnimationNameAndIndexMap.end()) return -1; else return mAnimationNameAndIndexMap[name]; }
 		std::wstring GetPlayAnimationName() { return mAnimationClips->at(mCurrentClip).name; }
 		bool isChanging() { return mbAnimChanging; }
-
+		
 	private:
 		const std::vector<BoneMatrix>* mBones;
 		const std::vector<BoneAnimationClip>* mAnimationClips;
@@ -100,7 +101,8 @@ namespace ya
 		//애니메이션 도중 event
 		std::map<std::wstring, Events*> mEvents;
 
-		
+		bool mbStop;
+
 		//애니메이션 사이 보간을 위한 변수
 		bool mbAnimChanging;
 		float mAnimChangeTime;
@@ -116,5 +118,7 @@ namespace ya
 
 		//부모 본애니메이터
 		BoneAnimator* mParentAnimator;
+
+
 	};
 }

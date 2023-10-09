@@ -38,8 +38,10 @@ namespace ya
             TenzenState_OnHitFront = 0x00001000,
             TenzenState_AttackBlocked = 0x00002000,
             TenzenState_SuperArmor = 0x00004000,
-            TenzenState_LookAt = 0x00008000,
-            TenzenState_Dead = 0x00010000,
+            TenzenState_Groggy = 0x00004000,
+            TenzenState_DeathBlow = 0x00008000,
+            TenzenState_LookAt = 0x00010000,
+            TenzenState_Dead = 0x00020000,
         };
         Tenzen();
         virtual ~Tenzen();
@@ -57,12 +59,16 @@ namespace ya
         void Trace();
         void Guard();
         void OnHit();
+        void Groggy();
+        void SettingSituation();
+
 
         void Move();
         void LookAtPlayer();
+        
 
         void SetAnimationEvent();
-
+       
 
 
         void RotateForwardTo(Vector3 dir);
