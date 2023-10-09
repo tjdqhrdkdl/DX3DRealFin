@@ -19,19 +19,23 @@ namespace ya
 		, mVelocity(Vector3::Zero)
 		, mAccelation(Vector3::Zero)
 		, mFriction(180.0f)
+
 		, mRightWallDir(Vector3::Zero)
 		, mGroundDistance(0.f)
 		, mGroundNormal(Vector3::Zero)
 		, mGroundSlopeAngle(0.f)
 		, mForwardSlopeAngle(0.f)
 		, mGroundCross(0.f)
-		, mbMoving(false)
-		, mbRunning(false)
+
+		//, mbMoving(false)
+		//, mbRunning(false)
 		, mbJumping(false)
 		, mbGrounded(false)
 		, mbForwardBlocked(false)
+
 		, mJumpEvent(nullptr)
 		, mGroundEvent(nullptr)
+		, mJumpCount(0)
 	{
 		mGravity = Vector3(0.0f, -160.0f, 0.0f);
 		mLimitVelocity = Vector3(18.0f, 28.0f, 18.0f);
@@ -271,12 +275,13 @@ namespace ya
 			{ // 바닥으로 부터 거리가 0.001f 미만일때
 				if (!mbGrounded)
 				{	// 착지하는지 체크
-					// ground가 아닌 상태(공중일 때)에서 jumpTimer가 종료 됐을 때(jump가 끝났을 때) jump->ground로 상태가 변화한 것으로 판단한다.
-					// jumpTimer가 0.0f 보다 크면 jump를 시작한 것이므로 jump 상태를 false로 바꾸지 않는다.
 					mbJumping = false;
 
 					if (mGroundEvent != nullptr)
+					{
 						mGroundEvent();
+						mJumpCount = 0;
+					}
 				}
 
 				mbGrounded = true;

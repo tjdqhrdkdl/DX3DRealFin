@@ -28,7 +28,7 @@ namespace ya
 		, mTimer{0.0f}
 		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.8f, 0.4f}
 		, mbKeyInput(false)
-		, mblockTime(0.0f)
+		, mBlockTime(0.0f)
 	{
 	}
 
@@ -52,7 +52,7 @@ namespace ya
 		{
 			std::wstring arm = ARM;
 			//weaponCollider->SetAnimOffSet(L"SwingSword1", Vector3(1, 0.5, 1));
-			weaponCollider->SetColliderActiveFrame(L"a050_300100_" + arm, 0, 40);
+			weaponCollider->SetColliderActiveFrame(L"a050_300100_" + arm, 5, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_305101_" + arm, 5, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_300020_" + arm, 5, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_300030_" + arm, 5, 40);
@@ -65,7 +65,7 @@ namespace ya
 
 			//weaponCollider->SetColliderActiveFrame(L"a050_301050_" + arm, 0, 100);
 			weaponCollider->SetColliderActiveFrame(L"a050_314000_" + arm, 0, 20);
-			weaponCollider->SetColliderActiveFrame(L"a050_002000_" + arm, 0, 100);
+			//weaponCollider->SetColliderActiveFrame(L"a050_002000_" + arm, 0, 100);
 		}
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Attack, [owner]() {
@@ -74,12 +74,14 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Walk, false);
 			player->SetStateFlag(ePlayerState::Sprint, false);
 			player->SetStateFlag(ePlayerState::Block, false);
-			player->SetStateFlag(ePlayerState::Parrying, false);
 			player->SetStateFlag(ePlayerState::Wall, false);
 		}));
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Attack, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Idle, true);
+
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->AdjustState();
 		}));
 	}
 
@@ -320,7 +322,7 @@ namespace ya
 		break;
 		case ya::PlayerAttackScript::eAttackState::Block:
 		{
-			mblockTime += Time::DeltaTime();
+			mBlockTime += Time::DeltaTime();
 
 			if (Input::GetKeyUp(eKeyCode::RBTN))
 			{
@@ -354,10 +356,7 @@ namespace ya
 					mPlayerAnim->Play(L"a050_002000");
 				}
 
-
-
-
-				mblockTime = 0.0f;
+				mBlockTime = 0.0f;
 			}
 		}
 		break;

@@ -29,6 +29,8 @@ namespace ya
 		void SetGravity(Vector3 gravity) { mGravity = gravity; }
 		Vector3 GetGravity() { return mGravity; }
 
+		void SetFriction(float friction) { mFriction = friction; }
+
 		Vector3 GetLimitVelocity() { return mLimitVelocity; }
 		void SetLimitVelocity(Vector3 limit) { mLimitVelocity = limit; }
 
@@ -44,6 +46,9 @@ namespace ya
 
 		std::function<void()>& GetJumpEvent() { return mJumpEvent; }
 		std::function<void()>& GetGroundEvent() { return mGroundEvent; }
+
+		void AddJumpCount() { mJumpCount++; }
+		UINT GetJumpCount() { return mJumpCount; }
 
 	private:
 		Vector3 GetForce() { return mForce; }
@@ -77,11 +82,12 @@ namespace ya
 		float mGroundSlopeAngle;
 		float mForwardSlopeAngle;
 
-		bool mbMoving;
-		bool mbRunning;
+		//bool mbMoving;
+		//bool mbRunning;
 		bool mbJumping;
 		bool mbGrounded;
 		bool mbForwardBlocked;
+		UINT mJumpCount;			// 이단 점프 체크
 
 		/// <summary> 점프 상태가 시작될때 발생하는 이벤트 </summary>
 		std::function<void()> mJumpEvent;
