@@ -75,6 +75,7 @@ namespace ya
 		mVelocity += (mAccelation * Time::DeltaTime());
 
 		if (mbGrounded && !mbJumping)
+
 		{ // 땅
 			Vector3 gravity = mGravity;
 			gravity.Normalize();
