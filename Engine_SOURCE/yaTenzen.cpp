@@ -652,6 +652,7 @@ namespace ya
 		mMeshData->GetAnimationEndEvent(L"ParriedRight") = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
 
 
+
 		mMeshData->GetAnimationFrameEvent(L"Hit1", 18) = [this]() { RM_STATE(TenzenState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
 		mMeshData->GetAnimationFrameEvent(L"Hit2", 18) = [this]() { RM_STATE(TenzenState_OnHit); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
 		mMeshData->GetAnimationEndEvent(L"Hit1") = [this]() { RM_STATE(TenzenState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
@@ -802,7 +803,7 @@ namespace ya
 					RM_STATE(TenzenState_Trace);
 
 					mbAnimReset = true;
-					SetPosture(GetPosture() - 80);
+					SetPosture(GetPosture() - 1);
 					mMeshData->GetAnimator()->SetAnimationChangeTime(0.1);
 
 				}
@@ -824,7 +825,7 @@ namespace ya
 
 					SetHp(GetHP() - 5);
 					//체간 깎기
-					SetPosture(GetPosture() - 7);
+					SetPosture(GetPosture() - 50);
 
 					//인살가능상태에서 공격당함(인살당함)
 					if (true == IsDeathBlow())
