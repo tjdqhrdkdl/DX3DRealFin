@@ -6,6 +6,7 @@ namespace ya::enums
 	{
 		Tilte,
 		Play,
+		Loading,
 		End,
 	};
 
