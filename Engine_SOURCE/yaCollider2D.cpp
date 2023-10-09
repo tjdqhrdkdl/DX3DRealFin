@@ -12,6 +12,7 @@ namespace ya
 		, mTransform(nullptr)
 		, mSize(Vector3::One)
 		, mCenter(Vector3::Zero)
+		, mRotation(Vector3::Zero)
 		, mbTrigger(false)
 		, mID(0)
 		, mRadius(0.0f)
@@ -41,6 +42,7 @@ namespace ya
 		scale *= Vector3(mSize.x, mSize.y, mSize.z);
 
 		Vector3 rotation = mTransform->GetRotation();
+		rotation += mRotation;
 
 		Vector3 position = mTransform->GetPosition();
 		Vector3 colliderPos = position + Vector3(mCenter.x, mCenter.y, mCenter.z);

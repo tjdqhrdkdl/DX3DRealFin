@@ -20,7 +20,6 @@
 #include "CommonInclude.h"
 #include "yaEnums.h"
 
-
-
-
+#include "yaSekiroCommons.h"
+#include "yaSekiroEnums.h"
 

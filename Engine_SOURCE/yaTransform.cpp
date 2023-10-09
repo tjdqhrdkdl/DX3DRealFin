@@ -19,7 +19,6 @@ namespace ya
 		, mRotationOffset(Vector3::Zero)
 		, mParent(nullptr)
 	{
-
 	}
 
 	Transform::~Transform()
@@ -102,6 +101,7 @@ namespace ya
 			mRight = Vector3::TransformNormal(Vector3::Right, matRT);
 			mUp = Vector3::TransformNormal(Vector3::Up, matRT);
 		}
+		
 		else
 		{
 			mFinalScale = mScale;

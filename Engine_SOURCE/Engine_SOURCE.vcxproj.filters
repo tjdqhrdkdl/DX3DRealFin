@@ -285,6 +285,12 @@
     <ClCompile Include="yaLoadingScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="yaTenzenCollisionScript.cpp">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClCompile>
+    <ClCompile Include="yaTenzenSwordScript.cpp">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -593,6 +599,12 @@
     </ClInclude>
     <ClInclude Include="yaLoadingScene.h">
       <Filter>Contents\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTenzenCollisionScript.h">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTenzenSwordScript.h">
+      <Filter>Contents\Monster\Tenzen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

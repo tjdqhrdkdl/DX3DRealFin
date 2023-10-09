@@ -18,7 +18,7 @@ namespace ya
 		, mChildPos(Vector3(0, 0, -40))
 		, mThetaAxisY(1.57)
 		, mThetaAxisX(1.57)
-		, mDistFromTarget(40)
+		, mDistFromTarget(10)
 		, mDelayTime(0.2f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
@@ -212,12 +212,12 @@ namespace ya
 						//카메라 오브젝트의 회전을 바꿔준다.
 
 						//구 이동
-						mChildPos -= 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+						mChildPos -= 2 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 						mChildPos.Normalize();
 						mChildPos *= mDistFromTarget;
 
 
-						mChildPos -= 30 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+						mChildPos -= 1 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 						mChildPos.Normalize();
 						mChildPos *= mDistFromTarget;
 

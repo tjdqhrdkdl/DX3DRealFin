@@ -16,6 +16,8 @@
 #include "yaBoneCollider.h"
 #include "yaObject.h"
 
+#include "yaCameraScript.h"
+
 namespace ya
 {
 	PlayerAttackScript::PlayerAttackScript()
@@ -24,8 +26,9 @@ namespace ya
 		, mPlayerAnim(nullptr)
 		, mAttackState(eAttackState::None)
 		, mTimer{0.0f}
-		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.8f, 0.25f}
+		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.8f, 0.4f}
 		, mbKeyInput(false)
+		, mblockTime(0.0f)
 	{
 	}
 
@@ -47,22 +50,22 @@ namespace ya
 		BoneCollider* weaponCollider = mPlayer->GetWeaponCollider();
 		if (weaponCollider != nullptr)
 		{
+			std::wstring arm = ARM;
 			//weaponCollider->SetAnimOffSet(L"SwingSword1", Vector3(1, 0.5, 1));
-			//weaponCollider->SetColliderActiveFrame(L"a000_000000", 0, 90);
-			weaponCollider->SetColliderActiveFrame(L"a050_300100", 0, 40);
-			weaponCollider->SetColliderActiveFrame(L"a050_305101", 5, 40);
-			weaponCollider->SetColliderActiveFrame(L"a050_300020", 5, 40);
-			weaponCollider->SetColliderActiveFrame(L"a050_300030", 5, 40);
-			weaponCollider->SetColliderActiveFrame(L"a050_300040", 5, 40);
+			weaponCollider->SetColliderActiveFrame(L"a050_300100_" + arm, 0, 40);
+			weaponCollider->SetColliderActiveFrame(L"a050_305101_" + arm, 5, 40);
+			weaponCollider->SetColliderActiveFrame(L"a050_300020_" + arm, 5, 40);
+			weaponCollider->SetColliderActiveFrame(L"a050_300030_" + arm, 5, 40);
+			weaponCollider->SetColliderActiveFrame(L"a050_300040_" + arm, 5, 40);
 
-			weaponCollider->SetColliderActiveFrame(L"a050_308010", 0, 20);
-			weaponCollider->SetColliderActiveFrame(L"a050_308000", 0, 20);
-			weaponCollider->SetColliderActiveFrame(L"a050_308050", 0, 20);
-			weaponCollider->SetColliderActiveFrame(L"a050_308060", 0, 20);
+			weaponCollider->SetColliderActiveFrame(L"a050_308010_" + arm, 0, 20);
+			weaponCollider->SetColliderActiveFrame(L"a050_308000_" + arm, 0, 20);
+			weaponCollider->SetColliderActiveFrame(L"a050_308050_" + arm, 0, 20);
+			weaponCollider->SetColliderActiveFrame(L"a050_308060_" + arm, 0, 20);
 
-			//weaponCollider->SetColliderActiveFrame(L"a050_301050", 0, 100);
-			weaponCollider->SetColliderActiveFrame(L"a050_314000", 0, 20);
-			weaponCollider->SetColliderActiveFrame(L"a050_002000", 0, 100);
+			//weaponCollider->SetColliderActiveFrame(L"a050_301050_" + arm, 0, 100);
+			weaponCollider->SetColliderActiveFrame(L"a050_314000_" + arm, 0, 20);
+			weaponCollider->SetColliderActiveFrame(L"a050_002000_" + arm, 0, 100);
 		}
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Attack, [owner]() {
@@ -130,7 +133,33 @@ namespace ya
 			{
 				mPlayer->SetStateFlag(ePlayerState::Block, true);
 				mAttackState = eAttackState::Block;
-				mPlayerAnim->Play(L"a050_002000");
+
+				GameObject* camera = mPlayer->GetCamera();
+				CameraScript* cameraScript = camera->GetScript<CameraScript>();
+				bool bLockOn = cameraScript->IsLockOn();
+
+				if (mPlayer->IsStateFlag(ePlayerState::Walk))
+				{
+					if (bLockOn)
+					{
+						if(Input::GetKey(eKeyCode::W))
+							mPlayerAnim->Play(L"a050_002010");
+						else if(Input::GetKey(eKeyCode::S))
+							mPlayerAnim->Play(L"a050_002011");
+						else if(Input::GetKey(eKeyCode::D))
+							mPlayerAnim->Play(L"a050_002012");
+						else if(Input::GetKey(eKeyCode::A))
+							mPlayerAnim->Play(L"a050_002013");
+					}
+					else
+					{
+						mPlayerAnim->Play(L"a050_002010");
+					}
+				}
+				else
+				{
+					mPlayerAnim->Play(L"a050_002000");
+				}
 			}
 		}
 		break;
@@ -291,19 +320,44 @@ namespace ya
 		break;
 		case ya::PlayerAttackScript::eAttackState::Block:
 		{
+			mblockTime += Time::DeltaTime();
+
 			if (Input::GetKeyUp(eKeyCode::RBTN))
 			{
 				mAttackState = eAttackState::None;
 				mPlayer->SetStateFlag(ePlayerState::Block, false);
 
+				GameObject* camera = mPlayer->GetCamera();
+				CameraScript* cameraScript = camera->GetScript<CameraScript>();
+				bool bLockOn = cameraScript->IsLockOn();
+
 				if (mPlayer->IsStateFlag(ePlayerState::Walk))
 				{
-
+					if (bLockOn)
+					{
+						if (Input::GetKey(eKeyCode::W))
+							mPlayerAnim->Play(L"a050_002010");
+						else if (Input::GetKey(eKeyCode::S))
+							mPlayerAnim->Play(L"a050_002011");
+						else if (Input::GetKey(eKeyCode::D))
+							mPlayerAnim->Play(L"a050_002012");
+						else if (Input::GetKey(eKeyCode::A))
+							mPlayerAnim->Play(L"a050_002013");
+					}
+					else
+					{
+						mPlayerAnim->Play(L"a050_002010");
+					}
 				}
 				else
 				{
-					mPlayerAnim->Play(L"a000_000000");
+					mPlayerAnim->Play(L"a050_002000");
 				}
+
+
+
+
+				mblockTime = 0.0f;
 			}
 		}
 		break;

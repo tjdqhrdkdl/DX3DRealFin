@@ -3,6 +3,7 @@
 #include "yaResources.h"
 #include "yaMeshData.h"
 #include "yaTransform.h"
+#include "yaCollider2D.h"
 #include "CSVEditor.h"
 #include "Utils.h"
 
@@ -26,7 +27,7 @@ namespace ya
 		std::fs::path csvPath(gResPath);
 		csvPath /= L"Map";
 		csvPath /= L"SekiroMapMeshData.csv";
-		CSVEditor csv{};
+		CSVEditor csv{};	
 		csv.ReadFile(csvPath);
 
 		size_t size = csv.GetRowCount();
@@ -52,6 +53,7 @@ namespace ya
 
 			GameObject* created = LoadMapObject(fileName, posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
 			created->SetName(objID);
+
 		}
 
 		//LoadMapObject(L"m11_00_00_00_260000.fbx",
@@ -86,5 +88,18 @@ namespace ya
 		childTr->SetRotation(-_rotationX, -_rotationZ, -_rotationY);
 		childTr->SetScale(_scaleX, _scaleZ, _scaleY);
 		return obj;
+	}
+
+	void MapObjects::AddCollider(GameObject* obj,
+		float _rotationX, float _rotationY, float _rotationZ,
+		float _scaleX, float _scaleY, float _scaleZ)
+	{
+		assert(nullptr != obj);
+
+		Collider2D* col = obj->AddComponent<Collider2D>();
+		
+		col->SetType(eColliderType::Box);
+		col->SetRotation(Vector3(_rotationX, _rotationZ, _rotationY));
+		col->SetSize(Vector3(_scaleX, _scaleZ, _scaleY));
 	}
 }
