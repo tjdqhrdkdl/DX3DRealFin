@@ -28,7 +28,7 @@ namespace ya
 
 		mScenes[(UINT)eSceneType::Tilte] = new TitleScene();
 		mScenes[(UINT)eSceneType::Tilte]->SetName(L"TitleScene");
-		mScenes[(UINT)eSceneType::Tilte]->SetThreadLoad(true);
+		//mScenes[(UINT)eSceneType::Tilte]->SetThreadLoad(true);
 		mScenes[(UINT)eSceneType::Tilte]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Tilte);
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
@@ -53,7 +53,7 @@ namespace ya
 			}
 		}
 
-		mActiveScene = mScenes[(UINT)eSceneType::Loading];
+		mActiveScene = mScenes[(UINT)eSceneType::Tilte];
 	}
 
 	void SceneManager::Update()
