@@ -12,11 +12,12 @@ namespace ya::enums
 		Crouch		= 1 << 4,		// 웅크리기
 		Wall		= 1 << 5,		// 벽에 붙기(벽과 상호작용)
 		Hang		= 1 << 6,		// 매달리기(벽과 상호작용)
-		Attack		= 1 << 7,		// 공격
-		Block		= 1 << 8,		// 방어
-		Hit			= 1 << 9,		// 피격
-		FallDown	= 1 << 10,		// 쓰러진 상태
-		Death		= 1 << 11,
+		Hook		= 1 << 7,		// 밧줄 날리기
+		Attack		= 1 << 8,		// 공격
+		Block		= 1 << 9,		// 방어
+		Hit			= 1 << 10,		// 피격
+		FallDown	= 1 << 11,		// 쓰러진 상태
+		Death		= 1 << 12,
 	};
 
 	enum class eProsthetics

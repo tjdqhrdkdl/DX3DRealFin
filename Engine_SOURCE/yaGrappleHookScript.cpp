@@ -7,6 +7,8 @@
 #include "yaCollisionManager.h"
 
 #include "yaPlayer.h"
+#include "yaPlayerMeshScript.h"
+
 #include "yaApplication.h"
 #include "yaInput.h"
 
@@ -16,8 +18,10 @@ namespace ya
 {
 	GrappleHookScript::GrappleHookScript()
 		: Script()
+		, mPlayer(nullptr)
+		, mPlayerAnim(nullptr)
 		, mHookTarget(nullptr)
-		, mSpeed(160.0f)
+		, mSpeed(60.0f)
 		, mDirection(Vector3::Zero)
 		, mDistance(0.0f)
 		, mCurrentDistance(0.0f)
@@ -25,7 +29,6 @@ namespace ya
 		, mHookTargetDistance(1000.0f)
 		
 		, mHookTargetCount(0)
-
 	{
 	}
 	GrappleHookScript::~GrappleHookScript()
@@ -33,38 +36,34 @@ namespace ya
 	}
 	void GrappleHookScript::Initialize()
 	{
+		mPlayer = dynamic_cast<Player*>(GetOwner());
+		mPlayerAnim = mPlayer->GetScript<PlayerMeshScript>();
 	}
 
 	void GrappleHookScript::Update()
 	{
-		Player* player = dynamic_cast<Player*>(GetOwner());
-
-		GameObject* camera = player->GetCamera();
+		/*GameObject* camera = mPlayer->GetCamera();
 		Transform* cameraTr = camera->GetComponent<Transform>();
-		Vector3 cameraPos = cameraTr->GetPosition();
+		Vector3 cameraPos = cameraTr->GetPosition();*/
 
 		if (mbGrappleHook)
 		{
-			if (mCurrentDistance > 2.0f)
+			if (mCurrentDistance < mDistance)
 			{
-				GameObject* owner = GetOwner();
-
-				Rigidbody* rigidbody = owner->GetComponent<Rigidbody>();
-				//rigidbody->SetGround(false);
-
-				Transform* tr = owner->GetComponent<Transform>();
+				Transform* tr = mPlayer->GetComponent<Transform>();
 				Vector3 pos = tr->GetPosition();
 
 				float speed = mSpeed * Time::DeltaTime();
-
 				pos += mDirection * speed;
-				tr->SetPosition(pos);
-
-				mCurrentDistance -= speed;
+				mCurrentDistance += speed;
+				
+				float height = pos.y + 0.2f + ((-mCurrentDistance * mCurrentDistance + mDistance * mCurrentDistance) / (mDistance * mDistance * 1000.0f));
+				tr->SetPosition(Vector3(pos.x, height, pos.z));
 			}
 			else
 			{
 				mbGrappleHook = false;
+				mPlayer->SetStateFlag(ePlayerState::Hook, false);
 			}
 		}
 	}
@@ -75,12 +74,17 @@ namespace ya
 
 	void GrappleHookScript::Render()
 	{
-		/*if (mHookTarget != nullptr)
-		{
-			wchar_t szFloat[50] = {};
-			swprintf_s(szFloat, 50, L"target on");
-			TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
-		}*/
+		wchar_t szFloat[50] = {};
+		swprintf_s(szFloat, 50, (mPlayer->IsStateFlag(ePlayerState::Hook)) ? L"true" : L"false");
+		TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
+
+		//if (mHookTarget != nullptr)
+		//{
+		//	wchar_t szFloat[50] = {};
+		//	//swprintf_s(szFloat, 50, L"target on");
+		//	swprintf_s(szFloat, 50, (mPlayer->IsStateFlag(ePlayerState::Hook))?L"true":L"false");
+		//	TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
+		//}
 	}
 
 	void GrappleHookScript::SetHookTarget(GameObject* target, float distance)
@@ -111,22 +115,35 @@ namespace ya
 		}
 
 		mbGrappleHook = true;
+		mPlayer->SetStateFlag(ePlayerState::Hook, true);
+
+		Rigidbody* rigidbody = mPlayer->GetComponent<Rigidbody>();
+
+		if (rigidbody->IsGrounded())
+		{
+			mPlayerAnim->Play(L"a000_202000");
+		}
+		else
+		{
+			mPlayerAnim->Play(L"a000_202100");
+		}
+
+		Transform* playerTr = mPlayer->GetComponent<Transform>();
+		Vector3 playerPos = playerTr->GetPosition();
 
 		Transform* targetTr = mHookTarget->GetComponent<Transform>();
-		mHookTargetPosition = targetTr->GetPosition() + Vector3(0.0f, 15.0f, 0.0f);
-
-		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 pos = tr->GetPosition();
+		mHookTargetPosition = targetTr->GetPosition();
 
 		// 거리 구하기
-		mDistance = pos.Distance(pos, mHookTargetPosition);
-		mCurrentDistance = mDistance;
+		Vector3 hookVector = mHookTargetPosition - playerPos;
+		mDistance = playerPos.Distance(playerPos, mHookTargetPosition);
+		mCurrentDistance = 0.0f;
 
 		// 방향 구하기
-		Vector3 dir = mHookTargetPosition - pos;
+		Vector3 dir = mHookTargetPosition - playerPos;
 		dir.Normalize();
 		mDirection = dir;
 
-		tr->SetRotation(mDirection);
+		playerTr->SetRotation(mDirection);
 	}
 }

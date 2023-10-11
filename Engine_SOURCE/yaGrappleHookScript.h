@@ -4,6 +4,8 @@
 
 namespace ya
 {
+	class Player;
+	class PlayerMeshScript;
 	class GrappleHookScript : public Script
 	{
 
@@ -39,6 +41,9 @@ namespace ya
 		void GrappleHook();
 
 	private:
+		Player* mPlayer;
+		PlayerMeshScript* mPlayerAnim;
+
 		UINT mHookTargetCount;
 		
 		GameObject* mHookTarget;

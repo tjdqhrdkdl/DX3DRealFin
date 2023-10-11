@@ -103,6 +103,9 @@ namespace ya
 
 	void PlayerAttackScript::Update()
 	{
+		if (mPlayer->IsStateFlag(ePlayerState::Hook))
+			return;
+
 		Transform* playerTr = mPlayer->GetComponent<Transform>();
 		PlayerActionScript* playerAction = mPlayer->GetScript<PlayerActionScript>();
 

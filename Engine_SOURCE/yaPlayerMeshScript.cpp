@@ -147,6 +147,10 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a000_100102_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_100103_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
 
+                //밧줄
+                meshData->GetAnimationCompleteEvent(L"a000_202000_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_202100_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
+
                 // 매달리기
                 meshData->GetAnimationCompleteEvent(L"a000_217103_" + name) = [meshData, name]() { meshData->Play(L"a000_020000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_217500_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
