@@ -263,7 +263,6 @@
     <ClCompile Include="UIHPBarScript.cpp">
       <Filter>Contents\UI</Filter>
     </ClCompile>
-    <ClCompile Include="MapObjects.cpp" />
     <ClCompile Include="yaPlayerProjectileScript.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
@@ -291,6 +290,10 @@
     <ClCompile Include="yaTenzenSwordScript.cpp">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClCompile>
+    <ClCompile Include="MapObjects.cpp">
+      <Filter>Contents\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMapCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -549,7 +552,6 @@
     <ClInclude Include="yaRedOgre.h">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClInclude>
-    <ClInclude Include="MapObjects.h" />
     <ClInclude Include="UICanvasObj.h" />
     <ClInclude Include="UICanvas_InGame.h" />
     <ClInclude Include="UIHPBarScript.h" />
@@ -606,6 +608,10 @@
     <ClInclude Include="yaTenzenSwordScript.h">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClInclude>
+    <ClInclude Include="MapObjects.h">
+      <Filter>Contents\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMapCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -790,6 +796,9 @@
     </Filter>
     <Filter Include="Engine\Component\BoundarySphere">
       <UniqueIdentifier>{5d0c93a7-566b-4b19-aad4-f2082c5feae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Map">
+      <UniqueIdentifier>{fb88424e-b5ef-496d-80de-99299c8fe25e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

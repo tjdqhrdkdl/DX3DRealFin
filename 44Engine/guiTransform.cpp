@@ -1,7 +1,7 @@
 #include "guiTransform.h"
 #include "yaTransform.h"
 #include "yaCollider2D.h"
-
+#include "yaRenderer.h"
 namespace gui
 {
 	Transform::Transform()
@@ -20,7 +20,7 @@ namespace gui
 	{
 		Component::FixedUpdate();
 
-
+	
 		if (GetTarget() == nullptr)
 			return;
 
@@ -68,6 +68,11 @@ namespace gui
 
 		ImGui::Text("ColliderCenter"); ImGui::SameLine();
 		ImGui::InputFloat3("##ColliderCenter", (float*)&mColliderCenter);
+
+		ya::Transform* camTr = ya::renderer::mainCamera->GetOwner()->GetComponent<ya::Transform>();
+		ya::math::Vector3 camPos = camTr->GetPosition();
+		ImGui::Text("CameraPosition"); ImGui::SameLine();
+		ImGui::InputFloat3("##CameraPosition", (float*)&(camPos));
 
 		if (GetTarget())
 		{

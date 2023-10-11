@@ -44,6 +44,7 @@
 #include "UICanvas_InGame.h"
 #include "MapObjects.h"
 #include "yaBoundarySphere.h"
+#include "yaMapCollider.h"
 
 namespace ya
 {
@@ -262,12 +263,16 @@ namespace ya
 
 		{
 
-			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
-			//Transform* objTransform = obj->GetComponent<Transform>();
-			//objTransform->SetPosition(-85.f, 35.f, 130.f);
-			//objTransform->SetRotation(-90.f, 0.f, 0.f);
+			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			Transform* objTransform = obj->GetComponent<Transform>();
+			objTransform->SetPosition(-85.f, 35.f, 130.f);
+			objTransform->SetRotation(-90.f, 0.f, 0.f);
+			//2411 5640 5710 6600 6610 6620 3651 3313 
 		}
 
+		{
+			object::Instantiate<MapCollider>(eLayerType::Ground);
+		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 		object::Instantiate<Tenzen>(eLayerType::Monster);
 
