@@ -82,12 +82,6 @@ namespace ya
 
 				mPlayer->GetState()->AddPosture(-10);
 
-				Transform* playerTr = mPlayer->GetComponent<Transform>();
-				Vector3 playerPos = playerTr->GetPosition();
-				Vector3 playerDir = playerTr->Forward();
-
-				Vector3 colliderPos = collider->GetPosition();
-
 				// 플레이어의 방향과 collider간의 각도를 구한다.
 				Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));
 				Vector3 quaterToEuler = quater.ToEuler();

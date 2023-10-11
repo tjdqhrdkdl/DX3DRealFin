@@ -83,6 +83,22 @@ namespace ya
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->AdjustState();
 		}));
+
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			player->SetStateFlag(ePlayerState::Sprint, false);
+			player->SetStateFlag(ePlayerState::Attack, false);
+			
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity(10.0f);
+		}));
+
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
+			action->Velocity();
+		}));
+
 	}
 
 	void PlayerAttackScript::Update()
@@ -333,28 +349,7 @@ namespace ya
 				CameraScript* cameraScript = camera->GetScript<CameraScript>();
 				bool bLockOn = cameraScript->IsLockOn();
 
-				if (mPlayer->IsStateFlag(ePlayerState::Walk))
-				{
-					if (bLockOn)
-					{
-						if (Input::GetKey(eKeyCode::W))
-							mPlayerAnim->Play(L"a050_002010");
-						else if (Input::GetKey(eKeyCode::S))
-							mPlayerAnim->Play(L"a050_002011");
-						else if (Input::GetKey(eKeyCode::D))
-							mPlayerAnim->Play(L"a050_002012");
-						else if (Input::GetKey(eKeyCode::A))
-							mPlayerAnim->Play(L"a050_002013");
-					}
-					else
-					{
-						mPlayerAnim->Play(L"a050_002010");
-					}
-				}
-				else
-				{
-					mPlayerAnim->Play(L"a050_002000");
-				}
+				playerAction->AdjustState();
 
 				mBlockTime = 0.0f;
 			}
