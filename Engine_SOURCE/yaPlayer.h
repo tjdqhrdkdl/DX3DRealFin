@@ -6,6 +6,7 @@
 
 namespace ya
 {
+	class MonsterBase;
 	class Player : public GameObject
 	{
 	public:
@@ -35,21 +36,16 @@ namespace ya
 		UINT GetStateFlag() { return mStateFlag; }
 		bool IsStateFlag(ePlayerState state) { return (GetStateFlag() & (UINT)state) ? true : false; }
 
-		bool IsAttack() { return mbTESTAttack; }
-		void SetAttack(bool attack) { mbTESTAttack = attack; }
-		bool IsWalk() { return mbTESTWalk; }
-		void SetWalk(bool walk) { mbTESTWalk = walk; }
-
 		bool IsStealth() { return mbStealth; }
 		void SetStealth(bool stealth) { mbStealth = stealth; }
 
-		float GetBlockTime();
-
-		/*std::function<void()>& GetStartStateEvent() { return mStartStateEvent; }
-		std::function<void()>& GetEndStateEvent() { return mEndStateEvent; }*/
-
 		std::map<ePlayerState, std::function<void()>>& GetStartStateEvent() { return mStartStateEvent; }
 		std::map<ePlayerState, std::function<void()>>& GetEndStateEvent() { return mEndStateEvent; }
+
+		float GetBlockTime();
+
+		void SetDeathBlowTarget(MonsterBase* monster, float distance);
+		void EraseDeathBlowTarget(MonsterBase* monster);
 
 	private:
 		GameObject* mCamera;
@@ -64,7 +60,7 @@ namespace ya
 		std::map<ePlayerState, std::function<void()>> mStartStateEvent;
 		std::map<ePlayerState, std::function<void()>> mEndStateEvent;
 
-		bool mbTESTAttack;
-		bool mbTESTWalk;
+		MonsterBase* mDeathBlowTarget;
+		std::map<MonsterBase*, float> mDeathBlowTargets;
 	};
 }

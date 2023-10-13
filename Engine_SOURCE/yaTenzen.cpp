@@ -191,7 +191,7 @@ namespace ya
 
 
 
-		SetPlayerObject(dynamic_cast<GameObject*>(SceneManager::GetActiveScene()->GetPlayer()));
+		SetPlayerObject(dynamic_cast<Player*>(SceneManager::GetActiveScene()->GetPlayer()));
 		
 		//몬스터 스테이트
 		CreateMonsterState();

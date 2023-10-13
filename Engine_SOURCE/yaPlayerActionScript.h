@@ -50,6 +50,7 @@ namespace ya
 		float mDashSpeed;
 		float mDashTimer;
 		float mDashTimerMax;
+		eDirection mDashDirection;
 
 		float mHitTimer;
 		float mHitTimerMax;

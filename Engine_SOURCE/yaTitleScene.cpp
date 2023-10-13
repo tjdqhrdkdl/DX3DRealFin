@@ -98,8 +98,6 @@ namespace ya
 		//	ui->SetName(L"UICanvasObj_InGame");
 		//}
 	
-
-
 		{
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall");
@@ -146,22 +144,22 @@ namespace ya
 			wall->AddComponent<WallScript>();
 		}
 
-
-		//{
-		//	GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
-		//	player->GetComponent<Transform>()->SetPosition(Vector3(-25.0f, 10.0f, 0.0f));
-		//	player->GetComponent<Transform>()->SetScale(Vector3(10.0f, 10.0f, 10.0f));
-		//	player->SetName(L"PPP");
-		//	MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-		//	
-		//	std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
-		//	mr->SetMaterial(mat, 0);
-		//	mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"ShadowMapTarget"));
-		//}
+		/*{
+			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
+			player->GetComponent<Transform>()->SetPosition(Vector3(-25.0f, 10.0f, 0.0f));
+			player->GetComponent<Transform>()->SetScale(Vector3(10.0f, 10.0f, 10.0f));
+			player->SetName(L"PPP");
+			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			
+			std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
+			mr->SetMaterial(mat, 0);
+			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"ShadowMapTarget"));
+		}*/
 
 		{
 			GameObject* skyBox = object::Instantiate<GameObject>(eLayerType::None, this);
+
 			skyBox->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 			skyBox->GetComponent<Transform>()->SetScale(Vector3(500.0f, 500.0f, 500.0f));
 			skyBox->SetName(L"SkyBox");
@@ -169,7 +167,6 @@ namespace ya
 			mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SkyBoxMaterial"), 0);
 		}
-
 
 
 		{
@@ -269,6 +266,22 @@ namespace ya
 			objTransform->SetRotation(-90.f, 0.f, 0.f);
 			//2411 5640 5710 6600 6610 6620 3651 3313 
 		}
+
+
+		{
+			GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground);
+			hookTarget->SetName(L"hookTarget1");
+			Transform* groundTr = hookTarget->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(40.0f, 10.0f, -40.0f));
+			groundTr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+			MeshRenderer* groundRenderer = hookTarget->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = hookTarget->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			hookTarget->AddComponent<HookTargetScript>();
+		}
+
 
 		{
 			object::Instantiate<MapCollider>(eLayerType::Ground);
