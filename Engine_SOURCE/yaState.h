@@ -9,11 +9,7 @@ namespace ya
 		State();
 		virtual ~State();
 
-
 	public:
-		enums::eSituation GetSituation() { return mSituation; }
-		void SetSituation(enums::eSituation situation, bool OnceAniamtion = false) { mSituation = situation; }
-
 		float	GetHP() { return mHp; }
 		void	SetHp(float hp) { mHp = hp; }
 		void	AddHp(float hp);
@@ -36,7 +32,7 @@ namespace ya
 
 		int		GetResurrectionCount() { return mResurrectionCount; }
 		void	SetResurrectionCount(int count) { mResurrectionCount = count; }
-		void	AddResurrectionCount(int count) { mResurrectionCount += count; }
+		void	AddResurrectionCount(int count);
 
 		int		GetResurrectionCountMax() { return mResurrectionCountMax; }
 		void	SetResurrectionCountMax(int count) { mResurrectionCountMax = count; }
@@ -54,9 +50,6 @@ namespace ya
 		bool	IsDeathBlowOnOff() { return mbDeathBlowOnOff; }
 		void	SetDeathBlowonoff(bool onoff) { mbDeathBlowOnOff = onoff; }
 
-		float	GetAlertnessCount() { return mAlertnessCount; }
-		void	SetAlertnessCount(float count) { mAlertnessCount = count; }
-
 		//bool IsStartBlow() { return mbStartBlow; }
 		//void SetStartBlow(bool blow) { mbStartBlow = blow; }
 
@@ -64,8 +57,6 @@ namespace ya
 		void	SetDeath(bool death) { mbDeath = death; }
 
 	private:
-		enums::eSituation	mSituation;				//어떠한 상태인지 
-
 		// HP
 		float               mHp;
 		float               mHpMax;
@@ -92,9 +83,6 @@ namespace ya
 
 		// 죽음
 		bool				mbDeath;
-
-		// 경보 레벨
-		float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)
 	};
 
 }

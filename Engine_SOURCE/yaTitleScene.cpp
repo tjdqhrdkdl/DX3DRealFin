@@ -97,8 +97,6 @@ namespace ya
 		//	ui->SetName(L"UICanvasObj_InGame");
 		//}
 	
-
-
 		{
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
 			wall->SetName(L"wall");
@@ -146,7 +144,7 @@ namespace ya
 		}
 
 
-		{
+		/*{
 			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
 			player->GetComponent<Transform>()->SetPosition(Vector3(-25.0f, 10.0f, 0.0f));
 			player->GetComponent<Transform>()->SetScale(Vector3(10.0f, 10.0f, 10.0f));
@@ -157,18 +155,17 @@ namespace ya
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
 			mr->SetMaterial(mat, 0);
 			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"ShadowMapTarget"));
-		}
+		}*/
 
 		{
-			GameObject* player = object::Instantiate<GameObject>(eLayerType::Player);
-			player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-			player->GetComponent<Transform>()->SetScale(Vector3(500.0f, 500.0f, 500.0f));
-			player->SetName(L"SkyBox");
-			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+			GameObject* skyBox = object::Instantiate<GameObject>(eLayerType::None);
+			skyBox->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+			skyBox->GetComponent<Transform>()->SetScale(Vector3(500.0f, 500.0f, 500.0f));
+			skyBox->SetName(L"SkyBox");
+			MeshRenderer* mr = skyBox->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SkyBoxMaterial"), 0);
 		}
-
 
 
 		{
@@ -220,14 +217,6 @@ namespace ya
 			ground->AddComponent<GroundScript>();
 		}
 
-
-
-
-
-		
-
-
-
 		{
 			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
 			directionalLight->SetName(L"directionalLight");
@@ -270,8 +259,24 @@ namespace ya
 			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		}
 
+
 		{
-			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground);
+			hookTarget->SetName(L"hookTarget1");
+			Transform* groundTr = hookTarget->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(40.0f, 10.0f, -40.0f));
+			groundTr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+			MeshRenderer* groundRenderer = hookTarget->AddComponent<MeshRenderer>();
+			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = hookTarget->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			hookTarget->AddComponent<HookTargetScript>();
+		}
+
+
+		{
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
 		}
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");

@@ -46,6 +46,15 @@ namespace ya
 		Transform* cameraTr = camera->GetComponent<Transform>();
 		Vector3 cameraPos = cameraTr->GetPosition();*/
 
+		if (Input::GetKey(eKeyCode::F))
+		{
+			GrappleHookScript* grap = GetOwner()->GetScript<GrappleHookScript>();
+			if (grap != nullptr)
+			{
+				grap->GrappleHook();
+			}
+		}
+
 		if (mbGrappleHook)
 		{
 			if (mCurrentDistance < mDistance)
@@ -74,9 +83,9 @@ namespace ya
 
 	void GrappleHookScript::Render()
 	{
-		wchar_t szFloat[50] = {};
+		/*wchar_t szFloat[50] = {};
 		swprintf_s(szFloat, 50, (mPlayer->IsStateFlag(ePlayerState::Hook)) ? L"true" : L"false");
-		TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
+		TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));*/
 
 		//if (mHookTarget != nullptr)
 		//{

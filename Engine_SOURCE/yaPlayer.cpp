@@ -118,10 +118,26 @@ namespace ya
 
 	float Player::GetBlockTime()
 	{
-		PlayerAttackScript* attack = GetComponent<PlayerAttackScript>();
+		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
 		if (attack == nullptr)
 			return 0.0f;
 		else
 			return attack->GetBlockTime();
+	}
+	void Player::SetDeathBlowTarget(MonsterBase* monster, float distance)
+	{
+		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
+		if (attack == nullptr)
+			return;
+		else
+			attack->SetDeathBlowTarget(monster, distance);
+	}
+	void Player::EraseDeathBlowTarget(MonsterBase* monster)
+	{
+		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
+		if (attack == nullptr)
+			return;
+		else
+			attack->EraseDeathBlowTarget(monster);
 	}
 }

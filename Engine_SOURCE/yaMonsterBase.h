@@ -20,8 +20,8 @@
 
 namespace ya
 {
-    class MonsterBase :
-        public GameObject
+    class Player;
+    class MonsterBase : public GameObject
     {
     public:
         enum SpecialAttack
@@ -31,6 +31,7 @@ namespace ya
             Catch,
             UpwardSlash,
         };
+
         struct Attack
         {
             float damage;
@@ -42,18 +43,13 @@ namespace ya
         MonsterBase();
         virtual ~MonsterBase();
 
-
     public:
-
         virtual void Initialize() override;
         virtual void Update() override;
         virtual void FixedUpdate() = 0;
         virtual void Render() override;
 
-
     public:
-
-
         bool NavigationPlayer(float range);
         void MonsterRotation(Vector3 target_point);
         void TurnToPlayer();
@@ -69,36 +65,38 @@ namespace ya
 
         Vector3 Convert3DTo2DScreenPos(Transform* tr);
 
+        virtual void DeathBlow();
+
+        enums::eSituation GetSituation() { return mSituation; }
+        void SetSituation(enums::eSituation situation, bool OnceAniamtion = false)
+        {
+            mSituation = situation;
+            mbOnceAnimation = OnceAniamtion;
+        }
+
+        float	GetAlertnessCount() { return mAlertnessCount; }
+        void	SetAlertnessCount(float count) { mAlertnessCount = count; }
+
 #pragma region State_GetSet
 
         void CreateMonsterState();
 
         State* GetState() { return mMonsterState; }
-        enums::eSituation GetSituation() { return mMonsterState->GetSituation(); }
         float GetHP() { return mMonsterState->GetHP(); }
         //float GetMaxHP() { return mMonsterState->GetMaxHP(); }
         float GetSpeed() { return mMonsterState->GetSpeed(); }
         float GetDeathBlowCount() { return mMonsterState->GetDeathBlowCount(); }
         float GetMaxDeathBlowCount() { return mMonsterState->GetMaxDeathBlowCount(); }
-        float GetAlertnessCount() { return mMonsterState->GetAlertnessCount(); }
         bool IsDeathBlow() { return mMonsterState->IsDeathBlow(); }
         //bool IsStartBlow() { return mMonsterState->IsStartBlow(); }
         bool IsDeathBlowOnOff() { return mMonsterState->IsDeathBlowOnOff(); }
 
-
-
         void SetState(State* state) { mMonsterState = state; }
-        void SetSituation(enums::eSituation situation, bool OnceAniamtion = false)
-        {
-            mMonsterState->SetSituation(situation);
-            mbOnceAnimation = OnceAniamtion;
-        }
         void SetHp(float hp) { mMonsterState->SetHp(hp); }
         //void SetMaxHP(float maxhp) { mMonsterState->SetMaxHP(maxhp); }
         void SetSpeed(float speed) { mMonsterState->SetSpeed(speed); }
         void SetDeathBlowCount(float blowcount) { mMonsterState->SetDeathBlowCount(blowcount); }
         void SetMaxDeathBlowCount(float maxblowcount) { mMonsterState->SetMaxDeathBlowCount(maxblowcount); }
-        void SetAlertnessCount(float count) { mMonsterState->SetAlertnessCount(count); }
         void SetDeathBlow(bool deathblow) { mMonsterState->SetDeathBlow(deathblow); }
         //void SetStartBlow(bool blow) { mMonsterState->SetStartBlow(blow); }
         void SetDeathBlowonoff(bool onoff) { mMonsterState->SetDeathBlowonoff(onoff); }
@@ -110,8 +108,10 @@ namespace ya
 
     public:
 
-        GameObject* GetPlayerObject() { return mPlayerObject; }
+        //enums::eSituation GetSituation() { return mSituation; }
+        //void SetSituation(enums::eSituation situation, bool OnceAniamtion = false) { mSituation = situation; }
 
+        Player* GetPlayerObject() { return mPlayerObject; }
         Vec3 GetPlayerPos() { return mPlayerPos; }
         Vec3 GetMonster2PlayerNormalize() { return mMonster2PlayerNormalize; }
         Vec3 GetPlayer2MonsterNormalize() { return mPlayer2MonsterNormalize; }
@@ -120,10 +120,7 @@ namespace ya
         //bool IsPlayerFieldview() { return mbPlayerFieldview; }
         bool IsDefense() { return mbDefense; }
 
-
-
-        void SetPlayerObject(GameObject* target) { mPlayerObject = target; }
-
+        void SetPlayerObject(Player* target) { mPlayerObject = target; }
         void SetPlayerPos(Vec3 pos) { mPlayerPos = pos; }
         void SetMonster2PlayerNormalize(Vec3 normal) { mMonster2PlayerNormalize = normal; }
         void SetPlayer2MonsterNormalize(Vec3 normal) { mPlayer2MonsterNormalize = normal; }
@@ -137,6 +134,7 @@ namespace ya
 
         bool IsParrying() { return mbParrying; }
         Attack GetAttackParams() { return mAttackParams; }
+
     protected:
 
         std::shared_ptr<MeshData>   mMeshData;
@@ -148,9 +146,13 @@ namespace ya
         Attack                      mAttackParams;
 
     private:
-
-        GameObject* mPlayerObject;
         State* mMonsterState;
+        enums::eSituation	mSituation;
+
+        Player* mPlayerObject;
+
+        float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)
+
 
         Vec3                mPlayerPos;
         Vec3                mMonster2PlayerNormalize;
