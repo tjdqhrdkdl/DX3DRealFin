@@ -3,6 +3,7 @@
 #include "yaResources.h"
 #include "yaMeshData.h"
 #include "yaTransform.h"
+#include "yaCollider2D.h"
 #include "CSVEditor.h"
 #include "Utils.h"
 
@@ -70,7 +71,6 @@ namespace ya
 	GameObject* MapObjects::LoadMapObject(const std::wstring& _wstrPath,
 		float _positionX, float _positionY, float _positionZ,
 		float _rotationX, float _rotationY, float _rotationZ,
-
 		float _scaleX, float _scaleY, float _scaleZ)
 	{
 		std::fs::path mapMeshPath = gMapPath;
@@ -88,5 +88,18 @@ namespace ya
 		childTr->SetRotation(-_rotationX, -_rotationZ, -_rotationY);
 		childTr->SetScale(_scaleX, _scaleZ, _scaleY);
 		return obj;
+	}
+
+	void MapObjects::AddCollider(GameObject* obj,
+		float _rotationX, float _rotationY, float _rotationZ,
+		float _scaleX, float _scaleY, float _scaleZ)
+	{
+		assert(nullptr != obj);
+
+		Collider2D* col = obj->AddComponent<Collider2D>();
+		
+		col->SetType(eColliderType::Box);
+		col->SetRotation(Vector3(_rotationX, _rotationZ, _rotationY));
+		col->SetSize(Vector3(_scaleX, _scaleZ, _scaleY));
 	}
 }

@@ -29,6 +29,8 @@ namespace ya
 		void SetGravity(Vector3 gravity) { mGravity = gravity; }
 		Vector3 GetGravity() { return mGravity; }
 
+		void SetFriction(float friction) { mFriction = friction; }
+
 		Vector3 GetLimitVelocity() { return mLimitVelocity; }
 		void SetLimitVelocity(Vector3 limit) { mLimitVelocity = limit; }
 
@@ -52,6 +54,7 @@ namespace ya
 		Vector3 GetForce() { return mForce; }
 		void SetForce(Vector3 force) { mForce = force; }
 		void CheckGround();
+		bool ForwardCheck(Vector3 movement);
 
 	private:
 		class Transform* mTransform;

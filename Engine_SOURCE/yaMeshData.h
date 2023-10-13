@@ -7,6 +7,7 @@
 
 namespace ya
 {
+	class Scene;
 	class MeshData : public Resource
 	{
 	public:
@@ -26,7 +27,7 @@ namespace ya
 
 		bool IsAnimMesh() { return !mBones.empty(); }
 
-		MeshObject* Instantiate(eLayerType type, const std::wstring& name = L"");
+		MeshObject* Instantiate(eLayerType type, Scene* scene = nullptr, const std::wstring& name = L"");
 
 
 		void Play(const std::wstring animName);

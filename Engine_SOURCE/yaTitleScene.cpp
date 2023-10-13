@@ -44,6 +44,7 @@
 #include "UICanvas_InGame.h"
 #include "MapObjects.h"
 #include "yaBoundarySphere.h"
+#include "yaMapCollider.h"
 
 namespace ya
 {
@@ -57,7 +58,7 @@ namespace ya
 	void TitleScene::Initialize()
 	{
 		// Main Camera Game Object
-		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera);
+		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera, this);
 		cameraObj->SetName(L"MainCamera");
 		cameraObj->GetComponent<Transform>()->SetPosition(Vector3(20.0f, .0f, -80.0f));
 		Camera* cameraComp = cameraObj->AddComponent<Camera>();
@@ -67,7 +68,7 @@ namespace ya
 		mainCamera = cameraComp;
 
 
-		Player* player = object::Instantiate<Player>(eLayerType::Player);
+		Player* player = object::Instantiate<Player>(eLayerType::Player, this);
 		player->GetComponent<Transform>()->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 
@@ -83,7 +84,7 @@ namespace ya
 		
 
 		//{
-		//	GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera);
+		//	GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera, this);
 		//	uiCam->SetName(L"UICamera");
 		//	uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
 		//	Camera* cameraComp = uiCam->AddComponent<Camera>();
@@ -93,15 +94,15 @@ namespace ya
 		//}
 
 		//{
-		//	UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI);
+		//	UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI, this);
 		//	ui->SetName(L"UICanvasObj_InGame");
 		//}
 	
 		{
-			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall);
+			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall");
 			Transform* wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(33.0f, 15.0f, 10.0f));
+			wallTr->SetPosition(Vector3(93.0f, 15.0f, 10.0f));
 			wallTr->SetScale(Vector3(50.0f, 50.0f, 1.0f));
 			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
 			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
@@ -114,10 +115,10 @@ namespace ya
 
 
 
-			wall = object::Instantiate<GameObject>(eLayerType::Wall);
+			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall1");
 			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(16.f, 15.0f, 52.0f));
+			wallTr->SetPosition(Vector3(66.f, 15.0f, 52.0f));
 			wallTr->SetScale(Vector3(50.f, 50.f, 1.f));
 			wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
 			wallRenderer = wall->AddComponent<MeshRenderer>();
@@ -128,10 +129,10 @@ namespace ya
 			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
 			wall->AddComponent<WallScript>();
 
-			wall = object::Instantiate<GameObject>(eLayerType::Wall);
+			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall2");
 			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(-25.0f, 15.0f, 10.0f));
+			wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
 			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
 			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
 			wallRenderer = wall->AddComponent<MeshRenderer>();
@@ -142,7 +143,6 @@ namespace ya
 			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
 			wall->AddComponent<WallScript>();
 		}
-
 
 		/*{
 			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
@@ -158,7 +158,8 @@ namespace ya
 		}*/
 
 		{
-			GameObject* skyBox = object::Instantiate<GameObject>(eLayerType::None);
+			GameObject* skyBox = object::Instantiate<GameObject>(eLayerType::None, this);
+
 			skyBox->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 			skyBox->GetComponent<Transform>()->SetScale(Vector3(500.0f, 500.0f, 500.0f));
 			skyBox->SetName(L"SkyBox");
@@ -169,24 +170,23 @@ namespace ya
 
 
 		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(0.0f, -11.0f, 10.0f));
 			groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
 			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			ground->AddComponent<GroundScript>();
 		}
 
 
 		/*{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground1");
 			Transform* groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
@@ -202,23 +202,22 @@ namespace ya
 		}*/
 
 		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground2");
 			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, -5.0f, -15.0f));
+			groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
 			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
 			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
-			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-			ground->AddComponent<GroundScript>();
 		}
 
 		{
-			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
+			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::None, this);
 			directionalLight->SetName(L"directionalLight");
 
 			directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 100.0f, 0.0f));
@@ -231,12 +230,26 @@ namespace ya
 			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
 		}
 
+		{
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			ground->SetName(L"Ground2");
+			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
+			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
+			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
+			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+		}
 
-			CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
-			CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
-			CollisionManager::CollisionLayerCheck(eLayerType::PlayerProjectile, eLayerType::Monster, true);
-			CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::MonsterProjectile, true);
-			CollisionManager::CollisionLayerCheck(eLayerType::PlayerProjectile, eLayerType::MonsterProjectile, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::PlayerProjectile, eLayerType::Monster, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::MonsterProjectile, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::PlayerProjectile, eLayerType::MonsterProjectile, true);
 
 		//CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
@@ -246,17 +259,12 @@ namespace ya
 		//CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
 		{
-			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::Player);
-			directionalLight->SetName(L"directionalLight");
 
-			directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 100.0f, 0.0f));
-			directionalLight->GetComponent<Transform>()->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
-
-			Light* lightComp = directionalLight->AddComponent<Light>();
-			lightComp->SetType(eLightType::Directional);
-			lightComp->SetDiffuse(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			Transform* objTransform = obj->GetComponent<Transform>();
+			objTransform->SetPosition(-85.f, 35.f, 130.f);
+			objTransform->SetRotation(-90.f, 0.f, 0.f);
+			//2411 5640 5710 6600 6610 6620 3651 3313 
 		}
 
 
@@ -276,20 +284,20 @@ namespace ya
 
 
 		{
-			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			object::Instantiate<MapCollider>(eLayerType::Ground);
 		}
-
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 		object::Instantiate<Tenzen>(eLayerType::Monster);
+
 		Scene::Initialize();
 	}
 	
 	void TitleScene::Update()
 	{
-		//if (Input::GetKeyDown(eKeyCode::Y))
-		//{
-		//	//SceneManager::LoadScene(eSceneType::Play);	
-		//}
+		if (Input::GetKeyDown(eKeyCode::N))
+		{
+			SceneManager::LoadScene(eSceneType::Loading);
+		}
 
 		Scene::Update();
 	}

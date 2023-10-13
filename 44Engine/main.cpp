@@ -19,6 +19,13 @@
 #endif
 
 
+
+
+#ifdef _DEBUG
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#endif
+
+
 #define MAX_LOADSTRING 100
 
 // 전역 변수:

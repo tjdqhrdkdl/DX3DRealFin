@@ -205,7 +205,7 @@ namespace ya
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 							//디버깅시에 문제생기는 부분 막음.
-					if (Time::DeltaTime() < 0.1f)
+					if (Time::DeltaTime() < 0.1f && !mbLockOn)
 					{
 						//두번 계산해줄 것이다.
 						//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고

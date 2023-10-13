@@ -20,7 +20,7 @@
 namespace ya
 {
 	float eyeSightAngleCos = 0.2;
-	float tenzenWalkSpeed = 60;
+	float tenzenWalkSpeed = 71;
 	float tenzenBaseSpeed = 200;
 	Tenzen::Tenzen()
 		:mState(0)
@@ -87,7 +87,7 @@ namespace ya
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008010.fbx", L"Hit1"); 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008011.fbx", L"Hit2"); 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008300.fbx", L"GrogyDownFront"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008300.fbx", L"GrogyDownBack"); 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008301.fbx", L"GrogyDownBack"); 
 		//  
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008400.fbx", L"GuardLeft"); 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008401.fbx", L"GuardRight"); 
@@ -98,6 +98,7 @@ namespace ya
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008700.fbx", L"BlockedLeft"); 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_008701.fbx", L"BlockedRight"); 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_012000.fbx", L"DeathBlow1"); 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_012001.fbx", L"DeathBlow1_Death"); 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_012200.fbx", L"DeathBlowBackside"); 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_405000.fbx", L"WalkWithSword");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_405010.fbx", L"RunWithSword");
@@ -146,7 +147,7 @@ namespace ya
 		//Initialize
 		BoneCollider* katana =  object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
 		katana->SetMeshAndBone(mMeshData, L"R_Katana_long", this);
-		katana->AddComponent<TenzenSwordScript>();
+		mSwordScript = katana->AddComponent<TenzenSwordScript>();
 		//애니메이션 별로 오프셋과 발동 프레임 정해주기. 
 		//발동 프레임은 기본이 false로 발동하고싶으면 조정해주면 된다.
 		katana->SetAnimOffSet(L"SwordAttack_1",Vector3(1, 0.5, 1));
@@ -174,7 +175,7 @@ namespace ya
 		mCollider->SetCenter(Vector3(0, 0, 0));
 
 		//리지드 바디 , 액션 스크립트
-		AddComponent<Rigidbody>();
+		AddComponent<Rigidbody>()->SetFriction(180);
 		AddComponent<TenzenCollisionScript>();
 		mActionScript = AddComponent<ActionScript>();
 
@@ -205,6 +206,13 @@ namespace ya
 		mAttackParams.unGuardable = false;
 		mAttackParams.special = SpecialAttack::None;
 
+		SetMaxHP(100.0f);
+		SetHp(GetMaxHP());
+		SetPostureMax(100);
+		SetPosture(GetPostureMax());
+		SetAlertnessCount(0.f);
+		SetDeathBlow(false);
+		SetResurrectionCount(1);
 
 	}
 	void Tenzen::Update()
@@ -215,19 +223,26 @@ namespace ya
 			ADD_STATE(TenzenState_Recognize);
 		if (Input::GetKeyDown(eKeyCode::N_3))
 			ADD_STATE(TenzenState_Idle);
+		if (Input::GetKeyDown(eKeyCode::N_4))
+			mState = 0;
 
+		if (!(STATE_HAVE(TenzenState_Dead)))
+		{
+			Idle();
+			Alert();
+			Recognize();
+			Attack();
+			Defense();
+			Trace();
+			Guard();
+			OnHit();
+			Groggy();
 
-		Idle();
-		Alert();
-		Recognize();
-		Attack();
-		Defense();
-		Trace();
-		Guard();
-		OnHit();
+			Move();
+			LookAtPlayer();
+			SettingSituation();
+		}
 
-		Move();
-		LookAtPlayer();
 		if (mAnimationName != L"")
 		{
 			if (mbAnimReset)
@@ -240,9 +255,6 @@ namespace ya
 		}
 		MonsterBase::Update();
 		mBeforeState = mState;
-		if (!(STATE_HAVE(TenzenState_Attack)))
-			int a = 0;
-
 	}
 	void Tenzen::FixedUpdate()
 	{
@@ -280,9 +292,9 @@ namespace ya
 				float dist = GetDistanceToPlayer();
 				float alert = GetAlertnessCount();
 
-				if (dist < 50)
+				if (dist < 15)
 					SetAlertnessCount(alert + 50 * Time::DeltaTime());
-				else if (dist < 100)
+				else if (dist < 40)
 					SetAlertnessCount(alert + 20 * Time::DeltaTime());
 
 			}
@@ -303,11 +315,16 @@ namespace ya
 			dir.y = 0;
 
 			if (dir.Length() < 5)
+			{
 				mAnimationName = L"LookAround";
+				RM_STATE(TenzenState_Move);
+			}
 			else
 			{
 				dir.Normalize();
+				mMoveDir = dir;
 				ADD_STATE(TenzenState_Move);
+				mActionScript->Velocity(10);
 				SetSpeed(tenzenWalkSpeed);
 			}
 			
@@ -328,8 +345,11 @@ namespace ya
 				mAlertTimeChecker = 0;
 				SetAlertnessCount(0);
 			}
-			if (cosTheta > eyeSightAngleCos && dist < 30)
+			if (cosTheta > eyeSightAngleCos && dist < 20)
+			{
+				mActionScript->Velocity(18);
 				ADD_STATE(TenzenState_Recognize);
+			}
 		}
 	}
 	void Tenzen::Recognize()
@@ -342,13 +362,15 @@ namespace ya
 			{
 				mAnimationName = L"DrawSword"; 
 				ADD_STATE(TenzenState_LookAt);
+				RM_STATE(TenzenState_Move);
 			}
 
 			else if (STATE_HAVE(TenzenState_DrawSword))
 			{
 				if (!(STATE_HAVE(TenzenState_Attack)) && !(STATE_HAVE(TenzenState_Defense))
 					&& !(STATE_HAVE(TenzenState_Trace)) && !(STATE_HAVE(TenzenState_GuardSuccess))
-					&& !(STATE_HAVE(TenzenState_OnHit)))
+					&& !(STATE_HAVE(TenzenState_OnHit)) && !(STATE_HAVE(TenzenState_AttackBlocked))
+					&& !(STATE_HAVE(TenzenState_Groggy)))
 				{
 					Vector3 pos = mTransform->GetPosition();
 					Vector3 playerPos = GetPlayerPos();
@@ -388,7 +410,7 @@ namespace ya
 		{
 			//if (curName.substr(0, 11) == L"SwordAttack")
 			//	return;
-			int choice = rand() % 6;
+			int choice = rand() % 7;
 			switch (choice)
 			{
 			case 0:
@@ -409,8 +431,10 @@ namespace ya
 			case 5:
 				mAnimationName = L"SwordAttack_6";
 				break;
+			case 6:
+				mAnimationName = L"SwordAttack_9";
+				break;
 			}
-			mAnimationName = L"SwordAttack_3";
 
 
 		}
@@ -418,15 +442,7 @@ namespace ya
 	}
 	void Tenzen::Defense()
 	{
-		if (STATE_HAVE(TenzenState_Defense))
-		{
-			mAnimationName = L"Defense";
-			SetSituation(eSituation::Defense);
-		}
-		else
-		{
-			SetSituation(eSituation::None);
-		}
+
 	}
 	void Tenzen::Trace()
 	{
@@ -434,11 +450,15 @@ namespace ya
 		{
 			mAnimationName = L"RunWithSword";
 			
-			mActionScript->Move(mTransform->Forward(), tenzenBaseSpeed);
+			
+			ADD_STATE(TenzenState_Move);
+			mMoveDir = mTransform->Forward();
+			SetSpeed(200);
 			Vector3 pos = mTransform->GetPosition();
 			Vector3 playerPos = GetPlayerPos();
-			if (Vector3::Distance(pos, playerPos) < 60)
+			if (Vector3::Distance(pos, playerPos) < 10)
 			{
+				RM_STATE(TenzenState_Move);
 				RM_STATE(TenzenState_Trace);
 			}
 
@@ -447,6 +467,18 @@ namespace ya
 
 	void Tenzen::Guard()
 	{
+		BoneAnimator* animator = mMeshData->GetAnimator();
+		if (animator->GetPlayAnimationName().substr(0, 11) == L"SwordAttack")
+		{
+			if (animator->GetCurrentFrameIdx() < 20)
+				ADD_STATE(TenzenState_Guard);
+			else
+				RM_STATE(TenzenState_Guard);
+		}
+		else
+		{
+			RM_STATE(TenzenState_Guard);
+		}
 		if (STATE_HAVE(TenzenState_GuardSuccess))
 		{
 			if(STATE_HAVE(TenzenState_GuardLeft))
@@ -460,18 +492,60 @@ namespace ya
 	{
 		if (STATE_HAVE(TenzenState_OnHit))
 		{
-			if (STATE_HAVE(TenzenState_OnHitFront))
+			if (mAnimationName == L"DeathBlow1" || mAnimationName == L"DeathBlow1_Death")
+				;
+			else if (STATE_HAVE(TenzenState_OnHitFront))
 				mAnimationName = L"Hit1";
 			else
 				mAnimationName = L"Hit2";
 		}
 	}
 
+	void Tenzen::Groggy()
+	{
+		if (!(STATE_HAVE(TenzenState_Groggy)) && GetPosture() <= 0
+			&& mAnimationName != L"DeathBlow1" && mAnimationName != L"DeathBlow1_Death")
+		{
+			SetPosture(0);
+			ADD_STATE(TenzenState_Groggy);
+			
+			
+			RM_STATE(TenzenState_Move);
+			RM_STATE(TenzenState_Attack);
+			RM_STATE(TenzenState_Defense);
+			RM_STATE(TenzenState_Guard);
+			RM_STATE(TenzenState_Trace);
+			RM_STATE(TenzenState_AttackBlocked);
+			RM_STATE(TenzenState_GuardSuccess);
+			
+		}
+		if (STATE_HAVE(TenzenState_Groggy))
+		{
+			mAnimationName = L"GrogyDownFront";
+		}
+	}
+
+	void Tenzen::SettingSituation()
+	{
+		if (STATE_HAVE(TenzenState_Guard))
+		{
+			SetSituation(eSituation::Defense);
+		}
+		else if (STATE_HAVE(TenzenState_Groggy))
+		{
+			SetSituation(eSituation::Groggy);
+		}
+		else
+		{
+			SetSituation(eSituation::None);
+		}
+	}
+
+
 	void Tenzen::Move()
 	{
 		if (STATE_HAVE(TenzenState_Move))
 		{
-
 			mActionScript->Move(mMoveDir, GetSpeed());
 		}
 	}
@@ -486,7 +560,8 @@ namespace ya
 
 	void Tenzen::SetAnimationEvent()
 	{
-		mActionScript->SetJumpTime(0.38f);
+		mSwordScript->SetAttackLeft(false);
+		mActionScript->SetJumpTime(0.2f);
 		//애니메이션 이벤트 추가
 		//complete event는 애니메이션이 루프를 돌때, 한번 애니메이션을 완료할때 생기는 이벤트
 		//End Event 는 애니메이션이 종료 또는 Complete될 때 생기는 이벤트
@@ -499,14 +574,14 @@ namespace ya
 		mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
 
 		// 칼을 우상단에서 우하단으로 크게 휘두르고 제자리로.
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 12) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(TenzenState_Move);  SetSpeed(tenzenBaseSpeed * 4); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 12) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(TenzenState_Move);  SetSpeed(tenzenBaseSpeed * 4); mSwordScript->SetBlock(true); mSwordScript->SetAttackLeft(false); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 14) = [this]() { RM_STATE(TenzenState_Move); RM_STATE(TenzenState_LookAt); SetSpeed(tenzenBaseSpeed); };
 		// 칼을 좌하단에서 우상단으로. 한걸음 내딛으며.
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 12) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(TenzenState_Move);};
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 18) = [this]() { RM_STATE(TenzenState_Move);  RM_STATE(TenzenState_LookAt); };
 		// 전진 점프 하며, 칼을 우상단에서 좌하단으로. 한걸음 내딛으며.
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(TenzenState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(138); GetComponent<Rigidbody>()->SetJumping(true); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 20) = [this]() { RM_STATE(TenzenState_Move); RM_STATE(TenzenState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(TenzenState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(200); GetComponent<Rigidbody>()->SetJumping(true); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 14) = [this]() { RM_STATE(TenzenState_Move); RM_STATE(TenzenState_LookAt); };
 		// 못막는 공격, 하단 베기
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 27) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(TenzenState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 32) = [this]() { RM_STATE(TenzenState_Move);  RM_STATE(TenzenState_LookAt); };
@@ -532,10 +607,13 @@ namespace ya
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 24) = [this]() {mMoveDir = mTransform->Forward(); ADD_STATE(TenzenState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 34) = [this]() {RM_STATE(TenzenState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 40) = [this]() {mAnimationName = L"SwordAttack_7"; };
+		mMeshData->GetAnimationEndEvent(L"SwordAttack_8") = [this]() {if (mMeshData->GetAnimator()->GetCurrentFrameIdx() <= 38) AttackEndEvent(); };
+
 
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_9", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(TenzenState_Move);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_9", 7) = [this]() { RM_STATE(TenzenState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_9", 25) = [this]() {mAnimationName = L"SwordAttack_8"; };
+		mMeshData->GetAnimationEndEvent(L"SwordAttack_9") = [this]() {if (mMeshData->GetAnimator()->GetCurrentFrameIdx() <= 23) AttackEndEvent(); };
 
 
 
@@ -558,6 +636,23 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"GuardRight") = [this]() { ADD_STATE(TenzenState_GuardSuccess); };
 
 
+
+		mMeshData->GetAnimationStartEvent(L"BlockedLeft") = [this]() { ADD_STATE(TenzenState_AttackBlocked); };
+		mMeshData->GetAnimationStartEvent(L"BlockedRight") = [this]() { ADD_STATE(TenzenState_AttackBlocked); };
+		mMeshData->GetAnimationFrameEvent(L"BlockedLeft", 28) = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
+		mMeshData->GetAnimationFrameEvent(L"BlockedRight", 28) = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
+		mMeshData->GetAnimationEndEvent(L"BlockedLeft") = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
+		mMeshData->GetAnimationEndEvent(L"BlockedRight") = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
+
+		mMeshData->GetAnimationStartEvent(L"ParriedLeft") = [this]() { ADD_STATE(TenzenState_AttackBlocked); };
+		mMeshData->GetAnimationStartEvent(L"ParriedRight") = [this]() { ADD_STATE(TenzenState_AttackBlocked); };
+		mMeshData->GetAnimationFrameEvent(L"ParriedLeft", 38) = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
+		mMeshData->GetAnimationFrameEvent(L"ParriedRight", 38) = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
+		mMeshData->GetAnimationEndEvent(L"ParriedLeft") = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
+		mMeshData->GetAnimationEndEvent(L"ParriedRight") = [this]() { RM_STATE(TenzenState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
+
+
+
 		mMeshData->GetAnimationFrameEvent(L"Hit1", 18) = [this]() { RM_STATE(TenzenState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
 		mMeshData->GetAnimationFrameEvent(L"Hit2", 18) = [this]() { RM_STATE(TenzenState_OnHit); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
 		mMeshData->GetAnimationEndEvent(L"Hit1") = [this]() { RM_STATE(TenzenState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2); };
@@ -565,11 +660,26 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"Hit1") = [this]() { ADD_STATE(TenzenState_OnHit); };
 		mMeshData->GetAnimationStartEvent(L"Hit2") = [this]() { ADD_STATE(TenzenState_OnHit); };
 
+
+		mMeshData->GetAnimationEndEvent(L"GrogyDownFront") = [this]() { RM_STATE(TenzenState_OnHit); RM_STATE(TenzenState_Groggy); SetPosture(20); SetDeathBlow(false); };
+		mMeshData->GetAnimationStartEvent(L"GrogyDownFront") = [this]() { SetDeathBlow(true); RM_STATE(TenzenState_Guard); };
+		mMeshData->GetAnimationFrameEvent(L"GrogyDownFront", 70) = [this]() { SetDeathBlow(false); SetPosture(20); };
+
+		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(TenzenState_OnHit); SetResurrectionCount(GetResurrectionCount() - 1); };
+		mMeshData->GetAnimationStartEvent(L"DeathBlow1") = [this]() { ADD_STATE(TenzenState_OnHit); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 55) = [this]() { if (GetResurrectionCount() <= 0) {  mMeshData->GetAnimator()->SetAnimationChangeTime(0.01); mAnimationName = L"DeathBlow1_Death"; } };
+
+		mMeshData->GetAnimationEndEvent(L"DeathBlow1_Death") = [this]() { mMeshData->GetAnimator()->SetStop(true); mState = 0; ADD_STATE(TenzenState_Dead); };
+		mMeshData->GetAnimationStartEvent(L"DeathBlow1_Death") = [this]() {ADD_STATE(TenzenState_OnHit); };
 	}
 
 	float Tenzen::EyeSightCheck()
 	{
 		Vector3 pos = mTransform->GetPosition();
+
+		if (GetPlayerObject() == nullptr)
+			return 0.0f;
+
 		Transform* playerTr = GetPlayerObject()->GetComponent<Transform>();
 		Vector3 playerPos = playerTr->GetPosition();
 
@@ -605,10 +715,12 @@ namespace ya
 
 		theta *= 180.f / XM_PI;
 		if (fabsf(theta.y) > 1)
+		{
 			if (theta.y > 0)
-				mActionScript->Rotate(mTransform->Up(), GetSpeed() / 2);
+				mActionScript->Rotate(mTransform->Up(), theta.y * GetSpeed() / 100);
 			else
-				mActionScript->Rotate(-mTransform->Up(), GetSpeed() / 2);
+				mActionScript->Rotate(-mTransform->Up(), theta.y * GetSpeed() / 100);
+		}
 	}
 
 	void Tenzen::DrawSwordEndEvent()
@@ -626,6 +738,8 @@ namespace ya
 		mBeforeState &= ~TenzenState_Attack;
 		ADD_STATE(TenzenState_LookAt);
 		mMeshData->GetAnimator()->SetAnimationChangeTime(0.2);
+		mSwordScript->SetBlock(true);
+		mSwordScript->SetAttackLeft(true);
 	}
 	void Tenzen::TraceEndEvent()
 	{
@@ -639,10 +753,11 @@ namespace ya
 		if (layer == eLayerType::PlayerProjectile)
 		{
 			BoneCollider* boneColObj = dynamic_cast<BoneCollider*>(colObj);
-			//막기 상태
 			if (boneColObj!= nullptr 
 				&& false == boneColObj->CheckHitObjects(this))
 			{
+				//막기 상태
+
 				boneColObj->AddHitObjects(this);
 				if (STATE_HAVE(TenzenState_Guard))
 				{
@@ -669,7 +784,7 @@ namespace ya
 					//막기 상태지만 뒤를 맞는 상황
 					else
 					{
-						//SetHp(GetHP() - 1);
+						SetHp(GetHP() - 5);
 
 						if (!(STATE_HAVE(TenzenState_SuperArmor)))
 						{
@@ -679,12 +794,20 @@ namespace ya
 					}
 
 
+					if (true == IsDeathBlow())
+					{
+						ADD_STATE(TenzenState_OnHit);
+						RM_STATE(TenzenState_Groggy);
+						SetDeathBlow(false);
+						mAnimationName = L"DeathBlow1";
+					}
 					RM_STATE(TenzenState_Move);
 					RM_STATE(TenzenState_Attack);
 					RM_STATE(TenzenState_Defense);
 					RM_STATE(TenzenState_Trace);
 
 					mbAnimReset = true;
+					SetPosture(GetPosture() - 1);
 					mMeshData->GetAnimator()->SetAnimationChangeTime(0.1);
 
 				}
@@ -704,12 +827,22 @@ namespace ya
 					float theta = rot.ToEuler().y;
 					theta *= 180.f / XM_PI;
 
-					//앞에서 맞는 상황
+					SetHp(GetHP() - 5);
+					//체간 깎기
+					SetPosture(GetPosture() - 50);
 
-					//SetHp(GetHP() - 1);
-
-					if (!(STATE_HAVE(TenzenState_SuperArmor)))
+					//인살가능상태에서 공격당함(인살당함)
+					if (true == IsDeathBlow())
 					{
+						ADD_STATE(TenzenState_OnHit);
+						RM_STATE(TenzenState_Groggy);
+						SetDeathBlow(false);
+						mAnimationName = L"DeathBlow1";
+					}
+
+					else if (!(STATE_HAVE(TenzenState_SuperArmor)))
+					{
+						//앞에서 맞는 상황
 						if (theta <90 && theta > -90)
 						{
 							ADD_STATE(TenzenState_OnHit);
@@ -722,15 +855,19 @@ namespace ya
 							ADD_STATE(TenzenState_OnHit);
 							RM_STATE(TenzenState_OnHitFront);
 						}
+						mAnimationName = L"";
 
 						RM_STATE(TenzenState_Move);
 						RM_STATE(TenzenState_Attack);
 						RM_STATE(TenzenState_Defense);
+						RM_STATE(TenzenState_Groggy);
 						RM_STATE(TenzenState_Trace);
 						mbAnimReset = true;
 						mMeshData->GetAnimator()->SetAnimationChangeTime(0.1);
 					}
 				}
+
+
 			}
 		}
 	}
@@ -740,5 +877,9 @@ namespace ya
 	}
 	void Tenzen::OnCollisionExit(Collider2D* collider)
 	{
+	}
+	void Tenzen::AddTenzenState(eTenzenState state)
+	{
+		ADD_STATE(state);
 	}
 }

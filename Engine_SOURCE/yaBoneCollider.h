@@ -34,6 +34,8 @@ namespace ya
 		
 		void AddHitObjects(GameObject* obj) { mHitObjects.push_back(obj); }
 		bool CheckHitObjects(GameObject* obj);
+
+		GameObject* GetBoneColliderOwner() { return mOwner; }
 	private:
 		GameObject* mOwner;
 		std::shared_ptr<MeshData> mMeshData;
