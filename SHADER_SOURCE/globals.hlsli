@@ -19,8 +19,12 @@ float4 decode(float _value)
 }
 
 
-
-
+cbuffer Meter : register(b10)
+{
+    float   metertime;
+    float   meterendtime;
+    float2  metersize;
+}
 
 
 

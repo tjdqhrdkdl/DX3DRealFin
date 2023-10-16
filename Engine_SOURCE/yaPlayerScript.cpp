@@ -88,7 +88,7 @@ namespace ya
 	{
 		GameObject* obj = collider->GetOwner();
 
-		BoneCollider* boneCollider = dynamic_cast<BoneCollider*>(obj);
+		BoneCollider* boneCollider = dynamic_cast<BoneCollider*>(obj);	
 		if(boneCollider != nullptr)
 		{
 			if (mPlayer->IsStateFlag(ePlayerState::Block))
@@ -156,7 +156,30 @@ namespace ya
 					mHitDirection = -playerTr->Forward();
 				}
 			}
+
+
+			//-----------------------------------------
+			//몬스터 작업
+			//-----------------------------------------
+			//몬스터 공격 콜라이더
+			if (dynamic_cast<MonsterBase*>(boneCollider->GetBCOwner()))
+			{
+				UINT test = mPlayer->GetStateFlag();
+				MonsterBase* monster = (MonsterBase*)boneCollider->GetBCOwner();
+				if (mPlayer->IsStateFlag(ePlayerState::Parrying))
+				{
+					int a = 0;
+				}
+
+				
+
+			}		
+
+
 		}
+		
+
+
 
 	}
 

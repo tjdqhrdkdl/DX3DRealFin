@@ -31,7 +31,7 @@ namespace ya
 		, mRigidbody(nullptr)
 		, mTransform(nullptr)
 		, mCollider(nullptr)
-		, mSpeed(400.0f)
+		, mSpeed(60.0f)
 		, mDirection(Vector3::Zero)
 		, mRotateDirection(Vector3::Zero)
 		, mGroundDistance(0.f)

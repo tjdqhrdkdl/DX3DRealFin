@@ -1,9 +1,12 @@
 #include "yaMonsterBase.h"
 
-
-
+#include <iostream>
 
 extern ya::Application application;
+
+
+
+
 
 namespace ya
 
@@ -107,8 +110,14 @@ namespace ya
 			if (IsDeathBlow())
 			{
 				Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-				Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
-				marktr->SetPosition(pos + mDeathBlowMarkOffSet);
+				//Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
+				Transform* camtr = mainCamera->GetOwner()->GetComponent<Transform>();
+				Vector3 rot = TurnToPointDir(camtr->GetPosition());
+				
+				marktr->SetRotation(Vec3(0.0f, rot.y, 0.0f));
+				//marktr->SetRotation(rot);
+				marktr->SetPosition(monsterPos + mDeathBlowMarkOffSet);
+
 			}
 			else
 			{
@@ -116,7 +125,7 @@ namespace ya
 				marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
 			}
 
-
+			
 
 		}
 
@@ -234,6 +243,8 @@ namespace ya
 
 
 
+	
+
 	bool MonsterBase::NavigationPlayer(float range)
 	{
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
@@ -280,10 +291,31 @@ namespace ya
 		return monDirection.y;
 	}
 
+	Vector3 MonsterBase::TurnToPointDir(Vector3 point)
+	{
+		Transform* tr = GetComponent<Transform>();
+		Vec3 rot = tr->GetRotation();
+
+		
+		Vector3 pointNomalize = point - tr->GetPosition();
+		pointNomalize.Normalize();
+
+		Quaternion quater = Quaternion::FromToRotation
+		(tr->Forward(), pointNomalize);
+		Vec3 monDirection = quater.ToEuler();
+
+		monDirection *= 180.f / XM_PI;
+
+		//tr->SetRotation(Vec3(0.0f, rot.y + monDirection.y, 0.0f));
+
+		return monDirection;
+	}
+
 	bool MonsterBase::WalkToPlayer(float range, float Speed)
 	{
 		Transform* tr = GetComponent<Transform>();
 		Rigidbody* rigi = GetComponent<Rigidbody>();
+		
 
 		if (NavigationPlayer(range))
 		{
@@ -295,6 +327,7 @@ namespace ya
 			mActionScript->Move(tr->Forward(), Speed);
 			return false;
 		}
+
 	}
 
 	void MonsterBase::MonsterRotation(Vector3 target_point)
@@ -351,8 +384,6 @@ namespace ya
 
 		else
 		{
-
-
 
 			if (NavigationPlayer(5.0f))
 			{
@@ -416,12 +447,13 @@ namespace ya
 		Transform* cameratr = mainCamera->GetOwner()->GetComponent<Transform>();
 
 
-		//worldMatrix = Matrix::CreateWorld(tr->GetPosition(), tr->Forward(), tr->Up());
-		worldMatrix = Matrix::CreateWorld(tr->GetPosition(), cameratr->Forward(), cameratr->Up());
+		worldMatrix = Matrix::CreateWorld(tr->GetPosition(), tr->Forward(), tr->Up());
+		
+		viewMatrix = Camera::GetGpuViewMatrix();
+		projectionMatrix = Camera::GetGpuProjectionMatrix();
 
-
-		viewMatrix = mainCamera->GetViewMatrix();
-		projectionMatrix = mainCamera->GetProjectionMatrix();
+		//viewMatrix = mainCamera->GetViewMatrix();
+		//projectionMatrix = mainCamera->GetProjectionMatrix();
 
 
 		Matrix worldViewProjection = worldMatrix * viewMatrix * projectionMatrix;
@@ -429,9 +461,9 @@ namespace ya
 
 		Vector3 monsterScreenPosition;
 
-		monsterScreenPosition.x = (MonsterNDCPos.x + 1.0f) * 0.5f * (float)width;
-		monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (float)height;
-		monsterScreenPosition.z = 1.0f;
+		//monsterScreenPosition.x = (MonsterNDCPos.x + 1.0f) * 0.5f * (float)width;
+		//monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (float)height;
+		//monsterScreenPosition.z = 1.0f;
 
 		float LeftMax = -800;
 		float RightMax = 800;
@@ -440,7 +472,6 @@ namespace ya
 
 		monsterScreenPosition.x = (MonsterNDCPos.x + 1.0f) * 0.5f * (RightMax - LeftMax) + LeftMax;
 		monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (TopMax - BottomMax) + BottomMax;
-
 
 
 
@@ -456,8 +487,8 @@ namespace ya
 			mMonsterState = new State();
 
 			mMonsterState->SetSituation(enums::eSituation::None);
-			//mMonsterState->SetMaxHP(10.0f);				//HP 총 량
-			mMonsterState->SetHp(10.0f);				//
+			mMonsterState->SetHPMax(20.0f);				//HP 총 량
+			mMonsterState->SetHp(20.0f);				//
 			mMonsterState->SetSpeed(5.0f);				//기본 이동속도
 			mMonsterState->SetDeathBlowCount(0.f);		//현재 체간 상태
 			mMonsterState->SetMaxDeathBlowCount(10.f);	//총 체간
@@ -477,22 +508,20 @@ namespace ya
 	{
 
 		Transform* tr = GetComponent<Transform>();
-		mDeathBlowMark = object::Instantiate<GameObject>(eLayerType::UI);
+		mDeathBlowMark = object::Instantiate<GameObject>(eLayerType::MonsterProjectile);
 		mDeathBlowMark->SetName(L"DeathBlowMark");
 
 		Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
 		marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
 		//marktr->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-		marktr->SetScale(Vector3(100.0f, 100.0f, 100.0f));
+		marktr->SetScale(Vector3(0.75f, 0.75f, 0.75f));
 		MeshRenderer* faceRenderer = mDeathBlowMark->AddComponent<MeshRenderer>();
-		faceRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		faceRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));		
 		std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
 
 		faceRenderer->SetMaterial(mat, 0);
-		mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"TEST"));
-
-
-
+		mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
+	
 
 	}
 

@@ -14,6 +14,8 @@
 #include "yaObject.h"
 
 #include "yaState.h"
+#include "yaPlayerHpTxture.h"
+
 
 namespace ya
 {
@@ -24,13 +26,14 @@ namespace ya
 		, mStartStateEvent {}
 		, mEndStateEvent {}
 	{
-		SetName(L"Player");
+		SetName(L"Wolf");
 
 		Collider2D* col = AddComponent<Collider2D>();
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
-		col->SetCenter(Vector3(0.f, 5.4f, 0.f));
-		col->SetSize(Vector3(0.6, 3.2f, 0.6f));
+		//col->SetCenter(Vector3(0.f, 5.4f, 0.f));
+		//col->SetSize(Vector3(0.6, 3.2f, 0.6f));
+		col->SetSize(Vector3(1.0, 2.2f, 1.0f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
@@ -48,6 +51,7 @@ namespace ya
 			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile);
 			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
 			mWeaponCollider->SetScale(Vector3(1.6, 0.2, 0.2));
+			mWeaponCollider->SetBCOwner(this);
 		}
 
 
@@ -55,10 +59,16 @@ namespace ya
 		AddComponent<PlayerActionScript>();
 		AddComponent<PlayerAttackScript>();
 		AddComponent<GrappleHookScript>();
+
+		CreateHpTexture();
 	}
 
 	Player::~Player()
 	{
+
+
+
+
 	}
 
 	void Player::Initialize()
@@ -110,6 +120,12 @@ namespace ya
 			
 			mStateFlag &= ~((UINT)state);
 		}
+	}
+
+	void Player::CreateHpTexture()
+	{		
+		mPlayerHpBar = object::Instantiate<PlayerHpTxture>(eLayerType::UI);
+		mPlayerHpBar->SetPlayer(this);
 	}
 
 	//std::function<void()>& Player::GetStartStateEvent(ePlayerState state)

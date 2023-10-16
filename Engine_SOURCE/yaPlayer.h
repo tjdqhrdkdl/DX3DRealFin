@@ -49,8 +49,12 @@ namespace ya
 		std::map<ePlayerState, std::function<void()>>& GetStartStateEvent() { return mStartStateEvent; }
 		std::map<ePlayerState, std::function<void()>>& GetEndStateEvent() { return mEndStateEvent; }
 
+		void CreateHpTexture();
+
 	private:
 		GameObject* mCamera;
+		class PlayerHpTxture* mPlayerHpBar;
+
 
 		State* mState;
 		UINT mStateFlag;

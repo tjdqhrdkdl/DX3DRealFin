@@ -18,7 +18,7 @@ namespace ya
 		, mChildPos(Vector3(0, 0, -40))
 		, mThetaAxisY(1.57)
 		, mThetaAxisX(1.57)
-		, mDistFromTarget(40)
+		, mDistFromTarget(12)
 		, mDelayTime(0.2f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
@@ -39,6 +39,12 @@ namespace ya
 
 	void CameraScript::Update()
 	{
+		if (Input::GetKey(eKeyCode::N_9))
+			mDistFromTarget += Time::DeltaTime() * 10;
+		if (Input::GetKey(eKeyCode::N_0))
+			mDistFromTarget -= Time::DeltaTime() * 10;
+
+
 		if (Input::GetKeyDown(eKeyCode::ESC))
 			mbMouseMove = !mbMouseMove;
 

@@ -27,6 +27,8 @@ namespace ya
 		, mDashTimerMax(0.2f)
 		, mbJumpDouble(false)
 	{
+
+
 	}
 
 	PlayerActionScript::~PlayerActionScript()

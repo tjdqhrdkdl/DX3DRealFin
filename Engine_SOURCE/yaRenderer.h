@@ -116,6 +116,8 @@ namespace ya::renderer
 		Matrix lightProjection;
 	};
 
+
+
 	CBUFFER(UniformDataCB, CBSLOT_UNIFORM_DATA)
 	{
 		int int_0{};
@@ -142,6 +144,13 @@ namespace ya::renderer
 		Matrix mat_1{};
 		Matrix mat_2{};
 		Matrix mat_3{};
+	};
+
+	CBUFFER(Meter, CBSLOT_METER)
+	{
+		float		metertime;
+		float		meterendtime;
+		Vector2		metersize;
 	};
 
 

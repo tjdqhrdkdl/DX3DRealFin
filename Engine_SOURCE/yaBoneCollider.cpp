@@ -12,11 +12,12 @@ namespace ya
     }
     void BoneCollider::Initialize()
     {
+        mCulPos = GetComponent<Transform>()->GetPosition();
         GameObject::Initialize();
     }
     void BoneCollider::Update()
     {
-
+        mCulPos = GetComponent<Transform>()->GetPosition();
         Collider2D* col = GetComponent<Collider2D>();
         if (col)
         {
@@ -52,6 +53,7 @@ namespace ya
                 }
             }
         }
+        mPrevPos = mCulPos;
         GameObject::Update();
     }
     void BoneCollider::FixedUpdate()

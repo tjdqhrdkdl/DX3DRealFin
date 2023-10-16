@@ -11,6 +11,7 @@ namespace ya
         , mbLoad(false)
         , mMeshDataMap{}
     {
+
     }
 
     PlayerMeshScript::~PlayerMeshScript()
@@ -36,8 +37,8 @@ namespace ya
             std::shared_ptr<MeshData> weapon = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300.fbx");
             mMeshDataMap.insert(std::make_pair(L"Weapon", weapon));
 
-            std::shared_ptr<MeshData> waeponCase = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300_1_b.fbx");
-            mMeshDataMap.insert(std::make_pair(L"WeaponCase", waeponCase));
+           //std::shared_ptr<MeshData> waeponCase = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300_1_b.fbx");
+           //mMeshDataMap.insert(std::make_pair(L"WeaponCase", waeponCase));
 
         }
         else
@@ -62,15 +63,15 @@ namespace ya
             weapon->Load(L"Player\\MeshData\\WP_A_0300.meshdata");
             mMeshDataMap.insert(std::make_pair(L"Weapon", weapon));
 
-            std::shared_ptr<MeshData> waeponCase = std::make_shared<MeshData>();
-            waeponCase->Load(L"Player\\MeshData\\WP_A_0300_1_b.meshdata");
-            mMeshDataMap.insert(std::make_pair(L"WeaponCase", waeponCase));
+           //std::shared_ptr<MeshData> waeponCase = std::make_shared<MeshData>();
+           //waeponCase->Load(L"Player\\MeshData\\WP_A_0300_1_b.meshdata");
+           //mMeshDataMap.insert(std::make_pair(L"WeaponCase", waeponCase));
         }
 
         if (mbUse)
         {
-        }
             LoadAnimation();
+        }
 
         Player* player = dynamic_cast<Player*>(GetOwner());
         Transform* playerTr = player->GetComponent<Transform>();

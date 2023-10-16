@@ -32,6 +32,9 @@ namespace ya
 		void SetColliderActiveFrame(UINT animIdx,  UINT start, UINT finish);
 		void SetColliderActiveFrame(const std::wstring& animName, UINT start, UINT finish);
 
+		GameObject* GetBCOwner() { return mBCOwner; }
+		void SetBCOwner(GameObject* owner) { mBCOwner = owner; }
+		Vector3	GetPrevPos() { return mPrevPos; }
 
 	private:
 		std::shared_ptr<MeshData> mMeshData;
@@ -40,5 +43,9 @@ namespace ya
 
 		std::vector<Vector3> mAnimationOffsets;
 		std::vector<StartAndFin> mAnimationColActiveFrame;
+
+		GameObject*		mBCOwner;
+		Vector3			mCulPos;
+		Vector3			mPrevPos;
 	};
 }

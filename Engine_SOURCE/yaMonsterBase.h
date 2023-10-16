@@ -40,10 +40,13 @@ namespace ya
     public:
 
 
+        void CreateDeathBlowMark();
+
         bool NavigationPlayer(float range);
         void MonsterRotation(Vector3 target_point);
         void TurnToPlayer();
         float TurnToPlayerDir();
+        Vector3 TurnToPointDir(Vector3 point);
         bool WalkToPlayer(float range, float Speed);
         void AlertnessLevel();
 
@@ -62,7 +65,7 @@ namespace ya
         State* GetState() { return mMonsterState; }
         enums::eSituation GetSituation() { return mMonsterState->GetSituation(); }
         float GetHP() { return mMonsterState->GetHP(); }
-        //float GetMaxHP() { return mMonsterState->GetMaxHP(); }
+        float GetMaxHP() { return mMonsterState->GetHPMax(); }
         float GetSpeed() { return mMonsterState->GetSpeed(); }
         float GetDeathBlowCount() { return mMonsterState->GetDeathBlowCount(); }
         float GetMaxDeathBlowCount() { return mMonsterState->GetMaxDeathBlowCount(); }
@@ -80,7 +83,8 @@ namespace ya
             mbOnceAnimation = OnceAniamtion;
         }
         void SetHp(float hp) { mMonsterState->SetHp(hp); }
-        //void SetMaxHP(float maxhp) { mMonsterState->SetMaxHP(maxhp); }
+        void AddHp(float hp) { mMonsterState->AddHp(hp); }
+        void SetMaxHP(float maxhp) { mMonsterState->SetHPMax(maxhp); }
         void SetSpeed(float speed) { mMonsterState->SetSpeed(speed); }
         void SetDeathBlowCount(float blowcount) { mMonsterState->SetDeathBlowCount(blowcount); }
         void SetMaxDeathBlowCount(float maxblowcount) { mMonsterState->SetMaxDeathBlowCount(maxblowcount); }
@@ -105,7 +109,7 @@ namespace ya
         bool IsPlayerFront() { return mbPlayerFront; }
         //bool IsPlayerFieldview() { return mbPlayerFieldview; }
         bool IsDefense() { return mbDefense; }
-
+        bool GetOnceAnimation() { return mbOnceAnimation; }
 
 
         void SetPlayerObject(GameObject* target) { mPlayerObject = target; }
@@ -114,41 +118,53 @@ namespace ya
         void SetMonster2PlayerNormalize(Vec3 normal) { mMonster2PlayerNormalize = normal; }
         void SetPlayer2MonsterNormalize(Vec3 normal) { mPlayer2MonsterNormalize = normal; }
         void SetDeathBlowMarkOffSet(Vec3 offset) { mDeathBlowMarkOffSet = offset; }
+        void SetMonsterHpBarOffSetOffSet(Vec3 offset) { mMonsterHpBarOffSet = offset; }
         void SetPlayerFront(bool front) { mbPlayerFront = front; }
         //void SetPlayerFieldview(bool view) { mbPlayerFieldview = view; }
         void SetDefense(bool defense) { mbDefense = defense; }
         void SetOnceAnimation(bool animation) { mbOnceAnimation = animation; }
 
-        void CreateDeathBlowMark();
+  
 
         bool IsParrying() { return mbParrying; }
+        bool IsHitRight() { return mbHitRight; }
+        bool IsHitLeft() { return mbHitLeft; }
+        bool IsDeathBlowKill() { return mDeathBlowKill; }
+
+        void SetHitRight(bool dir) { mbHitRight = dir; }
+        void SetHitLeft(bool dir) { mbHitLeft = dir; }
+        void SetDeathBlowKill(bool value) { mDeathBlowKill = value; }
 
     protected:
 
-        std::shared_ptr<MeshData>   mMeshData;
-        MeshObject* mMeshObject;
-        Vec3                        mAnimationOffSet;
-        ActionScript* mActionScript;
-        GameObject* mDeathBlowMark;
-        bool                        mbParrying;
+        std::shared_ptr<MeshData>       mMeshData;
+        MeshObject*                     mMeshObject;
+        Vec3                            mAnimationOffSet;
+        ActionScript*                   mActionScript;
+        GameObject*                     mDeathBlowMark;
+        GameObject*                     mMonsterHpBar;
+        bool                            mbParrying;
 
 
     private:
 
-        GameObject* mPlayerObject;
-        State* mMonsterState;
+        GameObject*         mPlayerObject;
+        State*              mMonsterState;
 
         Vec3                mPlayerPos;
         Vec3                mMonster2PlayerNormalize;
         Vec3                mPlayer2MonsterNormalize;
         Vec3                mDeathBlowMarkOffSet;
+        Vec3                mMonsterHpBarOffSet;
 
 
         bool                mbPlayerFront;
-        //bool                mbPlayerFieldview;
+        //bool              mbPlayerFieldview;
         bool                mbDefense;
         bool                mbOnceAnimation;
-
+        bool                mbHitRight;
+        bool                mbHitLeft;
+        bool                mDeathBlowKill;
 
 
         float               mTime;
