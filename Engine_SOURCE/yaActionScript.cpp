@@ -53,7 +53,7 @@ namespace ya
 		mRigidbody = obj->GetComponent<Rigidbody>();
 		mCollider = obj->GetComponent<Collider2D>();
 
-		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::WallCheckCollision);
+		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::WallCheckCollision, obj->GetScene());
 		assert(checkObj != nullptr);
 		mCheck = checkObj;
 		checkObj->SetName(L"WallCheck");
