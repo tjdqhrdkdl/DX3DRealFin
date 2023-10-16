@@ -588,7 +588,7 @@ namespace ya
 			cur = a[1];
 			cur = a[2];
 			const float* orig = m_navMesh->getParams()->orig;
-			for (size_t i = 0; i < 1000; i++)
+			for (size_t i = 0; i < 10000; i++)
 			{
 				ya::renderer::Vertex v;
 				float* a = &tile->verts[i * 3];
@@ -596,7 +596,7 @@ namespace ya
 				v.color = Vector4(1, 0, 1, 1);
 				vtxs.push_back(v);
 			}
-			for (size_t i = 0; i < 1000; i++)
+			for (size_t i = 0; i < 10000; i++)
 			{
 				ya::renderer::Vertex v;
 				float* a = &tile->detailVerts[i * 3];
@@ -637,7 +637,7 @@ namespace ya
 						//p->verts[t[0]],p->verts[t[1]],p->verts[t[2]] 각각 버텍스를 가리킴 
 						//*3을 해주는 이유는 버텍스의 xyz좌표가 들어있기 때문이다.
 						else
-							indexes.push_back(1000 + (pd->vertBase + t[k] - p->vertCount));
+							indexes.push_back(10000 + (pd->vertBase + t[k] - p->vertCount));
 							//dd->vertex(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], col);
 							
 					}
