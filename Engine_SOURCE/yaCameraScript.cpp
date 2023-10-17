@@ -314,7 +314,8 @@ namespace ya
 		//장애물을 고려할때, 사실 일부분만 보여도 락온이 되던데. 레이를 여러방 쏴야하나??
 		//락온 대상이 장애물 등에 완전히 가려지거나 너무 멀어지면 락온이 풀려야한다.
 
-		Scene* scene =  SceneManager::GetActiveScene();
+		//Scene* scene =  SceneManager::GetActiveScene();
+		Scene* scene = GetOwner()->GetScene();
 		std::vector<GameObject*> mons =  scene->GetGameObjects(eLayerType::Monster);
 		float minDist = 10000000;
 		Transform* tr = GetOwner()->GetComponent<Transform>();

@@ -23,8 +23,9 @@ namespace ya
 	float tenzenWalkSpeed = 71;
 	float tenzenBaseSpeed = 200;
 	Tenzen::Tenzen()
-		:mState(0)
-		,mAlertTime(10)
+		: MonsterBase()
+		, mState(0)
+		, mAlertTime(10)
 	{
 	}
 	Tenzen::~Tenzen()
@@ -109,7 +110,7 @@ namespace ya
 		mMeshData = std::make_shared<MeshData>();
 		mMeshData->Load(L"Monster\\Boss_tenzen\\Mesh\\c1020.fbx");
 		mMeshData->AnimationLoad(L"Monster\\Boss_tenzen\\AnimationData\\tenzen.animationdata");
-		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster);
+		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster, GetScene());
 
 
 		//칼과 손잡이 찾아두기
@@ -145,7 +146,7 @@ namespace ya
 
 		//무기 콜라이더 추가
 		//Initialize
-		BoneCollider* katana =  object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+		BoneCollider* katana =  object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile, GetScene());
 		katana->SetMeshAndBone(mMeshData, L"R_Katana_long", this);
 		mSwordScript = katana->AddComponent<TenzenSwordScript>();
 		//애니메이션 별로 오프셋과 발동 프레임 정해주기. 
@@ -191,7 +192,8 @@ namespace ya
 
 
 
-		SetPlayerObject(dynamic_cast<Player*>(SceneManager::GetActiveScene()->GetPlayer()));
+		//SetPlayerObject(dynamic_cast<Player*>(SceneManager::GetActiveScene()->GetPlayer()));
+		SetPlayerObject(dynamic_cast<Player*>(GetScene()->GetPlayer()));
 		
 		//몬스터 스테이트
 		CreateMonsterState();

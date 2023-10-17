@@ -30,8 +30,6 @@ namespace ya
 	{
 		CreateMonsterState();
 
-		SetDeathBlow(true);
-
 		GameObject::Initialize();
 	}
 
