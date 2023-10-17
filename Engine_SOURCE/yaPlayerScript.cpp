@@ -52,7 +52,8 @@ namespace ya
 		{
 			if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
-				mPlayer->SetStateFlag(ePlayerState::Parrying, true);
+				
+				//mPlayer->SetStateFlag(ePlayerState::Parrying, true);
 				mPlayer->SetStateFlag(ePlayerState::Block, false);
 
 				mPlayer->GetState()->AddPosture(-10);
@@ -121,7 +122,7 @@ namespace ya
 			//몬스터 작업
 			//-----------------------------------------
 			//몬스터 공격 콜라이더
-			if (dynamic_cast<MonsterBase*>(boneCollider->GetBCOwner()))
+			/*if (dynamic_cast<MonsterBase*>(boneCollider->GetBCOwner()))
 			{
 				UINT test = mPlayer->GetStateFlag();
 				MonsterBase* monster = (MonsterBase*)boneCollider->GetBCOwner();
@@ -132,7 +133,7 @@ namespace ya
 
 				
 
-			}		
+			}		*/
 
 
 		}

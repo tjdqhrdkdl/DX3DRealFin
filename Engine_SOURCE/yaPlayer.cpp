@@ -65,7 +65,7 @@ namespace ya
 			mWeaponCollider->SetBCOwner(this);
 		}
 
-
+		{
 			PlayerProjectileScript* projectileScript = mWeaponCollider->AddComponent<PlayerProjectileScript>();
 			projectileScript->SetPlayer(this);
 		}
@@ -77,21 +77,11 @@ namespace ya
 
 
 		CreateHpTexture();
-	}
-
-	Player::~Player()
-	{
-
-
-
-
-	}
-
-	void Player::Initialize()
-	{
 
 		GameObject::Initialize();
 	}
+
+
 
 	void Player::Update()
 	{

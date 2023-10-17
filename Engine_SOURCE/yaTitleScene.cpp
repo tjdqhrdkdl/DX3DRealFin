@@ -242,7 +242,7 @@ namespace ya
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
 		}
-
+		*/
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground2");

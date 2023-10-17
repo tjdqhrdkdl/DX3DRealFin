@@ -48,7 +48,7 @@ namespace ya
 		int mBeforeClipIdx;
 
 		std::vector<Vector3> mAnimationOffsets;
-		std::vector<StartAndFin> mAnimationColActiveFrame;
+		
 
 		GameObject*		mBCOwner;
 		Vector3			mCulPos;
