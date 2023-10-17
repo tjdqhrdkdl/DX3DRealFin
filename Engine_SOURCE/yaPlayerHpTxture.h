@@ -20,7 +20,8 @@ namespace ya
         void SetPlayer(class Player* player) { mPlayer = player; }
 
 
-        void PlayerHpCheak();
+        void PlayerMeterCheak();
+        
 
         
         void PlayerResurrection_True();
@@ -33,6 +34,8 @@ namespace ya
         GameObject* mPlayerHpLayout;
         GameObject* mPlayerHpBar;
         GameObject* mPlayerResurrection;
+        GameObject* mPlayerpostureLayout;
+        //GameObject* mPlayerpostureBar;
 
 
      

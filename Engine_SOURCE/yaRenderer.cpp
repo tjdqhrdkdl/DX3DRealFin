@@ -472,6 +472,16 @@ namespace ya::renderer
 		spriteShader->SetDSState(eDSType::None);
 		Resources::Insert<Shader>(L"SpriteShader", spriteShader);
 #pragma endregion
+#pragma region POSTURE SHADER
+		std::shared_ptr<Shader> postureShader = std::make_shared<Shader>();
+		postureShader->Create(eShaderStage::VS, L"PostureVS.hlsl", "main");
+		postureShader->Create(eShaderStage::PS, L"PosturePS.hlsl", "main");
+		postureShader->SetRSState(eRSType::SolidNone);
+		postureShader->SetDSState(eDSType::None);
+		Resources::Insert<Shader>(L"PostureShader", postureShader);
+#pragma endregion
+
+
 #pragma region UI SHADER
 		std::shared_ptr<Shader> uiShader = std::make_shared<Shader>();
 		uiShader->Create(eShaderStage::VS, L"UserInterfaceVS.hlsl", "main");
@@ -682,6 +692,12 @@ namespace ya::renderer
 			, shader->GetVSBlobBufferPointer()
 			, shader->GetVSBlobBufferSize()
 			, shader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> postureShader = Resources::Find<Shader>(L"PostureShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, postureShader->GetVSBlobBufferPointer()
+			, postureShader->GetVSBlobBufferSize()
+			, postureShader->GetInputLayoutAddressOf());
 
 		std::shared_ptr<Shader> spriteShader = Resources::Find<Shader>(L"SpriteShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
@@ -947,8 +963,8 @@ namespace ya::renderer
 		constantBuffers[(UINT)eCBType::UniformData] = new ConstantBuffer(eCBType::UniformData);
 		constantBuffers[(UINT)eCBType::UniformData]->Create(sizeof(UniformDataCB));
 
-		constantBuffers[(UINT)eCBType::Meter] = new ConstantBuffer(eCBType::Meter);
-		constantBuffers[(UINT)eCBType::Meter]->Create(sizeof(Meter));
+		constantBuffers[(UINT)eCBType::HpMeter] = new ConstantBuffer(eCBType::HpMeter);
+		constantBuffers[(UINT)eCBType::HpMeter]->Create(sizeof(Meter));
 		
 
 #pragma endregion
@@ -1012,6 +1028,15 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"SpriteMaterial", spriteMaterial);
 
 		#pragma endregion
+#pragma region POSTURE
+		std::shared_ptr<Shader> postureBarShader = Resources::Find<Shader>(L"PostureShader");
+		std::shared_ptr<Material> postureBarMaterial = std::make_shared<Material>();
+		postureBarMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		postureBarMaterial->SetShader(postureBarShader);
+		Resources::Insert<Material>(L"PostureBarMaterial", postureBarMaterial);
+
+#pragma endregion
+
 #pragma region HpLayout
 		
 		std::shared_ptr<Shader> hpLayoutShader = Resources::Find<Shader>(L"SpriteShader");

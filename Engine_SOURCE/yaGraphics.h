@@ -145,7 +145,7 @@ namespace ya::graphics
 		Bone,
 		LightMatrix,
 		UniformData,
-		Meter,
+		HpMeter,
 		End,
 	};
 

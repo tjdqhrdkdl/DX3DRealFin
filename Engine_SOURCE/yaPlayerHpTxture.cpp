@@ -21,6 +21,8 @@ namespace ya
 			Resources::Load<Texture>(L"HPBarTexture", L"Hp.png");
 			Resources::Load<Texture>(L"re_True", L"Resurrection_True.png");
 			Resources::Load<Texture>(L"re_False", L"Resurrection_False.png");
+			Resources::Load<Texture>(L"PostureLayout", L"PostureLayout.png");
+			Resources::Load<Texture>(L"PostureBar", L"PostureBarTT.png");
 
 			{
 				mPlayerHpLayout = object::Instantiate<GameObject>(eLayerType::UI);
@@ -76,21 +78,74 @@ namespace ya
 				Resurrectiontr->SetPosition(Vector3(-680.0f, -360.0f, -10.0f));
 				Resurrectiontr->SetScale(Vector3(30.0f, 30.0f, 50.0f));
 
-				//Resurrectiontr->SetPosition(Vector3(-640.0f, -360.0f, -10.0f));
-				//Resurrectiontr->SetScale(Vector3(200.0f, 20.0f, 50.0f));
-
-
 				MeshRenderer* meshRenderer = mPlayerResurrection->AddComponent<MeshRenderer>();
 				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 				std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurrectionMaterial");
 
 				meshRenderer->SetMaterial(mat, 0);
 				mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"re_True"));
-				//mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"re_False"));
+				
+			}
 
+			{
+				std::shared_ptr<Shader> postureLayoutShader = Resources::Find<Shader>(L"SpriteShader");
+				std::shared_ptr<Material> postureLayoutMaterial = std::make_shared<Material>();
+				postureLayoutMaterial->SetRenderingMode(eRenderingMode::Transparent);
+				postureLayoutMaterial->SetShader(postureLayoutShader);
+				Resources::Insert<Material>(L"PostureLayoutMaterial", postureLayoutMaterial);
+
+				mPlayerpostureLayout = object::Instantiate<GameObject>(eLayerType::UI);
+				mPlayerpostureLayout->SetName(L"postureLayout");
+
+				Transform* postureLayouttr = mPlayerpostureLayout->GetComponent<Transform>();
+
+				postureLayouttr->SetPosition(Vector3(-30.0f, -360.0f, -10.0f));
+				postureLayouttr->SetScale(Vector3(230.0f, 20.0f, 50.0f));
+
+				MeshRenderer* meshRenderer = mPlayerpostureLayout->AddComponent<MeshRenderer>();
+				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+				std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureLayoutMaterial");
+
+				meshRenderer->SetMaterial(mat, 0);
+				mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"PostureLayout"));
 
 			}
 
+			{
+				GameObject* PlayerpostureBar = object::Instantiate<GameObject>(eLayerType::UI);
+				PlayerpostureBar->SetName(L"PostureBar1");
+
+				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
+
+				postureBartr->SetPosition(Vector3(25.0f, -360.0f, -10.0f));
+				postureBartr->SetScale(Vector3(115.0f, 10.0f, 50.0f));
+
+				MeshRenderer* meshRenderer = PlayerpostureBar->AddComponent<MeshRenderer>();
+				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+				std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureBarMaterial");
+
+				meshRenderer->SetMaterial(mat, 0);
+				mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"PostureBar"));
+				
+			}
+			{
+				GameObject* PlayerpostureBar = object::Instantiate<GameObject>(eLayerType::UI);
+				PlayerpostureBar->SetName(L"PostureBar2");
+
+				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
+
+				postureBartr->SetPosition(Vector3(-88.0f, -360.0f, -10.0f));
+				postureBartr->SetScale(Vector3(115.0f, 10.0f, 50.0f));
+				postureBartr->SetRotation(Vector3(0.0f, 180.0f, 0.0f));
+
+				MeshRenderer* meshRenderer = PlayerpostureBar->AddComponent<MeshRenderer>();
+				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+				std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureBarMaterial");
+
+				meshRenderer->SetMaterial(mat, 0);
+				mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"PostureBar"));
+
+			}
 		}
 
 
@@ -117,10 +172,12 @@ namespace ya
 	void PlayerHpTxture::Update()
 	{
 		if(mPlayer != nullptr)
-		PlayerHpCheak();
+		{
+			PlayerMeterCheak();
+		}
 
 
-
+		
 
 
 		if (Input::GetKey(eKeyCode::U))
@@ -131,36 +188,41 @@ namespace ya
 		{
 			mPlayer->GetState()->AddHp(Time::DeltaTime() * 10.0f);
 		}
-		if (Input::GetKeyDown(eKeyCode::O))
+		if (Input::GetKey(eKeyCode::O))
 		{
-			PlayerResurrection_True();
+			mPlayer->GetState()->AddPosture(-Time::DeltaTime() * 10.0f);
 		}
-		if (Input::GetKeyDown(eKeyCode::P))
+		if (Input::GetKey(eKeyCode::P))
 		{
-			PlayerResurrection_False();
+			mPlayer->GetState()->AddPosture(Time::DeltaTime() * 10.0f);
 		}
 
 
 		GameObject::Update();
 	}
 
-	void PlayerHpTxture::PlayerHpCheak()
+	void PlayerHpTxture::PlayerMeterCheak()
 	{
 		float hp = (float)PERCENTAGE / (float)mPlayer->GetState()->GetHPMax();
 		float culhp = (float)PERCENTAGE - (hp * (float)mPlayer->GetState()->GetHP());
+		float posture = (float)PERCENTAGE / (float)mPlayer->GetState()->GetPostureMax();
+		float culposture = (float)PERCENTAGE - (posture * (float)mPlayer->GetState()->GetPosture());
 
-		float test = mPlayer->GetState()->GetHP();
 
-		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Meter];
+		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::HpMeter];
 		renderer::Meter data;
-
-		data.metertime = culhp;
+		
+		data.HpMeter = culhp;
+		data.PostureMeter = culposture;		
+		
 
 		cb->SetData(&data);
 		cb->Bind(eShaderStage::VS);
 		cb->Bind(eShaderStage::PS);
 
 	}
+
+
 
 	void PlayerHpTxture::PlayerResurrection_True()
 	{

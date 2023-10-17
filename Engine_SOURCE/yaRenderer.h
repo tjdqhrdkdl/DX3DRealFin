@@ -148,9 +148,10 @@ namespace ya::renderer
 
 	CBUFFER(Meter, CBSLOT_METER)
 	{
-		float		metertime;
-		float		meterendtime;
-		Vector2		metersize;
+		float   HpMeter;
+		float   PostureMeter;
+		float   Nul_1;
+		float   Nul_2;
 	};
 
 
