@@ -99,10 +99,12 @@ namespace ya
 		class Transform* m_mapMeshTr;
 		//싱글톤
 		static NavMeshTool* m_pInst;
+
+		class Scene* m_scene;
 	public:
 		static NavMeshTool* GetInst();
 		static void DestroyInst();
-		void Init();
+		void Init(class Scene*);
 		void reset();
 		
 		void recalc();

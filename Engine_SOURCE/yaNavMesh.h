@@ -17,10 +17,12 @@ namespace ya
 
 		void SetDestination(Vector3 pos) { mDestPos = pos; }
 		void SetNavigate(bool on) { mbNavOn = on; }
-		void RenewPath(Vector3 dest) { mDestPos = dest; mbNavOn = true; }
+		void RenewPath(Vector3 dest);
 
 		void SetSpeed(float speed) { mSpeed = speed; }
 		void SetTraceOn(bool trace) { mbTraceOn = trace; }
+
+		Vector3 GetDir() { return mDir; }
 	private:
 
 
@@ -31,6 +33,9 @@ namespace ya
 		bool mbTraceOn;
 		int mCurPathIdx;
 		float mSpeed;
+
+		float mRenewTimer;
+		Vector3 mDir;
 	};
 
 }

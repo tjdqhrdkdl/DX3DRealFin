@@ -5,6 +5,7 @@
 #include "yaActionScript.h"
 #include "yaInput.h"
 #include "yaRigidbody.h"
+#include "yaTime.h"
 namespace ya
 {
 	NavMesh::NavMesh()
@@ -17,7 +18,7 @@ namespace ya
 	void NavMesh::Initialize()
 	{
 		mbNavOn = false;
-		mDestPos = Vector3(-8, -8.5, -14);
+		mDestPos = Vector3(100.532, -23.113, -3.576);
 
 		mbTraceOn = true;
 		mSpeed = 80;
@@ -25,6 +26,7 @@ namespace ya
 	}
 	void NavMesh::Update()
 	{
+
 		if (Input::GetKeyDown(eKeyCode::V))
 			mbNavOn = !mbNavOn;
 		if (mbNavOn)
@@ -71,7 +73,7 @@ namespace ya
 			}
 			mbNavOn = false;
 		}
-		if (mbTraceOn && mCurPathIdx < NavMeshTool::GetInst()->GetPathSize() -1)
+		if (mbTraceOn && mCurPathIdx < mPath.size() - 1 && mPath.size() > 0)
 		{
 
 			Vector3 dir = mPath[mCurPathIdx + 1] - mPath[mCurPathIdx];
@@ -81,14 +83,12 @@ namespace ya
 			{
 				mCurPathIdx++;
 			}
-			else
-			{
 				dir.y = 0;
 				dir.Normalize();
 
 				ActionScript* action = GetOwner()->GetScript<ActionScript>();
 				action->Move(dir, mSpeed);
-			}
+				mDir = dir;
 		}
 	}
 	void NavMesh::FixedUpdate()
@@ -96,5 +96,17 @@ namespace ya
 	}
 	void NavMesh::Render()
 	{
+	}
+	void NavMesh::RenewPath(Vector3 dest)
+	{
+
+		if (mRenewTimer > 0.2f)
+		{
+			mDestPos = dest;
+			mbNavOn = true;
+			mRenewTimer = 0;
+		}
+		 else
+			 mRenewTimer += Time::DeltaTime();
 	}
 }

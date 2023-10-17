@@ -72,8 +72,8 @@ namespace ya
 		mainCamera = cameraComp;
 
 
-		Player* player = object::Instantiate<Player>(eLayerType::Player);
-		player->GetComponent<Transform>()->SetPosition(Vector3(-5.0f, -8.0f, -20.0f));
+		Player* player = object::Instantiate<Player>(eLayerType::Player,this);
+		player->GetComponent<Transform>()->SetPosition(Vector3(100, 10.f,10.f));
 		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 		player->AddComponent<NavMesh>();
 		//MeshRenderer* mr = player->AddComponent<MeshRenderer>();
@@ -103,49 +103,49 @@ namespace ya
 		//}
 	
 		{
-			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall");
-			Transform* wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(93.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 1.0f));
-			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
-			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
+			//GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
+			//wall->SetName(L"wall");
+			//Transform* wallTr = wall->GetComponent<Transform>();
+			//wallTr->SetPosition(Vector3(93.0f, 15.0f, 10.0f));
+			//wallTr->SetScale(Vector3(50.0f, 50.0f, 1.0f));
+			//wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
+			//MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
+			//wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//Collider2D* wallCollider = wall->AddComponent<Collider2D>();
+			//wallCollider->SetType(eColliderType::Box);
+			//wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+			//wall->AddComponent<WallScript>();
 
 
 
-			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall1");
-			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(66.f, 15.0f, 52.0f));
-			wallTr->SetScale(Vector3(50.f, 50.f, 1.f));
-			wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
-			wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
+			//wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
+			//wall->SetName(L"wall1");
+			//wallTr = wall->GetComponent<Transform>();
+			//wallTr->SetPosition(Vector3(66.f, 15.0f, 52.0f));
+			//wallTr->SetScale(Vector3(50.f, 50.f, 1.f));
+			//wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
+			//wallRenderer = wall->AddComponent<MeshRenderer>();
+			//wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//wallCollider = wall->AddComponent<Collider2D>();
+			//wallCollider->SetType(eColliderType::Box);
+			//wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+			//wall->AddComponent<WallScript>();
 
-			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall2");
-			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
-			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
-			wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
+			//wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
+			//wall->SetName(L"wall2");
+			//wallTr = wall->GetComponent<Transform>();
+			//wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
+			//wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
+			//wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
+			//wallRenderer = wall->AddComponent<MeshRenderer>();
+			//wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//wallCollider = wall->AddComponent<Collider2D>();
+			//wallCollider->SetType(eColliderType::Box);
+			//wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+			//wall->AddComponent<WallScript>();
 		}
 
 		/*{
@@ -174,18 +174,18 @@ namespace ya
 
 
 		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
-			ground->SetName(L"Ground");
-			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, -11.0f, 10.0f));
-			groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
-			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			//GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
+			//ground->SetName(L"Ground");
+			//Transform* groundTr = ground->GetComponent<Transform>();
+			//groundTr->SetPosition(Vector3(0.0f, -11.0f, 10.0f));
+			//groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
+			//groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			//groundCollider->SetType(eColliderType::Box);
+			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
 		
 
@@ -270,7 +270,7 @@ namespace ya
 			objTransform->SetRotation(-90.f, 0.f, 0.f);
 			NavMeshTool* m = NavMeshTool::GetInst();
 			m->SetMapMeshTr(obj->GetComponent<Transform>());
-			m->Init();
+			m->Init(this);
 			//2411 5640 5710 6600 6610 6620 3651 3313 
 		}
 
@@ -293,7 +293,7 @@ namespace ya
 		{
 			object::Instantiate<MapCollider>(eLayerType::Ground, this);
 		}
-		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
+		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");Tenzen
 		object::Instantiate<Tenzen>(eLayerType::Monster, this);
 
 		Scene::Initialize();
