@@ -20,7 +20,7 @@ namespace ya
 
 	void UIHPBarScript::Update()
 	{
-		Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = GetOwner()->GetScene();
 		if (scene)
 		{
 			mPlayer = scene->GetPlayer();

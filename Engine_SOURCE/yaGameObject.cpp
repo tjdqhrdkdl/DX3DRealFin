@@ -8,6 +8,7 @@ namespace ya
 		, mType(eLayerType::None)
 		, mbDontDestroy(false)
 		, mbRender(true)
+		, mScene(nullptr)
 	{
 		mComponents.resize((UINT)eComponentType::End);
 		AddComponent(new Transform());

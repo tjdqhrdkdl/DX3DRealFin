@@ -16,8 +16,6 @@ namespace ya
 
 	MapObjects::~MapObjects()
 	{
-
-
 	}
 
 	void MapObjects::Initialize()
@@ -79,7 +77,7 @@ namespace ya
 		std::shared_ptr<MeshData> meshdata = Resources::Load<MeshData>(mapMeshPath.filename(), mapMeshPath);
 		assert(nullptr != meshdata);
 
-		GameObject* obj = meshdata->Instantiate(eLayerType::Ground);
+		GameObject* obj = meshdata->Instantiate(eLayerType::Ground, GetScene());
 		Transform* myTr = GetComponent<Transform>();
 		Transform* childTr = obj->GetComponent<Transform>();
 		childTr->SetParent(myTr);

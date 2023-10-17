@@ -39,7 +39,16 @@ namespace ya
 		mState->SetHp(mState->GetHPMax());
 		mState->SetPostureMax(100);
 		mState->SetPosture(mState->GetPostureMax());
+	}
 
+	Player::~Player()
+	{
+		delete mState;
+		mState = nullptr;
+	}
+
+	void Player::Initialize()
+	{
 		PlayerMeshScript* meshScript = AddComponent<PlayerMeshScript>();	// 메쉬, 애니메이션이므로 먼저 load
 
 		std::shared_ptr<MeshData> weaponMeshData = meshScript->FindMeshData(ARM);
@@ -57,16 +66,7 @@ namespace ya
 		AddComponent<PlayerActionScript>();
 		AddComponent<PlayerAttackScript>();
 		AddComponent<GrappleHookScript>();
-	}
 
-	Player::~Player()
-	{
-		delete mState;
-		mState = nullptr;
-	}
-
-	void Player::Initialize()
-	{
 		GameObject::Initialize();
 	}
 
