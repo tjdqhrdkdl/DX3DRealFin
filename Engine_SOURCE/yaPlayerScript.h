@@ -20,6 +20,14 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	private:
+
+		Player* mPlayer;
+		PlayerMeshScript* mPlayerAnim;
+
+		float mMoveTimer;
+		float mMoveTimerMax;
+		Vector3 mHitDirection;
+
 		float TESTTime;
 
 	};

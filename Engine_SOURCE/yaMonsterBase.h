@@ -136,10 +136,13 @@ namespace ya
 
         bool GetOnceAnimation() { return mbOnceAnimation; }
 
+        bool IsHitRight() { return mbHitRight; }
+        bool IsHitLeft() { return mbHitLeft; }
+        bool IsDeathBlowKill() { return mDeathBlowKill; }
 
-        void SetPlayerObject(GameObject* target) { mPlayerObject = target; }
-
-
+        void SetHitRight(bool dir) { mbHitRight = dir; }
+        void SetHitLeft(bool dir) { mbHitLeft = dir; }
+        void SetDeathBlowKill(bool value) { mDeathBlowKill = value; }
 
         void SetPlayerObject(Player* target) { mPlayerObject = target; }
 
