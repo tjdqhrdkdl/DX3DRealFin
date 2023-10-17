@@ -235,7 +235,7 @@ namespace ya
 		}
 
 		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground);
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground2");
 			Transform* groundTr = ground->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
@@ -264,7 +264,7 @@ namespace ya
 
 		{
 
-			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::Player);
+			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
 			Transform* objTransform = obj->GetComponent<Transform>();
 			objTransform->SetPosition(-85.f, 35.f, 130.f);
 			objTransform->SetRotation(-90.f, 0.f, 0.f);
@@ -276,7 +276,7 @@ namespace ya
 
 
 		{
-			GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground);
+			GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			hookTarget->SetName(L"hookTarget1");
 			Transform* groundTr = hookTarget->GetComponent<Transform>();
 			groundTr->SetPosition(Vector3(40.0f, 10.0f, -40.0f));
@@ -290,8 +290,12 @@ namespace ya
 		}
 
 
+		{
+			object::Instantiate<MapCollider>(eLayerType::Ground, this);
+		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		object::Instantiate<Tenzen>(eLayerType::Monster);
+		object::Instantiate<Tenzen>(eLayerType::Monster, this);
+
 		Scene::Initialize();
 	}
 	

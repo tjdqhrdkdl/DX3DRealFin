@@ -36,7 +36,8 @@ namespace ya
 		AddComponent<Rigidbody>();
 		mActionScript = AddComponent<ActionScript>();
 
-		SetPlayerObject(SceneManager::GetActiveScene()->GetPlayer());
+		//SetPlayerObject(SceneManager::GetActiveScene()->GetPlayer());
+		SetPlayerObject(GetScene()->GetPlayer());
 
 		//BoneAnimator* animator = mMeshData->GetAnimator();
 

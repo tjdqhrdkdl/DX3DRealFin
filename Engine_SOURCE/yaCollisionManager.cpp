@@ -360,7 +360,8 @@ namespace ya
 
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers)
 	{
-		Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = owner->GetScene();
 		Matrix worldMat = owner->GetComponent<Transform>()->GetWorldMatrix();
 		Vector3 position = Vector3(worldMat._41, worldMat._42, worldMat._43);
 		ya::Ray ray = ya::Ray(position, direction);
@@ -395,7 +396,8 @@ namespace ya
 
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 position, Vector3 direction, float length, std::vector<eLayerType> layers)
 	{
-		Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = owner->GetScene();
 		ya::Ray ray = ya::Ray(position, direction);
 
 		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
@@ -430,7 +432,8 @@ namespace ya
 
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 position, Vector3 direction, std::vector<eLayerType> layers)
 	{
-		Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = owner->GetScene();
 		ya::Ray ray = ya::Ray(position, direction);
 
 		RayHit hit = RayHit(false, nullptr, Vector3::Zero);

@@ -24,7 +24,7 @@ namespace ya
 		if (dynamic_cast<Player*>(collider->GetOwner()))
 		{
 			Player* player = (Player*)collider->GetOwner();
-			if (player->IsAttack())
+			if (player->IsStateFlag(ePlayerState::Attack))
 			{
 				//Is Spearman
 				if (dynamic_cast<Spearman*>(GetOwner()))
@@ -37,7 +37,7 @@ namespace ya
 							if (spearman->IsParrying())
 							{
 								//Parrying
-								player->SetWalk(true);
+								player->SetStateFlag(ePlayerState::Walk, true);
 							}
 							else
 							{

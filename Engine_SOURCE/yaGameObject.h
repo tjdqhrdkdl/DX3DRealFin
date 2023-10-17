@@ -5,6 +5,7 @@
 
 namespace ya
 {
+	class Scene;
 	class GameObject : public Entity
 	{
 		
@@ -113,6 +114,10 @@ namespace ya
 		void SetLayerType(eLayerType type) { mType = type; }
 
 		void SetRender(bool render) { mbRender = render; }
+
+		Scene* GetScene() { return mScene; }
+		void SetScene(Scene* scene) { mScene = scene; }
+
 	protected:
 		std::vector<Component*> mComponents;
 
@@ -121,7 +126,7 @@ namespace ya
 		eLayerType mType;
 		std::vector<Script*> mScripts;
 		bool mbDontDestroy;
-		//Scene* mScene;
+		Scene* mScene;
 
 		bool mbRender;
 	};
