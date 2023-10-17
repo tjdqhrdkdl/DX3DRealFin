@@ -151,10 +151,10 @@
     <ClCompile Include="yaCameraScript.cpp">
       <Filter>Contents\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayScene.cpp">
+    <ClCompile Include="yaTitleScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="yaTitleScene.cpp">
+    <ClCompile Include="yaPlayScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
     <ClCompile Include="yaWallScript.cpp">
@@ -455,10 +455,10 @@
     <ClInclude Include="yaCameraScript.h">
       <Filter>Contents\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayScene.h">
+    <ClInclude Include="yaTitleScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="yaTitleScene.h">
+    <ClInclude Include="yaPlayScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
     <ClInclude Include="yaWallScript.h">

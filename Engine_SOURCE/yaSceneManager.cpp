@@ -1,19 +1,8 @@
 #include "yaSceneManager.h"
-#include "yaTransform.h"
-#include "yaMeshRenderer.h"
-#include "yaRenderer.h"
-#include "yaResources.h"
-#include "yaTexture.h"
-#include "yaPlayerScript.h"
-#include "yaCamera.h"
-#include "yaCameraScript.h"
-#include "yaSpriteRenderer.h"
-#include "yaGridScript.h"
 #include "yaTitleScene.h"
 #include "yaPlayScene.h"
 #include "yaLoadingScene.h"
 #include "ThreadPool.h"
-#include "yaInput.h"
 
 namespace ya
 {
@@ -24,16 +13,16 @@ namespace ya
 	{
 		mScenes.resize((UINT)eSceneType::End);
 
-		mScenes[(UINT)eSceneType::Tilte] = new TitleScene();
-		mScenes[(UINT)eSceneType::Tilte]->SetName(L"TitleScene");
-		mScenes[(UINT)eSceneType::Tilte]->SetThreadLoad(true);
-		mScenes[(UINT)eSceneType::Tilte]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Tilte);
-
-		mScenes[(UINT)eSceneType::Play] = new PlayScene();
-		mScenes[(UINT)eSceneType::Play]->SetName(L"PlayScene");
+		mScenes[(UINT)eSceneType::Title] = new TitleScene();
+		mScenes[(UINT)eSceneType::Title]->SetName(L"TitleScene");
 
 		mScenes[(UINT)eSceneType::Loading] = new LoadingScene();
 		mScenes[(UINT)eSceneType::Loading]->SetName(L"LoadingScene");
+
+		mScenes[(UINT)eSceneType::Play] = new PlayScene();
+		mScenes[(UINT)eSceneType::Play]->SetName(L"PlayScene");
+		//mScenes[(UINT)eSceneType::Play]->SetThreadLoad(true);
+		mScenes[(UINT)eSceneType::Play]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Play);
 
 		for (Scene* scene : mScenes)
 		{
@@ -51,7 +40,7 @@ namespace ya
 			}
 		}
 
-		mActiveScene = mScenes[(UINT)eSceneType::Loading];
+		mActiveScene = mScenes[(UINT)eSceneType::Play];
 	}
 
 	void SceneManager::Update()
