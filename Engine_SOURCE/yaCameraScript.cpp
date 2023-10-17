@@ -205,19 +205,19 @@ namespace ya
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 							//디버깅시에 문제생기는 부분 막음.
-					if (Time::DeltaTime() < 0.1f)
+					if (Time::DeltaTime() < 0.1f && !mbLockOn)
 					{
 						//두번 계산해줄 것이다.
 						//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
 						//카메라 오브젝트의 회전을 바꿔준다.
 
 						//구 이동
-						mChildPos -= 30 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+						mChildPos -= 2 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 						mChildPos.Normalize();
 						mChildPos *= mDistFromTarget;
 
 
-						mChildPos -= 15 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+						mChildPos -= 1 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 						mChildPos.Normalize();
 						mChildPos *= mDistFromTarget;
 
@@ -250,6 +250,7 @@ namespace ya
 		direction.Normalize();
 		std::vector<eLayerType> layers = {};
 		layers.push_back(eLayerType::Ground);
+		//layers.push_back(eLayerType::Wall);
 		RayHit hit = CollisionManager::RayCast(mPlayerTarget, mDelayedTargetPos, direction, layers);
 		if (hit.isHit)
 		{

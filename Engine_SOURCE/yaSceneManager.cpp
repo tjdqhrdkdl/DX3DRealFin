@@ -11,11 +11,16 @@
 #include "yaGridScript.h"
 #include "yaTitleScene.h"
 #include "yaPlayScene.h"
+#include "yaLoadingScene.h"
+#include "ThreadPool.h"
+#include "yaInput.h"
 
 namespace ya
 {
 	std::vector<Scene*> SceneManager::mScenes = {};
 	Scene* SceneManager::mActiveScene = nullptr;
+
+	std::vector<std::future<std::function<void()>>> futures = {};
 
 	void SceneManager::Initialize()
 	{
@@ -23,16 +28,32 @@ namespace ya
 
 		mScenes[(UINT)eSceneType::Tilte] = new TitleScene();
 		mScenes[(UINT)eSceneType::Tilte]->SetName(L"TitleScene");
+		//mScenes[(UINT)eSceneType::Tilte]->SetThreadLoad(true);
+		mScenes[(UINT)eSceneType::Tilte]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Tilte);
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
 		mScenes[(UINT)eSceneType::Play]->SetName(L"PlayScene");
 
-		mActiveScene = mScenes[(UINT)eSceneType::Tilte];
+		mScenes[(UINT)eSceneType::Loading] = new LoadingScene();
+		mScenes[(UINT)eSceneType::Loading]->SetName(L"LoadingScene");
 
 		for (Scene* scene : mScenes)
 		{
-			scene->Initialize();
+			mActiveScene = scene;
+
+			if (scene->IsThreadLoad())
+			{
+				ThreadPool::EnqueueJob([scene]() {
+					scene->Initialize();
+				});
+			}
+			else
+			{
+				scene->Initialize();
+			}
 		}
+
+		mActiveScene = mScenes[(UINT)eSceneType::Tilte];
 	}
 
 	void SceneManager::Update()

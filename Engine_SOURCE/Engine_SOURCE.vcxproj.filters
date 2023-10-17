@@ -248,6 +248,12 @@
     <ClCompile Include="yaRedOgre.cpp">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClCompile>
+    <ClCompile Include="yaWallCheckObject.cpp">
+      <Filter>Contents\Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="yaWallCheckScript.cpp">
+      <Filter>Contents\Contents</Filter>
+    </ClCompile>
     <ClCompile Include="UICanvas_InGame.cpp">
       <Filter>Contents\UI</Filter>
     </ClCompile>
@@ -257,7 +263,9 @@
     <ClCompile Include="UIHPBarScript.cpp">
       <Filter>Contents\UI</Filter>
     </ClCompile>
-    <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="yaPlayerProjectileScript.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
     <ClCompile Include="CSVEditor.cpp">
       <Filter>Engine\Common</Filter>
     </ClCompile>
@@ -339,6 +347,25 @@
     <ClCompile Include="yaNavMesh.cpp">
       <Filter>Engine\Component\NavMesh</Filter>
     </ClCompile>
+    <ClCompile Include="yaBoundarySphere.cpp">
+      <Filter>Engine\Component\BoundarySphere</Filter>
+    </ClCompile>
+    <ClCompile Include="yaFrustum.cpp">
+      <Filter>Engine\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="yaLoadingScene.cpp">
+      <Filter>Contents\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="yaTenzenCollisionScript.cpp">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClCompile>
+    <ClCompile Include="yaTenzenSwordScript.cpp">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClCompile>
+    <ClCompile Include="MapObjects.cpp">
+      <Filter>Contents\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMapCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -491,9 +518,6 @@
     <ClInclude Include="yaPaintShader.h">
       <Filter>Engine\Resource\Shader\CS</Filter>
     </ClInclude>
-    <ClInclude Include="yaResource.h">
-      <Filter>Engine\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="yaFmod.h">
       <Filter>Engine\Component\Audio</Filter>
     </ClInclude>
@@ -535,12 +559,6 @@
     </ClInclude>
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
-    </ClInclude>
-    <ClInclude Include="yaSekiroEnums.h">
-      <Filter>Contents\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="yaSekiroCommon.h">
-      <Filter>Contents\Common</Filter>
     </ClInclude>
     <ClInclude Include="yaMonsterScript.h">
       <Filter>Contents\Monster\Script</Filter>
@@ -605,6 +623,19 @@
     </ClInclude>
     <ClInclude Include="yaRedOgre.h">
       <Filter>Contents\Monster\RedOgre</Filter>
+    </ClInclude>
+    <ClInclude Include="UICanvasObj.h" />
+    <ClInclude Include="UICanvas_InGame.h" />
+    <ClInclude Include="UIHPBarScript.h" />
+    <ClInclude Include="UINames.h" />
+    <ClInclude Include="yaPlayerProjectileScript.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaWallCheckObject.h">
+      <Filter>Contents\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="yaWallCheckScript.h">
+      <Filter>Contents\Contents</Filter>
     </ClInclude>
     <ClInclude Include="UICanvas_InGame.h">
       <Filter>Contents\UI</Filter>
@@ -682,6 +713,31 @@
     <ClInclude Include="yaNavMesh.h">
       <Filter>Engine\Component\NavMesh</Filter>
     </ClInclude>
+    <ClInclude Include="yaSekiroEnums.h">
+      <Filter>Contents\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBoundarySphere.h">
+      <Filter>Engine\Component\BoundarySphere</Filter>
+    </ClInclude>
+    <ClInclude Include="yaFrustum.h">
+      <Filter>Engine\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="yaResource.h">
+      <Filter>Engine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="yaLoadingScene.h">
+      <Filter>Contents\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTenzenCollisionScript.h">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTenzenSwordScript.h">
+      <Filter>Contents\Monster\Tenzen</Filter>
+    </ClInclude>
+    <ClInclude Include="MapObjects.h">
+      <Filter>Contents\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMapCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -701,9 +757,6 @@
     </Filter>
     <Filter Include="Contents\Ground">
       <UniqueIdentifier>{fd830d37-e4e7-4a1f-b161-8764418e152f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Contents\Player">
-      <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Contents\State">
       <UniqueIdentifier>{62a651e5-4cd6-4a6f-918f-c2ff7ed4f805}</UniqueIdentifier>
@@ -873,10 +926,24 @@
     <Filter Include="Engine\Component\NavMesh\Tool">
       <UniqueIdentifier>{893204a7-d276-46a6-97d9-e9f17b9fc5d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Player">
+      <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\BoundarySphere">
+      <UniqueIdentifier>{5d0c93a7-566b-4b19-aad4-f2082c5feae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Map">
+      <UniqueIdentifier>{fb88424e-b5ef-496d-80de-99299c8fe25e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">
       <Filter>Engine\Common\Math</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="loadanimation.txt">
+      <Filter>Contents\Player</Filter>
+    </Text>
   </ItemGroup>
 </Project>

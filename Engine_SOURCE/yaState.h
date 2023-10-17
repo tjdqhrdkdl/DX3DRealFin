@@ -6,57 +6,60 @@ namespace ya
 	class State
 	{
 	public:
-
-
-
-
-	public:
 		State();
 		virtual ~State();
 
-
 	public:
+		float	GetHP() { return mHp; }
+		void	SetHp(float hp) { mHp = hp; }
+		void	AddHp(float hp);
 
+		float	GetHPMax() { return mHpMax; }
+		void	SetHPMax(float maxhp) { mHpMax = maxhp; }
+		
+		float	GetPosture() { return mPosture; }
+		void	SetPosture(float posture) { mPosture = posture; }
+		void	AddPosture(float posture);
+		
+		float	GetPostureMax() { return mPostureMax; }
+		void	SetPostureMax(float posture) { mPostureMax = posture; }
+		
+		float	GetSpeed() { return mSpeed; }
+		void	SetSpeed(float speed) { mSpeed = speed; }
+		
+		float	GetAttack() { return mAttack; }
+		void	SetAttack(float attack) { mAttack = attack; }
 
-		enums::eSituation GetSituation() { return mSituation; }
-		float GetHP() { return mHp; }
-		float GetMaxHP() { return mMaxHp; }
-		float GetSpeed() { return mSpeed; }
-		float GetAttack() { return mAttack; }
-		float GetDeathBlowCount() { return mDeathBlowCount; }
-		float GetMaxDeathBlowCount() { return mMaxDeathBlowCount; }
-		float GetAlertnessCount() { return mAlertnessCount; }
-		bool IsDeathBlow() { return mbDeathBlow; }
+		int		GetResurrectionCount() { return mResurrectionCount; }
+		void	SetResurrectionCount(int count) { mResurrectionCount = count; }
+		void	AddResurrectionCount(int count);
+
+		int		GetResurrectionCountMax() { return mResurrectionCountMax; }
+		void	SetResurrectionCountMax(int count) { mResurrectionCountMax = count; }
+
+		bool	IsDeathBlow() { return mbDeathBlow; }
+		void	SetDeathBlow(bool deathblow) { mbDeathBlow = deathblow; }
+		
+		float	GetDeathBlowCount() { return mDeathBlowCount; }
+		void	SetDeathBlowCount(float blowcount) { mDeathBlowCount = blowcount; }
+		void	AddDeathBlow(float deathblow) { mDeathBlowCount += deathblow; }
+		
+		float	GetMaxDeathBlowCount() { return mMaxDeathBlowCount; }
+		void	SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount = maxblowcount; }
+
+		bool	IsDeathBlowOnOff() { return mbDeathBlowOnOff; }
+		void	SetDeathBlowonoff(bool onoff) { mbDeathBlowOnOff = onoff; }
+
 		//bool IsStartBlow() { return mbStartBlow; }
-		bool IsDeathBlowOnOff() { return mbDeathBlowOnOff; }
-
-		void SetSituation(enums::eSituation situation, bool OnceAniamtion = false) { mSituation = situation; }
-
-		void SetHp(float hp) { mHp = hp; }
-		void SetMaxHP(float maxhp) { mMaxHp = maxhp; }
-		void SetSpeed(float speed) { mSpeed = speed; }
-		void SetDeathBlowCount(float blowcount) { mDeathBlowCount = blowcount; }
-		void SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount = maxblowcount; }
-		void SetAlertnessCount(float count) { mAlertnessCount = count; }
-
-		void SetDeathBlow(bool deathblow) { mbDeathBlow = deathblow; }
 		//void SetStartBlow(bool blow) { mbStartBlow = blow; }
-		void SetDeathBlowonoff(bool onoff) { mbDeathBlowOnOff = onoff; }
 
-		void AddHp(float hp) { mHp += hp; }
-		void AddPosture(float posture) { mPosture += posture; }
-		void AddDeathBlow(float deathblow) { mDeathBlowCount += deathblow; }
-
+		bool	IsDeath() { return mbDeath; }
+		void	SetDeath(bool death) { mbDeath = death; }
 
 	private:
-
-		enums::eSituation	mSituation;				//어떠한 상태인지 
-
-
 		// HP
 		float               mHp;
-		float               mMaxHp;
-
+		float               mHpMax;
 
 		// 체간게이지
 		float				mPosture;
@@ -78,8 +81,8 @@ namespace ya
 		bool				mbDeathBlowOnOff;
 		//bool				mbStartBlow;
 
-		// 경보 레벨
-		float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)
+		// 죽음
+		bool				mbDeath;
 	};
 
 }

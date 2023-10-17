@@ -23,10 +23,19 @@ namespace ya
 		virtual void Update() override;
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
+
+	public:
+		void AdjustState();
 		
 	private:
+		void Idle();
 		void Walk();
-		void Run();
+		void Sprint();
+		void PlayerJump();
+		void Hang();
+		void Crouch();
+		void Hit();
+		void Death();
 
 	private:
 		Player* mPlayer;
@@ -41,5 +50,13 @@ namespace ya
 		float mDashSpeed;
 		float mDashTimer;
 		float mDashTimerMax;
+		eDirection mDashDirection;
+
+		float mHitTimer;
+		float mHitTimerMax;
+
+		bool mbTurn;
+		float mTurnTimer;
+		float mTurnTimerMax;
 	};
 }

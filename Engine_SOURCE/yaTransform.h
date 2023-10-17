@@ -47,10 +47,11 @@ namespace ya
 		void SetRight(Vector3 right) { mRight = right; }
 		void SetUp(Vector3 up) { mUp = up; }
 
+		Matrix& GetTranslationMatrix() { return mMatTranslation; }
 		Matrix& GetWorldMatrix() { return mWorld; }
 
 		void IsCamera(bool cam) { mbCamera = cam; }
-
+		Vector3 GetWorldPositioin() { return Vector3(mWorld._41, mWorld._42, mWorld._43); }
 	private:
 		Transform* mParent;
 

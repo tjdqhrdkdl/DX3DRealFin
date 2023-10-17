@@ -147,7 +147,9 @@ namespace ya
 		static std::vector<Bone*>& GetBones() { return mBones; }
 		static std::vector<AnimationClip*>& GetAnimClip() { return mAnimationClips; }
 		static std::vector<BoneAnimationClip*>& GetBoneAnimClip() { return mBoneAnimationClips; }
-
+		static Vector3 GetMeshCenter() {return mMeshCenter / mVtxCount; }
+		static void	MaxDist(float dist) { mMaxDist = max(mMaxDist, dist); }
+		static float GetMaxDist() { return mMaxDist; }
 
 	private:
 		static fbxsdk::FbxManager* mManager;
@@ -162,5 +164,9 @@ namespace ya
 		static std::vector<AnimationClip*> mAnimationClips;
 		static std::vector<BoneAnimationClip*> mBoneAnimationClips;
 		static fbxsdk::FbxNode* mMasterNode;
+
+		static Vector3 mMeshCenter;
+		static UINT mVtxCount;
+		static float mMaxDist;
 	};
 }

@@ -3,6 +3,7 @@
 #include "yaResources.h"
 #include "yaMeshData.h"
 #include "yaTransform.h"
+#include "yaCollider2D.h"
 #include "CSVEditor.h"
 #include "Utils.h"
 
@@ -26,7 +27,7 @@ namespace ya
 		std::fs::path csvPath(gResPath);
 		csvPath /= L"Map";
 		csvPath /= L"SekiroMapMeshData.csv";
-		CSVEditor csv{};
+		CSVEditor csv{};	
 		csv.ReadFile(csvPath);
 
 		size_t size = csv.GetRowCount();
@@ -52,15 +53,16 @@ namespace ya
 
 			GameObject* created = LoadMapObject(fileName, posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
 			created->SetName(objID);
+
 		}
 
-		//LoadMapObject(L"Map\\Mesh\\m11_00_00_00_260000.fbx",
-		//	90, 3, -40,		 
+		//LoadMapObject(L"m11_00_00_00_260000.fbx",
+		//	0, 0, 0,		 
 		//	0, 20, 0);
-		//LoadMapObject(L"Map\\Mesh\\m11_00_00_00_002300.fbx",	
+		//LoadMapObject(L"m11_00_00_00_002300.fbx",	
 		//	186.870, -58.937, 119.039,
 		//	0, -96.000, 0);
-		//LoadMapObject(L"Map\\Mesh\\m11_00_00_00_002301.fbx",	
+		//LoadMapObject(L"m11_00_00_00_002301.fbx",	
 		//	186.870, -58.924, 119.039,
 		//	0, 84.000, 0);
 		GameObject::Initialize();
@@ -85,7 +87,19 @@ namespace ya
 		childTr->SetPosition(_positionX, _positionZ, _positionY);
 		childTr->SetRotation(-_rotationX, -_rotationZ, -_rotationY);
 		childTr->SetScale(_scaleX, _scaleZ, _scaleY);
-
 		return obj;
+	}
+
+	void MapObjects::AddCollider(GameObject* obj,
+		float _rotationX, float _rotationY, float _rotationZ,
+		float _scaleX, float _scaleY, float _scaleZ)
+	{
+		assert(nullptr != obj);
+
+		Collider2D* col = obj->AddComponent<Collider2D>();
+		
+		col->SetType(eColliderType::Box);
+		col->SetRotation(Vector3(_rotationX, _rotationZ, _rotationY));
+		col->SetSize(Vector3(_scaleX, _scaleZ, _scaleY));
 	}
 }

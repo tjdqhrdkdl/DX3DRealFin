@@ -6,6 +6,7 @@ namespace ya::enums
 	{
 		Tilte,
 		Play,
+		Loading,
 		End,
 	};
 
@@ -23,6 +24,7 @@ namespace ya::enums
 		MonsterProjectile,
 		Player,
 		PlayerProjectile,
+		WallCheckCollision,
 		Particle,
 		PostProcess,
 		UI,
@@ -47,6 +49,7 @@ namespace ya::enums
 		AudioListener,
 		AudioSource,
 		Light,
+		BoundarySphere,
 		UI,
 		//FadeOut,FadeIn
 		Script,

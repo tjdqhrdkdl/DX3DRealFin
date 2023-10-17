@@ -9,12 +9,14 @@
 #include "yaBoneAnimator.h"
 #include "Utils.h"
 #include "CommonInclude.h"
-
+#include "yaBoundarySphere.h"
+#include "yaScene.h"
 namespace ya
 {
 	MeshData::MeshData()
 		: Resource(eResourceType::MeshData)
 		, mAnimationClipCount(0)
+		, mIFrameCount(0)
 		, mBoneOffset(nullptr)
 	{
 	}
@@ -37,10 +39,12 @@ namespace ya
 		FbxLoader loader;
 		loader.Initialize();
 		loader.LoadFbx(fullPath);
+		meshSharedPtr->mMeshCenter = loader.GetMeshCenter();
 
 		// 메시들 가져오기
 		std::vector<std::shared_ptr<Mesh>> meshes = Mesh::CreateFromContainer(&loader);
 		std::vector<std::vector<std::shared_ptr<Material>>>  materialsVec = {};
+		meshSharedPtr->mBoundarySphereRadius = loader.GetMaxDist();
 
 		std::shared_ptr<Mesh> mesh = nullptr;
 		for (size_t i = 0; i < meshes.size(); i++)
@@ -179,7 +183,6 @@ namespace ya
 		//std::wstring name = std::filesystem::path(fullPath).stem();
 		//name += L".mesh" + std::to_wstring(i);
 		
-	
 		meshSharedPtr->Save(path);
 
 		loader.Release();
@@ -368,6 +371,9 @@ namespace ya
 			}		
 		}		
 
+		fwrite(&mMeshCenter, sizeof(Vector3), 1, file);
+		fwrite(&mBoundarySphereRadius, sizeof(float), 1, file);
+
 		fclose(file);
 
 		return S_OK;	
@@ -477,6 +483,8 @@ namespace ya
 			
 		}
 
+		fread(&mMeshCenter, sizeof(Vector3), 1, file);
+		fread(&mBoundarySphereRadius, sizeof(float), 1, file);
 
 		fclose(file);
 
@@ -570,7 +578,7 @@ namespace ya
 		return S_OK;
 	}
 
-	HRESULT MeshData::AnimationLoad(const std::wstring& path, FILE* file)
+	HRESULT MeshData::AnimationLoad(const std::wstring& path, FILE* file, bool bLast)
 	{
 
 		std::string strPath(path.begin(), path.end());
@@ -622,28 +630,38 @@ namespace ya
 			fread(&animClip[i].frameLength, sizeof(int), 1, file);			
 		}
 
-
 		// 본정보들 전부 저장	
-		UINT iFrameCount = 0;
+		//UINT iFrameCount = 0;
 		mBones.resize(boneSize);
 		for (size_t i = 0; i < boneSize; i++)
 		{
-
 			LoadWString(mBones[i].name, file);
 			fread(&mBones[i].depth, sizeof(int), 1, file);
 			fread(&mBones[i].parentIdx, sizeof(int), 1, file);
 			fread(&mBones[i].bone, sizeof(Matrix), 1, file);
 			fread(&mBones[i].offset, sizeof(Matrix), 1, file);
 
-
-
-			//boneFrameDataVector = max(frameCount, boneFrameDataVector);
-			mBones[i].keyFrames.resize(AnimClipSize);
+			std::vector<std::vector<BoneKeyFrame>> keyFrames;
+			keyFrames.resize(AnimClipSize);
+			//mBones[i].keyFrames.resize(AnimClipSize);
 			for (size_t j = 0; j < AnimClipSize; j++)
 			{				
-				
 				UINT boneKeyFramesSize;
 				fread(&boneKeyFramesSize, sizeof(UINT), 1, file);
+				
+				keyFrames[j].resize(boneKeyFramesSize);
+
+				for (UINT k = 0; k < keyFrames[j].size(); k++)
+				{
+					fread(&keyFrames[j][k].time, sizeof(double), 1, file);
+					fread(&keyFrames[j][k].frame, sizeof(int), 1, file);
+					fread(&keyFrames[j][k].translate, sizeof(Vector3), 1, file);
+					fread(&keyFrames[j][k].scale, sizeof(Vector3), 1, file);
+					fread(&keyFrames[j][k].rotation, sizeof(Vector4), 1, file);
+				}
+				mIFrameCount = max(mIFrameCount, (UINT)keyFrames[j].size());
+
+				/*
 				mBones[i].keyFrames[j].resize(boneKeyFramesSize);
 				for (UINT k = 0; k < mBones[i].keyFrames[j].size(); k++)
 				{
@@ -652,82 +670,96 @@ namespace ya
 					fread(&mBones[i].keyFrames[j][k].translate, sizeof(Vector3), 1, file);
 					fread(&mBones[i].keyFrames[j][k].scale, sizeof(Vector3), 1, file);
 					fread(&mBones[i].keyFrames[j][k].rotation, sizeof(Vector4), 1, file);
-
 				}
-			iFrameCount = max(iFrameCount, (UINT)mBones[i].keyFrames[j].size());			
+				iFrameCount = max(iFrameCount, (UINT)mBones[i].keyFrames[j].size());	
+				*/		
 			}			
+			mBones[i].keyFrames.insert(mBones[i].keyFrames.end(), keyFrames.begin(), keyFrames.end());
 		}
 
 		fclose(file);
 
+		mAnimClip.insert(mAnimClip.end(), animClip.begin(), animClip.end());
 
-		std::vector<std::vector<BoneFrameTransform>> vecFrameTrans;
-		vecFrameTrans.resize(AnimClipSize);
-
-		
-
-		for (size_t i = 0; i < mBones.size(); ++i)
+		if(bLast)
 		{
-			for (size_t k = 0; k < AnimClipSize; k++)
+			std::vector<std::vector<BoneFrameTransform>> vecFrameTrans;
+			vecFrameTrans.resize(mAnimationClipCount);
+
+			for (size_t i = 0; i < mBones.size(); ++i)
 			{
-				vecFrameTrans[k].resize((UINT)mBones.size() * iFrameCount);
-				for (size_t j = 0; j < mBones[i].keyFrames[k].size(); ++j)
+				for (size_t k = 0; k < mAnimationClipCount; k++)
 				{
-					vecFrameTrans[k][(UINT)mBones.size() * j + i]
-						= BoneFrameTransform
+					vecFrameTrans[k].resize((UINT)mBones.size() * mIFrameCount);
+					for (size_t j = 0; j < mBones[i].keyFrames[k].size(); ++j)
 					{
-						Vector4(mBones[i].keyFrames[k][j].translate.x
-							, mBones[i].keyFrames[k][j].translate.y
-							, mBones[i].keyFrames[k][j].translate.z, 0.f)
-						, Vector4(mBones[i].keyFrames[k][j].scale.x
-							, mBones[i].keyFrames[k][j].scale.y
-							, mBones[i].keyFrames[k][j].scale.z, 0.f)
-						, mBones[i].keyFrames[k][j].rotation
-					};
+						vecFrameTrans[k][(UINT)mBones.size() * j + i]
+							= BoneFrameTransform
+						{
+							Vector4(mBones[i].keyFrames[k][j].translate.x
+								, mBones[i].keyFrames[k][j].translate.y
+								, mBones[i].keyFrames[k][j].translate.z, 0.f)
+							, Vector4(mBones[i].keyFrames[k][j].scale.x
+								, mBones[i].keyFrames[k][j].scale.y
+								, mBones[i].keyFrames[k][j].scale.z, 0.f)
+							, mBones[i].keyFrames[k][j].rotation
+						};
+					}
 				}
 			}
-		}
 
-		for (size_t i = 0; i < AnimClipSize; i++)
-		{
-			graphics::StructedBuffer* boneFrameData = new graphics::StructedBuffer();
-			boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * iFrameCount
-				, eSRVType::SRV, vecFrameTrans[i].data(), false);
-			PushBackBoneFrameData(boneFrameData);
-		}	
-	
-		mAnimClip.insert(mAnimClip.end(), animClip.begin(), animClip.end());
+			for (size_t i = 0; i < mAnimationClipCount; i++)
+			{
+				graphics::StructedBuffer* boneFrameData = new graphics::StructedBuffer();
+				boneFrameData->Create(sizeof(BoneFrameTransform), (UINT)mBones.size() * mIFrameCount
+					, eSRVType::SRV, vecFrameTrans[i].data(), false);
+				PushBackBoneFrameData(boneFrameData);
+			}	
+		}
 		
 		return S_OK;
 	}
 
 
-	MeshObject* MeshData::Instantiate(eLayerType type, const std::wstring& name)
+	MeshObject* MeshData::Instantiate(eLayerType type, Scene* scene, const std::wstring& name)
 	{
 		std::wstring objName = name;
 		if(name == L"")
 			objName = std::filesystem::path(mFullPath).stem();
 		
 		std::vector<GameObject*> ret = {};
-		MeshObject* meshObject = object::Instantiate<MeshObject>(type);
+
+		MeshObject* meshObject = nullptr;
+		if(scene == nullptr)
+			meshObject = object::Instantiate<MeshObject>(type);	
+		else
+			meshObject = object::Instantiate<MeshObject>(type, scene);	
+
 		meshObject->SetName(objName + L".All");
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{
-			GameObject* gameObj = object::Instantiate<GameObject>(type);
+			GameObject* gameObj = nullptr;
+			if (scene == nullptr)
+				gameObj = object::Instantiate<GameObject>(type);
+			else
+				gameObj = object::Instantiate<GameObject>(type, scene);
+
 			gameObj->SetName(objName +L"." + std::to_wstring(i));
 			MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
 			mr->SetMesh(mMeshes[i]);
 			mMeshes[i]->SetParentMeshData(this);
+
 			for (size_t k = 0; k < mMaterialsVec[i].size(); k++)
 			{
 				mr->SetMaterial(mMaterialsVec[i][k], k);
 			}
+
 			meshObject->PushBackObject(gameObj);
 			mChildObjects.push_back(gameObj);
+
 			if (mAnimationClipCount > 0)
 			{
 				BoneAnimator* animator = gameObj->AddComponent<BoneAnimator>();
-
 
 				if (i == 0)
 				{
@@ -739,9 +771,13 @@ namespace ya
 					animator->SetParentAnimator(mRepresentBoneAnimator);
 			}
 		}
-		
+
+		BoundarySphere* sphere = meshObject->AddComponent<BoundarySphere>();
+		sphere->SetCenter(mMeshCenter);
+		sphere->SetRadius(mBoundarySphereRadius*2);
 		meshObject->SetParent();
 		mMeshObject = meshObject;
+
 		return meshObject;
 	}
 	void MeshData::Play(const std::wstring animName)
@@ -803,6 +839,8 @@ namespace ya
 		// 메시들 가져오기
 		std::vector<std::shared_ptr<Mesh>> meshes = Mesh::CreateFromContainer(&loader);
 		std::vector<std::vector<std::shared_ptr<Material>>>  materialsVec = {};
+		mMeshCenter = loader.GetMeshCenter();
+		mBoundarySphereRadius = loader.GetMaxDist();
 
 		std::shared_ptr<Mesh> mesh = nullptr;
 		for (size_t i = 0; i < meshes.size(); i++)

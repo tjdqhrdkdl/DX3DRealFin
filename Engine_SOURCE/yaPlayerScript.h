@@ -3,6 +3,8 @@
 
 namespace ya
 {
+	class Player;
+	class PlayerMeshScript;
 	class PlayerScript : public Script
 	{
 	public:
@@ -18,7 +20,6 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	private:
-
 		float TESTTime;
 
 	};

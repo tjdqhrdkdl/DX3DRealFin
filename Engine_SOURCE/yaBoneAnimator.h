@@ -44,48 +44,39 @@ namespace ya
 		void Update() override;
 		void FixedUpdate() override;
 		void Render() override;
-
 		void Play(const std::wstring& animName);
-
-
 		void Binds();
-
 		void CheckBone();
+		void SetAnimaitionClip(const std::vector<BoneAnimationClip>* clips);
+		Events* FindEvents(const std::wstring& name);
+		graphics::StructedBuffer* GetFinalBoneMatrix() { return mBoneMatrixBuffer; }
+		UINT GetBoneCount() { return mBones->size(); }
+		void ClearData();
 		void SetBones(const std::vector<BoneMatrix>* bones)
 		{
 			mBoneMatrixBuffer = new graphics::StructedBuffer();
 			mBones = bones;
 			mAnimaitonBoneMatrix.resize(mBones->size());
 		}
-		void SetAnimaitionClip(const std::vector<BoneAnimationClip>* clips);
-		void SetClipTime(int clipIdx, float time) { mAnimationUpdateTime[clipIdx] = time; };
 
-		Events* FindEvents(const std::wstring& name);
-		graphics::StructedBuffer* GetFinalBoneMatrix() { return mBoneMatrixBuffer; }
-		UINT GetBoneCount() { return mBones->size(); }
-		void ClearData();
+		void SetClipTime(int clipIdx, float time) { mAnimationUpdateTime[clipIdx] = time; };
+		void SetAnimationSelfChange(UINT idx, bool change) { mAnimationSelfChangeBools[idx] = change; }
+		void SetAnimationSelfChange(const std::wstring& name, bool change) { mAnimationSelfChangeBools[GetAnimationIdxByName(name)] = change; }
+		void SetAnimationTailTime(float time) { mAnimationTailTime = time; }
+		void SetParentAnimator(BoneAnimator* animator) { mParentAnimator = animator; }
+		void SetAnimationChangeTime(float time) { mAnimChangeTime = time; }
+		void SetStop(bool stop) { mbStop = stop; }
 
 		std::function<void()>& GetStartEvent(const std::wstring& name);
 		std::function<void()>& GetCompleteEvent(const std::wstring& name);
 		std::function<void()>& GetEndEvent(const std::wstring& name);
 		std::function<void()>& GetFrameEvent(const std::wstring& name, UINT index);
-
 		int GetCurrentClipIdx() { return mCurrentClip; }
 		int GetCurrentFrameIdx() { return mFrameIdx; }
-
 		int GetAnimationIdxByName(const std::wstring& name) { if (mAnimationNameAndIndexMap.find(name) == mAnimationNameAndIndexMap.end()) return -1; else return mAnimationNameAndIndexMap[name]; }
-		
 		std::wstring GetPlayAnimationName() { return mAnimationClips->at(mCurrentClip).name; }
-
-		
-		void SetAnimationSelfChange(UINT idx, bool change) { mAnimationSelfChangeBools[idx] = change; }
-		void SetAnimationSelfChange(const std::wstring& name, bool change) { mAnimationSelfChangeBools[GetAnimationIdxByName(name)] = change; }
-		
 		bool isChanging() { return mbAnimChanging; }
-
-		void SetAnimationTailTime(float time) { mAnimationTailTime = time; }
-
-		void SetParentAnimator(BoneAnimator* animator) { mParentAnimator = animator; }
+		
 	private:
 		const std::vector<BoneMatrix>* mBones;
 		const std::vector<BoneAnimationClip>* mAnimationClips;
@@ -110,7 +101,8 @@ namespace ya
 		//애니메이션 도중 event
 		std::map<std::wstring, Events*> mEvents;
 
-		
+		bool mbStop;
+
 		//애니메이션 사이 보간을 위한 변수
 		bool mbAnimChanging;
 		float mAnimChangeTime;
@@ -126,5 +118,7 @@ namespace ya
 
 		//부모 본애니메이터
 		BoneAnimator* mParentAnimator;
+
+
 	};
 }

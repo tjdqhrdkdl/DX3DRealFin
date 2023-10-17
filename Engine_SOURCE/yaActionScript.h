@@ -20,33 +20,26 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	public:
-		void SetSpeed(const float speed) { mSpeed = speed; }
+		void Velocity(const float velocity = 18.0f);
+
+		void SetSpeed(const float speed = 200.0f) { mSpeed = speed; }
 		float GetSpeed() const { return mSpeed; }
 
 		void SetDirection(const Vector3 dir) { mDirection = dir; }
 		Vector3 GetDirection() const { return mDirection; }
 
-		void SetJumping(bool jumping) { mbJumping = jumping; }
-		bool IsJumping() { return mbJumping; }
-		void SetGrounded(bool grounded) { mbGrounded = grounded; }
-		bool IsGrounded() { return mbGrounded; }
-
-		std::function<void()>& GetJumpEvent() { return mJumpEvent; }
-		std::function<void()>& GetGroundEvent() { return mGroundEvent; }
-
+		void SetJumpTime(float time) { mJumpTime = time; }
 	public:
 		void Move(const Vector3 dir, float force = -1.0f);
 		void Rotate(const Vector3 dir, float speed = -1.0f);
 		void Jump(float force = -1.0f);
-		void Attack();
-		void Deflect();
-		void Parrying();
+		void JumpDouble(float force = -1.0f);
 
-		void ForwardCheck();
-		void CheckGround();
+		bool ForwardCheck(Vector3 movement);
 
 	protected:
 		GameObject* mTarget;
+		GameObject* mCheck;
 
 		class Transform* mTransform;
 		class Rigidbody* mRigidbody;
@@ -56,26 +49,11 @@ namespace ya
 		Vector3 mDirection;
 		Vector3 mRotateDirection;
 
-		Vector3 mGroundNormal;
-		Vector3 mGroundCross;
-		float mGroundDistance;
-		float mGroundSlopeAngle;
-		float mForwardSlopeAngle;
-
-		bool mbMoving;
-		bool mbRunning;
-		bool mbJumping;
-		bool mbGrounded;
 		bool mbForwardBlocked;
-
-		/// <summary> 점프 상태가 시작될때 발생하는 이벤트 </summary>
-		std::function<void()> mJumpEvent;
-
-		/// <summary> 점프가 끝나고 착지한 상태가 될 때 발생하는 이벤트 </summary>
-		std::function<void()> mGroundEvent;
 
 	private:
 		float mJumpTimer;
+		float mJumpTime;
 		float mJumpForce;
 	};
 }
