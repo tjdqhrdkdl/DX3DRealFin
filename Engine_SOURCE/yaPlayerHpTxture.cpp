@@ -17,12 +17,12 @@ namespace ya
 		if(mPlayerHpLayout == nullptr)
 		{			
 
-			Resources::Load<Texture>(L"HPLayoutTexture", L"HpLayout.png");
-			Resources::Load<Texture>(L"HPBarTexture", L"Hp.png");
-			Resources::Load<Texture>(L"re_True", L"Resurrection_True.png");
-			Resources::Load<Texture>(L"re_False", L"Resurrection_False.png");
-			Resources::Load<Texture>(L"PostureLayout", L"PostureLayout.png");
-			Resources::Load<Texture>(L"PostureBar", L"PostureBarTT.png");
+			Resources::Load<Texture>(L"HPLayoutTexture", L"Texture\\UI\\HpLayout.png");
+			Resources::Load<Texture>(L"HPBarTexture", L"Texture\\UI\\Hp.png");
+			Resources::Load<Texture>(L"re_True", L"Texture\\UI\\Resurrection_True.png");
+			Resources::Load<Texture>(L"re_False", L"Texture\\UI\\Resurrection_False.png");
+			Resources::Load<Texture>(L"PostureLayout", L"Texture\\UI\\PostureLayout.png");
+			Resources::Load<Texture>(L"PostureBar", L"Texture\\UI\\PostureBar.png");
 
 			{
 				mPlayerHpLayout = object::Instantiate<GameObject>(eLayerType::UI);
