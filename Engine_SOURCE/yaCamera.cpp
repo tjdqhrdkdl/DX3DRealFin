@@ -209,7 +209,8 @@ namespace ya
 
 	void Camera::RegisterCameraInRenderer()
 	{
-		eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
+		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
+		eSceneType type = GetOwner()->GetScene()->GetSceneType();
 		renderer::cameras[(UINT)type].push_back(this);
 	}
 
@@ -226,7 +227,8 @@ namespace ya
 		mTransparentGameObjects.clear();
 		mPostProcessGameObjects.clear();
 
-		Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = GetOwner()->GetScene();
 		for (size_t i = 0; i < (UINT)eLayerType::End; i++)
 		{
 			if (mLayerMasks[i] == true)

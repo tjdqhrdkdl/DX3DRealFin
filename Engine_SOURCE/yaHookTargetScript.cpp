@@ -25,7 +25,7 @@ namespace ya
 
 	void HookTargetScript::Update()
 	{
-		Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = GetOwner()->GetScene();
 		Player* player = scene->GetPlayer();
 		if (player == nullptr)
 			return;

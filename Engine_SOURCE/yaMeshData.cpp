@@ -10,6 +10,7 @@
 #include "Utils.h"
 #include "CommonInclude.h"
 #include "yaBoundarySphere.h"
+#include "yaScene.h"
 namespace ya
 {
 	MeshData::MeshData()
@@ -720,32 +721,45 @@ namespace ya
 	}
 
 
-	MeshObject* MeshData::Instantiate(eLayerType type, const std::wstring& name)
+	MeshObject* MeshData::Instantiate(eLayerType type, Scene* scene, const std::wstring& name)
 	{
 		std::wstring objName = name;
 		if(name == L"")
 			objName = std::filesystem::path(mFullPath).stem();
 		
 		std::vector<GameObject*> ret = {};
-		MeshObject* meshObject = object::Instantiate<MeshObject>(type);	
+
+		MeshObject* meshObject = nullptr;
+		if(scene == nullptr)
+			meshObject = object::Instantiate<MeshObject>(type);	
+		else
+			meshObject = object::Instantiate<MeshObject>(type, scene);	
+
 		meshObject->SetName(objName + L".All");
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{
-			GameObject* gameObj = object::Instantiate<GameObject>(type);
+			GameObject* gameObj = nullptr;
+			if (scene == nullptr)
+				gameObj = object::Instantiate<GameObject>(type);
+			else
+				gameObj = object::Instantiate<GameObject>(type, scene);
+
 			gameObj->SetName(objName +L"." + std::to_wstring(i));
 			MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
 			mr->SetMesh(mMeshes[i]);
 			mMeshes[i]->SetParentMeshData(this);
+
 			for (size_t k = 0; k < mMaterialsVec[i].size(); k++)
 			{
 				mr->SetMaterial(mMaterialsVec[i][k], k);
 			}
+
 			meshObject->PushBackObject(gameObj);
 			mChildObjects.push_back(gameObj);
+
 			if (mAnimationClipCount > 0)
 			{
 				BoneAnimator* animator = gameObj->AddComponent<BoneAnimator>();
-
 
 				if (i == 0)
 				{
@@ -757,11 +771,13 @@ namespace ya
 					animator->SetParentAnimator(mRepresentBoneAnimator);
 			}
 		}
+
 		BoundarySphere* sphere = meshObject->AddComponent<BoundarySphere>();
 		sphere->SetCenter(mMeshCenter);
 		sphere->SetRadius(mBoundarySphereRadius*2);
 		meshObject->SetParent();
 		mMeshObject = meshObject;
+
 		return meshObject;
 	}
 	void MeshData::Play(const std::wstring animName)

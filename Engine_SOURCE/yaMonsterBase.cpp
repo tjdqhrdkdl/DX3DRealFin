@@ -7,26 +7,21 @@ extern ya::Application application;
 
 
 
+#include "yaPlayer.h"
+
+
 
 namespace ya
-
 {
-
 	MonsterBase::MonsterBase()
 		: mPlayerObject(nullptr)
 		, mMonsterState(nullptr)
-		, mPlayerPos(Vec3::Zero)
+		, mSituation(eSituation::None)
+		/*, mPlayerPos(Vec3::Zero)
 		, mMonster2PlayerNormalize(Vec3::Zero)
-		, mPlayer2MonsterNormalize(Vec3::Zero)
+		, mPlayer2MonsterNormalize(Vec3::Zero)*/
 		, mRecoveryTime(3.0f)
-
 	{
-
-
-		srand((unsigned int)time(nullptr));
-		int Rand = rand();
-
-
 	}
 
 	MonsterBase::~MonsterBase()
@@ -36,12 +31,11 @@ namespace ya
 			delete mMonsterState;
 			mMonsterState = nullptr;
 		}
-
 	}
 
 	void MonsterBase::Initialize()
 	{
-
+		CreateMonsterState();
 
 		GameObject::Initialize();
 	}
@@ -58,90 +52,110 @@ namespace ya
 			mMonster2PlayerNormalize = mPlayerPos - monsterPos;
 			mMonster2PlayerNormalize.Normalize();
 
-
-			mPlayer2MonsterNormalize = monsterPos - mPlayerPos;
-			mPlayer2MonsterNormalize.Normalize();
-
-
-
-			//Back or Front
-			Vec3 monForward = GetComponent<Transform>()->Forward();
-			float direction = monForward.Dot(mMonster2PlayerNormalize);
-
-			if (direction > 0)
-			{
-				mbPlayerFront = true;
-			}
-			else if (direction < 0)
-			{
-				mbPlayerFront = false;
-			}
-
-
-
-
-			//DeathBlowRecovery
-			if (IsDeathBlowOnOff())
-			{
-				SetDeathBlowCount(-(Time::DeltaTime() / 2));
-			}
-			else
-			{
-				mTime += Time::DeltaTime();
-				if (mTime >= 3.0f)
-				{
-					SetDeathBlowonoff(true);
-					mTime = 0.f;
-				}
-			}
-
-			//체간 게이지 차서 그로기 걸렸을때는 3초
-			if (GetSituation() == enums::eSituation::Groggy)
-			{
-				mTime += Time::DeltaTime();
-				if (mTime >= mRecoveryTime)
-				{
-					SetSituation(enums::eSituation::None);
-					SetDeathBlow(false);
-					mTime = 0.f;
-				}
-			}
-
+			// DeathBlow 가능 상태일때
 			if (IsDeathBlow())
 			{
-				Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-				//Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
-				Transform* camtr = mainCamera->GetOwner()->GetComponent<Transform>();
-				Vector3 rot = TurnToPointDir(camtr->GetPosition());
-				
-				marktr->SetRotation(Vec3(0.0f, rot.y, 0.0f));
-				//marktr->SetRotation(rot);
-				marktr->SetPosition(monsterPos + mDeathBlowMarkOffSet);
+				Transform* playerTr = mPlayerObject->GetComponent<Transform>();
+				Vector3 playerPos = playerTr->GetPosition();
 
+				Transform* tr = GetComponent<Transform>();
+				Vector3 pos = tr->GetPosition();
+
+				// 거리
+				float dist = playerPos.Distance(playerPos, pos);
+
+				// 각도
+				Quaternion quater = Quaternion::FromToRotation(-playerTr->Forward(), Vector3(playerPos.x - pos.x, playerPos.y - pos.y, playerPos.z - pos.z));
+				Vector3 quaterToEuler = quater.ToEuler();
+				Vector3 theta = quaterToEuler * 180.0f / XM_PI;
+
+
+				if (dist <= 5.0f)
+				{
+					if (abs(theta.y) <= 60.0f)
+					{
+						mPlayerObject->SetDeathBlowTarget(this, dist);
+					}
+					else
+					{
+						mPlayerObject->EraseDeathBlowTarget(this);
+					}
+				}
+				else
+				{
+					mPlayerObject->EraseDeathBlowTarget(this);
+				}
 			}
-			else
-			{
-				Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-				marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
-			}
+
+
+			//if (IsDeathBlow())
+			//{
+			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+			//	//Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
+			//	Transform* camtr = mainCamera->GetOwner()->GetComponent<Transform>();
+			//	Vector3 rot = TurnToPointDir(camtr->GetPosition());
+			//	
+			//	marktr->SetRotation(Vec3(0.0f, rot.y, 0.0f));
+			//	//marktr->SetRotation(rot);
+			//	marktr->SetPosition(monsterPos + mDeathBlowMarkOffSet);
+      //
+			//}
+			//else
+			//{
+			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+			//	marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
+			//}
 
 			
 
+			////DeathBlowRecovery
+			//if (IsDeathBlowOnOff())
+			//{
+			//	SetDeathBlowCount(-(Time::DeltaTime() / 2));
+			//}
+			//else
+			//{
+			//	mTime += Time::DeltaTime();
+			//	if (mTime >= 3.0f)
+			//	{
+			//		SetDeathBlowonoff(true);
+			//		mTime = 0.f;
+			//	}
+			//}
+
+			////체간 게이지 차서 그로기 걸렸을때는 3초
+			//if (GetSituation() == enums::eSituation::Groggy)
+			//{
+			//	mTime += Time::DeltaTime();
+			//	if (mTime >= mRecoveryTime)
+			//	{
+			//		SetSituation(enums::eSituation::None);
+			//		SetDeathBlow(false);
+			//		mTime = 0.f;
+			//	}
+			//}
+
+			//if (IsDeathBlow())
+			//{
+			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+			//	Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
+			//	marktr->SetPosition(pos + mDeathBlowMarkOffSet);
+			//}
+			//else
+			//{
+			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+			//	marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
+			//}
+
+
 		}
-
-
-
-
 
 		GameObject::Update();
 	}
 
-
-
 	//TEST RENDER 
 	void MonsterBase::Render()
 	{
-
 		GameObject::Render();
 
 		///깜빡이 녀석 거슬리면 주석
@@ -352,56 +366,46 @@ namespace ya
 
 	void MonsterBase::AlertnessLevel()
 	{
-
-
 		if (IsPlayerFront())
 		{
-
-			if (mMonsterState->GetSituation() == enums::eSituation::Battle ||
-				mMonsterState->GetSituation() == enums::eSituation::Attack ||
-				mMonsterState->GetSituation() == enums::eSituation::Chase)
+			if (mSituation == enums::eSituation::Battle ||
+				mSituation == enums::eSituation::Attack ||
+				mSituation == enums::eSituation::Chase)
 				return;
 
 
 			if (NavigationPlayer(3.0f))
 			{
-				mMonsterState->SetSituation(enums::eSituation::Battle);
+				mSituation = enums::eSituation::Battle;
 			}
-
 
 			//else if (NavigationPlayer(4.5f))
 			//{
 			//	mAlertnessCount = 60.f;
 			//}
 
-
 			if (NavigationPlayer(7.0f))
 			{
-				SetAlertnessCount(Time::DeltaTime() * 5);
+				mAlertnessCount = Time::DeltaTime() * 5;
 			}
-
 		}
-
 		else
 		{
-
 			if (NavigationPlayer(5.0f))
 			{
-				SetAlertnessCount(Time::DeltaTime() * 5);
+				mAlertnessCount = Time::DeltaTime() * 5;
 			}
 		}
 
-
-		if (GetAlertnessCount() > 80.f)
+		if (mAlertnessCount > 80.f)
 		{
-			mMonsterState->SetSituation(eSituation::Attack);
+			mSituation = eSituation::Attack;
 		}
-		else if (GetAlertnessCount() > 60.f)
+		else if (mAlertnessCount > 60.f)
 		{
 			TurnToPlayer();
-			mMonsterState->SetSituation(eSituation::Boundary);
+			mSituation = eSituation::Boundary;
 		}
-
 	}
 
 	bool MonsterBase::IsPlayerFieldview(float minangle, float maxangle)
@@ -474,10 +478,18 @@ namespace ya
 		monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (TopMax - BottomMax) + BottomMax;
 
 
-
 		return monsterScreenPosition;
 	}
 
+	/// Monster 인살 이벤트
+	void MonsterBase::DeathBlow()
+	{
+		// 각자 override해서 인살 이벤트 넣어주시면 되겠습니다
+
+		mMonsterState->AddResurrectionCount(-1);
+		mMonsterState->SetPosture(0);
+		mMonsterState->SetHp(mMonsterState->GetHPMax());
+	}
 
 
 	void MonsterBase::CreateMonsterState()
@@ -486,22 +498,18 @@ namespace ya
 		{
 			mMonsterState = new State();
 
+
 			mMonsterState->SetSituation(enums::eSituation::None);
 			mMonsterState->SetHPMax(20.0f);				//HP 총 량
 			mMonsterState->SetHp(20.0f);				//
+
+
+
 			mMonsterState->SetSpeed(5.0f);				//기본 이동속도
 			mMonsterState->SetDeathBlowCount(0.f);		//현재 체간 상태
 			mMonsterState->SetMaxDeathBlowCount(10.f);	//총 체간
-			mMonsterState->SetAlertnessCount(0.f);		//경보 레벨 공격 할지 뭐할지
 			mMonsterState->SetDeathBlow(false);			//인살 가능한 상태
 		}
-
-
-
-
-
-
-
 	}
 
 	void MonsterBase::CreateDeathBlowMark()

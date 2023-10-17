@@ -18,7 +18,7 @@ namespace ya
 		, mChildPos(Vector3(0, 0, -40))
 		, mThetaAxisY(1.57)
 		, mThetaAxisX(1.57)
-		, mDistFromTarget(12)
+		, mDistFromTarget(10)
 		, mDelayTime(0.2f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
@@ -211,19 +211,19 @@ namespace ya
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 							//디버깅시에 문제생기는 부분 막음.
-					if (Time::DeltaTime() < 0.1f)
+					if (Time::DeltaTime() < 0.1f && !mbLockOn)
 					{
 						//두번 계산해줄 것이다.
 						//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
 						//카메라 오브젝트의 회전을 바꿔준다.
 
 						//구 이동
-						mChildPos -= 60 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
+						mChildPos -= 2 * tr->Right() * mouseMovement.x * Time::DeltaTime();;
 						mChildPos.Normalize();
 						mChildPos *= mDistFromTarget;
 
 
-						mChildPos -= 30 * tr->Up() * mouseMovement.y * Time::DeltaTime();
+						mChildPos -= 1 * tr->Up() * mouseMovement.y * Time::DeltaTime();
 						mChildPos.Normalize();
 						mChildPos *= mDistFromTarget;
 
@@ -320,7 +320,8 @@ namespace ya
 		//장애물을 고려할때, 사실 일부분만 보여도 락온이 되던데. 레이를 여러방 쏴야하나??
 		//락온 대상이 장애물 등에 완전히 가려지거나 너무 멀어지면 락온이 풀려야한다.
 
-		Scene* scene =  SceneManager::GetActiveScene();
+		//Scene* scene =  SceneManager::GetActiveScene();
+		Scene* scene = GetOwner()->GetScene();
 		std::vector<GameObject*> mons =  scene->GetGameObjects(eLayerType::Monster);
 		float minDist = 10000000;
 		Transform* tr = GetOwner()->GetComponent<Transform>();

@@ -29,6 +29,7 @@ namespace ya
 		//몬스터 작업
 		if (dynamic_cast<BoneCollider*>(collider->GetOwner()))
 		{
+
 			
 			BoneCollider* katana = (BoneCollider*)collider->GetOwner();
 			Transform* katanatr = katana->GetComponent<Transform>();
@@ -38,6 +39,7 @@ namespace ya
 
 			 
 			if (dynamic_cast<Player*>(katana->GetBCOwner()))
+
 			{
 				
 				//Player* player = (Player*)katana->GetBCOwner();
@@ -46,11 +48,13 @@ namespace ya
 				{
 					if (monster->IsDeathBlow())
 					{
+
 						monster->SetSituation(eSituation::Death, true);
 						monster->SetDeathBlowKill(true);
 						monster->SetDeathBlow(false);
 						return;
 						int a = 0;
+
 					}
 
 					//몬스터 방어

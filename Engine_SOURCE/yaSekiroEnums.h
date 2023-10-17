@@ -4,19 +4,20 @@ namespace ya::enums
 {
 	enum class ePlayerState
 	{
-		None	= 0,
-		Idle	= 1,
-		Walk	= 2,
-		Sprint	= 4,		// 대시
-		Jump	= 8,
-		Crouch  = 16,		// 웅크리기
-		Wall	= 32,		// 벽에 붙기(벽과 상호작용)
-		Hang	= 64,		// 매달리기(벽과 상호작용)
-		Attack	= 128,		// 공격
-		Block	= 256,		// 방어
-		Hit		= 512,		// 피격
-		FallDown = 1024,	// 쓰러진 상태
-		Parrying = 2048,
+		None		= 0,
+		Idle		= 1 << 0,
+		Walk		= 1 << 1,
+		Sprint		= 1 << 2,		// 대시
+		Jump		= 1 << 3,
+		Crouch		= 1 << 4,		// 웅크리기
+		Wall		= 1 << 5,		// 벽에 붙기(벽과 상호작용)
+		Hang		= 1 << 6,		// 매달리기(벽과 상호작용)
+		Hook		= 1 << 7,		// 밧줄 날리기
+		Attack		= 1 << 8,		// 공격
+		Block		= 1 << 9,		// 방어
+		Hit			= 1 << 10,		// 피격
+		FallDown	= 1 << 11,		// 쓰러진 상태
+		Death		= 1 << 12,
 	};
 
 	enum class eProsthetics

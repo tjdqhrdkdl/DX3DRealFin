@@ -182,6 +182,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="Utils.h" />
     <ClInclude Include="yaBoundarySphere.h" />
     <ClInclude Include="yaFrustum.h" />
+    <ClInclude Include="yaLoadingScene.h" />
+    <ClInclude Include="yaMapCollider.h" />
     <ClInclude Include="yaPlayerAttackScript.h" />
     <ClInclude Include="yaPlayerHpTxture.h" />
     <ClInclude Include="yaPlayerMeshScript.h" />
@@ -265,6 +267,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaStructedBuffer.h" />
     <ClInclude Include="yaSwordsman.h" />
     <ClInclude Include="yaTenzen.h" />
+    <ClInclude Include="yaTenzenCollisionScript.h" />
+    <ClInclude Include="yaTenzenSwordScript.h" />
     <ClInclude Include="yaTexture.h" />
     <ClInclude Include="yaTime.h" />
     <ClInclude Include="yaTitleScene.h" />
@@ -284,6 +288,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="yaBoundarySphere.cpp" />
     <ClCompile Include="yaFrustum.cpp" />
+    <ClCompile Include="yaLoadingScene.cpp" />
+    <ClCompile Include="yaMapCollider.cpp" />
     <ClCompile Include="yaPlayerAttackScript.cpp" />
     <ClCompile Include="yaPlayerHpTxture.cpp" />
     <ClCompile Include="yaPlayerMeshScript.cpp" />
@@ -362,6 +368,8 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaStructedBuffer.cpp" />
     <ClCompile Include="yaSwordsman.cpp" />
     <ClCompile Include="yaTenzen.cpp" />
+    <ClCompile Include="yaTenzenCollisionScript.cpp" />
+    <ClCompile Include="yaTenzenSwordScript.cpp" />
     <ClCompile Include="yaTexture.cpp" />
     <ClCompile Include="yaTime.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />
