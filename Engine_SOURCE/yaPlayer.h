@@ -42,13 +42,19 @@ namespace ya
 		std::map<ePlayerState, std::function<void()>>& GetStartStateEvent() { return mStartStateEvent; }
 		std::map<ePlayerState, std::function<void()>>& GetEndStateEvent() { return mEndStateEvent; }
 
+
+		void CreateHpTexture();
+
 		float GetBlockTime();
 
 		void SetDeathBlowTarget(MonsterBase* monster, float distance);
 		void EraseDeathBlowTarget(MonsterBase* monster);
 
+
 	private:
 		GameObject* mCamera;
+		class PlayerHpTxture* mPlayerHpBar;
+
 
 		State* mState;
 		UINT mStateFlag;

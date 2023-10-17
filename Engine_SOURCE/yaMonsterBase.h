@@ -50,10 +50,14 @@ namespace ya
         virtual void Render() override;
 
     public:
+    
+        void CreateDeathBlowMark();
+
         bool NavigationPlayer(float range);
         void MonsterRotation(Vector3 target_point);
         void TurnToPlayer();
         float TurnToPlayerDir();
+        Vector3 TurnToPointDir(Vector3 point);
         bool WalkToPlayer(float range, float Speed);
         void AlertnessLevel();
 
@@ -98,6 +102,9 @@ namespace ya
 
         void SetState(State* state) { mMonsterState = state; }
         void SetHp(float hp) { mMonsterState->SetHp(hp); }
+
+        void AddHp(float hp) { mMonsterState->AddHp(hp); }
+
         void SetMaxHP(float maxhp) { mMonsterState->SetHPMax(maxhp); }
         void SetSpeed(float speed) { mMonsterState->SetSpeed(speed); }
         void SetDeathBlowCount(float blowcount) { mMonsterState->SetDeathBlowCount(blowcount); }
@@ -127,19 +134,29 @@ namespace ya
         //bool IsPlayerFieldview() { return mbPlayerFieldview; }
         bool IsDefense() { return mbDefense; }
 
+        bool GetOnceAnimation() { return mbOnceAnimation; }
+
+
+        void SetPlayerObject(GameObject* target) { mPlayerObject = target; }
+
+
+
         void SetPlayerObject(Player* target) { mPlayerObject = target; }
+
         void SetPlayerPos(Vec3 pos) { mPlayerPos = pos; }
         void SetMonster2PlayerNormalize(Vec3 normal) { mMonster2PlayerNormalize = normal; }
         void SetPlayer2MonsterNormalize(Vec3 normal) { mPlayer2MonsterNormalize = normal; }
         void SetDeathBlowMarkOffSet(Vec3 offset) { mDeathBlowMarkOffSet = offset; }
+        void SetMonsterHpBarOffSetOffSet(Vec3 offset) { mMonsterHpBarOffSet = offset; }
         void SetPlayerFront(bool front) { mbPlayerFront = front; }
         //void SetPlayerFieldview(bool view) { mbPlayerFieldview = view; }
         void SetDefense(bool defense) { mbDefense = defense; }
         void SetOnceAnimation(bool animation) { mbOnceAnimation = animation; }
 
-        void CreateDeathBlowMark();
+  
 
         bool IsParrying() { return mbParrying; }
+
         Attack GetAttackParams() { return mAttackParams; }
 
     protected:
@@ -161,18 +178,25 @@ namespace ya
         float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)
 
 
+
         Vec3                mPlayerPos;
         Vec3                mMonster2PlayerNormalize;
         Vec3                mPlayer2MonsterNormalize;
         Vec3                mDeathBlowMarkOffSet;
+        Vec3                mMonsterHpBarOffSet;
 
 
         bool                mbPlayerFront;
-        //bool                mbPlayerFieldview;
+        //bool              mbPlayerFieldview;
         bool                mbDefense;
         bool                mbOnceAnimation;
 
+        bool                mbHitRight;
+        bool                mbHitLeft;
+        bool                mDeathBlowKill;
+
         bool                mbDeathBlowStart;
+
 
         float               mTime;
         float               mRecoveryTime;

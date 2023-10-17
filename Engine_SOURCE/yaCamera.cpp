@@ -121,46 +121,40 @@ namespace ya
 
 	void Camera::CreateViewMatrix()
 	{
+		//Transform* tr = GetOwner()->GetComponent<Transform>();
+		//Vector3 pos = tr->GetPosition();
+
+		//// Crate Translate view matrix
+		//mView = Matrix::Identity;
+		//mView *= Matrix::CreateTranslation(-pos);
+		////회전 정보
+
+		//Vector3 up = tr->Up();
+		//Vector3 right = tr->Right();
+		//Vector3 foward = tr->Forward();
+
+		//Matrix viewRotate;
+		//viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
+		//viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
+		//viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
+
+		//mView *= viewRotate;
+
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		Vector3 pos = tr->GetPosition();
 
-		// Crate Translate view matrix
 		mView = Matrix::Identity;
-		mView *= Matrix::CreateTranslation(-pos);
-		//회전 정보
+		mView = Matrix::CreateLookAtLH(pos, pos + tr->Forward(), tr->Up());
 
-		Vector3 up = tr->Up();
-		Vector3 right = tr->Right();
-		Vector3 foward = tr->Forward();
-
-		Matrix viewRotate;
-		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
-		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
-		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
-
-		mView *= viewRotate;
 	}
 
 	Matrix Camera::CreateViewMatrix(Transform* tr)
 	{
 		Matrix view = Matrix::Identity;
+
 		Vector3 pos = tr->GetPosition();
 
-		// Crate Translate view matrix
-		view = Matrix::Identity;
-		view *= Matrix::CreateTranslation(-pos);
-		//회전 정보
-
-		Vector3 up = tr->Up();
-		Vector3 right = tr->Right();
-		Vector3 foward = tr->Forward();
-
-		Matrix viewRotate;
-		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
-		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
-		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
-
-		view *= viewRotate;
+		view = Matrix::CreateLookAtLH(pos, pos + tr->Forward(), tr->Up());
 
 		return view;
 	}
@@ -282,13 +276,13 @@ namespace ya
 			obj->PrevRender();
 		}
 
-		//for (GameObject* obj : mOpaqueGameObjects)
-		//{
-		//	if (obj == nullptr)
-		//		continue;
+		for (GameObject* obj : mOpaqueGameObjects)
+		{
+			if (obj == nullptr)
+				continue;
 
-		//	obj->PrevRender();
-		//}
+			obj->PrevRender();
+		}
 
 		//for (GameObject* obj : mTransparentGameObjects)
 		//{

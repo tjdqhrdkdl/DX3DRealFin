@@ -14,6 +14,8 @@
 #include "yaObject.h"
 
 #include "yaState.h"
+#include "yaPlayerHpTxture.h"
+
 
 namespace ya
 {
@@ -24,13 +26,15 @@ namespace ya
 		, mStartStateEvent {}
 		, mEndStateEvent {}
 	{
-		SetName(L"Player");
+		SetName(L"Wolf");
 
 		Collider2D* col = AddComponent<Collider2D>();
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
+
 		col->SetCenter(Vector3(0.f, 0.85f, 0.f));
 		col->SetSize(Vector3(0.3f, 2.7f, 0.3f));
+
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
@@ -58,6 +62,10 @@ namespace ya
 			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
 			mWeaponCollider->SetScale(Vector3(1.6, 0.2, 0.2));
 
+			mWeaponCollider->SetBCOwner(this);
+		}
+
+
 			PlayerProjectileScript* projectileScript = mWeaponCollider->AddComponent<PlayerProjectileScript>();
 			projectileScript->SetPlayer(this);
 		}
@@ -66,6 +74,21 @@ namespace ya
 		AddComponent<PlayerActionScript>();
 		AddComponent<PlayerAttackScript>();
 		AddComponent<GrappleHookScript>();
+
+
+		CreateHpTexture();
+	}
+
+	Player::~Player()
+	{
+
+
+
+
+	}
+
+	void Player::Initialize()
+	{
 
 		GameObject::Initialize();
 	}
@@ -116,6 +139,31 @@ namespace ya
 		}
 	}
 
+
+	void Player::CreateHpTexture()
+	{		
+		mPlayerHpBar = object::Instantiate<PlayerHpTxture>(eLayerType::UI);
+		mPlayerHpBar->SetPlayer(this);
+	}
+
+	//std::function<void()>& Player::GetStartStateEvent(ePlayerState state)
+	//{
+	//	std::map<ePlayerState, std::function<void()>>::iterator iter = mStartStateEvent.find(state);
+
+	//	if (iter == mStartStateEvent.end())
+	//	{
+	//		return nullptr;
+	//	}
+
+	//	return iter->second;
+	//}
+
+	//std::function<void()>& Player::GetEndStateEvent(ePlayerState state)
+	//{
+	//	// TODO: 여기에 return 문을 삽입합니다.
+	//}
+
+
 	float Player::GetBlockTime()
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
@@ -140,4 +188,5 @@ namespace ya
 		else
 			attack->EraseDeathBlowTarget(monster);
 	}
+
 }

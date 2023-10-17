@@ -1,7 +1,8 @@
 #include "yaMusketeerman.h"
 #include "yaMusketeerman_Almost.h"
 #include "yaMusketeerman_Shooting.h"
-
+#include "yaMonsterScript.h"
+#include "yaInput.h"
 
 namespace ya
 {
@@ -10,9 +11,54 @@ namespace ya
 	void Musketeerman::Initialize()
 	{
 
+		GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
+		//GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+		GetComponent<Transform>()->SetScale(Vector3(1.5f, 1.5f, 1.5f));
+
+		SetName(L"Musketeerman");
+
+		Collider2D* spearmancol = AddComponent <Collider2D>();
+		spearmancol->SetType(eColliderType::Box);
+		spearmancol->SetSize(Vector3(1.0, 2.2f, 1.0f));
+
+		AddComponent<MonsterScript>();
+		AddComponent<Rigidbody>();
+		mActionScript = AddComponent<ActionScript>();
+
+		SetPlayerObject(SceneManager::GetActiveScene()->GetPlayer());
+
+		Transform* tr = GetComponent<Transform>();
+
+
+
+		CreateDeathBlowMark();
+		SetMonsterHpBarOffSetOffSet(Vector3(0.0f, 3.0f, 0.0f));
+		SetDeathBlowMarkOffSet(Vector3(0.0f, 0.5f, 0.0f));
+		mMeshData = std::make_shared<MeshData>();
+
+		mMeshData->Load(L"Monster\\Musketeerman\\MeshData\\c1700_Musketeerman.meshdata");
+
+		mMeshData->AnimationLoad(L"Monster\\Musketeerman\\AnimationData\\MusketeermanAnimation_1.animationdata");
+
+		//mMeshData = MeshData::LoadFromFbx(L"Monster\\SwordMan\\Mesh\\c1700_SwordMan.fbx");
+
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\SwordMan\\Animation\\a000_000401.fbx", L"a000_000000");
+		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
+
+		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
+		meshobjtr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
+		meshobjtr->SetRotationOffset(Vector3(0.0f, 1.0f, 0.0f));
+		meshobjtr->SetParent(GetComponent<Transform>());
+
+		Animation_Event();
+
+
+		mMeshData->Play(L"Musketeerman_Idle_Stand");
 
 		CreateMonsterState();
-		SetSituation(enums::eSituation::None);
+		SetSituation(enums::eSituation::None, true);
 
 
 		mAttackRange = 5.0f;
@@ -30,17 +76,68 @@ namespace ya
 		Vec3 playerPos = GetPlayerPos();
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
 
+		Player* player = (Player*)GetPlayerObject();
+
+	
+
+		if (Input::GetKey(eKeyCode::NUM_1))
+		{
+			AddHp(Time::DeltaTime() * 3);
+		}
+		if (Input::GetKey(eKeyCode::NUM_2))
+		{ 
+			AddHp(-Time::DeltaTime() * 3);
+		}
+		if (Input::GetKeyDown(eKeyCode::NUM_3))
+		{
+			AddHp(2.0f);
+		}
+		if (Input::GetKeyDown(eKeyCode::NUM_4))
+		{
+			AddHp(-2.0f);
+		}
+
+		if (Input::GetKeyDown(eKeyCode::U))
+		{
+			mMeshData->Play(L"Musketeerman_Boundary_Step1");
+		}
+		if (Input::GetKeyDown(eKeyCode::I))
+		{			
+			mMeshData->Play(L"Musketeerman_Attack");
+		}
+		if (Input::GetKeyDown(eKeyCode::O))
+		{
+			mMeshData->Play(L"Musketeerman_Defense");
+		}
+		if (Input::GetKeyDown(eKeyCode::P))
+		{
+			mMeshData->Play(L"Musketeerman_Defense_Parrying");
+		}
+
+		eSituation test = GetSituation();
 
 		switch (GetSituation())
 		{
 		case ya::enums::eSituation::None:
 		{
-			mTime += Time::DeltaTime();
-			if (mTime >= 3.0f)
+			if (NavigationPlayer(2.5f) && !IsPlayerFront())
 			{
-				SetSituation(enums::eSituation::Battle);
-				mTime = 0.f;
+				SetDeathBlow(true);
 			}
+			else
+			{
+				SetDeathBlow(false);
+			}
+			
+			if (IsPlayerFieldview(45.0f, 135.0f))
+			{
+				
+				if (NavigationPlayer(30.0f))
+				{				
+					OnceAniamtion(L"Musketeerman_Boundary_Step1");
+				}
+			}
+
 		}
 			break;
 		case ya::enums::eSituation::Idle:
@@ -104,6 +201,11 @@ namespace ya
 		case ya::enums::eSituation::Sit:
 			break;
 		case ya::enums::eSituation::Death:
+		{
+
+
+
+		}
 			break;
 		case ya::enums::eSituation::End:
 			break;
@@ -167,6 +269,38 @@ namespace ya
 
 		Rigidbody* rigi = attack->AddComponent<Rigidbody>();
 		//rigi->SetGround(true);
+
+	}
+
+	void Musketeerman::Animation_Event()
+	{
+
+		mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Boundary_Step1")
+			= std::bind(&Musketeerman::Link_attack, this);
+		mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Attack")
+			= std::bind(&Musketeerman::Idle_Stand, this);
+		mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Defense")
+			= std::bind(&Musketeerman::Idle_Stand, this);
+
+
+
+	}
+
+	void Musketeerman::Idle_Stand()
+	{
+		OnceAniamtion(L"Musketeerman_Boundary_Stand");
+		SetSituation(enums::eSituation::Idle, true);
+	}
+
+	void Musketeerman::Link_attack()
+	{
+		SetOnceAnimation(true);
+
+		if (mMeshData->GetPlayAnimationName() == L"Musketeerman_Boundary_Step1")
+		{
+			Idle_Stand();
+		}
+
 
 	}
 

@@ -57,6 +57,7 @@ namespace ya
 	}
 	void TitleScene::Initialize()
 	{
+
 		// Main Camera Game Object
 		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera, this);
 		cameraObj->SetName(L"MainCamera");
@@ -68,8 +69,10 @@ namespace ya
 		mainCamera = cameraComp;
 
 
+
 		Player* player = object::Instantiate<Player>(eLayerType::Player, this);
 		player->GetComponent<Transform>()->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
+
 		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
@@ -81,9 +84,12 @@ namespace ya
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);
 		SetPlayer(player);
-		
+		//{
+		//	Spearman* sperman = object::Instantiate<Spearman>(eLayerType::Monster);
+		//}
 
 		//{
+
 		//	GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera, this);
 		//	uiCam->SetName(L"UICamera");
 		//	uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
@@ -91,7 +97,19 @@ namespace ya
 		//	cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
 		//	cameraComp->DisableLayerMasks();
 		//	cameraComp->TurnLayerMask(eLayerType::UI, true);
+
 		//}
+
+
+		{
+			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera);
+			uiCam->SetName(L"UICamera");
+			uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
+			Camera* cameraComp = uiCam->AddComponent<Camera>();
+			cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
+			cameraComp->DisableLayerMasks();
+			cameraComp->TurnLayerMask(eLayerType::UI, true);
+		}
 
 		//{
 		//	UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI, this);
@@ -102,7 +120,9 @@ namespace ya
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall");
 			Transform* wallTr = wall->GetComponent<Transform>();
+
 			wallTr->SetPosition(Vector3(93.0f, 15.0f, 10.0f));
+
 			wallTr->SetScale(Vector3(50.0f, 50.0f, 1.0f));
 			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
 			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
@@ -118,7 +138,9 @@ namespace ya
 			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall1");
 			wallTr = wall->GetComponent<Transform>();
+
 			wallTr->SetPosition(Vector3(66.f, 15.0f, 52.0f));
+
 			wallTr->SetScale(Vector3(50.f, 50.f, 1.f));
 			wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
 			wallRenderer = wall->AddComponent<MeshRenderer>();
@@ -132,7 +154,9 @@ namespace ya
 			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall2");
 			wallTr = wall->GetComponent<Transform>();
+
 			wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
+
 			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
 			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
 			wallRenderer = wall->AddComponent<MeshRenderer>();
@@ -143,6 +167,21 @@ namespace ya
 			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
 			wall->AddComponent<WallScript>();
 		}
+
+
+
+		//{
+		//	GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
+		//	player->GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 0.0f));
+		//	player->GetComponent<Transform>()->SetScale(Vector3(10.0f, 10.0f, 10.0f));
+		//	player->SetName(L"PPP");
+		//	MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		//	
+		//	std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
+		//	mr->SetMaterial(mat, 0);
+		//	mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"ShadowMapTarget"));
+		//}
 
 		/*{
 			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
@@ -156,6 +195,7 @@ namespace ya
 			mr->SetMaterial(mat, 0);
 			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"ShadowMapTarget"));
 		}*/
+
 
 		{
 			GameObject* skyBox = object::Instantiate<GameObject>(eLayerType::None, this);
@@ -185,11 +225,13 @@ namespace ya
 		}
 
 
+
 		/*{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
+
 			ground->SetName(L"Ground1");
 			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
+			groundTr->SetPosition(Vector3(1000.0f, -5.0f, 10.0f));
 			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
 			groundTr->SetRotation(Vector3(30.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
@@ -199,13 +241,15 @@ namespace ya
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
-		}*/
+		}
 
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground2");
 			Transform* groundTr = ground->GetComponent<Transform>();
+
 			groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
+
 			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
 			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
 			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
@@ -258,6 +302,7 @@ namespace ya
 		CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::WallCheckCollision, true);
 		//CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
 
+
 		{
 
 			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
@@ -266,6 +311,7 @@ namespace ya
 			objTransform->SetRotation(-90.f, 0.f, 0.f);
 			//2411 5640 5710 6600 6610 6620 3651 3313 
 		}
+
 
 
 		{
@@ -294,10 +340,12 @@ namespace ya
 	
 	void TitleScene::Update()
 	{
+
 		if (Input::GetKeyDown(eKeyCode::N))
 		{
 			SceneManager::LoadScene(eSceneType::Loading);
 		}
+
 
 		Scene::Update();
 	}
@@ -311,6 +359,10 @@ namespace ya
 	}
 	void TitleScene::OnEnter()
 	{
+		MeshObject* mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
+		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
+		Vector3 rot = meshobjtr->GetRotation();
+		meshobjtr->SetRotation(Vector3(rot.x, rot.y + 90.0f, rot.z));
 	}
 	void TitleScene::OnExit()
 	{

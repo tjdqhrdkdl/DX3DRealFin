@@ -577,7 +577,8 @@ namespace ya::math
         static Matrix CreateOrthographicLH(float width, float height, float zNearPlane, float zFarPlane) noexcept;
         static Matrix CreateOrthographicOffCenterLH(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane) noexcept;
 
-        static Matrix CreateLookAt(const Vector3& position, const Vector3& target, const Vector3& up) noexcept;
+        static Matrix CreateLookAt(const Vector3& eye, const Vector3& target, const Vector3& up) noexcept;
+        static Matrix CreateLookAtLH(const Vector3& eye, const Vector3& target, const Vector3& up) noexcept;
         static Matrix CreateWorld(const Vector3& position, const Vector3& forward, const Vector3& up) noexcept;
 
         static Matrix CreateFromQuaternion(const Quaternion& quat) noexcept;

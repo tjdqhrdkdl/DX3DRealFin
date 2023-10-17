@@ -32,6 +32,7 @@ namespace ya
 		, mTransform(nullptr)
 		, mCollider(nullptr)
 		, mSpeed(200.0f)
+
 		, mDirection(Vector3::Zero)
 		, mRotateDirection(Vector3::Zero)
 		, mJumpTimer(0.0f)

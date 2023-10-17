@@ -30,6 +30,8 @@ namespace ya
 		, mFrontTheta(4.0f)
 		, mDashTimerMax(0.2f)
 	{
+
+
 	}
 
 	PlayerActionScript::~PlayerActionScript()

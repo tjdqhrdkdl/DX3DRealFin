@@ -27,6 +27,9 @@ namespace ya
         void Link_attack();
         void Link_Defense();
         void Link_Boundary();
+        void Link_Hit();
+        void Link_Walk();
+        void Link_Death();
 
 
         void KatanaColliderInit();
@@ -41,13 +44,14 @@ namespace ya
         Vec3                    mWlakFixPos;
 
         UINT                    mRandom;
+        UINT                    mRandomCount;
 
 
-
+        bool                    mSpearmanAction;
 
 
         //지울거에요 안씀
-        class Transform* TEST;
+        bool TEST = false;
 
     public:
         Spearman();

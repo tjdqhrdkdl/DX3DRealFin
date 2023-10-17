@@ -39,6 +39,12 @@ namespace ya
 
 	void CameraScript::Update()
 	{
+		if (Input::GetKey(eKeyCode::N_9))
+			mDistFromTarget += Time::DeltaTime() * 10;
+		if (Input::GetKey(eKeyCode::N_0))
+			mDistFromTarget -= Time::DeltaTime() * 10;
+
+
 		if (Input::GetKeyDown(eKeyCode::ESC))
 			mbMouseMove = !mbMouseMove;
 
