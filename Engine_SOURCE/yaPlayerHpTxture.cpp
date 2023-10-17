@@ -17,12 +17,12 @@ namespace ya
 		if(mPlayerHpLayout == nullptr)
 		{			
 
-			Resources::Load<Texture>(L"HPLayoutTexture", L"Texture\\UI\\HpLayout.png");
-			Resources::Load<Texture>(L"HPBarTexture", L"Texture\\UI\\Hp.png");
-			Resources::Load<Texture>(L"re_True", L"Texture\\UI\\Resurrection_True.png");
-			Resources::Load<Texture>(L"re_False", L"Texture\\UI\\Resurrection_False.png");
-			Resources::Load<Texture>(L"PostureLayout", L"Texture\\UI\\PostureLayout.png");
-			Resources::Load<Texture>(L"PostureBar", L"Texture\\UI\\PostureBar.png");
+			Resources::Load<Texture>(L"HPLayoutTexture", L"UI\\Texture\\HpLayout.png");
+			Resources::Load<Texture>(L"HPBarTexture", L"UI\\Texture\\Hp.png");
+			Resources::Load<Texture>(L"re_True", L"UI\\Texture\\Resurrection_True.png");
+			Resources::Load<Texture>(L"re_False", L"UI\\Texture\\Resurrection_False.png");
+			Resources::Load<Texture>(L"PostureLayout", L"UI\\Texture\\PostureLayout.png");
+			Resources::Load<Texture>(L"PostureBar", L"UI\\Texture\\PostureBar.png");
 
 			{
 				mPlayerHpLayout = object::Instantiate<GameObject>(eLayerType::UI);
@@ -190,13 +190,20 @@ namespace ya
 		}
 		if (Input::GetKey(eKeyCode::O))
 		{
-			mPlayer->GetState()->AddPosture(-Time::DeltaTime() * 10.0f);
+			mPlayer->GetState()->AddPosture(-Time::DeltaTime() * 30.0f);
 		}
 		if (Input::GetKey(eKeyCode::P))
 		{
-			mPlayer->GetState()->AddPosture(Time::DeltaTime() * 10.0f);
+			mPlayer->GetState()->AddPosture(Time::DeltaTime() * 30.0f);
 		}
-
+		if (Input::GetKeyDown(eKeyCode::K))
+		{
+			PlayerResurrection_True();
+		}
+		if (Input::GetKeyDown(eKeyCode::L))
+		{
+			PlayerResurrection_False();
+		}
 
 		GameObject::Update();
 	}
