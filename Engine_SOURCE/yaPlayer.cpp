@@ -20,7 +20,8 @@
 namespace ya
 {
 	Player::Player()
-		: mCamera(nullptr)
+		: GameObject()
+		, mCamera(nullptr)
 		, mProsthetic(eProsthetics::None)
 		, mWeaponCollider(nullptr)
 		, mStartStateEvent {}
@@ -28,13 +29,20 @@ namespace ya
 	{
 		SetName(L"Wolf");
 
+		Transform* tr = GetComponent<Transform>();
+		tr->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
+		tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
+
+		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
+
 		Collider2D* col = AddComponent<Collider2D>();
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
 
-		col->SetCenter(Vector3(0.f, 0.85f, 0.f));
-		col->SetSize(Vector3(0.3f, 2.7f, 0.3f));
-
+		col->SetCenter(Vector3(0.f, 0.5f, 0.f));
+		col->SetSize(Vector3(0.8f, 3.4f, 0.8f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
@@ -75,13 +83,10 @@ namespace ya
 		AddComponent<PlayerAttackScript>();
 		AddComponent<GrappleHookScript>();
 
-
 		CreateHpTexture();
 
 		GameObject::Initialize();
 	}
-
-
 
 	void Player::Update()
 	{
@@ -136,24 +141,6 @@ namespace ya
 		mPlayerHpBar->SetName(L"dd");
 		mPlayerHpBar->SetPlayer(this);
 	}
-
-	//std::function<void()>& Player::GetStartStateEvent(ePlayerState state)
-	//{
-	//	std::map<ePlayerState, std::function<void()>>::iterator iter = mStartStateEvent.find(state);
-
-	//	if (iter == mStartStateEvent.end())
-	//	{
-	//		return nullptr;
-	//	}
-
-	//	return iter->second;
-	//}
-
-	//std::function<void()>& Player::GetEndStateEvent(ePlayerState state)
-	//{
-	//	// TODO: 여기에 return 문을 삽입합니다.
-	//}
-
 
 	float Player::GetBlockTime()
 	{

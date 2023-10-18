@@ -96,7 +96,7 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Attack, false);
 			
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(10.0f);
+			action->Velocity(8.0f);
 		}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
