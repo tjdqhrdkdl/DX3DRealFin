@@ -60,14 +60,24 @@ namespace ya
 		checkObj->SetName(L"WallCheck");
 		checkObj->SetParentObj(obj);
 
-		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
 		Transform* checkTransform = mCheck->GetComponent<Transform>();
-		
-		checkTransform->SetScale(Vector3(1.f, 1.f ,1.f));
+		checkTransform->SetScale(mTransform->GetScale());
 
-		checkCol->SetType(eColliderType::Box);
-		checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
-		checkCol->SetSize(Vector3(1.0, 3.0f, 1.0f));
+		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
+
+		Collider2D* ownerCol = obj->GetComponent<Collider2D>();
+		if (ownerCol != nullptr)
+		{
+			checkCol->SetType(ownerCol->GetColliderType());
+			checkCol->SetCenter(ownerCol->GetCenter());
+			checkCol->SetSize(ownerCol->GetSize());
+		}
+		else
+		{
+			checkCol->SetType(eColliderType::Box);
+			checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
+			checkCol->SetSize(Vector3(1.0, 3.0f, 1.0f));
+		}
 	}
 
 	void ActionScript::Update()
