@@ -58,7 +58,7 @@ namespace ya
 		std::shared_ptr<MeshData> weaponMeshData = meshScript->FindMeshData(ARM);
 		if (weaponMeshData != nullptr)
 		{
-			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile);
+			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile,GetScene());
 			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
 			mWeaponCollider->SetScale(Vector3(1.6, 0.2, 0.2));
 
@@ -132,7 +132,8 @@ namespace ya
 
 	void Player::CreateHpTexture()
 	{		
-		mPlayerHpBar = object::Instantiate<PlayerHpTxture>(eLayerType::UI);
+		mPlayerHpBar = object::Instantiate<PlayerHpTxture>(eLayerType::UI, GetScene());
+		mPlayerHpBar->SetName(L"dd");
 		mPlayerHpBar->SetPlayer(this);
 	}
 

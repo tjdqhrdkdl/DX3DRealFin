@@ -14,8 +14,24 @@ namespace ya
 	PlayerHpTxture::PlayerHpTxture()
 	{
 
-		if(mPlayerHpLayout == nullptr)
-		{			
+
+
+		
+
+
+
+	}
+
+	PlayerHpTxture::~PlayerHpTxture()
+	{
+
+
+	}
+
+	void PlayerHpTxture::Initialize()
+	{
+		if (mPlayerHpLayout == nullptr)
+		{
 
 			Resources::Load<Texture>(L"HPLayoutTexture", L"UI\\Texture\\HpLayout.png");
 			Resources::Load<Texture>(L"HPBarTexture", L"UI\\Texture\\Hp.png");
@@ -25,7 +41,7 @@ namespace ya
 			Resources::Load<Texture>(L"PostureBar", L"UI\\Texture\\PostureBar.png");
 
 			{
-				mPlayerHpLayout = object::Instantiate<GameObject>(eLayerType::UI);
+				mPlayerHpLayout = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 				mPlayerHpLayout->SetName(L"PlayerHpLayout");
 
 				Transform* hptr = mPlayerHpLayout->GetComponent<Transform>();
@@ -46,7 +62,7 @@ namespace ya
 
 
 			{
-				mPlayerHpBar = object::Instantiate<GameObject>(eLayerType::UI);
+				mPlayerHpBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 				mPlayerHpBar->SetName(L"PlayerHpBar");
 
 				Transform* hpbartr = mPlayerHpBar->GetComponent<Transform>();
@@ -70,7 +86,7 @@ namespace ya
 				resurrectionMaterial->SetShader(resurrectionShader);
 				Resources::Insert<Material>(L"ResurrectionMaterial", resurrectionMaterial);
 
-				mPlayerResurrection = object::Instantiate<GameObject>(eLayerType::UI);
+				mPlayerResurrection = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 				mPlayerResurrection->SetName(L"PlayerHpBar");
 
 				Transform* Resurrectiontr = mPlayerResurrection->GetComponent<Transform>();
@@ -84,7 +100,7 @@ namespace ya
 
 				meshRenderer->SetMaterial(mat, 0);
 				mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"re_True"));
-				
+
 			}
 
 			{
@@ -94,7 +110,7 @@ namespace ya
 				postureLayoutMaterial->SetShader(postureLayoutShader);
 				Resources::Insert<Material>(L"PostureLayoutMaterial", postureLayoutMaterial);
 
-				mPlayerpostureLayout = object::Instantiate<GameObject>(eLayerType::UI);
+				mPlayerpostureLayout = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 				mPlayerpostureLayout->SetName(L"postureLayout");
 
 				Transform* postureLayouttr = mPlayerpostureLayout->GetComponent<Transform>();
@@ -112,7 +128,7 @@ namespace ya
 			}
 
 			{
-				GameObject* PlayerpostureBar = object::Instantiate<GameObject>(eLayerType::UI);
+				GameObject* PlayerpostureBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 				PlayerpostureBar->SetName(L"PostureBar1");
 
 				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
@@ -126,10 +142,10 @@ namespace ya
 
 				meshRenderer->SetMaterial(mat, 0);
 				mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"PostureBar"));
-				
+
 			}
 			{
-				GameObject* PlayerpostureBar = object::Instantiate<GameObject>(eLayerType::UI);
+				GameObject* PlayerpostureBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 				PlayerpostureBar->SetName(L"PostureBar2");
 
 				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
@@ -147,22 +163,6 @@ namespace ya
 
 			}
 		}
-
-
-		
-
-
-
-	}
-
-	PlayerHpTxture::~PlayerHpTxture()
-	{
-
-
-	}
-
-	void PlayerHpTxture::Initialize()
-	{
 
 		
 
