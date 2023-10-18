@@ -4,9 +4,6 @@
 #include "yaObject.h"
 #include "yaInput.h"
 
-#include "UICanvasObj.h"
-#include "UICanvas_Loading.h"
-
 #include "yaLight.h"
 
 #include "yaMeshRenderer.h"

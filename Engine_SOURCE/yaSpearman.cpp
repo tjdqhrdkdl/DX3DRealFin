@@ -58,7 +58,7 @@ namespace ya
 
 		mMeshData->AnimationLoad(L"Monster\\SwordMan\\AnimationData\\SwordManAnimation_1.animationdata");
 
-		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
+		mMeshObject = mMeshData->Instantiate(eLayerType::Monster, GetScene());
 
 		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
 		meshobjtr->SetScale(Vector3(1.0f, 1.0f, 1.0f));

@@ -1,52 +1,32 @@
 #include "yaPlayScene.h"
-#include "yaTransform.h"
-#include "yaMeshRenderer.h"
-#include "yaRenderer.h"
+
+#include "yaObject.h"
 #include "yaResources.h"
-#include "yaTexture.h"
-#include "yaPlayerScript.h"
+#include "yaInput.h"
+#include "yaCollisionManager.h"
+
 #include "yaCamera.h"
 #include "yaCameraScript.h"
-#include "yaSpriteRenderer.h"
-#include "yaGridScript.h"
-#include "yaObject.h"
-#include "yaInput.h"
-#include "yaCollider2D.h"
-#include "yaPlayer.h"
-#include "yaMonster.h"
-#include "yaCollisionManager.h"
-#include "yaAnimator.h"
 #include "yaLight.h"
-#include "yaPaintShader.h"
-#include "yaParticleSystem.h"
-#include "yaRigidbody.h"
-#include "yaGroundScript.h"
-#include "yaSpearman.h"
-#include "yaActionScript.h"
-#include "yaGrappleHookScript.h"
-#include "yaHookTargetScript.h"
-#include "yaLogBridgeScript.h"
-#include "yaWallScript.h"
 
+#include "yaWallScript.h"
+#include "yaGroundScript.h"
+#include "yaCrouchObjectScript.h"
+#include "yaHookTargetScript.h"
+
+#include "yaPlayer.h"
+
+#include "yaMonster.h"
 #include "yaSpearman.h"
 #include "yaMusketeerman.h"
 #include "yaSwordsman.h"
-
-#include "yaCrouchObjectScript.h"
-
-#include "yaMonsterScript.h"
-
-#include "yaFbxLoader.h"
-#include "yaMeshData.h"
 #include "yaTenzen.h"
 #include "yaRedOgre.h"
 
-#include "UICanvas_InGame.h"
 #include "MapObjects.h"
 #include "yaBoundarySphere.h"
 #include "yaMapCollider.h"
 
-#include "UICanvas_Loading.h"
 
 namespace ya
 {
@@ -95,13 +75,6 @@ namespace ya
 			cameraComp->TurnLayerMask(eLayerType::UI, true);
 		}
 
-		UICanvas_Loading* uiCanvas = object::Instantiate<UICanvas_Loading>(eLayerType::UI);
-
-		//{
-		//	UICanvas_InGame* ui = object::Instantiate<UICanvas_InGame>(eLayerType::UI, this);
-		//	ui->SetName(L"UICanvasObj_InGame");
-		//}
-	
 		{
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall");
