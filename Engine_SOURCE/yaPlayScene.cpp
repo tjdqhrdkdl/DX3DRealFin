@@ -69,10 +69,12 @@ namespace ya
 			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera, this);
 			uiCam->SetName(L"UICamera1");
 			uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
-			Camera* cameraComp = uiCam->AddComponent<Camera>();
-			cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
-			cameraComp->DisableLayerMasks();
-			cameraComp->TurnLayerMask(eLayerType::UI, true);
+			Camera* UICameraComp = uiCam->AddComponent<Camera>();
+			UICameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
+			UICameraComp->DisableLayerMasks();
+			UICameraComp->TurnLayerMask(eLayerType::UI, true);
+			UICamera = UICameraComp;
+			
 		}
 
 		{

@@ -21,6 +21,7 @@ namespace ya::renderer
 	graphics::MultiRenderTarget* renderTargets[(UINT)eRTType::End] = {};
 
 	Camera* mainCamera = nullptr;
+	Camera* UICamera = nullptr;
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
 	std::vector<Light*> lights;

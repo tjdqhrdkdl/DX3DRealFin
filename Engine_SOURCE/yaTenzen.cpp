@@ -216,6 +216,13 @@ namespace ya
 		SetDeathBlow(false);
 		SetResurrectionCount(1);
 
+		mTestUI = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+		mTestUI->SetName(L"UI");
+		mTestUI->GetComponent<Transform>()->SetScale(Vector3(2, 0.1, 1));
+		MeshRenderer* wallRenderer = mTestUI->AddComponent<MeshRenderer>();
+		wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+
 	}
 	void Tenzen::Update()
 	{
@@ -257,6 +264,19 @@ namespace ya
 		}
 		MonsterBase::Update();
 		mBeforeState = mState;
+
+		Matrix world = GetComponent<Transform>()->GetWorldMatrix();
+		world._42 += 3;
+		Matrix fin = world * mainCamera->GetViewMatrix();
+		fin *= mainCamera->GetProjectionMatrix();
+		Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
+		ndc = ndc / ndc.w;
+
+		Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
+		UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
+		mTestUI->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, UIPos.z));
+		if (ndc.z > 1 or ndc.z < 0)
+			mTestUI->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
 	}
 	void Tenzen::FixedUpdate()
 	{

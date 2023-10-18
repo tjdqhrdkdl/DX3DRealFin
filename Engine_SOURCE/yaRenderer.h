@@ -157,6 +157,7 @@ namespace ya::renderer
 
 	extern Vertex vertexes[4];
 	extern Camera* mainCamera;
+	extern Camera* UICamera;
 	extern ConstantBuffer* constantBuffers[];
 	extern Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerStates[];
 	extern Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizerStates[];

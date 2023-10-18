@@ -112,6 +112,10 @@ namespace ya
         bool mbAnimReset;
 
         class TenzenSwordScript* mSwordScript;
+
+
+        //Test
+        GameObject* mTestUI;
 	};
 
 }
