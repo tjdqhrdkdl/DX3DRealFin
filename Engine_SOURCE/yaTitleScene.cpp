@@ -102,7 +102,7 @@ namespace ya
 
 
 		{
-			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera);
+			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera, this);
 			uiCam->SetName(L"UICamera");
 			uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
 			Camera* cameraComp = uiCam->AddComponent<Camera>();
@@ -359,10 +359,6 @@ namespace ya
 	}
 	void TitleScene::OnEnter()
 	{
-		MeshObject* mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
-		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
-		Vector3 rot = meshobjtr->GetRotation();
-		meshobjtr->SetRotation(Vector3(rot.x, rot.y + 90.0f, rot.z));
 	}
 	void TitleScene::OnExit()
 	{

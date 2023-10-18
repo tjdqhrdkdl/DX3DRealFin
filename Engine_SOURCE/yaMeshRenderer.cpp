@@ -35,7 +35,7 @@ namespace ya
 		std::shared_ptr<Material> material
 			= Resources::Find<Material>(L"ShadowMapMaterial");
 
-		material->Bind();
+		//material->Bind();
 
 		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 		BoneAnimator* animator

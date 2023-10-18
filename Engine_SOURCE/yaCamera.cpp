@@ -268,21 +268,21 @@ namespace ya
 
 	void Camera::renderShadow()
 	{
-		for (GameObject* obj : mDeferredOpaqueGameObjects)
-		{
-			if (obj == nullptr)
-				continue;
+		//for (GameObject* obj : mDeferredOpaqueGameObjects)
+		//{
+		//	if (obj == nullptr)
+		//		continue;
 
-			obj->PrevRender();
-		}
+		//	obj->PrevRender();
+		//}
 
-		for (GameObject* obj : mOpaqueGameObjects)
-		{
-			if (obj == nullptr)
-				continue;
+		//for (GameObject* obj : mOpaqueGameObjects)
+		//{
+		//	if (obj == nullptr)
+		//		continue;
 
-			obj->PrevRender();
-		}
+		//	obj->PrevRender();
+		//}
 
 		//for (GameObject* obj : mTransparentGameObjects)
 		//{
