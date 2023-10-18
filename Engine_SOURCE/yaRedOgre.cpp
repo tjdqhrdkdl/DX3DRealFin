@@ -60,7 +60,7 @@ namespace ya
 		mMeshData = std::make_shared<MeshData>();
 		mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
 		mMeshData->AnimationLoad(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
-		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster);
+		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster, GetScene());
 
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();

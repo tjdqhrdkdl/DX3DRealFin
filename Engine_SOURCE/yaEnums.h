@@ -4,7 +4,7 @@ namespace ya::enums
 {
 	enum class eSceneType
 	{
-		Tilte,
+		Title,
 		Play,
 		Loading,
 		End,

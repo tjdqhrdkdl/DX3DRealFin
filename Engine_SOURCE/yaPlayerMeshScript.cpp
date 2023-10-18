@@ -86,7 +86,7 @@ namespace ya
         {
             std::shared_ptr<MeshData> meshData = iter->second;
 
-            Scene* scene = SceneManager::GetScene(eSceneType::Tilte);
+            Scene* scene = GetOwner()->GetScene();
 
             meshData->Instantiate(eLayerType::Player, scene);
 
