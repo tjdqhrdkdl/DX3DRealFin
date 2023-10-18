@@ -93,3 +93,10 @@ cbuffer UniformDataCB : register(b9)
 	row_major matrix mat_2;
 	row_major matrix mat_3;
 }
+
+//cbuffer Meter : register(b10)
+//{
+//    float   metertime;
+//    float   meterendtime;
+//    float2  metersize;
+//}

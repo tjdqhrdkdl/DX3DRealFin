@@ -95,10 +95,12 @@ namespace ya
 
 	void TitleScene::Update()
 	{
+
 		if (Input::GetKeyDown(eKeyCode::N))
 		{
 			SceneManager::LoadScene(eSceneType::Loading);
 		}
+
 
 		Scene::Update();
 	}

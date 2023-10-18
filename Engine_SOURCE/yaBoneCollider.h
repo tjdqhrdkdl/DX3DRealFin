@@ -35,7 +35,12 @@ namespace ya
 		void AddHitObjects(GameObject* obj) { mHitObjects.push_back(obj); }
 		bool CheckHitObjects(GameObject* obj);
 
+
+		GameObject* GetBCOwner() { return mBCOwner; }
+		void SetBCOwner(GameObject* owner) { mBCOwner = owner; }
+		Vector3	GetPrevPos() { return mPrevPos; }
 		GameObject* GetBoneColliderOwner() { return mOwner; }
+
 	private:
 		GameObject* mOwner;
 		std::shared_ptr<MeshData> mMeshData;
@@ -43,8 +48,15 @@ namespace ya
 		int mBeforeClipIdx;
 
 		std::vector<Vector3> mAnimationOffsets;
+		
+
+		GameObject*		mBCOwner;
+		Vector3			mCulPos;
+		Vector3			mPrevPos;
+
 		std::vector<std::vector<StartAndFin>> mAnimationColActiveFrame;
 
 		std::vector<GameObject*> mHitObjects;
+
 	};
 }
