@@ -133,7 +133,7 @@ namespace ya
 
 				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
 
-				postureBartr->SetPosition(Vector3(25.0f, -360.0f, -10.0f));
+				postureBartr->SetPosition(Vector3(25.0f, -360.0f, 0.0f));
 				postureBartr->SetScale(Vector3(115.0f, 10.0f, 50.0f));
 
 				MeshRenderer* meshRenderer = PlayerpostureBar->AddComponent<MeshRenderer>();
@@ -150,7 +150,7 @@ namespace ya
 
 				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
 
-				postureBartr->SetPosition(Vector3(-88.0f, -360.0f, -10.0f));
+				postureBartr->SetPosition(Vector3(-88.0f, -360.0f, 0.0f));
 				postureBartr->SetScale(Vector3(115.0f, 10.0f, 50.0f));
 				postureBartr->SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 

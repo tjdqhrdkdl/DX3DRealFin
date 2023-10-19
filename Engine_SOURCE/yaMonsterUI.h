@@ -19,7 +19,7 @@ namespace ya
         void SetMonster(class MonsterBase* mon) { mMonster = mon; }
 
 
-        void MonsterMeterCheak();
+        void MonsterMeterCheck();
 
     private:
 

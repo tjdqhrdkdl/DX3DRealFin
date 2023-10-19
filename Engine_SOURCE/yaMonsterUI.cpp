@@ -75,18 +75,36 @@ namespace ya
 		}
 
 		{
-			GameObject* PlayerpostureBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			PlayerpostureBar->SetName(L"PostureBar1");
+			GameObject* MonsterPostureBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			MonsterPostureBar->SetName(L"PostureBar1");
 
-			Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
+			Transform* postureBartr = MonsterPostureBar->GetComponent<Transform>();
 
-			postureBartr->SetScale(Vector3(115.0f, 5.0f, 50.0f));
-			postureBartr->SetPosition(Vector3(0, -10.0f, 0));
+			postureBartr->SetScale(Vector3(60.f, 5.0f, 50.0f));
+			postureBartr->SetPosition(Vector3(28, -10.0f, 0));
+
+			postureBartr->SetParent(UITr);
+
+			MeshRenderer* meshRenderer = MonsterPostureBar->AddComponent<MeshRenderer>();
+			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureBarMaterial");
+
+			meshRenderer->SetMaterial(mat, 0);
+			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"PostureBar"));
+				 
+		}
+		{
+			GameObject* MonsterPostureBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			MonsterPostureBar->SetName(L"PostureBar2");
+
+			Transform* postureBartr = MonsterPostureBar->GetComponent<Transform>();
+			postureBartr->SetPosition(Vector3(-28.5, -10.0f, 0));
+			postureBartr->SetScale(Vector3(60.f, 5.0f, 50.0f));
 			postureBartr->SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 
 			postureBartr->SetParent(UITr);
 
-			MeshRenderer* meshRenderer = PlayerpostureBar->AddComponent<MeshRenderer>();
+			MeshRenderer* meshRenderer = MonsterPostureBar->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureBarMaterial");
 
@@ -95,22 +113,44 @@ namespace ya
 
 		}
 		{
-			GameObject* PlayerpostureBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			PlayerpostureBar->SetName(L"PostureBar2");
+			std::shared_ptr<Shader> resurectionCountShader = Resources::Find<Shader>(L"SpriteShader");
+			std::shared_ptr<Material> resurectionCountMaterial = std::make_shared<Material>();
+			resurectionCountMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			resurectionCountMaterial->SetShader(resurectionCountShader);
+			Resources::Insert<Material>(L"ResurectionCountMaterial", resurectionCountMaterial);
 
-			Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
-			postureBartr->SetPosition(Vector3(0, -10.0f, 0));
+			GameObject* resCountObj = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			resCountObj->SetName(L"resCount1");
 
-			postureBartr->SetScale(Vector3(115.0f, 5.0f, 50.0f));
-			postureBartr->SetParent(UITr);
+			Transform* resCountObjTr = resCountObj->GetComponent<Transform>();
 
-			MeshRenderer* meshRenderer = PlayerpostureBar->AddComponent<MeshRenderer>();
+			resCountObjTr->SetScale(Vector3(25, 25, 50.f));
+			resCountObjTr->SetPosition(Vector3(-45, 12, 0));
+			resCountObjTr->SetParent(UITr);
+
+			MeshRenderer* meshRenderer = resCountObj->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureBarMaterial");
+			std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurectionCountMaterial");
 
 			meshRenderer->SetMaterial(mat, 0);
-			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"PostureBar"));
+			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
+		}
+		{
+			GameObject* resCountObj = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			resCountObj->SetName(L"resCount2");
 
+			Transform* resCountObjTr = resCountObj->GetComponent<Transform>();
+
+			resCountObjTr->SetScale(Vector3(25, 25, 50.f));
+			resCountObjTr->SetPosition(Vector3(-30, 12, 0));
+			resCountObjTr->SetParent(UITr);
+
+			MeshRenderer* meshRenderer = resCountObj->AddComponent<MeshRenderer>();
+			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurectionCountMaterial");
+
+			meshRenderer->SetMaterial(mat, 0);
+			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
 		}
 		GameObject::Initialize();
 	}
@@ -132,11 +172,16 @@ namespace ya
 			if (ndc.z > 1 or ndc.z < 0)
 				GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
 
-			MonsterMeterCheak();
+			MonsterMeterCheck();
+
+			if (mMonster->GetResurrectionCount() == 0)
+				;
+			else if (mMonster->GetResurrectionCount() == 1)
+				;
 		}
 		GameObject::Update();
 	}
-	void MonsterUI::MonsterMeterCheak()
+	void MonsterUI::MonsterMeterCheck()
 	{
 
 		float hp = (float)PERCENTAGE / (float)mMonster->GetState()->GetHPMax();
