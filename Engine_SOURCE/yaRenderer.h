@@ -116,6 +116,8 @@ namespace ya::renderer
 		Matrix lightProjection;
 	};
 
+
+
 	CBUFFER(UniformDataCB, CBSLOT_UNIFORM_DATA)
 	{
 		int int_0{};
@@ -144,6 +146,14 @@ namespace ya::renderer
 		Matrix mat_3{};
 	};
 
+	CBUFFER(Meter, CBSLOT_METER)
+	{
+		float   HpMeter;
+		float   PostureMeter;
+		float   Nul_1;
+		float   Nul_2;
+	};
+
 
 	extern Vertex vertexes[4];
 	extern Camera* mainCamera;
@@ -167,6 +177,9 @@ namespace ya::renderer
 	void Render();
 	void Release();
 
+	
+	
+
 	//mrt
 	void CreateRenderTargets();
 	void ClearRenderTargets();
@@ -174,6 +187,7 @@ namespace ya::renderer
 	//Renderer
 	void PushLightAttribute(LightAttribute lightAttribute);
 	void BindLights();
+	inline void ClearLights() { lights.clear(); };
 	void BindNoiseTexture();
 	void CopyRenderTarget();
 	

@@ -7,6 +7,7 @@
 #include "guiEditor.h"
 #include "yaRenderer.h"
 #include "guiInspector.h"
+#include "StrConverter.h"
 
 extern ya::Application application;
 extern gui::Editor editor;
@@ -66,7 +67,9 @@ namespace gui
 		mTreeWidget->Clear();
 
 		ya::Scene* scene = ya::SceneManager::GetActiveScene();
-		std::string sceneName(scene->GetName().begin(), scene->GetName().end());
+
+		std::string sceneName = StrConverter::ConvertUnicodeToANSI(scene->GetName());
+		//std::string sceneName(scene->GetName().begin(), scene->GetName().end());
 
 		TreeWidget::Node* root = mTreeWidget->AddNode(nullptr, sceneName, 0, true);
 
@@ -86,7 +89,8 @@ namespace gui
 
 	void Hierarchy::AddGameObject(TreeWidget::Node* parent, ya::GameObject* gameObject)
 	{
-		std::string name(gameObject->GetName().begin(), gameObject->GetName().end());
+		std::string name = StrConverter::ConvertUnicodeToUTF8(gameObject->GetName());
+		//std::string name(gameObject->GetName().begin(), gameObject->GetName().end());
 
 		TreeWidget::Node* node = mTreeWidget->AddNode(parent, name, gameObject);
 	}

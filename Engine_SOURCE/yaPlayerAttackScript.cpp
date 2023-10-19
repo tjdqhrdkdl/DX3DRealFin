@@ -96,7 +96,7 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Attack, false);
 			
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(10.0f);
+			action->Velocity(8.0f);
 		}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
@@ -605,7 +605,7 @@ namespace ya
 		wchar_t szFloat[50] = {};
 		std::wstring str = L"target: " + std::to_wstring(mDeathBlowTargets.size());
 		swprintf_s(szFloat, 50, str.c_str());
-		TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
+		TextOut(application.GetHdc(), 800, 150, szFloat, (int)wcslen(szFloat));
 	}
 
 	void PlayerAttackScript::OnCollisionEnter(Collider2D* collider)

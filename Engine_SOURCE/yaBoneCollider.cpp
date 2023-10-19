@@ -1,3 +1,4 @@
+
 #include "yaBoneCollider.h"
 #include "yaMeshData.h"
 #include "yaCollider2D.h"
@@ -12,11 +13,12 @@ namespace ya
     }
     void BoneCollider::Initialize()
     {
+        mCulPos = GetComponent<Transform>()->GetPosition();
         GameObject::Initialize();
     }
     void BoneCollider::Update()
     {
-
+        mCulPos = GetComponent<Transform>()->GetPosition();
         Collider2D* col = GetComponent<Collider2D>();
         if (col)
         {
@@ -37,7 +39,7 @@ namespace ya
                     bool active = false;
                     for (size_t i = 0; i < mAnimationColActiveFrame[clip].size(); i++)
                     {
-                        if (mAnimationColActiveFrame[clip][i].start< frame && mAnimationColActiveFrame[clip][i].fin > frame)
+                        if (mAnimationColActiveFrame[clip][i].start< (UINT)frame && mAnimationColActiveFrame[clip][i].fin > (UINT)frame)
                             active = true;
 
                     }
@@ -64,6 +66,7 @@ namespace ya
                 }
             }
         }
+        mPrevPos = mCulPos;
         GameObject::Update();
     }
     void BoneCollider::FixedUpdate()
@@ -99,7 +102,7 @@ namespace ya
         SetName(L"Weapon");
         Transform* tr = GetComponent<Transform>();
         Transform* meshTr = meshObject->GetComponent<Transform>();
-        tr->SetScale(Vector3(3, 0.3, 0.3));
+        tr->SetScale(Vector3(3.f, 0.3f, 0.3f));
         tr->SetParent(meshTr);
 
         mAnimationOffsets.resize(mMeshData->GetAnimationClipCount());

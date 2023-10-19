@@ -19,8 +19,13 @@ float4 decode(float _value)
 }
 
 
-
-
+cbuffer Meter : register(b10)
+{
+    float   HpMeter;
+    float   PostureMeter;
+    float   Nul_1;
+    float   Nul_2;
+}
 
 
 

@@ -151,10 +151,10 @@
     <ClCompile Include="yaCameraScript.cpp">
       <Filter>Contents\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayScene.cpp">
+    <ClCompile Include="yaTitleScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="yaTitleScene.cpp">
+    <ClCompile Include="yaPlayScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
     <ClCompile Include="yaWallScript.cpp">
@@ -366,6 +366,13 @@
       <Filter>Contents\Map</Filter>
     </ClCompile>
     <ClCompile Include="yaMapCollider.cpp" />
+    <ClCompile Include="yaPlayerHpTxture.cpp" />
+    <ClCompile Include="PhysXWrapper.cpp">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="StrConverter.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -527,10 +534,10 @@
     <ClInclude Include="yaCameraScript.h">
       <Filter>Contents\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayScene.h">
+    <ClInclude Include="yaTitleScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="yaTitleScene.h">
+    <ClInclude Include="yaPlayScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
     <ClInclude Include="yaWallScript.h">
@@ -738,6 +745,13 @@
       <Filter>Contents\Map</Filter>
     </ClInclude>
     <ClInclude Include="yaMapCollider.h" />
+    <ClInclude Include="yaPlayerHpTxture.h" />
+    <ClInclude Include="PhysXWrapper.h">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="StrConverter.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -934,6 +948,9 @@
     </Filter>
     <Filter Include="Contents\Map">
       <UniqueIdentifier>{fb88424e-b5ef-496d-80de-99299c8fe25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider\PhysX">
+      <UniqueIdentifier>{74c96652-f68b-431b-b57f-4ae80ea2b57e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

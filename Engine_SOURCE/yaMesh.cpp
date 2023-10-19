@@ -29,7 +29,7 @@ namespace ya
 	std::vector<std::shared_ptr<Mesh>> Mesh::CreateFromContainer(FbxLoader* loader)
 	{
 		std::vector<std::shared_ptr<Mesh>> ret = {};
-		for (size_t i = 0; i < loader->GetContainerCount(); i++)
+		for (int i = 0; i < loader->GetContainerCount(); i++)
 		{
 			const Container& container = loader->GetContainer(i);
 
@@ -124,7 +124,7 @@ namespace ya
 		fwrite(pVtxSysMem, byteSize, 1, file);
 
 		// 인덱스 정보 
-		UINT materialCount = mIndexInfos.size();
+		UINT materialCount = (UINT)mIndexInfos.size();
 		fwrite(&materialCount, sizeof(int), 1, file);
 
 		//mIndexInfos
@@ -191,8 +191,9 @@ namespace ya
 
 
 
-	bool Mesh::CreateVertexBuffer(void* data, UINT count)
+	bool Mesh::CreateVertexBuffer(void* data, size_t count_t)
 	{
+		UINT count = (UINT)count_t;
 		// 버텍스 버퍼
 		mVBDesc.ByteWidth = sizeof(graphics::Vertex) * count;
 		mVBDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
@@ -214,8 +215,9 @@ namespace ya
 		return true;
 	}
 
-	bool Mesh::CreateIndexBuffer(void* data, UINT indexBufferCount)
+	bool Mesh::CreateIndexBuffer(void* data, size_t count_t)
 	{
+		UINT indexBufferCount = (UINT)count_t;
 		IndexInfo indexInfo = {};
 		indexInfo.indexCount = indexBufferCount;
 		indexInfo.desc.ByteWidth = sizeof(UINT) * indexBufferCount;

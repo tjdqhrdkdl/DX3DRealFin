@@ -1,3 +1,4 @@
+
 #pragma once
 #include "yaEngine.h"
 
@@ -11,14 +12,14 @@
 //__TARGET__ = value; \
 //}
 //
-//// get «¡∑Œ∆€∆º ∏≈≈©∑Œ
+//// get ÌîÑÎ°úÌçºÌã∞ Îß§ÌÅ¨Î°ú
 //#define GET(__TYPE__, __TARGET__, __METHODNAME__) \
 //__TYPE__ get##__METHODNAME__() \
 //{ \
 //return __TARGET__; \
 //}
 //
-//// set «¡∑Œ∆€∆º ∏≈≈©∑Œ
+//// set ÌîÑÎ°úÌçºÌã∞ Îß§ÌÅ¨Î°ú
 //#define SET(__TYPE__, __TARGET__, __METHODNAME__) \
 //void set##__METHODNAME__(__TYPE__ value) \
 //{ \
@@ -41,7 +42,7 @@ namespace ya
 	private:
 		std::wstring mName;
 		const UINT32 mID;
-		
+		static UINT32 gNextID;
 	};
 }
 
@@ -62,7 +63,7 @@ namespace gui
 	private:
 		std::string mName;
 		const UINT32 mID;
-
+		static UINT32 gNextID;
 	};
 }
 

@@ -444,7 +444,7 @@ namespace ya::graphics
 
 	void GraphicDevice_DX11::ClearDepthStencilView(ID3D11DepthStencilView* pDepthStencilView, UINT ClearFlags)
 	{
-		mContext->ClearDepthStencilView(pDepthStencilView, ClearFlags, 1.0f, 0.0f);
+		mContext->ClearDepthStencilView(pDepthStencilView, ClearFlags, 1.0f, (UINT8)0);
 	}
 
 	void GraphicDevice_DX11::AdjustViewPorts()

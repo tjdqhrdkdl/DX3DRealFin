@@ -4,7 +4,7 @@ namespace ya::enums
 {
 	enum class eSceneType
 	{
-		Tilte,
+		Title,
 		Play,
 		Loading,
 		End,
@@ -112,8 +112,10 @@ namespace ya::enums
 		Run,			//도망
 		Defense,		//막기
 		Attack,			//공격
+		DashAttack,
 		Sit,			//휴식
 		Groggy,			//스턴 상태
+		Hit,			//
 		Death,			
 		End,
 	};

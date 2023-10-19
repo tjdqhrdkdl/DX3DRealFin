@@ -1,5 +1,6 @@
 #include "guiTexture.h"
 #include "yaTexture.h"
+#include "StrConverter.h"
 
 namespace gui
 {
@@ -23,8 +24,8 @@ namespace gui
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 
-		std::string key(targetTex->GetKey().begin(), targetTex->GetKey().end());
-		std::string path(targetTex->GetPath().begin(), targetTex->GetPath().end());
+		std::string key = StrConverter::ConvertUnicodeToUTF8(targetTex->GetKey());
+		std::string path = StrConverter::ConvertUnicodeToUTF8(targetTex->GetPath());
 
 		ImGui::Text("Key	"); ImGui::SameLine();
 		ImGui::InputText("##TexKey"
@@ -34,8 +35,8 @@ namespace gui
 		ImGui::InputText("##TexPath"
 			, (char*)path.data(), path.size(), ImGuiInputTextFlags_ReadOnly);
 
-		int width = targetTex->GetWidth();
-		int height = targetTex->GetHeight();
+		int width = (int)targetTex->GetWidth();
+		int height = (int)targetTex->GetHeight();
 
 
 		char wBuffer[256] = "";

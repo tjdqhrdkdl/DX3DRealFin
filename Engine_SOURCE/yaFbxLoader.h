@@ -147,7 +147,7 @@ namespace ya
 		static std::vector<Bone*>& GetBones() { return mBones; }
 		static std::vector<AnimationClip*>& GetAnimClip() { return mAnimationClips; }
 		static std::vector<BoneAnimationClip*>& GetBoneAnimClip() { return mBoneAnimationClips; }
-		static Vector3 GetMeshCenter() {return mMeshCenter / mVtxCount; }
+		static Vector3 GetMeshCenter() {return mMeshCenter / static_cast<float>(mVtxCount); }
 		static void	MaxDist(float dist) { mMaxDist = max(mMaxDist, dist); }
 		static float GetMaxDist() { return mMaxDist; }
 

@@ -21,7 +21,7 @@ namespace ya
 		void SetMaterial(std::shared_ptr <Material> shader, int idx) { mMaterial[idx] = shader; }
 		std::shared_ptr<Mesh> GetMesh() { return mMesh; }
 		std::shared_ptr <Material> GetMaterial(int idx) { return mMaterial[idx]; }
-		UINT GetMaterialCount() { return mMaterial.size(); }
+		UINT GetMaterialCount() { return (UINT)mMaterial.size(); }
 
 	private:
 		std::shared_ptr <Mesh> mMesh;

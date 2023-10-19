@@ -13,6 +13,7 @@ namespace ya
         , mbUse(true)
         , mbLoad(false)
     {
+
     }
 
     PlayerMeshScript::~PlayerMeshScript()
@@ -38,8 +39,10 @@ namespace ya
             std::shared_ptr<MeshData> weapon = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300.fbx");
             mMeshDataMap.insert(std::make_pair(WEAPON, weapon));
 
+
             std::shared_ptr<MeshData> waeponCase = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300_1_b.fbx");
             mMeshDataMap.insert(std::make_pair(WEAPONCASE, waeponCase));
+
 
         }
         else
@@ -64,9 +67,11 @@ namespace ya
             weapon->Load(L"Player\\MeshData\\WP_A_0300.meshdata");
             mMeshDataMap.insert(std::make_pair(WEAPON, weapon));
 
+
             /*std::shared_ptr<MeshData> waeponCase = std::make_shared<MeshData>();
             waeponCase->Load(L"Player\\MeshData\\WP_A_0300_1_b.meshdata");
             mMeshDataMap.insert(std::make_pair(WEAPONCASE, waeponCase));*/
+
         }
 
         if (mbUse)
@@ -81,7 +86,7 @@ namespace ya
         {
             std::shared_ptr<MeshData> meshData = iter->second;
 
-            Scene* scene = SceneManager::GetScene(eSceneType::Tilte);
+            Scene* scene = GetOwner()->GetScene();
 
             meshData->Instantiate(eLayerType::Player, scene);
 

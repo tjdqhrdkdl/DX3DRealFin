@@ -6,6 +6,7 @@
 #include "yaResource.h"
 #include "guiInspector.h"
 #include "yaSpriteRenderer.h"
+#include "StrConverter.h"
 
 extern gui::Editor editor;
 
@@ -55,10 +56,10 @@ namespace gui
 			|| mMaterial == nullptr)
 			return;
 
-		std::string meshName
-			= std::string(mMesh->GetName().begin(), mMesh->GetName().end());
-		std::string materialName
-			= std::string(mMaterial->GetName().begin(), mMaterial->GetName().end());
+		std::string meshName = StrConverter::ConvertUnicodeToUTF8(mMesh->GetName());
+		std::string materialName = StrConverter::ConvertUnicodeToUTF8(mMaterial->GetName());
+		//std::string meshName = std::string(mMesh->GetName().begin(), mMesh->GetName().end());
+		//std::string materialName = std::string(mMaterial->GetName().begin(), mMaterial->GetName().end());
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()
@@ -70,7 +71,7 @@ namespace gui
 			listUI->SetState(eState::Active);
 			
 
-			//¸ğµç ¸Ş½¬ÀÇ ¸®¼Ò½º¸¦ °¡Á®¿Í¾ßÇÑ´Ù.
+			//ëª¨ë“  ë©”ì‰¬ì˜ ë¦¬ì†ŒìŠ¤ë¥¼ ê°€ì ¸ì™€ì•¼í•œë‹¤.
 			std::vector<std::shared_ptr<ya::Mesh>> meshes 
 				= ya::Resources::Finds<ya::Mesh>();
 
@@ -95,7 +96,7 @@ namespace gui
 		{
 			ListWidget* listUI = editor.GetWidget<ListWidget>("ListWidget");
 			listUI->SetState(eState::Active);
-			//¸ğµç ¸Ş½¬ÀÇ ¸®¼Ò½º¸¦ °¡Á®¿Í¾ßÇÑ´Ù.
+			//ëª¨ë“  ë©”ì‰¬ì˜ ë¦¬ì†ŒìŠ¤ë¥¼ ê°€ì ¸ì™€ì•¼í•œë‹¤.
 			std::vector<std::shared_ptr<ya::Material>> materials
 				= ya::Resources::Finds<ya::Material>();
 
