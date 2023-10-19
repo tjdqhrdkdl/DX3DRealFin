@@ -295,6 +295,10 @@
     </ClCompile>
     <ClCompile Include="yaMapCollider.cpp" />
     <ClCompile Include="yaPlayerHpTxture.cpp" />
+    <ClCompile Include="yaMonsterUI.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaHPMeterScript.cpp" />
     <ClCompile Include="PhysXWrapper.cpp">
       <Filter>Engine\Component\Collider\PhysX</Filter>
     </ClCompile>
@@ -620,6 +624,10 @@
     </ClInclude>
     <ClInclude Include="yaMapCollider.h" />
     <ClInclude Include="yaPlayerHpTxture.h" />
+    <ClInclude Include="yaMonsterUI.h">
+      <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaHPMeterScript.h" />
     <ClInclude Include="PhysXWrapper.h">
       <Filter>Engine\Component\Collider\PhysX</Filter>
     </ClInclude>

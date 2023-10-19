@@ -21,6 +21,7 @@ namespace ya::renderer
 	graphics::MultiRenderTarget* renderTargets[(UINT)eRTType::End] = {};
 
 	Camera* mainCamera = nullptr;
+	Camera* UICamera = nullptr;
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
 	std::vector<Light*> lights;
@@ -964,7 +965,7 @@ namespace ya::renderer
 		constantBuffers[(UINT)eCBType::UniformData]->Create(sizeof(UniformDataCB));
 
 		constantBuffers[(UINT)eCBType::HpMeter] = new ConstantBuffer(eCBType::HpMeter);
-		constantBuffers[(UINT)eCBType::HpMeter]->Create(sizeof(Meter));
+		constantBuffers[(UINT)eCBType::HpMeter]->Create(sizeof(MeterCB));
 		
 
 #pragma endregion
@@ -978,7 +979,8 @@ namespace ya::renderer
 	{
 		#pragma region STATIC TEXTURE
 		Resources::Load<Texture>(L"SmileTexture", L"Smile.png");
-		//Resources::Load<Texture>(L"DeathBlowTexture", L"UI\\Texture\\DeathBlow.png");
+		Resources::Load<Texture>(L"DeathBlowTexture", L"UI\\Texture\\DeathBlow.png");
+		Resources::Load<Texture>(L"LockOnTexture", L"UI\\Texture\\LockOn.png");
 
 		Resources::Load<Texture>(L"DefaultSprite", L"Light.png");
 		

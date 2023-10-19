@@ -69,57 +69,14 @@ namespace ya
 			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera, this);
 			uiCam->SetName(L"UICamera1");
 			uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
-			Camera* cameraComp = uiCam->AddComponent<Camera>();
-			cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
-			cameraComp->DisableLayerMasks();
-			cameraComp->TurnLayerMask(eLayerType::UI, true);
+			Camera* UICameraComp = uiCam->AddComponent<Camera>();
+			UICameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
+			UICameraComp->DisableLayerMasks();
+			UICameraComp->TurnLayerMask(eLayerType::UI, true);
+			UICamera = UICameraComp;
+			
 		}
 
-		{
-			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall");
-			Transform* wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(93.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 1.0f));
-			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
-			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
-
-
-
-			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall1");
-			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(66.f, 15.0f, 52.0f));
-			wallTr->SetScale(Vector3(50.f, 50.f, 1.f));
-			wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
-			wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
-
-			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall2");
-			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
-			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
-			wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
-		}
 
 		/*{
 			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);

@@ -36,7 +36,8 @@ namespace ya
 	void MonsterBase::Initialize()
 	{
 		CreateMonsterState();
-
+		mMonsterUI = object::Instantiate<MonsterUI>(eLayerType::UI, GetScene());
+		mMonsterUI->SetMonster(this);
 		GameObject::Initialize();
 	}
 
@@ -509,6 +510,9 @@ namespace ya
 			mMonsterState->SetDeathBlowCount(0.f);		//현재 체간 상태
 			mMonsterState->SetMaxDeathBlowCount(10.f);	//총 체간
 			mMonsterState->SetDeathBlow(false);			//인살 가능한 상태
+
+			mMonsterState->SetResurrectionCountMax(0);
+			mMonsterState->SetResurrectionCount(0);
 		}
 	}
 
