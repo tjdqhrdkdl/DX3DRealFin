@@ -3,6 +3,7 @@
 #include "yaPlayScene.h"
 #include "yaLoadingScene.h"
 #include "ThreadPool.h"
+#include "yaRenderer.h"
 
 namespace ya
 {
@@ -21,7 +22,7 @@ namespace ya
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
 		mScenes[(UINT)eSceneType::Play]->SetName(L"PlayScene");
-		mScenes[(UINT)eSceneType::Play]->SetThreadLoad(true);
+		mScenes[(UINT)eSceneType::Play]->SetThreadLoad(false);
 		mScenes[(UINT)eSceneType::Play]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Play);
 
 		for (Scene* scene : mScenes)
@@ -40,7 +41,7 @@ namespace ya
 			}
 		}
 
-		mActiveScene = mScenes[(UINT)eSceneType::Title];
+		mActiveScene = mScenes[(UINT)eSceneType::Play];
 	}
 
 	void SceneManager::Update()
@@ -75,6 +76,9 @@ namespace ya
 	{
 		if (mActiveScene)
 			mActiveScene->OnExit();
+
+		//renderer 클리어
+		renderer::ClearLights();
 
 		// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.
 		std::vector<GameObject*> gameObjs 

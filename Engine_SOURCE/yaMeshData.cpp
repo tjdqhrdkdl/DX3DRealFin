@@ -11,6 +11,8 @@
 #include "CommonInclude.h"
 #include "yaBoundarySphere.h"
 #include "yaScene.h"
+#include "StrConverter.h"
+
 namespace ya
 {
 	MeshData::MeshData()
@@ -47,7 +49,7 @@ namespace ya
 		meshSharedPtr->mBoundarySphereRadius = loader.GetMaxDist();
 
 		std::shared_ptr<Mesh> mesh = nullptr;
-		for (size_t i = 0; i < meshes.size(); i++)
+		for (int i = 0; i < (int)meshes.size(); i++)
 		{
 			mesh = meshes[i];
 
@@ -221,7 +223,7 @@ namespace ya
 					{
 						BoneKeyFrame tKeyframe = {};
 						tKeyframe.time = vecBone[i]->keyFrames[k].time;
-						tKeyframe.frame = j;
+						tKeyframe.frame = (int)j;
 						tKeyframe.translate.x = (float)vecBone[i]->keyFrames[k].transform.GetT().mData[0];
 						tKeyframe.translate.y = (float)vecBone[i]->keyFrames[k].transform.GetT().mData[1];
 						tKeyframe.translate.z = (float)vecBone[i]->keyFrames[k].transform.GetT().mData[2];
@@ -328,7 +330,7 @@ namespace ya
 
 
 		//메쉬 개수 저장
-		UINT meshCount = mMeshes.size();
+		UINT meshCount = (UINT)mMeshes.size();
 		fwrite(&meshCount, sizeof(UINT), 1, file);		
 
 		for (size_t i = 0; i < mMeshes.size(); i++)
@@ -336,12 +338,12 @@ namespace ya
 			mMeshes[i]->Save(filePath.filename().wstring(), file);
 
 			//메테리얼 개수 저장
-			UINT  mMaterial_ICount = mMaterialsVec.size();
+			UINT  mMaterial_ICount = (UINT)mMaterialsVec.size();
 			fwrite(&mMaterial_ICount, sizeof(UINT), 1, file);
 
 			for (size_t j = 0; j < mMaterialsVec.size(); j++)
 			{
-				UINT  mMaterial_JCount = mMaterialsVec[j].size();
+				UINT  mMaterial_JCount = (UINT)mMaterialsVec[j].size();
 				fwrite(&mMaterial_JCount, sizeof(UINT), 1, file);
 
 				for (size_t k = 0; k < mMaterialsVec[j].size(); k++)
@@ -361,7 +363,7 @@ namespace ya
 
 		if (IsAnimMesh())
 		{
-			UINT boneSize = mBones.size();
+			UINT boneSize = (UINT)mBones.size();
 			fwrite(&boneSize, sizeof(UINT), 1, file);
 			//std::vector<BoneFrameTransform> vecFrameTrans;
 			//vecFrameTrans.resize((UINT)meshData->mBones.size() * iFrameCount);
@@ -502,7 +504,7 @@ namespace ya
 
 	HRESULT MeshData::AnimationSave(const std::wstring& path, FILE* file)
 	{
-		std::string strPath(path.begin(), path.end());
+		std::string strPath = StrConverter::ConvertUnicodeToUTF8(path);
 
 		std::filesystem::path CurparentPath = std::fs::absolute(gResPath);
 
@@ -526,7 +528,7 @@ namespace ya
 
 
 		//본 사이즈 저장
-		UINT boneSize = mBones.size();
+		UINT boneSize = (UINT)mBones.size();
 		fwrite(&boneSize, sizeof(UINT), 1, file);
 
 
@@ -560,7 +562,7 @@ namespace ya
 			for (size_t j = 0; j < AnimClipSize; j++)
 			{				
 
-				UINT boneKeyFramesSize = mBones[i].keyFrames[j].size();
+				UINT boneKeyFramesSize = (UINT)mBones[i].keyFrames[j].size();
 				fwrite(&boneKeyFramesSize, sizeof(UINT), 1, file);
 				for (size_t k = 0; k < boneKeyFramesSize; k++)
 				{	
@@ -580,8 +582,7 @@ namespace ya
 
 	HRESULT MeshData::AnimationLoad(const std::wstring& path, FILE* file, bool bLast)
 	{
-
-		std::string strPath(path.begin(), path.end());
+		std::string strPath = StrConverter::ConvertUnicodeToUTF8(path);
 
 		std::filesystem::path CurparentPath = std::fs::absolute(gResPath);
 
@@ -751,7 +752,7 @@ namespace ya
 
 			for (size_t k = 0; k < mMaterialsVec[i].size(); k++)
 			{
-				mr->SetMaterial(mMaterialsVec[i][k], k);
+				mr->SetMaterial(mMaterialsVec[i][k], (int)k);
 			}
 
 			meshObject->PushBackObject(gameObj);
@@ -843,7 +844,7 @@ namespace ya
 		mBoundarySphereRadius = loader.GetMaxDist();
 
 		std::shared_ptr<Mesh> mesh = nullptr;
-		for (size_t i = 0; i < meshes.size(); i++)
+		for (int i = 0; i < (int)meshes.size(); i++)
 		{
 			mesh = meshes[i];
 

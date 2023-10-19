@@ -5,7 +5,7 @@
 #include "yaInput.h"
 #include "yaTime.h"
 #include "yaAnimator.h"
-#include "yaObject.h";
+#include "yaObject.h"
 #include "yaMeshRenderer.h"
 #include "yaResources.h"
 #include "yaRigidbody.h"

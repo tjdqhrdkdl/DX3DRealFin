@@ -13,7 +13,7 @@ namespace ya
 		: Component(eComponentType::BoneAnimator)
 		, mBones{}
 		, mAnimationClips{}
-		, mAnimationUpdateTime(0.0f)
+		, mAnimationUpdateTime(0)
 		, mAnimaitonBoneMatrix{}
 		, mFrameCount(30)
 		, mCurrentTime(0.0f)
@@ -26,7 +26,7 @@ namespace ya
 		, mbAnimChanging(false)
 		, mAnimChangeTime(0.2f)
 		, mAnimChangeTimeChecker(0)
-		, mAnimationTailTime(0.1)
+		, mAnimationTailTime(0.1f)
 		
 	{
 	}
@@ -219,7 +219,7 @@ namespace ya
 	void BoneAnimator::CheckBone()
 	{
 		//UINT boneCount = mesh->get 메시가 본 정보를 다 들고있게 해두자
-		UINT iBoneCount = mBones->size();
+		UINT iBoneCount = (UINT)mBones->size();
 		if (mBoneMatrixBuffer->GetStride() != iBoneCount)
 		{
 			mBoneMatrixBuffer->Create(sizeof(Matrix), iBoneCount, eSRVType::UAV, nullptr, false);
@@ -233,7 +233,7 @@ namespace ya
 		mAnimationSelfChangeBools.resize(mAnimationClips->size());
 		for (size_t i = 0; i < mAnimationUpdateTime.size(); i++)
 		{
-			mAnimationNameAndIndexMap.insert(std::pair(clips->at(i).name, i));
+			mAnimationNameAndIndexMap.insert(std::pair(clips->at(i).name, (UINT)i));
 			mAnimationUpdateTime[i] = 0;
 
 			Events* events = new Events();

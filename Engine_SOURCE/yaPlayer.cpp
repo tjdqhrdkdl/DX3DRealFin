@@ -69,7 +69,7 @@ namespace ya
 		{
 			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile,GetScene());
 			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
-			mWeaponCollider->SetScale(Vector3(1.6, 0.2, 0.2));
+			mWeaponCollider->SetScale(Vector3(1.6f, 0.2f, 0.2f));
 
 			mWeaponCollider->SetBCOwner(this);
 		}

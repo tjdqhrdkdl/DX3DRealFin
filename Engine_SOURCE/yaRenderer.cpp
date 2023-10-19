@@ -21,6 +21,7 @@ namespace ya::renderer
 	graphics::MultiRenderTarget* renderTargets[(UINT)eRTType::End] = {};
 
 	Camera* mainCamera = nullptr;
+	Camera* UICamera = nullptr;
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
 	std::vector<Light*> lights;
@@ -79,15 +80,15 @@ namespace ya::renderer
 		vertexes[0].color = Vector4(0.f, 1.f, 0.f, 1.f);
 		vertexes[0].uv = Vector2(0.f, 0.f);
 
-		vertexes[1].pos = Vector4(0.5f, 0.5f, -0.00001, 1.0f);
+		vertexes[1].pos = Vector4(0.5f, 0.5f, -0.00001f, 1.0f);
 		vertexes[1].color = Vector4(1.f, 1.f, 1.f, 1.f);
 		vertexes[1].uv = Vector2(1.0f, 0.0f);
 
-		vertexes[2].pos = Vector4(0.5f, -0.5f, -0.00001, 1.0f);
+		vertexes[2].pos = Vector4(0.5f, -0.5f, -0.00001f, 1.0f);
 		vertexes[2].color = Vector4(1.f, 0.f, 0.f, 1.f);
 		vertexes[2].uv = Vector2(1.0f, 1.0f);
 
-		vertexes[3].pos = Vector4(-0.5f, -0.5f, -0.00001, 1.0f);
+		vertexes[3].pos = Vector4(-0.5f, -0.5f, -0.00001f, 1.0f);
 		vertexes[3].color = Vector4(0.f, 0.f, 1.f, 1.f);
 		vertexes[3].uv = Vector2(0.0f, 1.0f);
 
@@ -125,9 +126,9 @@ namespace ya::renderer
 			circleVtxes.push_back(vtx);
 		}
 		indexes.clear();
-		for (size_t i = 0; i < iSlice - 2; i++)
+		for (UINT i = 0; i < (UINT)(iSlice - 2); i++)
 		{
-			indexes.push_back(i + 1);
+			indexes.push_back(i + 1u);
 		}
 		indexes.push_back(1);
 
@@ -324,15 +325,15 @@ namespace ya::renderer
 		arrCube[23].biNormal = Vector3(0.0f, 1.0f, 1.0f);
 
 		indexes.clear();
-		for (size_t i = 0; i < 6; i++)
+		for (UINT i = 0; i < 6; i++)
 		{
-			indexes.push_back(i * 4);
-			indexes.push_back(i * 4 + 1);
-			indexes.push_back(i * 4 + 2);
+			indexes.push_back(i * 4u);
+			indexes.push_back(i * 4u + 1u);
+			indexes.push_back(i * 4u + 2u);
 
-			indexes.push_back(i * 4);
-			indexes.push_back(i * 4 + 2);
-			indexes.push_back(i * 4 + 3);
+			indexes.push_back(i * 4u);
+			indexes.push_back(i * 4u + 2u);
+			indexes.push_back(i * 4u + 3u);
 		}
 
 		// Crate Mesh
@@ -964,7 +965,7 @@ namespace ya::renderer
 		constantBuffers[(UINT)eCBType::UniformData]->Create(sizeof(UniformDataCB));
 
 		constantBuffers[(UINT)eCBType::HpMeter] = new ConstantBuffer(eCBType::HpMeter);
-		constantBuffers[(UINT)eCBType::HpMeter]->Create(sizeof(Meter));
+		constantBuffers[(UINT)eCBType::HpMeter]->Create(sizeof(MeterCB));
 		
 
 #pragma endregion
@@ -978,7 +979,8 @@ namespace ya::renderer
 	{
 		#pragma region STATIC TEXTURE
 		Resources::Load<Texture>(L"SmileTexture", L"Smile.png");
-		//Resources::Load<Texture>(L"DeathBlowTexture", L"UI\\Texture\\DeathBlow.png");
+		Resources::Load<Texture>(L"DeathBlowTexture", L"UI\\Texture\\DeathBlow.png");
+		Resources::Load<Texture>(L"LockOnTexture", L"UI\\Texture\\LockOn.png");
 
 		Resources::Load<Texture>(L"DefaultSprite", L"Light.png");
 		
@@ -1229,6 +1231,7 @@ namespace ya::renderer
 		}
 	}
 
+
 	void Render()
 	{
 		//렌더타겟 설정 -> 이제 카메라에서 해줌
@@ -1367,14 +1370,14 @@ namespace ya::renderer
 
 	void BindLights()
 	{
-		lightsBuffer->SetData(lightAttributes.data(), lightAttributes.size());
+		lightsBuffer->SetData(lightAttributes.data(), (UINT)lightAttributes.size());
 		lightsBuffer->BindSRV(eShaderStage::VS, 13);
 		lightsBuffer->BindSRV(eShaderStage::PS, 13);
 
 		renderer::LightCB trCb = {};
-		trCb.numberOfLight = lightAttributes.size();
+		trCb.numberOfLight = (UINT)lightAttributes.size();
 
-		for (size_t i = 0; i < lights.size(); i++)
+		for (UINT i = 0; i < (UINT)lights.size(); i++)
 			lights[i]->SetIndex(i);
 		
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Light];
@@ -1395,8 +1398,8 @@ namespace ya::renderer
 		noise->BindShaderResource(eShaderStage::CS, 16);
 
 		NoiseCB info = {};
-		info.noiseSize.x = noise->GetWidth();
-		info.noiseSize.y = noise->GetHeight();
+		info.noiseSize.x = (float)noise->GetWidth();
+		info.noiseSize.y = (float)noise->GetHeight();
 		noiseTime -= Time::DeltaTime();
 		info.noiseTime = noiseTime;
 

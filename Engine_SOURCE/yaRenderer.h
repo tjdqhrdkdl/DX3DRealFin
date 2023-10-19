@@ -146,7 +146,7 @@ namespace ya::renderer
 		Matrix mat_3{};
 	};
 
-	CBUFFER(Meter, CBSLOT_METER)
+	CBUFFER(MeterCB, CBSLOT_METER)
 	{
 		float   HpMeter;
 		float   PostureMeter;
@@ -157,6 +157,7 @@ namespace ya::renderer
 
 	extern Vertex vertexes[4];
 	extern Camera* mainCamera;
+	extern Camera* UICamera;
 	extern ConstantBuffer* constantBuffers[];
 	extern Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerStates[];
 	extern Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizerStates[];
@@ -177,6 +178,9 @@ namespace ya::renderer
 	void Render();
 	void Release();
 
+	
+	
+
 	//mrt
 	void CreateRenderTargets();
 	void ClearRenderTargets();
@@ -184,6 +188,7 @@ namespace ya::renderer
 	//Renderer
 	void PushLightAttribute(LightAttribute lightAttribute);
 	void BindLights();
+	inline void ClearLights() { lights.clear(); };
 	void BindNoiseTexture();
 	void CopyRenderTarget();
 	

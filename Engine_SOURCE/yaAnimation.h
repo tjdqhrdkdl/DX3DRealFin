@@ -11,11 +11,11 @@ namespace ya
 	public:
 		struct Sprite
 		{
-			Vector2 leftTop;	// ÁÂÃø »ó´Ü ÁÂÇ¥
-			Vector2 size;		// ÁÂÃø»ó´ÜºÎÅÍ Àß¶ó³¾ °¡·Î ¼¼·ÎÀÇ ÇÈ¼¿ ±æÀÌ
-			Vector2 offset;		// ·»´õ¸µ À§Ä¡ Á¶Á¤ÇÏ±âÀ§ÇÑ ÁÂÇ¥
-			Vector2 atlasSize;  // ÅØ½ºÃ³ ÀÌ¹ÌÁöÀÇ Å©±â
-			float duration;		// ÇÁ·¹ÀÓ°£¿¡ ½Ã°£ °£°İ
+			Vector2 leftTop;	// ì¢Œì¸¡ ìƒë‹¨ ì¢Œí‘œ
+			Vector2 size;		// ì¢Œì¸¡ìƒë‹¨ë¶€í„° ì˜ë¼ë‚¼ ê°€ë¡œ ì„¸ë¡œì˜ í”½ì…€ ê¸¸ì´
+			Vector2 offset;		// ë Œë”ë§ ìœ„ì¹˜ ì¡°ì •í•˜ê¸°ìœ„í•œ ì¢Œí‘œ
+			Vector2 atlasSize;  // í…ìŠ¤ì²˜ ì´ë¯¸ì§€ì˜ í¬ê¸°
+			float duration;		// í”„ë ˆì„ê°„ì— ì‹œê°„ ê°„ê²©
 
 			Sprite()
 				: leftTop(0.0f, 0.0f)

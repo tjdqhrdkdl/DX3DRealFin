@@ -61,18 +61,22 @@ namespace ya
 		sortGameObjects();
 
 		// View proj  행렬 direction light 껄로 바뀌어야한다.
-		Transform* tr = renderer::lights[0]->GetOwner()->GetComponent<Transform>();
-		View = CreateViewMatrix(tr);
-		Projection = CreateProjectionMatrix(eProjectionType::Perspective, 1600, 900, 1.0f, 1000.0f);
+		if (false == renderer::lights.empty())
+		{
+			Transform* tr = renderer::lights[0]->GetOwner()->GetComponent<Transform>();
+			View = CreateViewMatrix(tr);
+			Projection = CreateProjectionMatrix(eProjectionType::Perspective, 1600, 900, 1.0f, 1000.0f);
 
-		ConstantBuffer* lightCB = renderer::constantBuffers[(UINT)eCBType::LightMatrix];
+			ConstantBuffer* lightCB = renderer::constantBuffers[(UINT)eCBType::LightMatrix];
 
-		LightMatrixCB data = {};
-		data.lightView = View;
-		data.lightProjection = Projection;
-		lightCB->SetData(&data);
-		lightCB->Bind(eShaderStage::VS);
-		lightCB->Bind(eShaderStage::PS);
+			LightMatrixCB data = {};
+			data.lightView = View;
+			data.lightProjection = Projection;
+			lightCB->SetData(&data);
+			lightCB->Bind(eShaderStage::VS);
+			lightCB->Bind(eShaderStage::PS);
+		}
+
 
 
 		// shadow
