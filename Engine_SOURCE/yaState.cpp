@@ -24,15 +24,27 @@ namespace ya
 		mHp += hp; 
 
 		if (mHp < 0)
+		{
+			mHp = 0;
 			mbDeath = true;
+
+			if (mDeathEvent != nullptr)
+				mDeathEvent();
+		}
 	}
 
 	void State::AddPosture(float posture)
 	{
 		mPosture += posture;
 
-		if (mPosture < 0)
+		if (mPosture > mPostureMax)
+		{
+			mPosture = mPostureMax;
 			mbDeathBlow = true;
+
+			if (mStunEvent != nullptr)
+				mStunEvent();
+		}
 	}
 
 	void State::AddResurrectionCount(int count)
@@ -43,6 +55,34 @@ namespace ya
 			mResurrectionCount += count;
 
 		if (mResurrectionCount <= 0)
-			mbDeath = true;
+			mResurrectionCount = 0;
+	}
+
+	void State::Death()
+	{
+		if (mResurrectionCount > 0)
+		{
+
+		}
+		else
+		{
+			// 완전히 죽음..
+		}
+	}
+
+	// 부활
+	void State::Resurrection()
+	{
+		if (mbDeath && mResurrectionCount > 0)
+		{
+			AddResurrectionCount(-1);
+
+			mHp = mHpMax;
+			mPosture = 0;
+			mbDeath = false;
+
+			if(mResurrectionEvent != nullptr)
+				mResurrectionEvent();
+		}
 	}
 }

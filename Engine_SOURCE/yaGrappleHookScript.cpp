@@ -72,7 +72,6 @@ namespace ya
 			else
 			{
 				mbGrappleHook = false;
-				mPlayer->SetStateFlag(ePlayerState::Hook, false);
 			}
 		}
 	}

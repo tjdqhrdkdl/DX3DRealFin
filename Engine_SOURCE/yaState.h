@@ -1,5 +1,6 @@
 #pragma once
 #include "yaEnums.h"
+#include <functional>
 
 namespace ya
 {
@@ -60,6 +61,15 @@ namespace ya
 		bool	IsDeath() { return mbDeath; }
 		void	SetDeath(bool death) { mbDeath = death; }
 
+		std::function<void()>& GetStunEvent() { return mStunEvent; }
+		std::function<void()>& GetDeathEvent() { return mDeathEvent; }
+		std::function<void()>& GetRessurctionEvent() { return mResurrectionEvent; }
+	
+	public:
+		void	Death();
+		void	Resurrection();
+
+
 	private:
 
 		enums::eSituation	mSituation;				
@@ -86,10 +96,14 @@ namespace ya
 		float               mMaxDeathBlowCount;
 
 		bool				mbDeathBlowOnOff;
-		//bool				mbStartBlow;
 
 		// 죽음
 		bool				mbDeath;
+
+		// 이벤트
+		std::function<void()> mStunEvent;			// 체간 다찼을때
+		std::function<void()> mDeathEvent;			// hp 0됐을때
+		std::function<void()> mResurrectionEvent;	// 부활 할때
 	};
 
 }

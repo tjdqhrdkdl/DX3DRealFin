@@ -490,6 +490,8 @@ namespace ya
 		mMonsterState->AddResurrectionCount(-1);
 		mMonsterState->SetPosture(0);
 		mMonsterState->SetHp(mMonsterState->GetHPMax());
+
+		mMonsterState->SetDeathBlow(false);
 	}
 
 
