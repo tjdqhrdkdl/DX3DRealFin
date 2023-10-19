@@ -66,7 +66,7 @@ namespace ya
 
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Light];
 		LightCB data = {};
-		data.numberOfLight = renderer::lights.size();
+		data.numberOfLight = (UINT)renderer::lights.size();
 		data.indexOfLight = mIndex;
 
 		cb->SetData(&data);

@@ -605,7 +605,7 @@ namespace ya
 		wchar_t szFloat[50] = {};
 		std::wstring str = L"target: " + std::to_wstring(mDeathBlowTargets.size());
 		swprintf_s(szFloat, 50, str.c_str());
-		TextOut(application.GetHdc(), 800, 150, szFloat, wcslen(szFloat));
+		TextOut(application.GetHdc(), 800, 150, szFloat, (int)wcslen(szFloat));
 	}
 
 	void PlayerAttackScript::OnCollisionEnter(Collider2D* collider)

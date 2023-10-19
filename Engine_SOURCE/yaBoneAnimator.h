@@ -50,7 +50,7 @@ namespace ya
 		void SetAnimaitionClip(const std::vector<BoneAnimationClip>* clips);
 		Events* FindEvents(const std::wstring& name);
 		graphics::StructedBuffer* GetFinalBoneMatrix() { return mBoneMatrixBuffer; }
-		UINT GetBoneCount() { return mBones->size(); }
+		UINT GetBoneCount() { return static_cast<UINT>(mBones->size()); }
 		void ClearData();
 		void SetBones(const std::vector<BoneMatrix>* bones)
 		{
