@@ -2,7 +2,6 @@
 
 #include "yaRigidbody.h"
 
-#include "yaPlayerScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaPlayerMeshScript.h"
@@ -27,7 +26,7 @@ namespace ya
 		, mStartStateEvent {}
 		, mEndStateEvent {}
 	{
-		SetName(L"Wolf");
+		SetName(L"Player");
 
 		Transform* tr = GetComponent<Transform>();
 		tr->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
@@ -41,16 +40,18 @@ namespace ya
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
 
-		col->SetCenter(Vector3(0.f, 0.5f, 0.f));
+		col->SetCenter(Vector3(0.f, 1.2f, 0.f));
 		col->SetSize(Vector3(0.8f, 3.4f, 0.8f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
 		mState = new State();
-		mState->SetHPMax(100);
+		mState->SetHPMax(30.0f);
 		mState->SetHp(mState->GetHPMax());
-		mState->SetPostureMax(100);
-		mState->SetPosture(mState->GetPostureMax());
+		mState->SetPostureMax(100.0f);
+		mState->SetPosture(0);
+		mState->SetResurrectionCountMax(3);
+		mState->SetResurrectionCount(mState->GetResurrectionCountMax());
 	}
 
 	Player::~Player()
@@ -78,7 +79,6 @@ namespace ya
 			projectileScript->SetPlayer(this);
 		}
 
-		AddComponent<PlayerScript>();
 		AddComponent<PlayerActionScript>();
 		AddComponent<PlayerAttackScript>();
 		AddComponent<GrappleHookScript>();
@@ -134,11 +134,10 @@ namespace ya
 		}
 	}
 
-
 	void Player::CreateHpTexture()
 	{		
 		mPlayerHpBar = object::Instantiate<PlayerHpTxture>(eLayerType::UI, GetScene());
-		mPlayerHpBar->SetName(L"dd");
+		mPlayerHpBar->SetName(L"player hp bar");
 		mPlayerHpBar->SetPlayer(this);
 	}
 
@@ -150,6 +149,7 @@ namespace ya
 		else
 			return attack->GetBlockTime();
 	}
+
 	void Player::SetDeathBlowTarget(MonsterBase* monster, float distance)
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
@@ -158,6 +158,7 @@ namespace ya
 		else
 			attack->SetDeathBlowTarget(monster, distance);
 	}
+
 	void Player::EraseDeathBlowTarget(MonsterBase* monster)
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();

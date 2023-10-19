@@ -55,9 +55,6 @@
     <ClCompile Include="yaMonster.cpp">
       <Filter>Contents\Contents</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
     <ClCompile Include="yaActionScript.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
@@ -367,6 +364,10 @@
     </ClCompile>
     <ClCompile Include="yaMapCollider.cpp" />
     <ClCompile Include="yaPlayerHpTxture.cpp" />
+    <ClCompile Include="yaMonsterUI.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaHPMeterScript.cpp" />
     <ClCompile Include="PhysXWrapper.cpp">
       <Filter>Engine\Component\Collider\PhysX</Filter>
     </ClCompile>
@@ -434,9 +435,6 @@
     </ClInclude>
     <ClInclude Include="yaMonster.h">
       <Filter>Contents\Contents</Filter>
-    </ClInclude>
-    <ClInclude Include="yaPlayerScript.h">
-      <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaActionScript.h">
       <Filter>Contents\Player</Filter>
@@ -746,6 +744,10 @@
     </ClInclude>
     <ClInclude Include="yaMapCollider.h" />
     <ClInclude Include="yaPlayerHpTxture.h" />
+    <ClInclude Include="yaMonsterUI.h">
+      <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaHPMeterScript.h" />
     <ClInclude Include="PhysXWrapper.h">
       <Filter>Engine\Component\Collider\PhysX</Filter>
     </ClInclude>

@@ -6,7 +6,7 @@
 
 #include "yaInput.h"
 #include "yaTime.h"
-
+#include "yaHPMeterScript.h"
 #define PERCENTAGE 0.5
 
 namespace ya
@@ -32,7 +32,6 @@ namespace ya
 	{
 		if (mPlayerHpLayout == nullptr)
 		{
-
 			Resources::Load<Texture>(L"HPLayoutTexture", L"UI\\Texture\\HpLayout.png");
 			Resources::Load<Texture>(L"HPBarTexture", L"UI\\Texture\\Hp.png");
 			Resources::Load<Texture>(L"re_True", L"UI\\Texture\\Resurrection_True.png");
@@ -43,6 +42,7 @@ namespace ya
 			{
 				mPlayerHpLayout = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 				mPlayerHpLayout->SetName(L"PlayerHpLayout");
+				mPlayerHpLayout->AddComponent<HPMeterScript>();
 
 				Transform* hptr = mPlayerHpLayout->GetComponent<Transform>();
 
@@ -133,7 +133,7 @@ namespace ya
 
 				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
 
-				postureBartr->SetPosition(Vector3(25.0f, -360.0f, -10.0f));
+				postureBartr->SetPosition(Vector3(25.0f, -360.0f, 0.0f));
 				postureBartr->SetScale(Vector3(115.0f, 10.0f, 50.0f));
 
 				MeshRenderer* meshRenderer = PlayerpostureBar->AddComponent<MeshRenderer>();
@@ -150,7 +150,7 @@ namespace ya
 
 				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
 
-				postureBartr->SetPosition(Vector3(-88.0f, -360.0f, -10.0f));
+				postureBartr->SetPosition(Vector3(-88.0f, -360.0f, 0.0f));
 				postureBartr->SetScale(Vector3(115.0f, 10.0f, 50.0f));
 				postureBartr->SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 
@@ -215,17 +215,13 @@ namespace ya
 		float posture = (float)PERCENTAGE / (float)mPlayer->GetState()->GetPostureMax();
 		float culposture = (float)PERCENTAGE - (posture * (float)mPlayer->GetState()->GetPosture());
 
-
-		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::HpMeter];
-		renderer::Meter data;
+		renderer::MeterCB data;
 		
 		data.HpMeter = culhp;
 		data.PostureMeter = culposture;		
-		
 
-		cb->SetData(&data);
-		cb->Bind(eShaderStage::VS);
-		cb->Bind(eShaderStage::PS);
+		mPlayerHpLayout->GetScript<HPMeterScript>()->SetCB(data);
+
 
 	}
 

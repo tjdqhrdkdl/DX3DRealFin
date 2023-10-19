@@ -14,7 +14,7 @@
 #include "yaBoneCollider.h"
 #include "yaActionScript.h"
 #include "yaBoneAnimator.h"
-
+#include "yaMonsterUI.h"
 
 #include <time.h>
 
@@ -204,5 +204,6 @@ namespace ya
         float               mTime;
         float               mRecoveryTime;
 
+        MonsterUI*          mMonsterUI;
     };
 }

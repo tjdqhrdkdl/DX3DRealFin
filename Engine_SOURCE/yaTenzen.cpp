@@ -223,6 +223,8 @@ namespace ya
 		SetAlertnessCount(0.f);
 		SetDeathBlow(false);
 		SetResurrectionCount(1);
+		SetResurrectionCountMax(1);
+
 
 	}
 	void Tenzen::Update()
@@ -843,7 +845,7 @@ namespace ya
 
 					SetHp(GetHP() - 5);
 					//체간 깎기
-					SetPosture(GetPosture() - 50);
+					SetPosture(GetPosture() - 10);
 
 					//인살가능상태에서 공격당함(인살당함)
 					if (true == IsDeathBlow())
