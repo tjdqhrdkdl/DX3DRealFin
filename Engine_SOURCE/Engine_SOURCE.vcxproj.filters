@@ -281,7 +281,6 @@
     <ClCompile Include="yaFrustum.cpp">
       <Filter>Engine\Component\Camera</Filter>
     </ClCompile>
-
     <ClCompile Include="yaLoadingScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
@@ -295,7 +294,11 @@
       <Filter>Contents\Map</Filter>
     </ClCompile>
     <ClCompile Include="yaMapCollider.cpp" />
-
+    <ClCompile Include="yaPlayerHpTxture.cpp" />
+    <ClCompile Include="yaMonsterUI.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaHPMeterScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -598,7 +601,6 @@
     <ClInclude Include="yaFrustum.h">
       <Filter>Engine\Component\Camera</Filter>
     </ClInclude>
-
     <ClInclude Include="yaResource.h">
       <Filter>Engine\Resource</Filter>
     </ClInclude>
@@ -615,7 +617,11 @@
       <Filter>Contents\Map</Filter>
     </ClInclude>
     <ClInclude Include="yaMapCollider.h" />
-
+    <ClInclude Include="yaPlayerHpTxture.h" />
+    <ClInclude Include="yaMonsterUI.h">
+      <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaHPMeterScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

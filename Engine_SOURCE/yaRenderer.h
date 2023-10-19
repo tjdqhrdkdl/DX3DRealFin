@@ -146,7 +146,7 @@ namespace ya::renderer
 		Matrix mat_3{};
 	};
 
-	CBUFFER(Meter, CBSLOT_METER)
+	CBUFFER(MeterCB, CBSLOT_METER)
 	{
 		float   HpMeter;
 		float   PostureMeter;

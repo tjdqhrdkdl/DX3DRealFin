@@ -36,7 +36,8 @@ namespace ya
 	void MonsterBase::Initialize()
 	{
 		CreateMonsterState();
-
+		mMonsterUI = object::Instantiate<MonsterUI>(eLayerType::UI, GetScene());
+		mMonsterUI->SetMonster(this);
 		GameObject::Initialize();
 	}
 
