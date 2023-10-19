@@ -298,6 +298,9 @@
     <ClCompile Include="PhysXWrapper.cpp">
       <Filter>Engine\Component\Collider\PhysX</Filter>
     </ClCompile>
+    <ClCompile Include="StrConverter.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -619,6 +622,9 @@
     <ClInclude Include="yaPlayerHpTxture.h" />
     <ClInclude Include="PhysXWrapper.h">
       <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="StrConverter.h">
+      <Filter>Engine\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -60,7 +60,7 @@ namespace ya
 		);
 
 		//GPU에 데이터 보내고
-		mUIDrawSBuffer->SetData(mUIRenderQueue.data(), mUIRenderQueue.size());
+		mUIDrawSBuffer->SetData(mUIRenderQueue.data(), (UINT)mUIRenderQueue.size());
 		mUIDrawSBuffer->BindSRV(eShaderStage::PS, Register_UIBuffer);
 
 		//렌더

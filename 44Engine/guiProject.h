@@ -3,6 +3,8 @@
 #include "guiTreeWidget.h"
 #include "yaResources.h"
 #include "yaResource.h"
+#include "StrConverter.h"
+
 namespace gui
 {
 	class Project : public Widget
@@ -29,7 +31,8 @@ namespace gui
 
 			for (std::shared_ptr<T> resource : resources)
 			{
-				std::string name(resource->GetName().begin(), resource->GetName().end());
+				std::string name = StrConverter::ConvertUnicodeToUTF8(resource->GetName());
+				//std::string name(resource->GetName().begin(), resource->GetName().end());
 				mTreeWidget->AddNode(stemNode, name, resource.get());
 			}
 		}

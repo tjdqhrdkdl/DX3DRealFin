@@ -24,10 +24,10 @@ namespace ya
 		if (mbComplete)
 			return -1;
 
-		// ½Ã°£ Ã¼Å©
+		// ì‹œê°„ ì²´í¬
 		mTime += Time::DeltaTime();
 
-		// ´©Àû ½Ã°£ÀÌ ÇØ´ç ÇÁ·¹ÀÓÀÇ À¯Áö½Ã°£À» ³Ñ¾î¼­¸é ´ÙÀ½ÇÁ·¹ÀÓÀ¸·Î ÀÌµ¿
+		// ëˆ„ì  ì‹œê°„ì´ í•´ë‹¹ í”„ë ˆì„ì˜ ìœ ì§€ì‹œê°„ì„ ë„˜ì–´ì„œë©´ ë‹¤ìŒí”„ë ˆì„ìœ¼ë¡œ ì´ë™
 		if (mSpriteSheet[mIndex].duration < mTime)
 		{
 			mTime = 0.0f;
@@ -35,7 +35,7 @@ namespace ya
 			if (mSpriteSheet.size() <= mIndex)
 			{
 				mbComplete = true;
-				mIndex = mSpriteSheet.size() - 1;
+				mIndex = (int)mSpriteSheet.size() - 1;
 			}
 
 			return mIndex;
@@ -66,7 +66,7 @@ namespace ya
 
 		for (size_t i = 0; i < spriteLegth; i++)
 		{
-			// API ¿Í´Â ´Ù¸£°Ô 0~1 »çÀÌÀÇ ºñÀ²ÁÂÇ¥·Î À§Ä¡¸¦ Ç¥ÇöÇØ¾ßÇÑ´Ù.
+			// API ì™€ëŠ” ë‹¤ë¥´ê²Œ 0~1 ì‚¬ì´ì˜ ë¹„ìœ¨ì¢Œí‘œë¡œ ìœ„ì¹˜ë¥¼ í‘œí˜„í•´ì•¼í•œë‹¤.
 			Sprite sprite = {};
 			sprite.leftTop = Vector2((leftTop.x + (size.x * (float)i)) / width
 				, (leftTop.y) / height);

@@ -177,6 +177,9 @@ namespace ya::renderer
 	void Render();
 	void Release();
 
+	
+	
+
 	//mrt
 	void CreateRenderTargets();
 	void ClearRenderTargets();
@@ -184,6 +187,7 @@ namespace ya::renderer
 	//Renderer
 	void PushLightAttribute(LightAttribute lightAttribute);
 	void BindLights();
+	inline void ClearLights() { lights.clear(); };
 	void BindNoiseTexture();
 	void CopyRenderTarget();
 	

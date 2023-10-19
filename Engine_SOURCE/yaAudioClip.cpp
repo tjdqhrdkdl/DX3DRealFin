@@ -1,5 +1,6 @@
 #include "yaAudioClip.h"
 #include "yaTransform.h"
+#include "StrConverter.h"
 
 namespace ya
 {
@@ -22,7 +23,7 @@ namespace ya
 
 	HRESULT AudioClip::Load(const std::wstring& path, FILE* file)
 	{
-		std::string cPath(path.begin(), path.end());
+		std::string cPath = StrConverter::ConvertUnicodeToUTF8(path);
 		if (!Fmod::CreateSound(cPath, &mSound))
 			return S_FALSE;
 
