@@ -10,7 +10,6 @@ extern ya::Application application;
 #include "yaPlayer.h"
 
 
-
 namespace ya
 {
 	MonsterBase::MonsterBase()

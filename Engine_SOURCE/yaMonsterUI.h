@@ -16,9 +16,9 @@ namespace ya
 
         virtual void Initialize() override;
         virtual void Update() override;
-        void SetMonster(class MonsterBase* mon) { mMonster = mon; }
+        void SetMonster(class MonsterBase* mon);
 
-
+        void UIOn() { mbRender = true, mRenderTimeChecker = 0; }
         void MonsterMeterCheck();
 
     private:
