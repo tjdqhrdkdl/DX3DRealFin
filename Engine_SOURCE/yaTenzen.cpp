@@ -11,6 +11,8 @@
 #include "yaTenzenCollisionScript.h"
 #include "yaTenzenSwordScript.h"
 
+#include "yaNavMesh.h"
+
 #define STATE_HAVE(STATE) (mState & STATE) == STATE
 #define ADD_STATE(STATE) mState |= STATE
 #define RM_STATE(STATE) mState &= ~STATE
@@ -132,7 +134,7 @@ namespace ya
 
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
-		tr->SetPosition(Vector3(0, 20, 0));
+		tr->SetPosition(Vector3(0, 0, 0));
 		tr->SetScale(Vector3(2, 2, 2));
 		mTransform = tr;
 
@@ -200,9 +202,15 @@ namespace ya
 		SetSpeed(tenzenBaseSpeed);
 
 
+		//네비 매쉬
+		AddComponent<NavMesh>();
+
+
 		MonsterBase::Initialize();
 		ADD_STATE(TenzenState_Guard);
 		ADD_STATE(TenzenState_Idle);
+
+
 
 		mAttackParams.damage = 10;
 		mAttackParams.unGuardable = false;
@@ -273,6 +281,7 @@ namespace ya
 		if (STATE_HAVE(TenzenState_Idle))
 		{
 			mAnimationName = L"Idle";
+			RM_STATE(TenzenState_LookAt);
 		}
 	}
 	void Tenzen::Alert()
@@ -455,13 +464,17 @@ namespace ya
 			mAnimationName = L"RunWithSword";
 			
 			
-			ADD_STATE(TenzenState_Move);
+			//ADD_STATE(TenzenState_Move);
 			mMoveDir = mTransform->Forward();
 			SetSpeed(200);
 			Vector3 pos = mTransform->GetPosition();
 			Vector3 playerPos = GetPlayerPos();
-			if (Vector3::Distance(pos, playerPos) < 10)
+			GetComponent<NavMesh>()->RenewPath(playerPos);
+			RM_STATE(TenzenState_LookAt);
+			RotateForwardTo(GetComponent<NavMesh>()->GetDir());
+			if (GetDistanceToPlayer() < 5)
 			{
+				ADD_STATE(TenzenState_LookAt);
 				RM_STATE(TenzenState_Move);
 				RM_STATE(TenzenState_Trace);
 			}
@@ -629,7 +642,6 @@ namespace ya
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_5") = std::bind(&Tenzen::AttackEndEvent, this);
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_6") = std::bind(&Tenzen::AttackEndEvent, this);
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_7") = std::bind(&Tenzen::AttackEndEvent, this);
-		mMeshData->GetAnimationEndEvent(L"RunWithSword") = std::bind(&Tenzen::TraceEndEvent, this);
 		mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&Tenzen::DefenseEndEvent, this);
 
 		mMeshData->GetAnimationFrameEvent(L"GuardLeft", 27) = [this]() { RM_STATE(TenzenState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };

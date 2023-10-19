@@ -27,7 +27,7 @@
 #include "yaBoundarySphere.h"
 #include "yaMapCollider.h"
 
-
+#include "yaNavMeshTool.h"
 namespace ya
 {
 	PlayScene::PlayScene()
@@ -36,6 +36,8 @@ namespace ya
 	}
 	PlayScene::~PlayScene()
 	{
+		NavMeshTool::DestroyInst();
+
 	}
 	void PlayScene::Initialize()
 	{
@@ -219,6 +221,23 @@ namespace ya
 
 		{
 			object::Instantiate<MapCollider>(eLayerType::Ground, this);
+		}
+
+		{
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			//Transform* objTransform = obj->GetComponent<Transform>();
+			//objTransform->SetPosition(-85.f, 35.f, 130.f);
+			//objTransform->SetRotation(-90.f, 0.f, 0.f);
+		}
+		{
+			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::None, this);
+			Transform* navTr = trObj->GetComponent<Transform>();
+			navTr->SetPosition(-85.f, 35.f, 130.f);
+			navTr->SetRotation(-90.f, 0.f, 0.f);
+
+			NavMeshTool* m = NavMeshTool::GetInst();
+			m->SetMapMeshTr(navTr);
+			m->Init(this);
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 		object::Instantiate<Tenzen>(eLayerType::Monster, this);

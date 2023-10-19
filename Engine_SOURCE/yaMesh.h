@@ -40,7 +40,8 @@ namespace ya
 		MeshData* GetParentMeshData() { return mParentMeshData; }
 
 		void SetVertexBuffer(Microsoft::WRL::ComPtr<ID3D11Buffer> buffer) { mVertexBuffer = buffer; }
-		
+		Microsoft::WRL::ComPtr<ID3D11Buffer> GetVertexBuffer() { return mVertexBuffer; }
+
 		
 
 	private:

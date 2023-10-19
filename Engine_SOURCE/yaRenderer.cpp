@@ -520,6 +520,15 @@ namespace ya::renderer
 
 		Resources::Insert<Shader>(L"DebugShader", debugShader);
 #pragma endregion
+#pragma region DEBUG PAINTED SHADER
+		std::shared_ptr<Shader> debugPaintedShader = std::make_shared<Shader>();
+		debugPaintedShader->Create(eShaderStage::VS, L"DebugVS.hlsl", "main");
+		debugPaintedShader->Create(eShaderStage::PS, L"DebugPaintedPS.hlsl", "main");
+		debugPaintedShader->SetRSState(eRSType::SolidNone);
+		debugPaintedShader->SetBSState(eBSType::AlphaBlend);
+
+		Resources::Insert<Shader>(L"DebugPaintedShader", debugPaintedShader);
+#pragma endregion
 #pragma region PAINT SHADER
 		std::shared_ptr<PaintShader> paintShader = std::make_shared<PaintShader>();
 		paintShader->Create(L"PaintCS.hlsl", "main");
@@ -724,6 +733,12 @@ namespace ya::renderer
 			, debugShader->GetVSBlobBufferPointer()
 			, debugShader->GetVSBlobBufferSize()
 			, debugShader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> debugPaintedShader = Resources::Find<Shader>(L"DebugPaintedShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, debugPaintedShader->GetVSBlobBufferPointer()
+			, debugPaintedShader->GetVSBlobBufferSize()
+			, debugPaintedShader->GetInputLayoutAddressOf());
 
 		std::shared_ptr<Shader> particleShader = Resources::Find<Shader>(L"ParticleShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
@@ -1071,14 +1086,21 @@ namespace ya::renderer
 		std::shared_ptr<Material> gridMaterial = std::make_shared<Material>();
 		gridMaterial->SetShader(gridShader);
 		Resources::Insert<Material>(L"GridMaterial", gridMaterial);
-		#pragma endregion
-		#pragma region DEBUG
+#pragma endregion
+#pragma region DEBUG
 		std::shared_ptr<Shader> debugShader = Resources::Find<Shader>(L"DebugShader");
 		std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
 		debugMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		debugMaterial->SetShader(debugShader);
 		Resources::Insert<Material>(L"DebugMaterial", debugMaterial);
-		#pragma endregion
+#pragma endregion
+#pragma region DEBUG PAINTED
+		std::shared_ptr<Shader> debugPaintedShader = Resources::Find<Shader>(L"DebugPaintedShader");
+		std::shared_ptr<Material> debugPaintedMaterial = std::make_shared<Material>();
+		debugPaintedMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		debugPaintedMaterial->SetShader(debugPaintedShader);
+		Resources::Insert<Material>(L"DebugPaintedMaterial", debugPaintedMaterial);
+#pragma endregion
 		#pragma region PARTICLE
 		std::shared_ptr<Shader> particleShader = Resources::Find<Shader>(L"ParticleShader");
 		std::shared_ptr<Material> particleMaterial = std::make_shared<Material>();

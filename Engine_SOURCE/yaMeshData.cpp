@@ -478,12 +478,12 @@ namespace ya
 				vecOffset.push_back(matrix);
 			}
 
+
+			mBoneOffset = new graphics::StructedBuffer();
+			mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
+			mBoneOffset->GetSize();
 			
 		}
-	
-		mBoneOffset = new graphics::StructedBuffer();
-		mBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), eSRVType::SRV, vecOffset.data(), false);
-		mBoneOffset->GetSize();
 
 		fread(&mMeshCenter, sizeof(Vector3), 1, file);
 		fread(&mBoundarySphereRadius, sizeof(float), 1, file);

@@ -125,7 +125,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH_Engine.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External\FBXLoader\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\External\FBXLoader\Include;$(SolutionDir)\Engine_SOURCE\\Detour\\Include;$(SolutionDir)\Engine_SOURCE\\Recast\\Include;$(SolutionDir)\Engine_SOURCE\\DebugUtils\\Include;$(SolutionDir)\Engine_SOURCE\\DetourTileCache\\Include;$(SolutionDir)\Engine_SOURCE\\DetourCrowd\\Include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -171,7 +171,23 @@ call CopyDLL.bat $(Configuration)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CSVEditor.h" />
+    <ClInclude Include="DebugUtils\Include\DebugDraw.h" />
+    <ClInclude Include="DebugUtils\Include\DetourDebugDraw.h" />
+    <ClInclude Include="DebugUtils\Include\RecastDebugDraw.h" />
+    <ClInclude Include="DebugUtils\Include\RecastDump.h" />
+    <ClInclude Include="Detour\Include\DetourAlloc.h" />
+    <ClInclude Include="Detour\Include\DetourAssert.h" />
+    <ClInclude Include="Detour\Include\DetourCommon.h" />
+    <ClInclude Include="Detour\Include\DetourMath.h" />
+    <ClInclude Include="Detour\Include\DetourNavMesh.h" />
+    <ClInclude Include="Detour\Include\DetourNavMeshBuilder.h" />
+    <ClInclude Include="Detour\Include\DetourNavMeshQuery.h" />
+    <ClInclude Include="Detour\Include\DetourNode.h" />
+    <ClInclude Include="Detour\Include\DetourStatus.h" />
     <ClInclude Include="MapObjects.h" />
+    <ClInclude Include="Recast\Include\Recast.h" />
+    <ClInclude Include="Recast\Include\RecastAlloc.h" />
+    <ClInclude Include="Recast\Include\RecastAssert.h" />
     <ClInclude Include="PhysXWrapper.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="UICanvasObj.h" />
@@ -184,6 +200,8 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaHPMeterScript.h" />
     <ClInclude Include="yaLoadingScene.h" />
     <ClInclude Include="yaMapCollider.h" />
+    <ClInclude Include="yaNavMesh.h" />
+    <ClInclude Include="yaNavMeshTool.h" />
     <ClInclude Include="yaMonsterUI.h" />
     <ClInclude Include="yaPlayerAttackScript.h" />
     <ClInclude Include="yaPlayerHpTxture.h" />
@@ -281,7 +299,29 @@ call CopyDLL.bat $(Configuration)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CSVEditor.cpp" />
+    <ClCompile Include="DebugUtils\Source\DebugDraw.cpp" />
+    <ClCompile Include="DebugUtils\Source\DetourDebugDraw.cpp" />
+    <ClCompile Include="DebugUtils\Source\RecastDebugDraw.cpp" />
+    <ClCompile Include="DebugUtils\Source\RecastDump.cpp" />
+    <ClCompile Include="Detour\Source\DetourAlloc.cpp" />
+    <ClCompile Include="Detour\Source\DetourAssert.cpp" />
+    <ClCompile Include="Detour\Source\DetourCommon.cpp" />
+    <ClCompile Include="Detour\Source\DetourNavMesh.cpp" />
+    <ClCompile Include="Detour\Source\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="Detour\Source\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="Detour\Source\DetourNode.cpp" />
     <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="Recast\Source\Recast.cpp" />
+    <ClCompile Include="Recast\Source\RecastAlloc.cpp" />
+    <ClCompile Include="Recast\Source\RecastArea.cpp" />
+    <ClCompile Include="Recast\Source\RecastAssert.cpp" />
+    <ClCompile Include="Recast\Source\RecastContour.cpp" />
+    <ClCompile Include="Recast\Source\RecastFilter.cpp" />
+    <ClCompile Include="Recast\Source\RecastLayers.cpp" />
+    <ClCompile Include="Recast\Source\RecastMesh.cpp" />
+    <ClCompile Include="Recast\Source\RecastMeshDetail.cpp" />
+    <ClCompile Include="Recast\Source\RecastRasterization.cpp" />
+    <ClCompile Include="Recast\Source\RecastRegion.cpp" />
     <ClCompile Include="PhysXWrapper.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="UICanvasObj.cpp" />
@@ -293,6 +333,8 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaHPMeterScript.cpp" />
     <ClCompile Include="yaLoadingScene.cpp" />
     <ClCompile Include="yaMapCollider.cpp" />
+    <ClCompile Include="yaNavMesh.cpp" />
+    <ClCompile Include="yaNavMeshTool.cpp" />
     <ClCompile Include="yaMonsterUI.cpp" />
     <ClCompile Include="yaPlayerAttackScript.cpp" />
     <ClCompile Include="yaPlayerHpTxture.cpp" />
