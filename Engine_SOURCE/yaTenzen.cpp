@@ -766,8 +766,8 @@ namespace ya
 					//좌 막기 우 막기 구분
 					Transform* tr = GetComponent<Transform>();
 					Transform* colTr = colObj->GetComponent<Transform>();
-					Vector3 colPos = colTr->GetWorldPositioin();
-					Vector3 pos = tr->GetWorldPositioin();
+					Vector3 colPos = colTr->GetWorldPosition();
+					Vector3 pos = tr->GetWorldPosition();
 					Vector3 dir = colPos - pos;
 					dir.Normalize();
 
@@ -820,8 +820,8 @@ namespace ya
 					//앞 맞기 뒤 맞기 구분
 					Transform* tr = GetComponent<Transform>();
 					Transform* colTr = colObj->GetComponent<Transform>();
-					Vector3 colPos = colTr->GetWorldPositioin();
-					Vector3 pos = tr->GetWorldPositioin();
+					Vector3 colPos = colTr->GetWorldPosition();
+					Vector3 pos = tr->GetWorldPosition();
 					Vector3 dir = colPos - pos;
 					dir.Normalize();
 

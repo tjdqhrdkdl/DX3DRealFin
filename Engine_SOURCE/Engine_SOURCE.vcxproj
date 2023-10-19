@@ -74,9 +74,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Lib\</OutDir>
+    <ExternalIncludePath>$(SolutionDir)External;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Lib\</OutDir>
+    <ExternalIncludePath>$(SolutionDir)External;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -171,7 +175,9 @@ call CopyDLL.bat $(Configuration)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CSVEditor.h" />
+    <ClInclude Include="EnumFlags.h" />
     <ClInclude Include="MapObjects.h" />
+    <ClInclude Include="MathUtil.h" />
     <ClInclude Include="PhysXWrapper.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="UICanvasObj.h" />
@@ -281,6 +287,7 @@ call CopyDLL.bat $(Configuration)</Command>
   <ItemGroup>
     <ClCompile Include="CSVEditor.cpp" />
     <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="MathUtil.cpp" />
     <ClCompile Include="PhysXWrapper.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="UICanvasObj.cpp" />

@@ -301,6 +301,9 @@
     <ClCompile Include="StrConverter.cpp">
       <Filter>Engine\Common</Filter>
     </ClCompile>
+    <ClCompile Include="MathUtil.cpp">
+      <Filter>Engine\Common\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -625,6 +628,12 @@
     </ClInclude>
     <ClInclude Include="StrConverter.h">
       <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumFlags.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtil.h">
+      <Filter>Engine\Common\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

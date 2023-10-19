@@ -26,8 +26,8 @@ namespace ya
 
 					Transform* colTr = GetOwner()->GetComponent<Transform>();
 					Transform* plTr = colObj->GetComponent<Transform>();
-					Vector3 colPos = colTr->GetWorldPositioin();
-					Vector3 plPos = plTr->GetWorldPositioin();
+					Vector3 colPos = colTr->GetWorldPosition();
+					Vector3 plPos = plTr->GetWorldPosition();
 					Vector3 dir = colPos - plPos;
 					dir.Normalize();
 

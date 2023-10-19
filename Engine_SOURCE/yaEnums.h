@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CommonInclude.h"
+
 namespace ya::enums
 {
 	enum class eSceneType
@@ -120,7 +122,17 @@ namespace ya::enums
 	};
 
 
+	enum class RotationOrder : uint8
+	{
+		XYZ,
+		XZY,
+		YXZ,
+		YZX,
+		ZXY,
+		ZYX,
 
+		END
+	};
 
 
 	//struct Ray

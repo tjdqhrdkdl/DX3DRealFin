@@ -3227,6 +3227,60 @@ inline Quaternion Quaternion::CreateFromYawPitchRoll(float yaw, float pitch, flo
     return R;
 }
 
+inline Quaternion Quaternion::CreateFromPitchYawRoll(float pitch, float yaw, float roll) noexcept
+{
+    using namespace DirectX;
+    Quaternion R;
+    XMVECTOR Angles = XMVectorSet(pitch, yaw, roll, 0.0f);
+  
+#if defined(_XM_NO_INTRINSICS_)
+    const float halfpitch = Angles.vector4_f32[0] * 0.5f;
+    float cp = cosf(halfpitch);
+    float sp = sinf(halfpitch);
+
+    const float halfyaw = Angles.vector4_f32[1] * 0.5f;
+    float cy = cosf(halfyaw);
+    float sy = sinf(halfyaw);
+
+    const float halfroll = Angles.vector4_f32[2] * 0.5f;
+    float cr = cosf(halfroll);
+    float sr = sinf(halfroll);
+
+    XMVECTORF32 vResult = { { {
+        cp * sr * cy + sp * cr * sy,
+        cp * cr * sy - sp * sr * cy,
+        sp * cr * cy - cp * sr * sy,
+        cp * cr * cy + sp * sr * sy
+    } } };
+    return vResult;
+#else
+    static const XMVECTORF32  Sign = { { { 1.0f, -1.0f, -1.0f, 1.0f } } };
+
+    XMVECTOR HalfAngles = XMVectorMultiply(Angles, g_XMOneHalf.v);
+
+    XMVECTOR SinAngles, CosAngles;
+    XMVectorSinCos(&SinAngles, &CosAngles, HalfAngles);
+
+    XMVECTOR P0 = XMVectorPermute<XM_PERMUTE_0X, XM_PERMUTE_1X, XM_PERMUTE_1X, XM_PERMUTE_1X>(SinAngles, CosAngles);
+    XMVECTOR Y0 = XMVectorPermute<XM_PERMUTE_1Y, XM_PERMUTE_0Y, XM_PERMUTE_1Y, XM_PERMUTE_1Y>(SinAngles, CosAngles);
+    XMVECTOR R0 = XMVectorPermute<XM_PERMUTE_1Z, XM_PERMUTE_1Z, XM_PERMUTE_0Z, XM_PERMUTE_1Z>(SinAngles, CosAngles);
+    XMVECTOR P1 = XMVectorPermute<XM_PERMUTE_0X, XM_PERMUTE_1X, XM_PERMUTE_1X, XM_PERMUTE_1X>(CosAngles, SinAngles);
+    XMVECTOR Y1 = XMVectorPermute<XM_PERMUTE_1Y, XM_PERMUTE_0Y, XM_PERMUTE_1Y, XM_PERMUTE_1Y>(CosAngles, SinAngles);
+    XMVECTOR R1 = XMVectorPermute<XM_PERMUTE_1Z, XM_PERMUTE_1Z, XM_PERMUTE_0Z, XM_PERMUTE_1Z>(CosAngles, SinAngles);
+
+    XMVECTOR Q1 = XMVectorMultiply(P1, Sign.v);
+    XMVECTOR Q0 = XMVectorMultiply(P0, Y0);
+    Q1 = XMVectorMultiply(Q1, Y1);
+    Q0 = XMVectorMultiply(Q0, R0);
+    XMVECTOR Q = XMVectorMultiplyAdd(Q1, R1, Q0);
+
+    return Q;
+#endif
+#endif
+
+    return R;
+}
+
 inline Quaternion Quaternion::CreateFromYawPitchRoll(const Vector3& angles) noexcept
 {
     using namespace DirectX;

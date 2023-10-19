@@ -51,7 +51,7 @@ namespace ya
 		Matrix& GetWorldMatrix() { return mWorld; }
 
 		void IsCamera(bool cam) { mbCamera = cam; }
-		Vector3 GetWorldPositioin() { return Vector3(mWorld._41, mWorld._42, mWorld._43); }
+		Vector3 GetWorldPosition() { return Vector3(mWorld._41, mWorld._42, mWorld._43); }
 	private:
 		Transform* mParent;
 

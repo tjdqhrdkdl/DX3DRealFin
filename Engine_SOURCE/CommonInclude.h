@@ -25,77 +25,18 @@ STRKEY gMapPath = L"..\\..\\Resources\\Map\\Mesh";
 #define arraysize(a) (sizeof(a) / sizeof(a[0]))
 #define NOTIFICATION_W(_wstr) MessageBoxW(nullptr, _wstr, L"알림", MB_OK)
 
-// Enable enum flags:
-// https://www.justsoftwaresolutions.co.uk/cplusplus/using-enum-classes-as-bitfields.html
 
-template<typename E>
-struct enable_bitmask_operators
-{
-	static constexpr bool enable = false;
-};
+#include <cstdint>
+using int8 = std::int8_t;
+using int16 = std::int16_t;
+using int32 = std::int32_t;
+using int64 = std::int64_t;
 
-template<typename E>
-constexpr typename std::enable_if<enable_bitmask_operators<E>::enable, E>::type operator|(E lhs, E rhs)
-{
-	typedef typename std::underlying_type<E>::type underlying;
-	return static_cast<E>
-		(
-			static_cast<underlying>(lhs) | static_cast<underlying>(rhs)
-			);
-}
-
-template<typename E>
-constexpr typename std::enable_if<enable_bitmask_operators<E>::enable, E&>::type operator|=(E& lhs, E rhs)
-{
-	typedef typename std::underlying_type<E>::type underlying;
-	lhs = static_cast<E>
-		(
-			static_cast<underlying>(lhs) | static_cast<underlying>(rhs)
-			);
-
-	return lhs;
-}
-
-template<typename E>
-constexpr typename std::enable_if<enable_bitmask_operators<E>::enable, E>::type operator&(E lhs, E rhs)
-{
-	typedef typename std::underlying_type<E>::type underlying;
-	return static_cast<E>
-		(
-			static_cast<underlying>(lhs) & static_cast<underlying>(rhs)
-			);
-}
-
-template<typename E>
-constexpr typename std::enable_if<enable_bitmask_operators<E>::enable, E&>::type operator&=(E& lhs, E rhs)
-{
-	typedef typename std::underlying_type<E>::type underlying;
-	lhs = static_cast<E>
-		(
-			static_cast<underlying>(lhs) & static_cast<underlying>(rhs)
-			);
-
-	return lhs;
-}
-
-template<typename E>
-constexpr typename std::enable_if<enable_bitmask_operators<E>::enable, E>::type operator~(E rhs)
-{
-	typedef typename std::underlying_type<E>::type underlying;
-	rhs = static_cast<E>
-		(
-			~static_cast<underlying>(rhs)
-			);
-
-	return rhs;
-}
-
-template<typename E>
-constexpr bool has_flag(E lhs, E rhs)
-{
-	return (lhs & rhs) == rhs;
-}
-
+using byte = std::uint8_t;
+using uint8 = std::uint8_t;
+using uint16 = std::uint16_t;
+using uint32 = std::uint32_t;
+using uint64 = std::uint64_t;
 
 
 //#include "yaMath.h"

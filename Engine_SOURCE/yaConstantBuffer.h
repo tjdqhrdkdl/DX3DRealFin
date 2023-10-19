@@ -3,6 +3,7 @@
 
 using namespace ya::enums;
 
+
 namespace ya::graphics
 {
 	class ConstantBuffer : GpuBuffer
