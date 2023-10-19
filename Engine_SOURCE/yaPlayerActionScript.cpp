@@ -30,8 +30,6 @@ namespace ya
 		, mFrontTheta(5.0f)
 		, mDashTimerMax(0.2f)
 	{
-
-
 	}
 
 	PlayerActionScript::~PlayerActionScript()
@@ -58,11 +56,26 @@ namespace ya
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			player->SetStateFlag(ePlayerState::Jump, false);
+			player->SetStateFlag(ePlayerState::Hook, false);
 
 			if (player->IsStateFlag(ePlayerState::Walk))
 				playerAnim->Play(L"a000_000500");
 			else
 				playerAnim->Play(L"a000_201040");
+		};
+
+		mPlayer->GetState()->GetDeathEvent() = [this, owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			player->SetStateFlag(ePlayerState::Death, true);
+
+			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+			playerAnim->Play(L"a000_100300");
+		};
+
+		mPlayer->GetState()->GetRessurctionEvent() = [this, owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+			playerAnim->Play(L"a000_100320");
 		};
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
@@ -105,6 +118,15 @@ namespace ya
 
 	void PlayerActionScript::Update()
 	{
+		if (mPlayer->IsStateFlag(ePlayerState::Death))
+		{
+			Death();
+			return;
+		}
+
+		if (mPlayer->IsStateFlag(ePlayerState::DeathBlow))
+			return;
+
 		if (!mPlayer->IsStateFlag(ePlayerState::Hook))
 		{
 			if (!mPlayer->IsStateFlag(ePlayerState::Hit))
@@ -120,7 +142,6 @@ namespace ya
 					Hang();
 				}
 			}
-
 			Hit();
 		}
 
@@ -183,7 +204,19 @@ namespace ya
 			}
 			else
 			{
-				mPlayerAnim->Play(L"a000_000500");
+				if (bLockOn)
+				{
+					if (Input::GetKey(eKeyCode::W))
+						mPlayerAnim->Play(L"a000_000400");
+					else if (Input::GetKey(eKeyCode::S))
+						mPlayerAnim->Play(L"a000_000401");
+					else if (Input::GetKey(eKeyCode::D))
+						mPlayerAnim->Play(L"a000_000402");
+					else if (Input::GetKey(eKeyCode::A))
+						mPlayerAnim->Play(L"a000_000403");
+				}
+				else
+					mPlayerAnim->Play(L"a000_000400");
 			}
 		}
 		else
@@ -217,8 +250,6 @@ namespace ya
 
 	void PlayerActionScript::Idle()
 	{
-
-
 	}
 
 	void PlayerActionScript::Walk()
@@ -969,6 +1000,18 @@ namespace ya
 		}
 	}
 
+	void PlayerActionScript::Death()
+	{
+		if (Input::GetKeyDown(eKeyCode::SPACE))
+		{
+			if (mPlayer->GetState()->GetResurrectionCount() > 0)
+			{
+				mPlayer->GetState()->Resurrection();
+				mPlayer->SetStateFlag(ePlayerState::Death, false);
+			}
+		}
+	}
+
 	void PlayerActionScript::PlayerJump()
 	{
 		if (Input::GetKeyDown(eKeyCode::SPACE))
@@ -976,8 +1019,6 @@ namespace ya
 			if (mPlayer->IsStateFlag(ePlayerState::Jump))
 			{
 				if(mRigidbody->IsForwardBlocked() && mRigidbody->GetJumpCount() == 1)
-				//bool bForward = ForwardCheck(mTransform->Forward());
-				//if(bForward && mRigidbody->GetJumpCount() == 1)
 					JumpDouble();
 			}
 			else
@@ -986,14 +1027,6 @@ namespace ya
 				mRigidbody->SetJumping(true);
 				Jump();
 			}
-
-			/*if (mPlayer->IsStateFlag(ePlayerState::Jump))
-			{
-				if (Input::GetKey(eKeyCode::W) || Input::GetKey(eKeyCode::A) || Input::GetKey(eKeyCode::S) || Input::GetKey(eKeyCode::D))
-				{
-					Move(mTransform->Forward(), 300.0f);
-				}
-			}*/
 		}
 	}
 }

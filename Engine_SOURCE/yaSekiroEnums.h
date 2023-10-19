@@ -16,7 +16,7 @@ namespace ya::enums
 		Attack		= 1 << 8,		// 공격
 		Block		= 1 << 9,		// 방어
 		Hit			= 1 << 10,		// 피격
-		FallDown	= 1 << 11,		// 쓰러진 상태
+		DeathBlow	= 1 << 11,
 		Death		= 1 << 12,
 	};
 
