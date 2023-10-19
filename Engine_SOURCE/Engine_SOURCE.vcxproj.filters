@@ -281,7 +281,6 @@
     <ClCompile Include="yaFrustum.cpp">
       <Filter>Engine\Component\Camera</Filter>
     </ClCompile>
-
     <ClCompile Include="yaLoadingScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
@@ -295,7 +294,10 @@
       <Filter>Contents\Map</Filter>
     </ClCompile>
     <ClCompile Include="yaMapCollider.cpp" />
-
+    <ClCompile Include="yaPlayerHpTxture.cpp" />
+    <ClCompile Include="PhysXWrapper.cpp">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -598,7 +600,6 @@
     <ClInclude Include="yaFrustum.h">
       <Filter>Engine\Component\Camera</Filter>
     </ClInclude>
-
     <ClInclude Include="yaResource.h">
       <Filter>Engine\Resource</Filter>
     </ClInclude>
@@ -615,7 +616,10 @@
       <Filter>Contents\Map</Filter>
     </ClInclude>
     <ClInclude Include="yaMapCollider.h" />
-
+    <ClInclude Include="yaPlayerHpTxture.h" />
+    <ClInclude Include="PhysXWrapper.h">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -803,6 +807,9 @@
     </Filter>
     <Filter Include="Contents\Map">
       <UniqueIdentifier>{fb88424e-b5ef-496d-80de-99299c8fe25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider\PhysX">
+      <UniqueIdentifier>{74c96652-f68b-431b-b57f-4ae80ea2b57e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

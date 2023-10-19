@@ -237,10 +237,10 @@ namespace ya
 
 		{
 
-			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
-			Transform* objTransform = obj->GetComponent<Transform>();
-			objTransform->SetPosition(-85.f, 35.f, 130.f);
-			objTransform->SetRotation(-90.f, 0.f, 0.f);
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			//Transform* objTransform = obj->GetComponent<Transform>();
+			//objTransform->SetPosition(-85.f, 35.f, 130.f);
+			//objTransform->SetRotation(-90.f, 0.f, 0.f);
 			//2411 5640 5710 6600 6610 6620 3651 3313 
 		}
 

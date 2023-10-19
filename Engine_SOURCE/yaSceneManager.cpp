@@ -40,7 +40,7 @@ namespace ya
 			}
 		}
 
-		mActiveScene = mScenes[(UINT)eSceneType::Title];
+		mActiveScene = mScenes[(UINT)eSceneType::Play];
 	}
 
 	void SceneManager::Update()
