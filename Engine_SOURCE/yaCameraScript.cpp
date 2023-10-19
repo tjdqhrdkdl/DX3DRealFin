@@ -16,8 +16,8 @@ namespace ya
 	CameraScript::CameraScript()
 		: Script()
 		, mChildPos(Vector3(0, 0, -40))
-		, mThetaAxisY(1.57)
-		, mThetaAxisX(1.57)
+		, mThetaAxisY(1.57f)
+		, mThetaAxisX(1.57f)
 		, mDistFromTarget(10.0f)
 		, mDelayTime(0.2f)
 		, mDelayTimeChecker(0)
@@ -85,7 +85,12 @@ namespace ya
 			if (Input::GetKeyState(eKeyCode::MBTN) == eKeyState::PRESSED)
 			{
 				Vector2 mousePos = Input::GetMousePosition();
-				POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
+				POINT center = 
+				{ 
+					static_cast<LONG>(application.GetWidth() / 2u), 
+					static_cast<LONG>(application.GetHeight() / 2u) 
+				};
+
 				ScreenToClient(application.GetHwnd(), &center);
 
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
@@ -205,7 +210,11 @@ namespace ya
 			else
 			{
 				Vector2 mousePos = Input::GetMousePosition();
-				POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
+				POINT center = 
+				{ 
+					static_cast<LONG>(application.GetWidth() / 2u), 
+					static_cast<LONG>(application.GetHeight() / 2u) 
+				};
 				ScreenToClient(application.GetHwnd(), &center);
 
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
@@ -228,10 +237,10 @@ namespace ya
 						mChildPos *= mDistFromTarget;
 
 						//y축 이동 한계 지정
-						if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2)
-							mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2;
-						if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
-							mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
+						if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2f)
+							mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2f;
+						if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5.f)
+							mChildPos.y = mDistFromTarget - mDistFromTarget / 5.f;
 
 
 
@@ -286,7 +295,7 @@ namespace ya
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 dir = mDelayedTargetPos - monPos;
 			dir.Normalize();
-			dir.y = 0.3;
+			dir.y = 0.3f;
 			dir.Normalize();
 			Vector3 dest = dir * mDistFromTarget;
 			Vector3 gap = dest - mChildPos;

@@ -299,6 +299,12 @@
       <Filter>Contents\Monster</Filter>
     </ClCompile>
     <ClCompile Include="yaHPMeterScript.cpp" />
+    <ClCompile Include="PhysXWrapper.cpp">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="StrConverter.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -622,6 +628,12 @@
       <Filter>Contents\Monster</Filter>
     </ClInclude>
     <ClInclude Include="yaHPMeterScript.h" />
+    <ClInclude Include="PhysXWrapper.h">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="StrConverter.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -809,6 +821,9 @@
     </Filter>
     <Filter Include="Contents\Map">
       <UniqueIdentifier>{fb88424e-b5ef-496d-80de-99299c8fe25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider\PhysX">
+      <UniqueIdentifier>{74c96652-f68b-431b-b57f-4ae80ea2b57e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

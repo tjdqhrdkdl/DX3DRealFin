@@ -2,13 +2,15 @@
 
 namespace ya
 {
+	UINT32 ya::Entity::gNextID = UINT32_MAX;
+
 	Entity::Entity()
-		: mID(reinterpret_cast<UINT32>(this))
+		: mID(++gNextID)
 		, mName(L"")
 	{
 	}
 	Entity::Entity(const Entity& other)
-		: mID(reinterpret_cast<UINT32>(this))
+		: mID(++gNextID)
 		, mName(other.mName)
 	{
 	}
@@ -19,20 +21,22 @@ namespace ya
 
 namespace gui
 {
+	UINT32 gui::Entity::gNextID = UINT32_MAX;
+
 	Entity::Entity()
-		: mID(reinterpret_cast<UINT32>(this))
+		: mID(++gNextID)
 		, mName("")
 	{
 	}
 
 	Entity::Entity(const char* name)
-		: mID(reinterpret_cast<UINT32>(this))
+		: mID(++gNextID)
 		, mName(name)
 	{
 	}
 
 	Entity::Entity(const Entity& other)
-		: mID(reinterpret_cast<UINT32>(this))
+		: mID(++gNextID)
 		, mName(other.mName)
 	{
 	}

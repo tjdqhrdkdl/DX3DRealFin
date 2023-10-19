@@ -22,11 +22,11 @@ namespace ya::graphics
         std::wstring fullPath = path;
         std::wstring key = GetKey();
 
-        UINT nameSize = key.size();
+        UINT nameSize = (UINT)key.size();
         fwrite(&nameSize, sizeof(UINT), 1, file);
         fwrite(key.c_str(), key.size() * sizeof(wchar_t), 1, file);
 
-        UINT pathSize = fullPath.size();
+        UINT pathSize = (UINT)fullPath.size();
         fwrite(&pathSize, sizeof(UINT), 1, file);
         fwrite(fullPath.c_str(), fullPath.size() * sizeof(wchar_t), 1, file);
 
@@ -37,11 +37,11 @@ namespace ya::graphics
         //fullPath = L"..\\SHADER_SOURCE\\";
 
 
-        nameSize = key.size();
+        nameSize = (UINT)key.size();
         fwrite(&nameSize, sizeof(UINT), 1, file);
         fwrite(key.c_str(), key.size() * sizeof(wchar_t), 1, file);
 
-        pathSize = fullPath.size();
+        pathSize = (UINT)fullPath.size();
         fwrite(&pathSize, sizeof(UINT), 1, file);
         fwrite(fullPath.c_str(), fullPath.size() * sizeof(wchar_t), 1, file);
 
@@ -65,11 +65,11 @@ namespace ya::graphics
             key = mTexture[i]->GetKey();
             fullPath = mTexture[i]->GetPath();
 
-            nameSize = key.size();
+            nameSize = (UINT)key.size();
             fwrite(&nameSize, sizeof(UINT), 1, file);
             fwrite(key.c_str(), key.size() * sizeof(wchar_t), 1, file);
 
-            pathSize = fullPath.size();
+            pathSize = (UINT)fullPath.size();
             fwrite(&pathSize, sizeof(UINT), 1, file);
             fwrite(fullPath.c_str(), fullPath.size() * sizeof(wchar_t), 1, file);
         }
@@ -222,7 +222,7 @@ namespace ya::graphics
 
     void Material::Bind()
     {
-        for (size_t i = 0; i < (UINT)eTextureSlot::End; i++)
+        for (UINT i = 0; i < (UINT)eTextureSlot::End; i++)
         {
             if (mTexture[i] == nullptr)
                 continue;

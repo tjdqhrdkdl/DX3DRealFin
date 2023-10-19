@@ -1,4 +1,5 @@
 #include "guiListWidget.h"
+#include "StrConverter.h"
 
 
 namespace gui
@@ -27,14 +28,14 @@ namespace gui
 			{
 				bool selectable = (mListIndex == i);
 				if (ImGui::Selectable(mResourceList[i].c_str(), &selectable))
-					mListIndex = i;
+					mListIndex = (int)i;
 
 				if (selectable)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
 				
-				// ÇØ´ç ¾ÆÀÌÅÛÀÌ ´õºíÅ¬¸¯ µÇ¾ú´Ù¸é
+				// í•´ë‹¹ ì•„ì´í…œì´ ë”ë¸”í´ë¦­ ë˜ì—ˆë‹¤ë©´
 				if (ImGui::IsItemHovered() 
 					&& ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
@@ -62,7 +63,7 @@ namespace gui
 	{
 		for (auto wName : list)
 		{
-			std::string name(wName.begin(), wName.end());
+			std::string name = StrConverter::ConvertUnicodeToUTF8(wName);
 			mResourceList.push_back(name);
 		}
 	}
