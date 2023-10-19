@@ -980,6 +980,7 @@ namespace ya::renderer
 		#pragma region STATIC TEXTURE
 		Resources::Load<Texture>(L"SmileTexture", L"Smile.png");
 		Resources::Load<Texture>(L"DeathBlowTexture", L"UI\\Texture\\DeathBlow.png");
+		Resources::Load<Texture>(L"LockOnTexture", L"UI\\Texture\\LockOn.png");
 
 		Resources::Load<Texture>(L"DefaultSprite", L"Light.png");
 		

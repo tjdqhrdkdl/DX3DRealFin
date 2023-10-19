@@ -26,10 +26,18 @@ namespace ya
         class MonsterBase* mMonster;
         GameObject* mMonsterHpLayout;
         GameObject* mMonsterHpBar;
-        GameObject* mMonsterResurrection;
-        GameObject* mMonsterpostureLayout;
+        GameObject* mMonsterPostureLayout;
+        GameObject* mMonsterPostureBar1;
+        GameObject* mMonsterPostureBar2;
 
+        GameObject* mMonsterResurectionCount1;
+        GameObject* mMonsterResurectionCount2;
+        GameObject* mMonsterDeathBlow;
+        GameObject* mMonsterLockOn;
 
+        bool mbRender;
+        float mRenderTime;
+        float mRenderTimeChecker;
 
 
     };

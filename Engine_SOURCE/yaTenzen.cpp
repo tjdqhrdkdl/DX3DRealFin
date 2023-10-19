@@ -215,6 +215,7 @@ namespace ya
 		SetAlertnessCount(0.f);
 		SetDeathBlow(false);
 		SetResurrectionCount(1);
+		SetResurrectionCountMax(1);
 
 
 	}

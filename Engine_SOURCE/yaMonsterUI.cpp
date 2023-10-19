@@ -3,6 +3,7 @@
 #include "yaMeshRenderer.h"
 #include "yaResources.h"
 #include "yaMonsterBase.h"
+#include "yaCameraScript.h"
 #include "yaHPMeterScript.h"
 
 #define PERCENTAGE 0.5
@@ -10,6 +11,9 @@
 namespace ya
 {
 	MonsterUI::MonsterUI()
+		:mRenderTime(2.5)
+		,mRenderTimeChecker(0)
+		, mbRender(false)
 	{
 	}
 	MonsterUI::~MonsterUI()
@@ -56,16 +60,16 @@ namespace ya
 			postureLayoutMaterial->SetShader(postureLayoutShader);
 			Resources::Insert<Material>(L"PostureLayoutMaterial", postureLayoutMaterial);
 
-			mMonsterpostureLayout = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			mMonsterpostureLayout->SetName(L"postureLayout");
+			mMonsterPostureLayout = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterPostureLayout->SetName(L"postureLayout");
 
-			Transform* postureLayouttr = mMonsterpostureLayout->GetComponent<Transform>();
+			Transform* postureLayouttr = mMonsterPostureLayout->GetComponent<Transform>();
 
 			postureLayouttr->SetScale(Vector3(100.0f, 5.0f, 50.0f));
 			postureLayouttr->SetPosition(Vector3(0, -10.0f, 0));
 			postureLayouttr->SetParent(UITr);
 
-			MeshRenderer* meshRenderer = mMonsterpostureLayout->AddComponent<MeshRenderer>();
+			MeshRenderer* meshRenderer = mMonsterPostureLayout->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureLayoutMaterial");
 
@@ -75,17 +79,17 @@ namespace ya
 		}
 
 		{
-			GameObject* MonsterPostureBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			MonsterPostureBar->SetName(L"PostureBar1");
+			mMonsterPostureBar1 = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterPostureBar1->SetName(L"PostureBar1");
 
-			Transform* postureBartr = MonsterPostureBar->GetComponent<Transform>();
+			Transform* postureBartr = mMonsterPostureBar1->GetComponent<Transform>();
 
-			postureBartr->SetScale(Vector3(60.f, 5.0f, 50.0f));
-			postureBartr->SetPosition(Vector3(28, -10.0f, 0));
+			postureBartr->SetScale(Vector3(50.f, 5.0f, 50.0f));
+			postureBartr->SetPosition(Vector3(25, -10.0f, 0));
 
 			postureBartr->SetParent(UITr);
 
-			MeshRenderer* meshRenderer = MonsterPostureBar->AddComponent<MeshRenderer>();
+			MeshRenderer* meshRenderer = mMonsterPostureBar1->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureBarMaterial");
 
@@ -94,17 +98,17 @@ namespace ya
 				 
 		}
 		{
-			GameObject* MonsterPostureBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			MonsterPostureBar->SetName(L"PostureBar2");
+			mMonsterPostureBar2 = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterPostureBar2->SetName(L"PostureBar2");
 
-			Transform* postureBartr = MonsterPostureBar->GetComponent<Transform>();
-			postureBartr->SetPosition(Vector3(-28.5, -10.0f, 0));
-			postureBartr->SetScale(Vector3(60.f, 5.0f, 50.0f));
+			Transform* postureBartr = mMonsterPostureBar2->GetComponent<Transform>();
+			postureBartr->SetPosition(Vector3(-25.5, -10.0f, 0));
+			postureBartr->SetScale(Vector3(50.f, 5.0f, 50.0f));
 			postureBartr->SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 
 			postureBartr->SetParent(UITr);
 
-			MeshRenderer* meshRenderer = MonsterPostureBar->AddComponent<MeshRenderer>();
+			MeshRenderer* meshRenderer = mMonsterPostureBar2->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"PostureBarMaterial");
 
@@ -119,16 +123,16 @@ namespace ya
 			resurectionCountMaterial->SetShader(resurectionCountShader);
 			Resources::Insert<Material>(L"ResurectionCountMaterial", resurectionCountMaterial);
 
-			GameObject* resCountObj = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			resCountObj->SetName(L"resCount1");
+			mMonsterResurectionCount1 = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterResurectionCount1->SetName(L"resCount1");
 
-			Transform* resCountObjTr = resCountObj->GetComponent<Transform>();
+			Transform* resCountObjTr = mMonsterResurectionCount1->GetComponent<Transform>();
 
 			resCountObjTr->SetScale(Vector3(25, 25, 50.f));
 			resCountObjTr->SetPosition(Vector3(-45, 12, 0));
 			resCountObjTr->SetParent(UITr);
 
-			MeshRenderer* meshRenderer = resCountObj->AddComponent<MeshRenderer>();
+			MeshRenderer* meshRenderer = mMonsterResurectionCount1->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurectionCountMaterial");
 
@@ -136,21 +140,57 @@ namespace ya
 			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
 		}
 		{
-			GameObject* resCountObj = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			resCountObj->SetName(L"resCount2");
+			mMonsterResurectionCount2 = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterResurectionCount2->SetName(L"resCount2");
 
-			Transform* resCountObjTr = resCountObj->GetComponent<Transform>();
+			Transform* resCountObjTr = mMonsterResurectionCount2->GetComponent<Transform>();
 
 			resCountObjTr->SetScale(Vector3(25, 25, 50.f));
 			resCountObjTr->SetPosition(Vector3(-30, 12, 0));
 			resCountObjTr->SetParent(UITr);
 
-			MeshRenderer* meshRenderer = resCountObj->AddComponent<MeshRenderer>();
+			MeshRenderer* meshRenderer = mMonsterResurectionCount2->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurectionCountMaterial");
 
 			meshRenderer->SetMaterial(mat, 0);
 			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
+		}
+		{
+			mMonsterDeathBlow = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterDeathBlow->SetName(L"DeathBlow");
+
+			Transform* resCountObjTr = mMonsterDeathBlow->GetComponent<Transform>();
+
+			resCountObjTr->SetScale(Vector3(90, 90, 50.f));
+
+			MeshRenderer* meshRenderer = mMonsterDeathBlow->AddComponent<MeshRenderer>();
+			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurectionCountMaterial");
+
+			meshRenderer->SetMaterial(mat, 0);
+			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
+		}
+		{
+			std::shared_ptr<Shader> lockOnShader = Resources::Find<Shader>(L"SpriteShader");
+			std::shared_ptr<Material> lockOnMaterial = std::make_shared<Material>();
+			lockOnMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			lockOnMaterial->SetShader(lockOnShader);
+			Resources::Insert<Material>(L"LockOnMaterial", lockOnMaterial);
+
+			mMonsterLockOn = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterLockOn->SetName(L"LockOnMark");
+
+			Transform* tr = mMonsterLockOn->GetComponent<Transform>();
+
+			tr->SetScale(Vector3(20, 20, 50.f));
+
+			MeshRenderer* meshRenderer = mMonsterLockOn->AddComponent<MeshRenderer>();
+			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			std::shared_ptr<Material> mat = Resources::Find<Material>(L"LockOnMaterial");
+
+			meshRenderer->SetMaterial(mat, 0);
+			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"LockOnTexture"));
 		}
 		GameObject::Initialize();
 	}
@@ -158,26 +198,135 @@ namespace ya
 	{
 		if (mMonster)
 		{
+			if (mbRender)
+			{
+				//ui는 3초간 보여진다.
+				mRenderTimeChecker += Time::DeltaTime();
+				if (mRenderTimeChecker > mRenderTime)
+				{
+					mRenderTimeChecker = 0;
+					mbRender = false;
+				}
+				
+				//ui 전체 포지션 값
+				Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
+				world._42 += 3;
+				Matrix fin = world * mainCamera->GetViewMatrix();
+				fin *= mainCamera->GetProjectionMatrix();
+				Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
+				ndc = ndc / ndc.w;
 
-			Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-			world._42 += 3;
-			Matrix fin = world * mainCamera->GetViewMatrix();
-			fin *= mainCamera->GetProjectionMatrix();
-			Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
-			ndc = ndc / ndc.w;
+				Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
+				UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
+				GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
+				if (ndc.z > 1 or ndc.z < 0)
+					GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
 
-			Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
-			UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-			GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
-			if (ndc.z > 1 or ndc.z < 0)
-				GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
+				//ui관련 상수버퍼 
+				MonsterMeterCheck();
 
-			MonsterMeterCheck();
+				//hp bar
+				mMonsterHpLayout->SetRender(true);
+				mMonsterHpBar->SetRender(true);
 
-			if (mMonster->GetResurrectionCount() == 0)
-				;
-			else if (mMonster->GetResurrectionCount() == 1)
-				;
+
+				//posture bar
+				if (mMonster->GetPosture() == 0)
+				{
+					mMonsterPostureLayout->SetRender(false);
+					mMonsterPostureBar1->SetRender(false);
+					mMonsterPostureBar2->SetRender(false);
+				}
+
+				else
+				{
+					mMonsterPostureLayout->SetRender(true);
+					mMonsterPostureBar1->SetRender(true);
+					mMonsterPostureBar2->SetRender(true);
+				}
+
+				//레저렉션 카운트
+				if (mMonster->GetResurrectionCountMax() > 0)
+				{
+					if (mMonster->GetResurrectionCount() == 0)
+					{
+						mMonsterResurectionCount1->SetRender(true);
+						mMonsterResurectionCount2->SetRender(false);
+					}
+					else if (mMonster->GetResurrectionCount() == 1)
+					{
+						mMonsterResurectionCount1->SetRender(true);
+						mMonsterResurectionCount2->SetRender(true);
+
+					}
+				}
+
+				{
+					if (mMonster->IsDeathBlow())
+					{
+						world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
+						world._42 += -0.5;
+						fin = world * mainCamera->GetViewMatrix();
+						fin *= mainCamera->GetProjectionMatrix();
+						ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
+						ndc = ndc / ndc.w;
+
+						UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
+						UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
+						mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
+						if (ndc.z > 1 or ndc.z < 0)
+							mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
+						mMonsterDeathBlow->SetRender(true);
+
+					}
+					else
+					{
+						mMonsterDeathBlow->SetRender(false);
+					}
+				}
+			}
+			else
+			{
+				mMonsterHpLayout->SetRender(false);
+				mMonsterHpBar->SetRender(false);
+				mMonsterPostureLayout->SetRender(false);
+				mMonsterPostureBar1->SetRender(false);
+				mMonsterPostureBar2->SetRender(false);
+
+				mMonsterResurectionCount1->SetRender(false);
+				mMonsterResurectionCount2->SetRender(false);
+				mMonsterDeathBlow->SetRender(false);
+				mMonsterLockOn->SetRender(false);
+			}
+
+			{
+				if (mainCamera->GetOwner()->GetScript<CameraScript>()->GetLockOnTarget()
+					== mMonster)
+				{
+					Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
+					world._42 += 0.5;
+					Matrix fin = world * mainCamera->GetViewMatrix();
+					fin *= mainCamera->GetProjectionMatrix();
+					Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
+					ndc = ndc / ndc.w;
+
+					Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
+					UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
+					mMonsterLockOn->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
+					if (ndc.z > 1 or ndc.z < 0)
+						mMonsterLockOn->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
+					mMonsterLockOn->SetRender(true);
+
+					mbRender = true;
+					mRenderTimeChecker = 0;
+				}
+				else
+				{
+					mMonsterLockOn->SetRender(false);
+				}
+
+
+			}
 		}
 		GameObject::Update();
 	}
