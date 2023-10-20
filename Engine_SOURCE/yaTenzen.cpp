@@ -370,10 +370,10 @@ namespace ya
 		if (STATE_HAVE(TenzenState_Recognize))
 		{
 			RM_STATE(TenzenState_Idle);
-
+			SetRecognize(true);
 			if (!(STATE_HAVE(TenzenState_DrawSword)))
 			{
-				mAnimationName = L"DrawSword"; 
+				mAnimationName = L"DrawSword";
 				ADD_STATE(TenzenState_LookAt);
 				RM_STATE(TenzenState_Move);
 			}
@@ -387,7 +387,7 @@ namespace ya
 				{
 					Vector3 pos = mTransform->GetPosition();
 					Vector3 playerPos = GetPlayerPos();
-					
+
 					//플레이어 거리가 너무 멀어졌을 때
 					float traceDist = 10;
 					if (Vector3::Distance(pos, playerPos) > traceDist)
@@ -413,6 +413,9 @@ namespace ya
 				}
 			}
 		}
+
+		else
+			SetRecognize(false);
 
 
 	}
