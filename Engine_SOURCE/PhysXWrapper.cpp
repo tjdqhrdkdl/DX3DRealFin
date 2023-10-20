@@ -259,7 +259,7 @@ namespace ya
 		_currentScene->setGravity(MathUtil::vector3ToPx(gravity));
 	}
 
-	void PhysxWrapper::changeGeometry(const Collider3D* collider, physx::PxShape* shape, eColliderType type)
+	void PhysxWrapper::changeGeometry(Collider3D* collider, physx::PxShape* shape, eColliderType type)
 	{
 		const Vector3 scale = collider->getWorldScale();
 		switch (type)
@@ -334,10 +334,7 @@ namespace ya
 
 		PxTransform t{};
 		t.p = MathUtil::vector3ToPx(component->GetWorldPosition());
-
-		math::Quaternion::CreateFromYawPitchRoll
-
-		t.q = MathUtil::quaternionToPx(component->GetRotation());
+		t.q = MathUtil::quaternionToPx(component->GetRotationQuaternion());
 
 
 		if (isStatic)
@@ -349,9 +346,9 @@ namespace ya
 			const PxU32 count = staticObject->getShapes(&shapes, 1);
 			assert(count);
 
-			staticObject->userData = &component->getOwner();
+			staticObject->userData = component->GetOwner();
 			*outShape = &shapes[0];
-			setupFiltering(*outShape, gameObject.getLayerIndex());
+			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayerType()));
 		}
 		else
 		{
@@ -362,19 +359,21 @@ namespace ya
 			PxShape* shapes{};
 			const PxU32 count = dynamic->getShapes(&shapes, 1);
 			assert(count);
-			dynamic->userData = &component->getOwner();
+			dynamic->userData = component->GetOwner();
 			*outShape = &shapes[0];
-			setupFiltering(*outShape, gameObject.getLayerIndex());
+			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayerType()));
 		}
 	}
 
 	void PhysxWrapper::createActorCapsule(GameObject* gameObject, float radius, float height, physx::PxShape** outShape, bool isStatic) 
 	{
-		const Transform* component = gameObject.GetComponent<Transform>();
+		Transform* component = gameObject->GetComponent<Transform>();
 
 		PxTransform t{};
-		t.p = *outShape ? MathUtil::vector3ToPx(component->getWorldPosition()) : MathUtil::vector3ToPx(component->getLocalPosition());
-		t.q = *outShape ? MathUtil::quaternionToPx(component->getWorldRotation()) : MathUtil::quaternionToPx(component->getLocalRotation());
+		t.p = *outShape ? MathUtil::vector3ToPx(component->GetWorldPosition()) : MathUtil::vector3ToPx(component->GetPosition());
+
+		//현재 엔진에 월드회전 - 로컬회전 정보가 분리되어있지 않으므로 그냥 둘다 로컬기준으로 가져옴
+		t.q = *outShape ? MathUtil::quaternionToPx(component->GetRotationQuaternion()) : MathUtil::quaternionToPx(component->GetRotationQuaternion());
 
 		if (isStatic)
 		{
@@ -384,9 +383,9 @@ namespace ya
 			PxShape* shapes{};
 			const PxU32 count = staticObject->getShapes(&shapes, 1);
 			assert(count);
-			staticObject->userData = &component->getOwner();
+			staticObject->userData = component->GetOwner();
 			*outShape = &shapes[0];
-			setupFiltering(*outShape, gameObject.getLayerIndex());
+			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayerType()));
 		}
 		else
 		{
@@ -399,21 +398,21 @@ namespace ya
 			const PxU32 count = dynamic->getShapes(&shapes, 1);
 			assert(count);
 
-			dynamic->userData = &component->getOwner();
+			dynamic->userData = component->GetOwner();
 			*outShape = &shapes[0];
-			setupFiltering(*outShape, gameObject.getLayerIndex());
+			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayerType()));
 		}
 	}
 
 	void PhysxWrapper::createActorCube(GameObject* gameObject, const Vector3& halfExtents, PxShape** outShape, bool isStatic) 
 	{
 		assert(nullptr != gameObject);
-		const Transform* component = gameObject->GetComponent<Transform>();
+		Transform* component = gameObject->GetComponent<Transform>();
 
 		PxTransform t{};
 		
-		t.p = *outShape ? MathUtil::vector3ToPx(component->getWorldPosition()) : MathUtil::vector3ToPx(component->getLocalPosition());
-		t.q = *outShape ? MathUtil::quaternionToPx(component->getWorldRotation()) : MathUtil::quaternionToPx(component->getLocalRotation());
+		t.p = *outShape ? MathUtil::vector3ToPx(component->GetWorldPosition()) : MathUtil::vector3ToPx(component->GetPosition());
+		t.q = *outShape ? MathUtil::quaternionToPx(component->GetRotationQuaternion()) : MathUtil::quaternionToPx(component->GetRotationQuaternion());
 
 		if (isStatic)
 		{
@@ -423,9 +422,9 @@ namespace ya
 			PxShape* shapes{};
 			const PxU32 count = staticObject->getShapes(&shapes, 1);
 			assert(count);
-			staticObject->userData = &component->getOwner();
+			staticObject->userData = component->GetOwner();
 			*outShape = &shapes[0];
-			setupFiltering(*outShape, gameObject.getLayerIndex());
+			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayerType()));
 		}
 		else
 		{
@@ -436,9 +435,9 @@ namespace ya
 			const PxU32 count = dynamic->getShapes(&shapes, 1);
 			assert(count);
 
-			dynamic->userData = &component->getOwner();
+			dynamic->userData = component->GetOwner();
 			*outShape = &shapes[0];
-			setupFiltering(*outShape, gameObject.getLayerIndex());
+			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayerType()));
 		}
 	}
 

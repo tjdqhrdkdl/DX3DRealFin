@@ -98,7 +98,7 @@ namespace ya
 			if (_type == eColliderType::Box)
 				PhysxWrapper::getInstance().createActorCube(GetOwner(), _offsetScale, &_shape, _isStatic);
 			else if (_type == eColliderType::Sphere)
-				PhysxWrapper::getInstance().createActorSphere(getOwner(), _offsetScale.x, &_shape, _isStatic);
+				PhysxWrapper::getInstance().createActorSphere(GetOwner(), _offsetScale.x, &_shape, _isStatic);
 		}
 		else if (_shape && _type != type)
 		{

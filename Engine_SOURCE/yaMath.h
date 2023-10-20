@@ -731,10 +731,12 @@ namespace ya::math
         // Rotates about y-axis (yaw), then x-axis (pitch), then z-axis (roll)
         static Quaternion CreateFromYawPitchRoll(float yaw, float pitch, float roll) noexcept;
 
-        static Quaternion CreateFromPitchYawRoll(float pitch, float yaw, float roll) noexcept;
-
         // Rotates about y-axis (angles.y), then x-axis (angles.x), then z-axis (angles.z)
         static Quaternion CreateFromYawPitchRoll(const Vector3& angles) noexcept;
+
+
+        static Quaternion CreateFromPitchYawRoll(float pitch, float yaw, float roll) noexcept;
+        static Quaternion CreateFromPitchYawRoll(const Vector3& angles) noexcept;
 
         static Quaternion CreateFromRotationMatrix(const Matrix& M) noexcept;
 

@@ -15,6 +15,7 @@ namespace ya
 		, mUp(Vector3::Up)
 		, mScale(Vector3::One)
 		, mRotation(Vector3::Zero)
+		, mQuaternion()
 		, mPosition(Vector3::Zero)
 		, mRotationOffset(Vector3::Zero)
 		, mParent(nullptr)
@@ -46,19 +47,18 @@ namespace ya
 		Vector3 finalScale = mScale;
 		Matrix scale = Matrix::CreateScale(finalScale);
 		mMatScale = scale;
-
-
-
 		// 회전 변환 행렬
-		Matrix rotation = Matrix::Identity;
+		//Matrix rotation = Matrix::Identity;
 
 		Vector3 radian = mRotation * gDegreeToRadFactor;
-		rotation = Matrix::CreateRotationX(radian.x);
-		rotation *= Matrix::CreateRotationY(radian.y);
-		rotation *= Matrix::CreateRotationZ(radian.z);
+		//rotation = Matrix::CreateRotationX(radian.x);
+		//rotation *= Matrix::CreateRotationY(radian.y);
+		//rotation *= Matrix::CreateRotationZ(radian.z);
 
-		mMatRotation = rotation;
+		//mMatRotation = rotation;
 
+		mQuaternion = Quaternion::CreateFromPitchYawRoll(radian);
+		Matrix rotation = Matrix::CreateFromQuaternion(mQuaternion);
 
 		// 이동 변환 행렬
 		Matrix position = Matrix::Identity;

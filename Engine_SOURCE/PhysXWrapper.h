@@ -17,10 +17,10 @@
 #include <array>
 #include <vector>
 
-
-
 namespace ya
 {
+	using namespace math;
+	using namespace enums;
 	class GameObject;
 	struct RaycastHit
 	{
@@ -63,7 +63,7 @@ namespace ya
 		void createActorCube(GameObject* gameObject, const Vector3& halfExtents, physx::PxShape** outShape, bool isStatic);
 		void createActorSphere(GameObject* gameObject, float radius, physx::PxShape** outShape, bool isStatic);
 		void createActorCapsule(GameObject* gameObject, float radius, float height, physx::PxShape** outShape, bool isStatic);
-		void changeGeometry(const Collider3D* collider, physx::PxShape* shape, eColliderType type);
+		void changeGeometry(Collider3D* collider, physx::PxShape* shape, eColliderType type);
 
 		bool raycast(uint32 layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit) const;
 

@@ -5,6 +5,7 @@
 namespace ya
 {
 	using namespace math;
+	using namespace enums;
 	class MathUtil final
 	{
 	public:

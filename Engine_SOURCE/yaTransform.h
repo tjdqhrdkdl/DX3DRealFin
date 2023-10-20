@@ -23,6 +23,7 @@ namespace ya
 
 		Vector3 GetPosition() { return mPosition; };
 		Vector3 GetRotation() { return mRotation; };
+		Quaternion GetRotationQuaternion() { return mQuaternion; }
 		Vector3 GetScale() { return mScale; };
 		Vector3 GetRotationOffset() { return mRotationOffset; };
 		Matrix& GetRotationMatrix() { return mMatRotation; };
@@ -61,6 +62,7 @@ namespace ya
 
 		Vector3 mPosition;
 		Vector3 mRotation;
+		Quaternion mQuaternion;
 		Vector3 mScale;
 		Vector3 mRotationOffset;
 

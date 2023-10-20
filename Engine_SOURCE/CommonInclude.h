@@ -1,12 +1,12 @@
 #pragma once
 #include <cstdlib>
 #include <cstring>
-#include <cstdlib>
 #include <cstring>
-#include <cstdint>
+#include <stdint.h>
 #include <type_traits>
 #include <vector>
 #include <filesystem>
+#include "yaMath.h"
 
 namespace std
 {
@@ -26,7 +26,6 @@ STRKEY gMapPath = L"..\\..\\Resources\\Map\\Mesh";
 #define NOTIFICATION_W(_wstr) MessageBoxW(nullptr, _wstr, L"알림", MB_OK)
 
 
-#include <cstdint>
 using int8 = std::int8_t;
 using int16 = std::int16_t;
 using int32 = std::int32_t;
@@ -39,4 +38,4 @@ using uint32 = std::uint32_t;
 using uint64 = std::uint64_t;
 
 
-//#include "yaMath.h"
+
