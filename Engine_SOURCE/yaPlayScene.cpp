@@ -231,6 +231,7 @@ namespace ya
 		}
 		{
 			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::None, this);
+			trObj->SetName(L".");
 			Transform* navTr = trObj->GetComponent<Transform>();
 			navTr->SetPosition(-85.f, 35.f, 130.f);
 			navTr->SetRotation(-90.f, 0.f, 0.f);
