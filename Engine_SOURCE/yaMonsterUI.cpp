@@ -5,6 +5,7 @@
 #include "yaMonsterBase.h"
 #include "yaCameraScript.h"
 #include "yaHPMeterScript.h"
+#include "yaMonsterUIScript.h"
 
 #define PERCENTAGE 0.5
 
@@ -329,6 +330,11 @@ namespace ya
 			}
 		}
 		GameObject::Update();
+	}
+	void MonsterUI::SetMonster(MonsterBase* mon)
+	{
+		mMonster = mon;
+		mMonster->AddComponent<MonsterUIScript>()->SetMonsterUI(this);
 	}
 	void MonsterUI::MonsterMeterCheck()
 	{
