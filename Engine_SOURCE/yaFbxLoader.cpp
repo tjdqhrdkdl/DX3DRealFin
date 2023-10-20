@@ -303,7 +303,7 @@ namespace ya
 		int iBinormalCnt = _pMesh->GetElementBinormalCount();
 		if (1 != iBinormalCnt)
 		{
-			assert(NULL);
+			//assert(NULL);
 		}
 		// 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
 

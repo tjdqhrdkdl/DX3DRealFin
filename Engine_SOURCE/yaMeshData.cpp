@@ -20,6 +20,7 @@ namespace ya
 		, mAnimationClipCount(0)
 		, mIFrameCount(0)
 		, mBoneOffset(nullptr)
+		, mAnimationOffset(Vector3::Zero)
 	{
 	}
 	MeshData::~MeshData()
@@ -697,9 +698,9 @@ namespace ya
 						vecFrameTrans[k][(UINT)mBones.size() * j + i]
 							= BoneFrameTransform
 						{
-							Vector4(mBones[i].keyFrames[k][j].translate.x
-								, mBones[i].keyFrames[k][j].translate.y
-								, mBones[i].keyFrames[k][j].translate.z, 0.f)
+							Vector4(mBones[i].keyFrames[k][j].translate.x + mAnimationOffset.x
+								, mBones[i].keyFrames[k][j].translate.y + mAnimationOffset.y
+								, mBones[i].keyFrames[k][j].translate.z + mAnimationOffset.z , 0.f)
 							, Vector4(mBones[i].keyFrames[k][j].scale.x
 								, mBones[i].keyFrames[k][j].scale.y
 								, mBones[i].keyFrames[k][j].scale.z, 0.f)

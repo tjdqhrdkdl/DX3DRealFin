@@ -18,7 +18,7 @@ namespace ya
 		, mChildPos(Vector3(0, 0, -40))
 		, mThetaAxisY(1.57f)
 		, mThetaAxisX(1.57f)
-		, mDistFromTarget(10.0f)
+		, mDistFromTarget(7.0f)
 		, mDelayTime(0.2f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
@@ -148,6 +148,7 @@ namespace ya
 	{
 
 		Vector3 targetPos = mPlayerTarget->GetComponent<Transform>()->GetPosition();
+		targetPos.y += 2.5f;
 		mQueDelayedTargetPos.push(targetPos);
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 
