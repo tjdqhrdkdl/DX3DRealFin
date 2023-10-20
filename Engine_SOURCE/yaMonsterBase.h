@@ -99,7 +99,10 @@ namespace ya
         int		GetResurrectionCount() { return mMonsterState->GetResurrectionCount(); }
         int		GetResurrectionCountMax() { return mMonsterState->GetResurrectionCountMax(); }
         bool GetDeathBlowStart() {return mbDeathBlowStart; }
+        bool IsRecognize() { return mbRecognize; }
 
+
+        void SetRecognize(bool recognize) { mbRecognize = recognize; }
         void SetState(State* state) { mMonsterState = state; }
         void SetHp(float hp) { mMonsterState->SetHp(hp); }
 
@@ -176,7 +179,7 @@ namespace ya
         State* mMonsterState;
         enums::eSituation	mSituation;
 
-        Player* mPlayerObject;
+        Player*             mPlayerObject;
 
         float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)
 
@@ -204,6 +207,7 @@ namespace ya
         float               mTime;
         float               mRecoveryTime;
 
+        bool                mbRecognize;
         MonsterUI*          mMonsterUI;
     };
 }
