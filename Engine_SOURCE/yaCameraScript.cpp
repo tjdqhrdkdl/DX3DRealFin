@@ -295,6 +295,7 @@ namespace ya
 
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 dir = mDelayedTargetPos - monPos;
+			dir.y = 0;
 			dir.Normalize();
 			dir.y = 0.3f;
 			dir.Normalize();
@@ -302,7 +303,7 @@ namespace ya
 			Vector3 gap = dest - mChildPos;
 			Vector3 gapNormal = dest - mChildPos;
 			gapNormal.Normalize();
-			Vector3 move = 200 * gapNormal * Time::DeltaTime();
+			Vector3 move = 10 * gapNormal * Time::DeltaTime();
 			if (gap.Length() < move.Length())
 				return;
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
