@@ -21,6 +21,7 @@ namespace ya
 		, mIFrameCount(0)
 		, mBoneOffset(nullptr)
 		, mAnimationOffset(Vector3::Zero)
+		, mbBoundarySphere(false)
 	{
 	}
 	MeshData::~MeshData()
@@ -774,12 +775,15 @@ namespace ya
 			}
 		}
 
-		BoundarySphere* sphere = meshObject->AddComponent<BoundarySphere>();
-		sphere->SetCenter(mMeshCenter);
-		sphere->SetRadius(mBoundarySphereRadius*2);
+		if(mbBoundarySphere)
+		{
+			BoundarySphere* sphere = meshObject->AddComponent<BoundarySphere>();
+			sphere->SetCenter(mMeshCenter);
+			sphere->SetRadius(mBoundarySphereRadius * 2);
+		}
+
 		meshObject->SetParent();
 		mMeshObject = meshObject;
-
 		return meshObject;
 	}
 	void MeshData::Play(const std::wstring animName)
