@@ -63,5 +63,6 @@ namespace ya
 		bool mbDestination;
 		Vector3 mDestination;
 		bool mbSelfCameraMoveMode;
+
 	};
 }
