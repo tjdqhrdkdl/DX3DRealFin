@@ -24,6 +24,8 @@ namespace ya
 		, mbFirstInit(false)
 		, mbMouseMove(true)
 		, mbSelfCameraMoveMode(false)
+		, mbCameraDistChanging(false)
+		, mZoomSpeed(200)
 	{
 	}
 
@@ -134,9 +136,9 @@ namespace ya
 				TrackTarget();
 				MouseMove();
 				LockOn();
-				MoveToDestination();
+				MoveToDestinationDir();
+				ZoomCamera();
 				ObstacleDetection();
-
 			}
 		}
 	}
@@ -389,13 +391,26 @@ namespace ya
 
 		if (!mbLockOn)
 		{
-			Vector3 dest = -(plTr->Forward()) + Vector3(0, 0.5, 0);
-			dest.Normalize();
-			SetDestination(dest);
+			Vector3 dest = -(plTr->Forward());
+
+			if (mDistFromTarget == 3)
+			{
+				SetCameraZoomDistance(7);
+				dest += Vector3(0, 0.5, 0);
+				dest.Normalize();
+				SetDestinationDir(dest);
+			}
+			else
+			{
+				SetCameraZoomDistance(3);			
+				dest.Normalize();
+				SetDestinationDir(dest);
+			}
+
 		}
 
 	}
-	void CameraScript::MoveToDestination()
+	void CameraScript::MoveToDestinationDir()
 	{
 		if (mbDestination && !mbLockOn)
 		{
@@ -412,6 +427,38 @@ namespace ya
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
 			mChildPos.Normalize();
 			mChildPos *= mDistFromTarget;
+		}
+	}
+	void CameraScript::ZoomCamera()
+	{
+		if (mbCameraDistChanging)
+		{
+			if (fabsf(mDistFromTarget - mDestDistFromTarget) < 0.01f)
+			{
+				mDistFromTarget = mDestDistFromTarget;
+				mbCameraDistChanging = false;
+				return;
+			}
+			
+			if (mDistFromTarget > mDestDistFromTarget)
+			{
+				mDistFromTarget -= mZoomSpeed * Time::DeltaTime() * 0.1;
+				if (mDistFromTarget < mDestDistFromTarget)
+				{
+					mDistFromTarget = mDestDistFromTarget;
+					mbCameraDistChanging = false;
+				}
+			}
+			else
+			{
+				mDistFromTarget += mZoomSpeed * Time::DeltaTime() * 0.1;
+				if (mDistFromTarget > mDestDistFromTarget)
+				{
+					mDistFromTarget = mDestDistFromTarget;
+					mbCameraDistChanging = false;
+				}
+			}
+
 		}
 	}
 }
