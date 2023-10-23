@@ -48,7 +48,7 @@ namespace ya
 								tenzen->SetAnimationName(L"ParriedRight");
 
 							//체간 게이지 영향
-							tenzen->SetPosture(tenzen->GetPosture() - 7);
+							tenzen->SetPosture(tenzen->GetPosture() + 7);
 						}
 						//그냥 막힘
 						else
