@@ -9,10 +9,13 @@
 #include "yaMeshRenderer.h"
 #include "yaResources.h"
 
+#include "yaTime.h"
+
 namespace ya
 {
 	LoadingScene::LoadingScene()
 		: Scene(eSceneType::Loading)
+		, mLoadingTime(1.0f)
 	{
 
 	}
@@ -87,9 +90,20 @@ namespace ya
 
 	void LoadingScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::N))
+		/*if (Input::GetKeyDown(eKeyCode::N))
 		{
 			SceneManager::LoadScene(eSceneType::Play);
+		}*/
+
+		if (mLoadingTime > 0.0f)
+		{
+			mLoadingTime -= Time::DeltaTime();
+		}
+		else
+		{
+			Scene* playScene = SceneManager::GetScene(eSceneType::Play);
+			if (playScene->IsInitcomplete())
+				SceneManager::LoadScene(eSceneType::Play);
 		}
 
 		Scene::Update();

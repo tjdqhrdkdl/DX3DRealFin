@@ -1,16 +1,19 @@
 #include "yaTitleScene.h"
-#include "yaTransform.h"
-#include "yaMeshRenderer.h"
-#include "yaRenderer.h"
+
+#include "yaObject.h"
 #include "yaResources.h"
+#include "yaRenderer.h"
 #include "yaTexture.h"
-#include "yaPlayerScript.h"
+#include "yaInput.h"
+
 #include "yaCamera.h"
 #include "yaCameraScript.h"
+
+#include "yaTransform.h"
 #include "yaSpriteRenderer.h"
+#include "yaMeshRenderer.h"
 #include "yaGridScript.h"
-#include "yaObject.h"
-#include "yaInput.h"
+
 
 namespace ya
 {
@@ -48,9 +51,30 @@ namespace ya
 		}
 
 		std::shared_ptr<Texture> titleCopyTexture = Resources::Load<Texture>(L"SB_Title_copy", L"Texture\\Menu\\Common\\SB_Title_copy.png");
-		std::shared_ptr<Texture> titleCopy2Texture = Resources::Load<Texture>(L"SB_Title_copy_2", L"Texture\\Menu\\Common\\SB_Title_copy_2.png");
+		//std::shared_ptr<Texture> titleCopy2Texture = Resources::Load<Texture>(L"SB_Title_copy_2", L"Texture\\Menu\\Common\\SB_Title_copy_2.png");
+		std::shared_ptr<Texture> titleCopy3Texture = Resources::Load<Texture>(L"SB_Title_copy_2", L"Texture\\Menu\\Common\\SB_Title_copy_3.png");
+		std::shared_ptr<Texture> bgBlackTexture = Resources::Load<Texture>(L"bgblack", L"Texture\\Menu\\Common\\bgblack.png");
 		//std::shared_ptr<Texture> titleTexture = Resources::Load<Texture>(L"SB_Title", L"Texture\\Menu\\Common\\SB_Title.png");
 		//std::shared_ptr<Texture> title2Texture = Resources::Load<Texture>(L"SB_Title_02", L"Texture\\Menu\\Common\\SB_Title_02.png");
+
+		{
+			GameObject* bgblack = object::Instantiate<GameObject>(eLayerType::UI, this);
+			bgblack->SetName(L"TitleScene_background");
+
+			Transform* titleCopy2Tr = bgblack->GetComponent<Transform>();
+			titleCopy2Tr->SetPosition(Vector3(0.0f, 0.f, 0.f));
+			titleCopy2Tr->SetScale(Vector3(1600.0f, 900.0f, 0.0f));
+
+			std::shared_ptr<Material> bgblackMaterial = std::make_shared<Material>();
+			bgblackMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			bgblackMaterial->SetShader(Resources::Find<Shader>(L"SpriteShader"));
+			bgblackMaterial->SetTexture(eTextureSlot::Albedo, bgBlackTexture);
+			Resources::Insert<Material>(L"bgblackMaterial", bgblackMaterial);
+
+			MeshRenderer* bgblackRd = bgblack->AddComponent<MeshRenderer>();
+			bgblackRd->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			bgblackRd->SetMaterial(bgblackMaterial, 0);
+		}
 
 		{
 			GameObject* titleCopy2 = object::Instantiate<GameObject>(eLayerType::UI, this);
@@ -58,17 +82,17 @@ namespace ya
 
 			Transform* titleCopy2Tr = titleCopy2->GetComponent<Transform>();
 			titleCopy2Tr->SetPosition(Vector3(0.0f, 0.f, 0.f));
-			titleCopy2Tr->SetScale(Vector3(605.0f, 380.0f, 0.0f));
+			titleCopy2Tr->SetScale(Vector3(760.0f, 440.0f, 0.0f));
 
 			std::shared_ptr<Material> titleCopy2tMaterial = std::make_shared<Material>();
 			titleCopy2tMaterial->SetRenderingMode(eRenderingMode::Transparent);
 			titleCopy2tMaterial->SetShader(Resources::Find<Shader>(L"SpriteShader"));
-			titleCopy2tMaterial->SetTexture(eTextureSlot::Albedo, titleCopy2Texture);
+			titleCopy2tMaterial->SetTexture(eTextureSlot::Albedo, titleCopy3Texture);
 			Resources::Insert<Material>(L"titleCopy2tMaterial", titleCopy2tMaterial);
 
-			MeshRenderer* meshRenderer = titleCopy2->AddComponent<MeshRenderer>();
-			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			meshRenderer->SetMaterial(titleCopy2tMaterial, 0);
+			MeshRenderer* titleCopy2Rd = titleCopy2->AddComponent<MeshRenderer>();
+			titleCopy2Rd->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			titleCopy2Rd->SetMaterial(titleCopy2tMaterial, 0);
 		}
 
 		{
@@ -95,8 +119,7 @@ namespace ya
 
 	void TitleScene::Update()
 	{
-
-		if (Input::GetKeyDown(eKeyCode::N))
+		if (Input::GetKeyDown(eKeyCode::SPACE) || Input::GetKeyDown(eKeyCode::ENTER))
 		{
 			SceneManager::LoadScene(eSceneType::Loading);
 		}
