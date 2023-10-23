@@ -965,6 +965,9 @@ namespace ya::renderer
 
 		constantBuffers[(UINT)eCBType::HpMeter] = new ConstantBuffer(eCBType::HpMeter);
 		constantBuffers[(UINT)eCBType::HpMeter]->Create(sizeof(Meter));
+
+		constantBuffers[(UINT)eCBType::WireFrame] = new ConstantBuffer(eCBType::WireFrame);
+		constantBuffers[(UINT)eCBType::WireFrame]->Create(sizeof(WireFrameCB));
 		
 
 #pragma endregion

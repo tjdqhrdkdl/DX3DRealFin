@@ -24,13 +24,12 @@ void ya::HangingScript::InitHanging()
 	mbHanging = true;
 }
 
-void ya::HangingScript::DoHanging(Collider2D* collider)
+void ya::HangingScript::DoHanging(GameObject* _otherObj, const Vector3& _hitPoint)
 {
 	GameObject* obj = GetOwner();
-	GameObject* colObj = collider->GetOwner();
 
 	Transform* objTransform = GetOwner()->GetComponent<Transform>();
-	Transform* colTransform = collider->GetOwner()->GetComponent<Transform>();
+	Transform* colTransform = _otherObj->GetComponent<Transform>();
 	
 	if (!objTransform)
 		assert(nullptr);
@@ -66,35 +65,33 @@ void ya::HangingScript::Render()
 {
 }
 
-void ya::HangingScript::OnCollisionEnter(Collider2D* collider)
+void ya::HangingScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 {
-	GameObject* colObj = collider->GetOwner();
-	HangingObjectScript* hanging = colObj->GetScript<HangingObjectScript>();
+	HangingObjectScript* hanging = _otherObj->GetScript<HangingObjectScript>();
 
 	if (Input::GetKey(eKeyCode::F) && !hanging)
 	{
 		InitHanging();
-		DoHanging(collider);
+		DoHanging(_otherObj, _hitPoint);
 	}
 }
 
-void ya::HangingScript::OnCollisionStay(Collider2D* collider)
+void ya::HangingScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
 {
-	GameObject* colObj = collider->GetOwner();
-	HangingObjectScript* hanging = colObj->GetScript<HangingObjectScript>();
+	HangingObjectScript* hanging = _otherObj->GetScript<HangingObjectScript>();
 
 	if (Input::GetKey(eKeyCode::F) && !hanging)
 	{
 		InitHanging();
-		DoHanging(collider);
+		DoHanging(_otherObj, _hitPoint);
 	}
 
 	else if (mbHanging)
-		DoHanging(collider);
+		DoHanging(_otherObj, _hitPoint);
 
 	//XMQuaternionAng
 }
 
-void ya::HangingScript::OnCollisionExit(Collider2D* collider)
+void ya::HangingScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 {
 }

@@ -160,15 +160,15 @@ namespace ya
 			}
 			else // 충돌 중이지 않은 상태 Enter
 			{
-				if (left->IsTriiger())
-					left->OnTriggerStay(right);
-				else
+				if (false == left->IsTriiger())
+				{
 					left->OnCollisionStay(right);
+				}
 
-				if (right->IsTriiger())
-					right->OnTriggerStay(left);
-				else
+				if (false == right->IsTriiger())
+				{
 					right->OnCollisionStay(left);
+				}
 			}
 		}
 		else // 충돌하지 않은상태

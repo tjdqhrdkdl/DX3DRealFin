@@ -1,10 +1,10 @@
 #pragma once
-#include "yaComponent.h"
+#include "yaCollider.h"
 #include "yaTransform.h"
 
 namespace ya
 {
-	class Collider2D : public Component
+	class Collider2D : public Collider
 	{
 	public:
 		Collider2D();
@@ -15,13 +15,13 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
-		virtual void OnCollisionEnter(Collider2D* collider);
-		virtual void OnCollisionStay(Collider2D* collider);
-		virtual void OnCollisionExit(Collider2D* collider);
+		void OnCollisionEnter(Collider2D* collider);
+		void OnCollisionStay( Collider2D* collider);
+		void OnCollisionExit( Collider2D* collider);
 
-		virtual void OnTriggerEnter(Collider2D* collider);
-		virtual void OnTriggerStay(Collider2D* collider);
-		virtual void OnTriggerExit(Collider2D* collider);
+		void OnTriggerEnter(  Collider2D* collider);
+		//void OnTriggerStay(   Collider2D* collider);
+		void OnTriggerExit(   Collider2D* collider);
 
 		void SetType(eColliderType type) { mType = type; }
 		void SetSize(Vector3 size) { mSize = size; }

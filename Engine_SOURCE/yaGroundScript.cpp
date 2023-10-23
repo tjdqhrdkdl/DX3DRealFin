@@ -31,15 +31,15 @@ namespace ya
 	{
 	}
 
-	void GroundScript::OnCollisionEnter(Collider2D* collider)
+	void GroundScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 
-	void GroundScript::OnCollisionStay(Collider2D* collider)
+	void GroundScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 
-	void GroundScript::OnCollisionExit(Collider2D* collider)
+	void GroundScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 

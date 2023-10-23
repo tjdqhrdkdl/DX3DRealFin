@@ -3205,6 +3205,40 @@ inline Vector3 Quaternion::ToEuler() const noexcept
     }
 }
 
+inline Vector3 Quaternion::ToEulerXYZOrder() const noexcept
+{
+    //float x, y, z, w;
+//float pitch = asin(2 * (w * y - x * z));
+
+//float yaw = atan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y));
+
+//float roll = atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z));   
+    const float xx = x * x;
+    const float yy = y * y;
+    const float zz = z * z;
+
+    const float m31 = 2.f * w * x + 2.f * y * z;
+    const float m32 = 2.f * w * y - 2.f * x * z;
+    const float m33 = 1.f - 2.f * xx - 2.f * yy;
+
+    const float cy = sqrtf(m33 * m33 + m31 * m31);
+    const float cx = atan2f(m32, cy);
+    if (cy > 16.f * FLT_EPSILON)
+    {
+        const float m12 = 2.f * w * z + 2.f * x * y;
+        const float m22 = 1.f - 2.f * yy - 2.f * zz;
+
+        return Vector3(atan2f(m31, m33), cx, atan2f(m12, m22));
+    }
+    else
+    {
+        const float m11 = 1.f - 2.f * xx - 2.f * zz;
+        const float m21 = 2.f * w * z - 2.f * x * y;
+
+        return Vector3(0.f, cx, atan2f(-m21, m11));
+    }
+}
+
 //------------------------------------------------------------------------------
 // Static functions
 //------------------------------------------------------------------------------

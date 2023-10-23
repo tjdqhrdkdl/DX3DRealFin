@@ -41,7 +41,7 @@ namespace ya
 		mLocalMatrix = Matrix::CreateScale(mLocalScale);
 
 		// 회전 변환 행렬
-		Vector3 radian = mLocalRotation * gDegreeToRadFactor;
+		Vector3 radian = (mLocalRotationOffset + mLocalRotation) * gDegreeToRadFactor;
 		mLocalRotationQuaternion = Quaternion::CreateFromPitchYawRoll(radian);
 		mLocalMatrix *= Matrix::CreateFromQuaternion(mLocalRotationQuaternion);
 
@@ -116,6 +116,29 @@ namespace ya
 		cb->Bind(eShaderStage::GS);
 		cb->Bind(eShaderStage::PS);
 		cb->Bind(eShaderStage::CS);
+	}
+
+
+
+	void Transform::SetWorldPosition(const Vector3& _pos)
+	{
+	}
+
+	void Transform::SetWorldRotation(const Quaternion& _rot)
+	{
+		if (mParent)
+		{
+			Quaternion		 inverse{};
+			const Quaternion parentWorldRotation = mParent->GetWorldRotationQuaternion();
+			parentWorldRotation.Inverse(inverse);
+
+			SetLocalRotationQuaternion(inverse * _rot);
+		}
+		else
+		{
+			SetLocalRotationQuaternion(_rot);
+		}
+			
 	}
 
 }

@@ -202,15 +202,15 @@ namespace ya
     {
     }
 
-    void PlayerMeshScript::OnCollisionEnter(Collider2D* collider)
+    void PlayerMeshScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
     {
     }
 
-    void PlayerMeshScript::OnCollisionStay(Collider2D* collider)
+    void PlayerMeshScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
     {
     }
 
-    void PlayerMeshScript::OnCollisionExit(Collider2D* collider)
+    void PlayerMeshScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
     {
     }
 

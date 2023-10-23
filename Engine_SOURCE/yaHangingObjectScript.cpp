@@ -20,15 +20,15 @@ void ya::HangingObjectScript::Render()
 {
 }
 
-void ya::HangingObjectScript::OnCollisionEnter(Collider2D* collider)
+void ya::HangingObjectScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 {
 }
 
-void ya::HangingObjectScript::OnCollisionStay(Collider2D* collider)
+void ya::HangingObjectScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
 {
 }
 
-void ya::HangingObjectScript::OnCollisionExit(Collider2D* collider)
+void ya::HangingObjectScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 {
 }
 

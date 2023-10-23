@@ -608,20 +608,20 @@ namespace ya
 		TextOut(application.GetHdc(), 800, 150, szFloat, (int)wcslen(szFloat));
 	}
 
-	void PlayerAttackScript::OnCollisionEnter(Collider2D* collider)
+	void PlayerAttackScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
-		GameObject* obj = collider->GetOwner();
-
-		BoneCollider* boneCollider = dynamic_cast<BoneCollider*>(obj);
+		BoneCollider* boneCollider = dynamic_cast<BoneCollider*>(_otherObj);
 		if (boneCollider != nullptr)
 		{
 			Transform* playerTr = mPlayer->GetComponent<Transform>();
 			Vector3 playerPos = playerTr->GetLocalPosition();
 			Vector3 playerDir = playerTr->Forward();
 
-			Vector3 colliderPos = collider->GetPosition();
-			GameObject* other = collider->GetOwner();
-			Transform* otherTr = other->GetComponent<Transform>();
+
+
+			//Vector3 colliderPos = collider->GetPosition();
+			//GameObject* other = collider->GetOwner();
+			Transform* otherTr = _otherObj->GetComponent<Transform>();
 
 			if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
@@ -630,7 +630,10 @@ namespace ya
 				mPlayer->GetState()->AddPosture(-10);
 
 				// 플레이어의 방향과 collider간의 각도를 구한다.
-				Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));
+				auto* coll3d = _otherObj->GetComponent<Collider3D>();
+				
+				Quaternion quater = Quaternion::FromToRotation(playerDir, coll3d->getWorldPosition() - playerPos);
+				//Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));
 				Vector3 quaterToEuler = quater.ToEuler();
 				Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
@@ -688,10 +691,10 @@ namespace ya
 			}
 		}
 	}
-	void PlayerAttackScript::OnCollisionStay(Collider2D* collider)
+	void PlayerAttackScript::OnCollisionStay(GameObject* _otherObj , const Vector3& _hitPoint)
 	{
 	}
-	void PlayerAttackScript::OnCollisionExit(Collider2D* collider)
+	void PlayerAttackScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 	void PlayerAttackScript::SetDeathBlowTarget(MonsterBase* _monster, float _distance)

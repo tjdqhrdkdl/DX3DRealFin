@@ -42,7 +42,7 @@ namespace ya
 	{
 	}
 
-	void PlayerScript::OnCollisionEnter(Collider2D* collider)
+	void PlayerScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 
 		//GameObject* obj = collider->GetOwner();
@@ -146,11 +146,11 @@ namespace ya
 
 	}
 
-	void PlayerScript::OnCollisionStay(Collider2D* collider)
+	void PlayerScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 
-	void PlayerScript::OnCollisionExit(Collider2D* collider)
+	void PlayerScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 

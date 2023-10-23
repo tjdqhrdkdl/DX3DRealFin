@@ -116,6 +116,11 @@ namespace ya::renderer
 		Matrix lightProjection;
 	};
 
+	CBUFFER(WireFrameCB, CBSLOT_WIREFRAME)
+	{
+		UINT32 collisionCount;
+		UINT32 isTrigger;
+	};
 
 
 	CBUFFER(UniformDataCB, CBSLOT_UNIFORM_DATA)
@@ -189,7 +194,7 @@ namespace ya::renderer
 	void BindLights();
 	inline void ClearLights() { lights.clear(); };
 	void BindNoiseTexture();
-	void CopyRenderTarget();
+	void CopyRenderTarget(); 
 	
 }
 

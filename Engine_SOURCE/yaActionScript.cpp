@@ -106,17 +106,6 @@ namespace ya
 		}*/
 	}
 
-	void ActionScript::OnCollisionEnter(Collider2D* collider)
-	{
-	}
-
-	void ActionScript::OnCollisionStay(Collider2D* collider)
-	{
-	}
-
-	void ActionScript::OnCollisionExit(Collider2D* collider)
-	{
-	}
 
 	/// <summary> limit velocity를 늘려서 최대 속도를 변경한다. 인자없을시 default값(40.0f)으로 설정됨. </summary>
 	/// <param name="velocity">최대속도</param>

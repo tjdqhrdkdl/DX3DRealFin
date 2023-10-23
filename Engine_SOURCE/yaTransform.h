@@ -22,13 +22,34 @@ namespace ya
 		void SetParent(Transform* parent) { mParent = parent; }
 		Transform* GetParent() { return mParent; }
 
+		//================================== Local ====================================
 		Vector3 GetLocalPosition() { return mLocalPosition; }
-
-
 		Vector3 GetLocalRotation() { return mLocalRotation; }
-		Vector3 GetWorldRotation() { return mWorldRotation; }
 		Quaternion GetLocalRotationQuaternion() { return mLocalRotationQuaternion; }
 		Vector3 GetLocalScale() { return mLocalScale; };
+
+		
+		void SetLocalPosition(const Vector3& position) { mLocalPosition = position; };
+		void SetLocalPosition(float _x, float _y, float _z) { mLocalPosition.x = _x; mLocalPosition.y = _y; mLocalPosition.z = _z; }
+		void SetLocalRotation(const Vector3& degree) { mLocalRotation = degree; };
+		void SetLocalRotation(float _x, float _y, float _z) { mLocalRotation.x = _x; mLocalRotation.y = _y; mLocalRotation.z = _z; };
+		inline void SetLocalRotationQuaternion(const Quaternion& _rot);
+
+
+		void SetLocalScale(const Vector3& scale) { mLocalScale = scale; };
+		void SetLocalScale(float _x, float _y, float _z) { mLocalScale.x = _x; mLocalScale.y = _y; mLocalScale.z = _z; };
+		//===============================================================================
+
+
+		//================================== World ======================================
+		Vector3 GetWorldRotation() const { return mWorldRotation; }
+		Quaternion GetWorldRotationQuaternion() const { return mWorldRotationQuaternion; }
+
+
+		void SetWorldPosition(const Vector3& _pos);
+		void SetWorldRotation(const Quaternion& _rot);
+		//===============================================================================
+
 
 		Vector3 Forward() { return mWorldForward; }
 		Vector3 Right() { return mWorldRight; }
@@ -36,18 +57,11 @@ namespace ya
 
 
 		Vector3 GetRotationOffset() { return mLocalRotationOffset; };
-		//Matrix& GetRotationMatrix() { return mMatRotation; };
 
 
 		Vector3 GetWorldScale() { return mWorldScale; }
 
 
-		void SetLocalPosition(const Vector3& position) { mLocalPosition = position; };
-		void SetLocalPosition(float _x, float _y, float _z) { mLocalPosition.x = _x; mLocalPosition.y = _y; mLocalPosition.z = _z; }
-		void SetLocalRotation(const Vector3& degree) { mLocalRotation = degree; };
-		void SetLocalRotation(float _x, float _y, float _z) { mLocalRotation.x = _x; mLocalRotation.y = _y; mLocalRotation.z = _z; };
-		void SetLocalScale(const Vector3& scale) { mLocalScale = scale; };
-		void SetLocalScale(float _x, float _y, float _z) { mLocalScale.x = _x; mLocalScale.y = _y; mLocalScale.z = _z; };
 
 		void SetForward(const Vector3& _forward) { mWorldForward = _forward; }
 		void SetRight(const Vector3& _right) { mWorldRight = _right; }
@@ -56,8 +70,6 @@ namespace ya
 		void SetCameraMode(bool _isCamera) { mbCameraMode = _isCamera; }
 
 		void SetRotationOffset(const Vector3& offset) { mLocalRotationOffset = offset; };
-
-
 
 		//void SetForward(Vector3 forward) { mForward = forward; }
 		//void SetRight(Vector3 right) { mRight = right; }
@@ -68,6 +80,8 @@ namespace ya
 
 		//void IsCamera(bool cam) { mbCamera = cam; }
 		Vector3 GetWorldPosition() { return Vector3(mWorldMatrix._41, mWorldMatrix._42, mWorldMatrix._43); }
+		
+
 	private:
 		Transform* mParent;
 
@@ -113,4 +127,11 @@ namespace ya
 
 		//Matrix mWorld;
 	};
+
+
+	inline void Transform::SetLocalRotationQuaternion(const Quaternion& _rot)
+	{
+		mLocalRotationQuaternion = _rot;
+		mLocalRotation = mLocalRotationQuaternion.ToEulerXYZOrder();
+	}
 }

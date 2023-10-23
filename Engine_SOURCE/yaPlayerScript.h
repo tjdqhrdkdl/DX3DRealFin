@@ -15,9 +15,9 @@ namespace ya
 		virtual void Update() override;
 		virtual void Render() override;
 
-		virtual void OnCollisionEnter(Collider2D* collider) override;
-		virtual void OnCollisionStay(Collider2D* collider) override;
-		virtual void OnCollisionExit(Collider2D* collider) override;
+		virtual void OnCollisionEnter(GameObject* _otherObj , const Vector3& _hitPoint) override;
+		virtual void OnCollisionStay( GameObject* _otherObj , const Vector3& _hitPoint) override;
+		virtual void OnCollisionExit( GameObject* _otherObj , const Vector3& _hitPoint) override;
 
 	private:
 

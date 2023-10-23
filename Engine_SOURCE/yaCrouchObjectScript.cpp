@@ -30,15 +30,14 @@ namespace ya
 	{
 	}
 
-	void CrouchObjectScript::OnCollisionEnter(Collider2D* collider)
+	void CrouchObjectScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 		
 	}
 
-	void CrouchObjectScript::OnCollisionStay(Collider2D* collider)
+	void CrouchObjectScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
-		GameObject* obj = collider->GetOwner();
-		Player* player = dynamic_cast<Player*>(obj);
+		Player* player = dynamic_cast<Player*>(_otherObj);
 
 		if (player != nullptr)
 		{
@@ -50,7 +49,7 @@ namespace ya
 		}
 	}
 
-	void CrouchObjectScript::OnCollisionExit(Collider2D* collider)
+	void CrouchObjectScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 

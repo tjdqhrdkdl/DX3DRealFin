@@ -6,6 +6,7 @@
 #include "yaScene.h"
 #include "yaPlayer.h"
 #include "yaGrappleHookScript.h"
+#include "yaTransform.h"
 
 namespace ya
 {
@@ -81,12 +82,11 @@ namespace ya
 	{
 	}
 
-	void HookTargetScript::OnCollisionEnter(Collider2D* collider)
+	void HookTargetScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
-		GameObject* obj = collider->GetOwner();
-		Rigidbody* rigidbody = obj->GetComponent<Rigidbody>();
+		Rigidbody* rigidbody = _otherObj->GetComponent<Rigidbody>();
 
-		GrappleHookScript* grap = obj->GetScript<GrappleHookScript>();
+		GrappleHookScript* grap = _otherObj->GetScript<GrappleHookScript>();
 		if (grap != nullptr)
 		{
 			grap->SetGrappleHook(false);
@@ -94,11 +94,11 @@ namespace ya
 		
 	}
 
-	void HookTargetScript::OnCollisionStay(Collider2D* collider)
+	void HookTargetScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 
-	void HookTargetScript::OnCollisionExit(Collider2D* collider)
+	void HookTargetScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 	}
 }

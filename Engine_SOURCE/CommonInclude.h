@@ -6,6 +6,9 @@
 #include <vector>
 #include <filesystem>
 #include <Windows.h>
+#include <array>
+#include <vector>
+#include <bitset>
 #include "yaMath.h"
 
 namespace std

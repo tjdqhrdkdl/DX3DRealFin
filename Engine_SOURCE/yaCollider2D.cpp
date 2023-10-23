@@ -7,7 +7,7 @@ namespace ya
 {
 	UINT Collider2D::ColliderNumber = 0;
 	Collider2D::Collider2D()
-		: Component(eComponentType::Collider)
+		: Collider(eComponentType::Collider)
 		, mType(eColliderType::None)
 		, mTransform(nullptr)
 		, mSize(Vector3::One)
@@ -77,54 +77,59 @@ namespace ya
 	void Collider2D::OnCollisionEnter(Collider2D* collider)
 	{
 		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
+		GameObject* otherObj = collider->GetOwner();
 		for (Script* script : scripts)
 		{
-			script->OnCollisionEnter(collider);
+			script->OnCollisionEnter(otherObj, Vector3::Zero);
 		}
 	}
 
 	void Collider2D::OnCollisionStay(Collider2D* collider)
 	{
 		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
+		GameObject* otherObj = collider->GetOwner();
 		for (Script* script : scripts)
 		{
-			script->OnCollisionStay(collider);
+			script->OnCollisionStay(otherObj, Vector3::Zero);
 		}
 	}
 
 	void Collider2D::OnCollisionExit(Collider2D* collider)
 	{
 		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
+		GameObject* otherObj = collider->GetOwner();
 		for (Script* script : scripts)
 		{
-			script->OnCollisionExit(collider);
+			script->OnCollisionExit(otherObj, Vector3::Zero);
 		}
 	}
 
 	void Collider2D::OnTriggerEnter(Collider2D* collider)
 	{
 		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
+		GameObject* otherObj = collider->GetOwner();
 		for (Script* script : scripts)
 		{
-			script->OnTriggerEnter(collider);
+			script->OnTriggerEnter(otherObj);
 		}
 	}
 
-	void Collider2D::OnTriggerStay(Collider2D* collider)
-	{
-		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
-		for (Script* script : scripts)
-		{
-			script->OnTriggerStay(collider);
-		}
-	}
+	//void Collider2D::OnTriggerStay(Collider2D* collider)
+	//{
+	//	const std::vector<Script*>& scripts = GetOwner()->GetScripts();
+	//	for (Script* script : scripts)
+	//	{
+	//		script->OnTriggerStay(collider);
+	//	}
+	//}
 
 	void Collider2D::OnTriggerExit(Collider2D* collider)
 	{
 		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
+		GameObject* otherObj = collider->GetOwner();
 		for (Script* script : scripts)
 		{
-			script->OnTriggerExit(collider);
+			script->OnTriggerExit(otherObj);
 		}
 	}
 

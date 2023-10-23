@@ -25,10 +25,9 @@ void ya::LogBridgeScript::Render()
 {
 }
 
-void ya::LogBridgeScript::OnCollisionEnter(Collider2D* collider)
+void ya::LogBridgeScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 {
-	GameObject* colObj = collider->GetOwner();
-	Rigidbody* colRigidbody = colObj->GetComponent<Rigidbody>();
+	Rigidbody* colRigidbody = _otherObj->GetComponent<Rigidbody>();
 
 	if (colRigidbody != nullptr)
 	{
@@ -37,11 +36,10 @@ void ya::LogBridgeScript::OnCollisionEnter(Collider2D* collider)
 	}
 }
 
-void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
+void ya::LogBridgeScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
 {
-	GameObject* colObj = collider->GetOwner();
-	Transform* colTransform = colObj->GetComponent<Transform>();
-	Rigidbody* colRigidbody = colObj->GetComponent<Rigidbody>();
+	Transform* colTransform = _otherObj->GetComponent<Transform>();
+	Rigidbody* colRigidbody = _otherObj->GetComponent<Rigidbody>();
 
 	Vector3 direction = Vector3(0.f, -1.f, 0.f);
 	direction.Normalize();
@@ -65,10 +63,10 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 
 	RayHit multiHit[4] = {};
 
-	multiHit[0] = CollisionManager::RayCast(colObj, front, direction, layers);
-	multiHit[1] = CollisionManager::RayCast(colObj, right, direction, layers);
-	multiHit[2] = CollisionManager::RayCast(colObj, back, direction, layers);
-	multiHit[3]= CollisionManager::RayCast(colObj, left, direction, layers);
+	multiHit[0] = CollisionManager::RayCast(_otherObj, front, direction, layers);
+	multiHit[1] = CollisionManager::RayCast(_otherObj, right, direction, layers);
+	multiHit[2] = CollisionManager::RayCast(_otherObj, back, direction, layers);
+	multiHit[3]= CollisionManager::RayCast(_otherObj, left, direction, layers);
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -81,7 +79,7 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 			frontDirection += Vector3(0.f, -0.5f, 0.f);
 			frontDirection.Normalize();
 
-			RayHit distCheck = CollisionManager::RayCast(colObj, pos, frontDirection, layers);
+			RayHit distCheck = CollisionManager::RayCast(_otherObj, pos, frontDirection, layers);
 
 			float distance = distCheck.length;//distCheck.contact.Length() - pos.Length();
 			distance = abs(distance);
@@ -100,11 +98,10 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 	}
 }
 
-void ya::LogBridgeScript::OnCollisionExit(Collider2D* collider)
+void ya::LogBridgeScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 {
-	GameObject* colObj = collider->GetOwner();
-	Transform* colTransform = colObj->GetComponent<Transform>();
-	Rigidbody* colRigidbody = colObj->GetComponent<Rigidbody>();
+	Transform* colTransform = _otherObj->GetComponent<Transform>();
+	Rigidbody* colRigidbody = _otherObj->GetComponent<Rigidbody>();
 
 	//if (colRigidbody->IsLogBridge())
 	//{

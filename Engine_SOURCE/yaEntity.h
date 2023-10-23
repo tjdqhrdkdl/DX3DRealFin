@@ -1,6 +1,7 @@
 
 #pragma once
 #include "yaEngine.h"
+#include "StrConverter.h"
 
 //#define GETSET(__TYPE__, __TARGET__, __METHODNAME__) \
 //__TYPE__ get##__METHODNAME__() \
@@ -35,12 +36,14 @@ namespace ya
 		Entity(const Entity& other);
 		virtual ~Entity();
 
-		void SetName(const std::wstring& name) { mName = name; }
+		void SetName(const std::wstring& name) { mName = name; mNameChar = StrConverter::ConvertUnicodeToANSI(mName); }
 		const std::wstring& GetName() { return mName; }
+		const std::string& GetNameChar() { return mNameChar; }
 		UINT32 GetID() { return mID; }
 
 	private:
 		std::wstring mName;
+		std::string mNameChar;
 		const UINT32 mID;
 		static UINT32 gNextID;
 	};

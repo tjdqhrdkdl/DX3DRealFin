@@ -725,6 +725,9 @@ namespace ya::math
         // Computes rotation about y-axis (y), then x-axis (x), then z-axis (z)
         Vector3 ToEuler() const noexcept;
 
+        // Computes rotation about x -> y -> z order
+        Vector3 ToEulerXYZOrder() const noexcept;
+
         // Static functions
         static Quaternion CreateFromAxisAngle(const Vector3& axis, float angle) noexcept;
 

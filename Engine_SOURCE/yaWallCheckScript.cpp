@@ -30,7 +30,7 @@ namespace ya
 	void WallCheckScript::Render()
 	{
 	}
-	void WallCheckScript::OnCollisionEnter(Collider2D* collider)
+	void WallCheckScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 		WallCheckObject* obj = (WallCheckObject*)GetOwner();
 		Transform* checkTransform = obj->GetComponent<Transform>();
@@ -40,10 +40,9 @@ namespace ya
 		Rigidbody* objRigidbody = ownerObj->GetComponent<Rigidbody>();
 		ActionScript* objActionScript = ownerObj->GetScript<ActionScript>();
 
-		GameObject* colObj = collider->GetOwner();
-		Transform* colTransform = colObj->GetComponent<Transform>();
+		Transform* colTransform = _otherObj->GetComponent<Transform>();
 
-		if (nullptr != colObj->GetScript<WallScript>())
+		if (nullptr != _otherObj->GetScript<WallScript>())
 		{
 
 			Vector3 objVelocity = objRigidbody->GetVelocity();
@@ -68,7 +67,7 @@ namespace ya
 			}
 		}
 	}
-	void WallCheckScript::OnCollisionStay(Collider2D* collider)
+	void WallCheckScript::OnCollisionStay(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 		WallCheckObject* obj = (WallCheckObject*)GetOwner();
 		Transform* checkTransform = obj->GetComponent<Transform>();
@@ -78,10 +77,9 @@ namespace ya
 		Rigidbody* objRigidbody = ownerObj->GetComponent<Rigidbody>();
 		ActionScript* objActionScript = ownerObj->GetScript<ActionScript>();
 
-		GameObject* colObj = collider->GetOwner();
-		Transform* colTransform = colObj->GetComponent<Transform>();
+		Transform* colTransform = _otherObj->GetComponent<Transform>();
 
-		if (nullptr != colObj->GetScript<WallScript>())
+		if (nullptr != _otherObj->GetScript<WallScript>())
 		{
 			Vector3 objVelocity = objRigidbody->GetVelocity();
 			Vector3 objPos = objTransform->GetLocalPosition();
@@ -91,7 +89,7 @@ namespace ya
 			objRigidbody->SetRightWallDir(wallNormal);
 		}
 	}
-	void WallCheckScript::OnCollisionExit(Collider2D* collider)
+	void WallCheckScript::OnCollisionExit(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
 		WallCheckObject* ownerObj = (WallCheckObject*)GetOwner();
 		Transform* ownerTransform = ownerObj->GetComponent<Transform>();
