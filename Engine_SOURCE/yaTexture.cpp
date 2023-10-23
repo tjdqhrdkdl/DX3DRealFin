@@ -33,7 +33,7 @@ namespace ya::graphics
 
 	void Texture::Clears()
 	{
-		for (size_t i = 0; i < (UINT)eTextureSlot::End; i++)
+		for (UINT i = 0; i < (UINT)eTextureSlot::End; i++)
 		{
 			ID3D11ShaderResourceView* srv = nullptr;
 

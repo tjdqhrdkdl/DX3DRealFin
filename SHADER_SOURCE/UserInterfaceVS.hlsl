@@ -1,7 +1,4 @@
 #include "UserInterface.hlsli"
-
-
-
 //Mesh : RectMesh
 VSOut main(VSIn In)
 {
@@ -19,3 +16,4 @@ VSOut main(VSIn In)
     
     return Out;
 }
+

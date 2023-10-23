@@ -27,7 +27,7 @@
 #include "yaBoundarySphere.h"
 #include "yaMapCollider.h"
 
-
+#include "yaNavMeshTool.h"
 namespace ya
 {
 	PlayScene::PlayScene()
@@ -36,6 +36,8 @@ namespace ya
 	}
 	PlayScene::~PlayScene()
 	{
+		NavMeshTool::DestroyInst();
+
 	}
 	void PlayScene::Initialize()
 	{
@@ -69,57 +71,14 @@ namespace ya
 			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera, this);
 			uiCam->SetName(L"UICamera1");
 			uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
-			Camera* cameraComp = uiCam->AddComponent<Camera>();
-			cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
-			cameraComp->DisableLayerMasks();
-			cameraComp->TurnLayerMask(eLayerType::UI, true);
+			Camera* UICameraComp = uiCam->AddComponent<Camera>();
+			UICameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
+			UICameraComp->DisableLayerMasks();
+			UICameraComp->TurnLayerMask(eLayerType::UI, true);
+			UICamera = UICameraComp;
+			
 		}
 
-		{
-			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall");
-			Transform* wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(93.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 1.0f));
-			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
-			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
-
-
-
-			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall1");
-			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(66.f, 15.0f, 52.0f));
-			wallTr->SetScale(Vector3(50.f, 50.f, 1.f));
-			wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
-			wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
-
-			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall2");
-			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
-			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
-			wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
-			wall->AddComponent<WallScript>();
-		}
 
 		/*{
 			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
@@ -237,10 +196,10 @@ namespace ya
 
 		{
 
-			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
-			Transform* objTransform = obj->GetComponent<Transform>();
-			objTransform->SetPosition(-85.f, 35.f, 130.f);
-			objTransform->SetRotation(-90.f, 0.f, 0.f);
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			//Transform* objTransform = obj->GetComponent<Transform>();
+			//objTransform->SetPosition(-85.f, 35.f, 130.f);
+			//objTransform->SetRotation(-90.f, 0.f, 0.f);
 			//2411 5640 5710 6600 6610 6620 3651 3313 
 		}
 
@@ -262,6 +221,24 @@ namespace ya
 
 		{
 			object::Instantiate<MapCollider>(eLayerType::Ground, this);
+		}
+
+		{
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			//Transform* objTransform = obj->GetComponent<Transform>();
+			//objTransform->SetPosition(-85.f, 35.f, 130.f);
+			//objTransform->SetRotation(-90.f, 0.f, 0.f);
+		}
+		{
+			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::None, this);
+			trObj->SetName(L".");
+			Transform* navTr = trObj->GetComponent<Transform>();
+			navTr->SetPosition(-85.f, 35.f, 130.f);
+			navTr->SetRotation(-90.f, 0.f, 0.f);
+
+			NavMeshTool* m = NavMeshTool::GetInst();
+			m->SetMapMeshTr(navTr);
+			m->Init(this);
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 		object::Instantiate<Tenzen>(eLayerType::Monster, this);

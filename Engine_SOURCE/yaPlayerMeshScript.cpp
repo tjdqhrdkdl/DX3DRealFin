@@ -13,6 +13,7 @@ namespace ya
         , mbUse(true)
         , mbLoad(false)
     {
+
     }
 
     PlayerMeshScript::~PlayerMeshScript()
@@ -38,8 +39,10 @@ namespace ya
             std::shared_ptr<MeshData> weapon = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300.fbx");
             mMeshDataMap.insert(std::make_pair(WEAPON, weapon));
 
+
             std::shared_ptr<MeshData> waeponCase = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300_1_b.fbx");
             mMeshDataMap.insert(std::make_pair(WEAPONCASE, waeponCase));
+
 
         }
         else
@@ -64,9 +67,11 @@ namespace ya
             weapon->Load(L"Player\\MeshData\\WP_A_0300.meshdata");
             mMeshDataMap.insert(std::make_pair(WEAPON, weapon));
 
+
             /*std::shared_ptr<MeshData> waeponCase = std::make_shared<MeshData>();
             waeponCase->Load(L"Player\\MeshData\\WP_A_0300_1_b.meshdata");
             mMeshDataMap.insert(std::make_pair(WEAPONCASE, waeponCase));*/
+
         }
 
         if (mbUse)
@@ -128,18 +133,13 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a000_001510_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_001511_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_001512_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
-
-                meshData->GetAnimationCompleteEvent(L"a000_200000_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
-                meshData->GetAnimationCompleteEvent(L"a000_201040_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
-                
-                meshData->GetAnimationCompleteEvent(L"a050_308000_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
-                meshData->GetAnimationCompleteEvent(L"a050_308010_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
                 
                 // 웅크리기 걷기 시작
                 meshData->GetAnimationCompleteEvent(L"a000_005100_" + name) = [meshData, name]() { meshData->Play(L"a000_005200_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_005101_" + name) = [meshData, name]() { meshData->Play(L"a000_005201_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_005102_" + name) = [meshData, name]() { meshData->Play(L"a000_005202_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_005103_" + name) = [meshData, name]() { meshData->Play(L"a000_005203_" + name); };
+
                 // 웅크리기 정지
                 meshData->GetAnimationCompleteEvent(L"a000_005300_" + name) = [meshData, name]() { meshData->Play(L"a000_005000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_005301_" + name) = [meshData, name]() { meshData->Play(L"a000_005000_" + name); };
@@ -152,7 +152,16 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a000_100102_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_100103_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
 
-                //밧줄
+                // 사망
+                meshData->GetAnimationCompleteEvent(L"a000_100300_" + name) = [meshData, name]() { meshData->Play(L"a000_100310_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_100301_" + name) = [meshData, name]() { meshData->Play(L"a000_100311_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_100320_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
+
+                // 점프
+                meshData->GetAnimationCompleteEvent(L"a000_200000_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_201040_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
+
+                // 밧줄
                 meshData->GetAnimationCompleteEvent(L"a000_202000_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_202100_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
 
@@ -160,7 +169,6 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a000_217103_" + name) = [meshData, name]() { meshData->Play(L"a000_020000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_217500_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_217620_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
-
 
                 // 가드 이동 시작
                 meshData->GetAnimationCompleteEvent(L"a050_002010_" + name) = [meshData, name]() { meshData->Play(L"a050_002200_" + name); };
@@ -181,8 +189,15 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a050_130201_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a050_130202_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
 
+                // 공중베기
+                meshData->GetAnimationCompleteEvent(L"a050_308000_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a050_308010_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
+
                 // 매달리기
                 meshData->GetAnimationCompleteEvent(L"a050_314000_" + name) = [meshData, name]() { meshData->Play(L"a000_020000_" + name); };
+
+                // 인살
+                meshData->GetAnimationCompleteEvent(L"a200_510000_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
             }
 
             Play(L"a000_000000");
@@ -423,12 +438,14 @@ namespace ya
 
 
                 meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510200.fbx", L"a200_510200_" + name);
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510210.fbx", L"a200_510210_" + name);
+                /*meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510210.fbx", L"a200_510210_" + name);
                 meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510220.fbx", L"a200_510220_" + name);
                 meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510230.fbx", L"a200_510230_" + name);
                 meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510600.fbx", L"a200_510600_" + name);
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510700.fbx", L"a200_510700_" + name);
-                meshData->AnimationSave(L"Player\\AnimationData\\a200_xxxxxx_" + name + L".animationdata");
+                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510700.fbx", L"a200_510700_" + name);*/
+                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510000.fbx", L"a200_510000_" + name);
+                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a201_510000.fbx", L"a201_510000_" + name);
+                meshData->AnimationSave(L"Player\\AnimationData\\a2xx_xxxxxx_" + name + L".animationdata");
 
 #pragma endregion
            
@@ -445,7 +462,7 @@ namespace ya
                 meshData->AnimationLoad(L"Player\\AnimationData\\a000_1xxxxx_" + name + L".animationdata", nullptr, false);
                 meshData->AnimationLoad(L"Player\\AnimationData\\a000_2xxxxx_" + name + L".animationdata", nullptr, false);
                 meshData->AnimationLoad(L"Player\\AnimationData\\a050_xxxxxx_" + name + L".animationdata", nullptr, false);
-                meshData->AnimationLoad(L"Player\\AnimationData\\a200_xxxxxx_" + name + L".animationdata");
+                meshData->AnimationLoad(L"Player\\AnimationData\\a2xx_xxxxxx_" + name + L".animationdata");
             }
         }
     }

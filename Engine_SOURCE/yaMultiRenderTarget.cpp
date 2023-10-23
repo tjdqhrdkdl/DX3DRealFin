@@ -26,7 +26,7 @@ namespace ya::graphics
 		{
 			if (texture[i].get() == nullptr)
 			{
-				mRTCount = i;
+				mRTCount = (UINT)i;
 				break;
 			}
 

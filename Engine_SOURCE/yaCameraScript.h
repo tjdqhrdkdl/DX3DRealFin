@@ -19,8 +19,12 @@ namespace ya
 		GameObject* GetLockOnTarget() { return mLockOnTarget; }
 		void SetLockOnTarget(GameObject* target) { mLockOnTarget = target; mbLockOn = true; }
 
-		void SetDestination(Vector3 dest) { mbDestination = true, mDestination = dest; }
+		void SetDestinationDir(Vector3 destDir) { mbDestination = true, mDestination = destDir; }
 		void SetDestinationFree() { mbDestination = false; }
+
+		//기본 줌은 현재 7
+		void SetCameraZoomDistance(float destDist) { mbCameraDistChanging = true, mDestDistFromTarget = destDist; }
+		void SetCameraZoomSpeed(float speed) { mZoomSpeed = speed; }
 
 		bool IsLockOn() { return mbLockOn; }
 
@@ -31,7 +35,8 @@ namespace ya
 		void MouseMove();
 		void LockOn();
 		void SetLockOnTarget();
-		void MoveToDestination();
+		void MoveToDestinationDir();
+		void ZoomCamera();
 		void ObstacleDetection();
 
 
@@ -52,7 +57,11 @@ namespace ya
 		float mDelayTimeChecker;
 		float mThetaAxisY;
 		float mThetaAxisX;
+		
 		float mDistFromTarget;
+		float mDestDistFromTarget;
+		float mZoomSpeed;
+		bool mbCameraDistChanging;
 
 		bool mbFirstInit;
 		bool mbMouseMove;
@@ -63,5 +72,6 @@ namespace ya
 		bool mbDestination;
 		Vector3 mDestination;
 		bool mbSelfCameraMoveMode;
+
 	};
 }

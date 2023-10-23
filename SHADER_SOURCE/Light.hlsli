@@ -56,7 +56,7 @@ static float3 globalLightAmb = float3(0.15f, 0.15f, 0.15f);
 void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout LightColor lightColor)
 {
     
-    //    //광원의 방향을 월드 좌표계에서 뷰 좌표계로 변환
+    ////광원의 방향을 월드 좌표계에서 뷰 좌표계로 변환
     //float3 ViewLightDir = normalize(mul(float4(lightAttribute.direction.xyz, 0.0f), view));
     
     //float intensity = saturate(dot(-ViewLightDir, In.ViewNormal));
@@ -112,7 +112,7 @@ void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout Lig
     else if (1 == lightInfo.type)
     {   
         // view space 상에서 광원의 위치를 알아낸다.
-        float3 vLightViewPos = mul(float4(lightInfo.position.xyz, 1.0f), view).xyz;;
+        float3 vLightViewPos = mul(float4(lightInfo.position.xyz, 1.0f), view).xyz;
         
         // 광원의 위치에서 표면을 향하는 벡터
         viewLightDir = viewPos - vLightViewPos;

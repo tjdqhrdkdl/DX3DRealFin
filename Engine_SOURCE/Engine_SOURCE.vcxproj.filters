@@ -55,9 +55,6 @@
     <ClCompile Include="yaMonster.cpp">
       <Filter>Contents\Contents</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
     <ClCompile Include="yaActionScript.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
@@ -275,6 +272,78 @@
     <ClCompile Include="ThreadPool.cpp">
       <Filter>Engine\Common</Filter>
     </ClCompile>
+    <ClCompile Include="DebugUtils\Source\DebugDraw.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourAlloc.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourAssert.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourCommon.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugUtils\Source\DetourDebugDraw.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourNavMesh.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourNavMeshBuilder.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourNavMeshQuery.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourNode.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\Recast.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastAlloc.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastArea.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastAssert.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastContour.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugUtils\Source\RecastDebugDraw.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugUtils\Source\RecastDump.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastFilter.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastLayers.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastMesh.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastMeshDetail.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastRasterization.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastRegion.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="yaNavMeshTool.cpp">
+      <Filter>Engine\Component\NavMesh\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="yaNavMesh.cpp">
+      <Filter>Engine\Component\NavMesh</Filter>
+    </ClCompile>
     <ClCompile Include="yaBoundarySphere.cpp">
       <Filter>Engine\Component\BoundarySphere</Filter>
     </ClCompile>
@@ -294,6 +363,18 @@
       <Filter>Contents\Map</Filter>
     </ClCompile>
     <ClCompile Include="yaMapCollider.cpp" />
+    <ClCompile Include="yaPlayerHpTxture.cpp" />
+    <ClCompile Include="yaMonsterUI.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaHPMeterScript.cpp" />
+    <ClCompile Include="PhysXWrapper.cpp">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="StrConverter.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMonsterUIScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -355,9 +436,6 @@
     </ClInclude>
     <ClInclude Include="yaMonster.h">
       <Filter>Contents\Contents</Filter>
-    </ClInclude>
-    <ClInclude Include="yaPlayerScript.h">
-      <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaActionScript.h">
       <Filter>Contents\Player</Filter>
@@ -587,6 +665,60 @@
     <ClInclude Include="ThreadPool.h">
       <Filter>Engine\Common</Filter>
     </ClInclude>
+    <ClInclude Include="DebugUtils\Include\DebugDraw.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourAlloc.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourAssert.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourCommon.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugUtils\Include\DetourDebugDraw.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourMath.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourNavMesh.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourNavMeshBuilder.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourNavMeshQuery.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourNode.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourStatus.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Recast\Include\Recast.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Recast\Include\RecastAlloc.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Recast\Include\RecastAssert.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugUtils\Include\RecastDebugDraw.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugUtils\Include\RecastDump.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="yaNavMeshTool.h">
+      <Filter>Engine\Component\NavMesh\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="yaNavMesh.h">
+      <Filter>Engine\Component\NavMesh</Filter>
+    </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents\Common</Filter>
     </ClInclude>
@@ -612,6 +744,18 @@
       <Filter>Contents\Map</Filter>
     </ClInclude>
     <ClInclude Include="yaMapCollider.h" />
+    <ClInclude Include="yaPlayerHpTxture.h" />
+    <ClInclude Include="yaMonsterUI.h">
+      <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaHPMeterScript.h" />
+    <ClInclude Include="PhysXWrapper.h">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="StrConverter.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMonsterUIScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -791,6 +935,15 @@
     <Filter Include="Contents\UI">
       <UniqueIdentifier>{89ccb457-4d9f-4146-b05b-69c31a195ef3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Component\NavMesh">
+      <UniqueIdentifier>{4f6abc09-8937-4cda-a6ef-fcc622da472b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\NavMesh\Recast&amp;Detour">
+      <UniqueIdentifier>{2fe5a869-a7a6-49b3-b9e2-9c12bacb47fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\NavMesh\Tool">
+      <UniqueIdentifier>{893204a7-d276-46a6-97d9-e9f17b9fc5d8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Contents\Player">
       <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
     </Filter>
@@ -799,6 +952,9 @@
     </Filter>
     <Filter Include="Contents\Map">
       <UniqueIdentifier>{fb88424e-b5ef-496d-80de-99299c8fe25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider\PhysX">
+      <UniqueIdentifier>{74c96652-f68b-431b-b57f-4ae80ea2b57e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -124,6 +124,7 @@ namespace ya
 			SceneManager::LoadScene(eSceneType::Loading);
 		}
 
+
 		Scene::Update();
 	}
 

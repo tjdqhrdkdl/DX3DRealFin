@@ -83,7 +83,7 @@ namespace ya
 		//LHand->SetAnimOffSet(L"a100_003005", Vector3(1, 0.5, 1));
 		LHand->SetColliderActiveFrame(L"a100_003005", 1, 17);
 
-		LHand->SetScale(Vector3(2, 0.3, 0.3));
+		LHand->SetScale(Vector3(2.f, 0.3f, 0.3f));
 		mLHandCollider = LHand;
 
 		// 피격 충돌체

@@ -66,7 +66,11 @@ namespace ya
 
 		void SaveWString(const std::wstring& _str, FILE* _pFile);
 		void LoadWString(std::wstring& _str, FILE* _pFile);
+
+		void SetAnimationOffset(Vector3 offset) { mAnimationOffset = offset; }
 		
+		
+		void SetBoundarySphere(bool b) { mbBoundarySphere = b; }
 	private:
 		HRESULT LoadFromFbxToThis(const std::fs::path& _fullPath);
 
@@ -93,6 +97,9 @@ namespace ya
 		class BoneAnimator* mRepresentBoneAnimator;
 		MeshObject* mMeshObject;
 
+		Vector3 mAnimationOffset;
+		//Frustum Culling 여부
+		bool mbBoundarySphere;
 
 	};
 }

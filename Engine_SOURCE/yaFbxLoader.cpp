@@ -3,7 +3,7 @@
 #include "yaResources.h"
 #include "yaTexture.h"
 #include "yaMaterial.h"
-
+#include "StrConverter.h"
 
 namespace ya
 {
@@ -59,7 +59,8 @@ namespace ya
 	{
 		mContainers.clear();
 
-		std::string strPath(path.begin(), path.end());
+		std::string strPath = StrConverter::ConvertUnicodeToUTF8(path);
+		//std::string strPath(path.begin(), path.end());
 
 		if (!mImporter->Initialize(strPath.c_str(), -1, mManager->GetIOSettings()))
 			return false;
@@ -101,7 +102,7 @@ namespace ya
 	{
 		mContainers.clear();
 
-		std::string strPath(path.begin(), path.end());
+		std::string strPath = StrConverter::ConvertUnicodeToUTF8(path);
 
 		if (!mImporter->Initialize(strPath.c_str(), -1, mManager->GetIOSettings()))
 			return false;
@@ -266,9 +267,11 @@ namespace ya
 	void FbxLoader::GetTangent(fbxsdk::FbxMesh* _pMesh, Container* _pContainer, int _iIdx, int _iVtxOrder)
 	{
 		int iTangentCnt = _pMesh->GetElementTangentCount();
-		if (1 != iTangentCnt)
-			;
-		//assert(NULL); // 정점 1개가 포함하는 탄젠트 정보가 2개 이상이다.
+		//if (1 != iTangentCnt)
+		//{
+			//assert(NULL); // 정점 1개가 포함하는 탄젠트 정보가 2개 이상이다.
+		//}
+
 
 		// 탄젠트 data 의 시작 주소
 		fbxsdk::FbxGeometryElementTangent* pTangent = _pMesh->GetElementTangent();
@@ -299,8 +302,10 @@ namespace ya
 	{
 		int iBinormalCnt = _pMesh->GetElementBinormalCount();
 		if (1 != iBinormalCnt)
-			;
-			// 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
+		{
+			//assert(NULL);
+		}
+		// 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
 
 		// 종법선 data 의 시작 주소
 		fbxsdk::FbxGeometryElementBinormal* pBinormal = _pMesh->GetElementBinormal();
@@ -395,6 +400,7 @@ namespace ya
 
 		return Vector4();
 	}
+
 	std::wstring FbxLoader::GetMtrlTextureName(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty)
 	{
 		std::string strName;
@@ -565,7 +571,7 @@ namespace ya
 			pBone->parentIdx = _iParentIdx;
 		
 			mBones.push_back(pBone);
-			LoadAnimationKeyframeTransform(rootNode, _pNode, matNodeTransform, mBones.size()-1);
+			LoadAnimationKeyframeTransform(rootNode, _pNode, matNodeTransform, (int)mBones.size() - 1);
 
 		}
 

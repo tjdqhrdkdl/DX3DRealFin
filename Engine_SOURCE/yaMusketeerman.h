@@ -21,6 +21,13 @@ namespace ya
         void Attack_Shooting();
 
 
+        void Animation_Event();
+
+        void Idle_Stand();
+
+
+        void Link_attack();
+
     private:
 
 

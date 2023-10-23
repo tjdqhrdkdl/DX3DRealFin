@@ -35,27 +35,27 @@ namespace ya
 		std::shared_ptr<Material> material
 			= Resources::Find<Material>(L"ShadowMapMaterial");
 
-		material->Bind();
+		//material->Bind();
 
 		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 		BoneAnimator* animator
 			= GetOwner()->GetComponent<BoneAnimator>();
 
 		UINT subSetCount = GetMesh()->GetSubSetCount();
-		for (size_t i = 0; i < subSetCount; i++)
+		for (UINT i = 0; i < subSetCount; i++)
 		{
 			if (animator)
 			{
 				animator->Binds();
-				GetMaterial(i)->SetAnimation(true);
+				GetMaterial((int)i)->SetAnimation(true);
 
 			}
 
 			GetMesh()->BindBuffer(i);
-			GetMaterial(i)->Bind();
+			GetMaterial((int)i)->Bind();
 			GetMesh()->Render(i);
 
-			GetMaterial(i)->Clear();
+			GetMaterial((int)i)->Clear();
 		}
 
 		if (animator)
@@ -80,20 +80,20 @@ namespace ya
 			= GetOwner()->GetComponent<BoneAnimator>();
 
 		UINT subSetCount = GetMesh()->GetSubSetCount();
-		for (size_t i = 0; i < subSetCount; i++)
+		for (UINT i = 0; i < subSetCount; i++)
 		{
 			if (animator)
 			{
 				animator->Binds();
-				GetMaterial(i)->SetAnimation(true);
+				GetMaterial((int)i)->SetAnimation(true);
 
 			}
 
 			GetMesh()->BindBuffer(i);
-			GetMaterial(i)->Bind();
+			GetMaterial((int)i)->Bind();
 			GetMesh()->Render(i);
 
-			GetMaterial(i)->Clear();
+			GetMaterial((UINT)i)->Clear();
 		}
 
 		if (animator)

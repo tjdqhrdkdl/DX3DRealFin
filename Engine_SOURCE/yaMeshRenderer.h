@@ -18,5 +18,6 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void PrevRender() override;
 		virtual void Render() override;
+
 	};
 }
