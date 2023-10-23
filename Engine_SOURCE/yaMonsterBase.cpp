@@ -87,24 +87,24 @@ namespace ya
 					Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
 
-				if (dist <= 5.0f)
-				{
-					if (abs(theta.y) <= 60.0f)
+					if (dist <= 5.0f)
 					{
-						mPlayerObject->SetDeathBlowTarget(this, dist);
+						if (abs(theta.y) <= 60.0f)
+						{
+							mPlayerObject->SetDeathBlowTarget(this, dist);
+						}
+						else
+						{
+							mPlayerObject->EraseDeathBlowTarget(this);
+						}
 					}
 					else
 					{
 						mPlayerObject->EraseDeathBlowTarget(this);
 					}
 				}
-				else
-				{
-					mPlayerObject->EraseDeathBlowTarget(this);
-				}
-			}
 
-			
+			}
 			//체간 자연 회복
 			{	
 				if (mBeforePosture < GetPosture())

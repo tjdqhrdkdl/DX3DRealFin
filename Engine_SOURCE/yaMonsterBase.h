@@ -164,8 +164,6 @@ namespace ya
         std::shared_ptr<MeshData>   mMeshData;
         MeshObject* mMeshObject;
         ActionScript* mActionScript;
-        bool mbParrying;
-        Attack mAttackParams;
 
         GameObject* mDeathBlowMark;
         bool                        mbParrying;
