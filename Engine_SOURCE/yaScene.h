@@ -34,6 +34,8 @@ namespace ya
 		void SetThreadLoad(bool thread) { mbThreadLoad = thread; }
 		bool IsThreadLoad() { return mbThreadLoad; }
 
+		bool IsInitcomplete() { return mbInitComplete; }
+
 		std::function<void()>& GetCallBack() { return mInitCallBack; }
 
 	private:
@@ -41,6 +43,7 @@ namespace ya
 		eSceneType mType;
 		Player* mPlayer;
 
+		bool mbInitComplete;
 		bool mbThreadLoad;						// 스레드로 로드할지 여부
 		std::function<void()> mInitCallBack;	// initialize 완료 후 callback
 	};
