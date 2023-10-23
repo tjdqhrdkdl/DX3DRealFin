@@ -27,7 +27,7 @@ namespace gui
 {
 	void Editor::Initialize()
 	{
-		mEnable = true;
+		mEnable = false;
 
 		if (mEnable == false)
 			return;

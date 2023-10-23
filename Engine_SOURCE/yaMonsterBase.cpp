@@ -37,6 +37,7 @@ namespace ya
 		CreateMonsterState();
 		mMonsterUI = object::Instantiate<MonsterUI>(eLayerType::UI, GetScene());
 		mMonsterUI->SetMonster(this);
+		mCamScript = mainCamera->GetOwner()->GetScript<CameraScript>();
 		GameObject::Initialize();
 	}
 
@@ -85,6 +86,33 @@ namespace ya
 				{
 					mPlayerObject->EraseDeathBlowTarget(this);
 				}
+			}
+
+			
+			//체간 자연 회복
+			{	
+				if (mBeforePosture < GetPosture())
+				{
+					mbPostureRecovery = false;
+				}
+
+				if (mbPostureRecovery == false)
+				{
+					mPostureRecoveryTimeChecker += Time::DeltaTime();
+					if (mPostureRecoveryTimeChecker > 3)
+					{
+						mPostureRecoveryTimeChecker = 0;
+						mbPostureRecovery = true;
+					}
+				}
+				else
+				{
+					float posture = GetPosture() - Time::DeltaTime() * 3;
+					if (posture < 0)
+						posture = 0;
+					SetPosture(posture);
+				}
+				mBeforePosture = GetPosture(); 
 			}
 
 
