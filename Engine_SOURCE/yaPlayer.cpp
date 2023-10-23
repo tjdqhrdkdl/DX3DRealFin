@@ -13,7 +13,7 @@
 #include "yaObject.h"
 
 #include "yaState.h"
-#include "yaPlayerHpTxture.h"
+#include "yaPlayerHpTexture.h"
 
 
 namespace ya
@@ -30,7 +30,7 @@ namespace ya
 
 		Transform* tr = GetComponent<Transform>();
 		tr->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
-		tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
+		//tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -40,13 +40,13 @@ namespace ya
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
 
-		col->SetCenter(Vector3(0.f, 1.2f, 0.f));
-		col->SetSize(Vector3(0.8f, 3.4f, 0.8f));
+		col->SetCenter(Vector3(0.f, 0.25f, 0.f));
+		col->SetSize(Vector3(0.6f, 1.6f, 0.6f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
 		mState = new State();
-		mState->SetHPMax(30.0f);
+		mState->SetHPMax(100.0f);
 		mState->SetHp(mState->GetHPMax());
 		mState->SetPostureMax(100.0f);
 		mState->SetPosture(0);
@@ -83,7 +83,7 @@ namespace ya
 		AddComponent<PlayerAttackScript>();
 		AddComponent<GrappleHookScript>();
 
-		CreateHpTexture();
+		CreatePlayerUI();
 
 		GameObject::Initialize();
 	}
@@ -134,10 +134,9 @@ namespace ya
 		}
 	}
 
-	void Player::CreateHpTexture()
+	void Player::CreatePlayerUI()
 	{		
-		mPlayerHpBar = object::Instantiate<PlayerHpTxture>(eLayerType::UI, GetScene());
-		mPlayerHpBar->SetName(L"player hp bar");
+		mPlayerHpBar = object::Instantiate<PlayerHpTexture>(eLayerType::UI, GetScene());
 		mPlayerHpBar->SetPlayer(this);
 	}
 

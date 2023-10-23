@@ -52,12 +52,6 @@ namespace ya
 		float	GetMaxDeathBlowCount() { return mMaxDeathBlowCount; }
 		void	SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount = maxblowcount; }
 
-		bool	IsDeathBlowOnOff() { return mbDeathBlowOnOff; }
-		void	SetDeathBlowonoff(bool onoff) { mbDeathBlowOnOff = onoff; }
-
-		//bool IsStartBlow() { return mbStartBlow; }
-		//void SetStartBlow(bool blow) { mbStartBlow = blow; }
-
 		bool	IsDeath() { return mbDeath; }
 		void	SetDeath(bool death) { mbDeath = death; }
 
@@ -68,7 +62,6 @@ namespace ya
 	public:
 		void	Death();
 		void	Resurrection();
-
 
 	private:
 

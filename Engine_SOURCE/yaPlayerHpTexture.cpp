@@ -1,4 +1,4 @@
-#include "yaPlayerHpTxture.h"
+#include "yaPlayerHpTexture.h"
 #include "yaObject.h"
 #include "yaMeshRenderer.h"
 #include "yaResources.h"
@@ -11,24 +11,17 @@
 
 namespace ya
 {
-	PlayerHpTxture::PlayerHpTxture()
+	PlayerHpTexture::PlayerHpTexture()
+		: GameObject()
 	{
-
-
-
-		
-
-
-
+		SetName(L"player hp bar");
 	}
 
-	PlayerHpTxture::~PlayerHpTxture()
+	PlayerHpTexture::~PlayerHpTexture()
 	{
-
-
 	}
 
-	void PlayerHpTxture::Initialize()
+	void PlayerHpTexture::Initialize()
 	{
 		if (mPlayerHpLayout == nullptr)
 		{
@@ -169,16 +162,12 @@ namespace ya
 		GameObject::Initialize();
 	}
 
-	void PlayerHpTxture::Update()
+	void PlayerHpTexture::Update()
 	{
 		if(mPlayer != nullptr)
 		{
 			PlayerMeterCheak();
 		}
-
-
-		
-
 
 		if (Input::GetKey(eKeyCode::U))
 		{
@@ -208,7 +197,7 @@ namespace ya
 		GameObject::Update();
 	}
 
-	void PlayerHpTxture::PlayerMeterCheak()
+	void PlayerHpTexture::PlayerMeterCheak()
 	{
 		float hp = (float)PERCENTAGE / (float)mPlayer->GetState()->GetHPMax();
 		float culhp = (float)PERCENTAGE - (hp * (float)mPlayer->GetState()->GetHP());
@@ -221,17 +210,12 @@ namespace ya
 		data.PostureMeter = culposture;		
 
 		mPlayerHpLayout->GetScript<HPMeterScript>()->SetCB(data);
-
-
 	}
 
-
-
-	void PlayerHpTxture::PlayerResurrection_True()
+	void PlayerHpTexture::PlayerResurrection_True()
 	{
 		std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurrectionMaterial");
 		mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"re_True"));
-
 
 		Transform* Resurrectiontr = mPlayerResurrection->GetComponent<Transform>();
 		Resurrectiontr->SetPosition(Vector3(-680.0f, -360.f, -10.f));
@@ -239,12 +223,10 @@ namespace ya
 
 	}
 
-	void PlayerHpTxture::PlayerResurrection_False()
+	void PlayerHpTexture::PlayerResurrection_False()
 	{	
-		
 		std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurrectionMaterial");				
 		mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"re_False"));
-
 
 		Transform* Resurrectiontr = mPlayerResurrection->GetComponent<Transform>();
 		Resurrectiontr->SetPosition(Vector3(-640.0f, -360.f, -10.f));

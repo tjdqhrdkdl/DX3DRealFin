@@ -81,6 +81,7 @@ namespace ya
     void BoneCollider::SetMeshAndBone(std::shared_ptr<MeshData> meshData, std::wstring bone, GameObject* owner)
     {
         mOwner = owner;
+        mBCOwner = owner;
         mMeshData = meshData;
         MeshObject* meshObject = mMeshData->GetMeshObject();
         bool noBoneNameAssert = true;
