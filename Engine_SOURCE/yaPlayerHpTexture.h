@@ -3,14 +3,11 @@
 
 namespace ya
 {
-    class PlayerHpTxture :
-        public GameObject
+    class PlayerHpTexture : public GameObject
     {
-
     public:
-        PlayerHpTxture();
-        virtual ~PlayerHpTxture();
-
+        PlayerHpTexture();
+        virtual ~PlayerHpTexture();
 
     public:
 
@@ -19,14 +16,10 @@ namespace ya
 
         void SetPlayer(class Player* player) { mPlayer = player; }
 
-
         void PlayerMeterCheak();
-        
-
         
         void PlayerResurrection_True();
         void PlayerResurrection_False();
-
 
     private:
 
@@ -36,9 +29,6 @@ namespace ya
         GameObject* mPlayerResurrection;
         GameObject* mPlayerpostureLayout;
         //GameObject* mPlayerpostureBar;
-
-
-     
 
     };
 

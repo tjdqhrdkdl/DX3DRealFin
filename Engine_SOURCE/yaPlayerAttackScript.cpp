@@ -33,8 +33,8 @@ namespace ya
 		, mPlayer(nullptr)
 		, mPlayerAnim(nullptr)
 		, mAttackState(eAttackState::None)
-		, mTimer{0.0f}
-		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.15f, 2.0f}
+		, mTimer{ 0.0f }
+		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.15f, 1.0f,  2.0f }
 		, mbKeyInput(false)
 		, mHitDirection(Vector3::Zero)
 		, mDeathBlowTarget(nullptr)
@@ -58,7 +58,7 @@ namespace ya
 		}
 
 		BoneCollider* weaponCollider = mPlayer->GetWeaponCollider();
-		if (weaponCollider != nullptr)
+		if (weaponCollider != nullptr && mPlayerAnim->IsUse())
 		{
 			std::wstring arm = ARM;
 			//weaponCollider->SetAnimOffSet(L"SwingSword1", Vector3(1, 0.5, 1));
@@ -85,29 +85,29 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Sprint, false);
 			player->SetStateFlag(ePlayerState::Block, false);
 			player->SetStateFlag(ePlayerState::Wall, false);
-		}));
+			}));
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Attack, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Idle, true);
 
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->AdjustState();
-		}));
+			}));
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Sprint, false);
 			player->SetStateFlag(ePlayerState::Attack, false);
-			
+
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity(8.0f);
-		}));
+			}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity();
-		}));
+			}));
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::DeathBlow, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
@@ -117,12 +117,12 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Sprint, false);
 			player->SetStateFlag(ePlayerState::Attack, false);
 			player->SetStateFlag(ePlayerState::Block, false);
-		}));
+			}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::DeathBlow, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Idle, false);
-		}));
+			}));
 
 	}
 
@@ -143,7 +143,7 @@ namespace ya
 		if (mTimer[(UINT)eAttackState::AttackMove] > 0.0f)
 		{
 			mTimer[(UINT)eAttackState::AttackMove] -= Time::DeltaTime();
-			if(mTimer[(UINT)eAttackState::AttackMove] < 0.2f)
+			if (mTimer[(UINT)eAttackState::AttackMove] < 0.2f)
 				playerAction->Move(playerTr->Forward(), 300.0f);
 		}
 
@@ -166,7 +166,7 @@ namespace ya
 				{
 					mAttackState = eAttackState::JumpAttack1;
 					mPlayerAnim->Play(L"a050_308010");
-					
+
 				}
 				else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 				{
@@ -201,13 +201,13 @@ namespace ya
 				{
 					if (bLockOn)
 					{
-						if(Input::GetKey(eKeyCode::W))
+						if (Input::GetKey(eKeyCode::W))
 							mPlayerAnim->Play(L"a050_002010");
-						else if(Input::GetKey(eKeyCode::S))
+						else if (Input::GetKey(eKeyCode::S))
 							mPlayerAnim->Play(L"a050_002011");
-						else if(Input::GetKey(eKeyCode::D))
+						else if (Input::GetKey(eKeyCode::D))
 							mPlayerAnim->Play(L"a050_002012");
-						else if(Input::GetKey(eKeyCode::A))
+						else if (Input::GetKey(eKeyCode::A))
 							mPlayerAnim->Play(L"a050_002013");
 					}
 					else
@@ -600,7 +600,7 @@ namespace ya
 		}
 		case ya::PlayerAttackScript::eAttackState::DeathBlow:
 		{
-			if(mTimer[(UINT)eAttackState::DeathBlow] <= 0.0f)
+			if (mTimer[(UINT)eAttackState::DeathBlow] <= 0.0f)
 			{
 				mAttackState = eAttackState::None;
 				mPlayer->SetStateFlag(ePlayerState::DeathBlow, false);
@@ -622,10 +622,10 @@ namespace ya
 
 	void PlayerAttackScript::Render()
 	{
-		wchar_t szFloat[50] = {};
+		/*wchar_t szFloat[50] = {};
 		std::wstring str = L"target: " + std::to_wstring(mDeathBlowTargets.size());
 		swprintf_s(szFloat, 50, str.c_str());
-		TextOut(application.GetHdc(), 800, 150, szFloat, (int)wcslen(szFloat));
+		TextOut(application.GetHdc(), 800, 150, szFloat, (int)wcslen(szFloat));*/
 	}
 
 	void PlayerAttackScript::OnCollisionEnter(Collider2D* collider)
@@ -633,12 +633,15 @@ namespace ya
 		// 인살중이거나 죽었을 때는 피격받지 않는다
 		if (mPlayer->IsStateFlag(ePlayerState::DeathBlow) || mPlayer->IsStateFlag(ePlayerState::Death))
 			return;
-		
+
 		GameObject* obj = collider->GetOwner();
 
 		BoneCollider* boneCollider = dynamic_cast<BoneCollider*>(obj);
 		if (boneCollider != nullptr)
 		{
+			MonsterBase* monster = dynamic_cast<MonsterBase*>(boneCollider->GetBCOwner());
+			MonsterBase::Attack attackParam = monster->GetAttackParams();
+
 			Transform* playerTr = mPlayer->GetComponent<Transform>();
 			Vector3 playerPos = playerTr->GetPosition();
 			Vector3 playerDir = playerTr->Forward();
@@ -647,7 +650,7 @@ namespace ya
 			GameObject* other = collider->GetOwner();
 			Transform* otherTr = other->GetComponent<Transform>();
 
-			if (mPlayer->IsStateFlag(ePlayerState::Block))
+			if (!attackParam.unGuardable && mPlayer->IsStateFlag(ePlayerState::Block))
 			{
 				mPlayer->SetStateFlag(ePlayerState::Block, false);
 
@@ -656,19 +659,42 @@ namespace ya
 				Vector3 quaterToEuler = quater.ToEuler();
 				Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
-				// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
-				if (theta.y > -45.0f && theta.y <= 45.0f)
-					mPlayerAnim->Play(L"a050_120101");
-				else if (theta.y > 45.0f && theta.y <= 135.0f)
-					mPlayerAnim->Play(L"a050_120100");
-				else if (theta.y > 135.0f && theta.y <= 180.0f)
-					mPlayerAnim->Play(L"a050_120103");
-				else if (theta.y > -180.0f && theta.y <= -135.0f)
-					mPlayerAnim->Play(L"a050_120103");
-				else if (theta.y > -135.0f && theta.y <= -45.0f)
-					mPlayerAnim->Play(L"a050_120102");
+				if (attackParam.damage > 50.0f)
+				{
+					// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+					if (theta.y > -45.0f && theta.y <= 45.0f)
+						mPlayerAnim->Play(L"a050_120301");
+					else if (theta.y > 45.0f && theta.y <= 135.0f)
+						mPlayerAnim->Play(L"a050_120301");
+					else if (theta.y > 135.0f && theta.y <= 180.0f)
+						mPlayerAnim->Play(L"a050_120301");
+					else if (theta.y > -180.0f && theta.y <= -135.0f)
+						mPlayerAnim->Play(L"a050_120301");
+					else if (theta.y > -135.0f && theta.y <= -45.0f)
+						mPlayerAnim->Play(L"a050_120302");
 
-				mPlayer->GetState()->AddPosture(10.0f);
+					mPlayer->GetState()->AddPosture(30.0f);
+				}
+				else
+				{
+					// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+					if (theta.y > -45.0f && theta.y <= 45.0f)
+						mPlayerAnim->Play(L"a050_120101");
+					else if (theta.y > 45.0f && theta.y <= 135.0f)
+						mPlayerAnim->Play(L"a050_120100");
+					else if (theta.y > 135.0f && theta.y <= 180.0f)
+						mPlayerAnim->Play(L"a050_120103");
+					else if (theta.y > -180.0f && theta.y <= -135.0f)
+						mPlayerAnim->Play(L"a050_120103");
+					else if (theta.y > -135.0f && theta.y <= -45.0f)
+						mPlayerAnim->Play(L"a050_120102");
+
+					mPlayer->GetState()->AddPosture(10.0f);
+
+				}
+
+				if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
+					mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
 			}
 			else
 			{
@@ -681,35 +707,66 @@ namespace ya
 				theta *= 180.0f / XM_PI;
 				theta *= (cross.y / abs(cross.y));
 
-				// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
-				if (theta > -45.0f && theta <= 45.0f)
+				if (attackParam.damage > 50.0f)
 				{
-					mPlayerAnim->Play(L"a000_100102");
-					mHitDirection = -playerTr->Forward();
-				}
-				else if (theta > 45.0f && theta <= 135.0f)
-				{
-					mPlayerAnim->Play(L"a000_100100");
-					mHitDirection = playerTr->Right();
-				}
-				else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
-				{
-					mPlayerAnim->Play(L"a000_100103");
-					mHitDirection = playerTr->Forward();
-				}
-				else if (theta > -135.0f && theta <= -45.0f)
-				{
-					mPlayerAnim->Play(L"a000_100101");
-					mHitDirection = -playerTr->Right();
-				}
+					// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+					if (theta > -45.0f && theta <= 45.0f)
+					{
+						mPlayerAnim->Play(L"a000_100202");
+						mHitDirection = -playerTr->Forward();
+					}
+					else if (theta > 45.0f && theta <= 135.0f)
+					{
+						mPlayerAnim->Play(L"a000_100200");
+						mHitDirection = playerTr->Right();
+					}
+					else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
+					{
+						mPlayerAnim->Play(L"a000_100203");
+						mHitDirection = playerTr->Forward();
+					}
+					else if (theta > -135.0f && theta <= -45.0f)
+					{
+						mPlayerAnim->Play(L"a000_100201");
+						mHitDirection = -playerTr->Right();
+					}
 
-				// 피격 당했을때 밀려나는 로직
-				if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
-				{
-					mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
-				}
+					// 피격 당했을때 밀려나는 로직
+					if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
+						mTimer[(UINT)eAttackState::HitMove] = 0.3f;
 
-				mPlayer->GetState()->AddHp(-10.0f);
+					mPlayer->GetState()->AddHp(-50.0f);
+				}
+				else
+				{
+					// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+					if (theta > -45.0f && theta <= 45.0f)
+					{
+						mPlayerAnim->Play(L"a000_100102");
+						mHitDirection = -playerTr->Forward();
+					}
+					else if (theta > 45.0f && theta <= 135.0f)
+					{
+						mPlayerAnim->Play(L"a000_100100");
+						mHitDirection = playerTr->Right();
+					}
+					else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
+					{
+						mPlayerAnim->Play(L"a000_100103");
+						mHitDirection = playerTr->Forward();
+					}
+					else if (theta > -135.0f && theta <= -45.0f)
+					{
+						mPlayerAnim->Play(L"a000_100101");
+						mHitDirection = -playerTr->Right();
+					}
+
+					// 피격 당했을때 밀려나는 로직
+					if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
+						mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
+
+					mPlayer->GetState()->AddHp(-30.0f);
+				}
 			}
 		}
 	}
@@ -755,7 +812,7 @@ namespace ya
 
 		// 인살 가능한 몬스터가 있는 상태일때
 		// 몬스터 
-		
+
 		if (dynamic_cast<Spearman*>(monster) != nullptr)
 		{
 			if (monster->IsRecognize())
@@ -786,15 +843,16 @@ namespace ya
 					mPlayerAnim->Play(L"a200_510000");
 				else
 					mPlayerAnim->Play(L"a201_510000");
-			
+
+			}
+			else
+			{
+				mPlayerAnim->Play(L"a200_510000");
+			}
+
+			EraseDeathBlowTarget(monster);
+			mDeathBlowTarget = nullptr;
+			monster->DeathBlow();
 		}
-		else
-		{
-			mPlayerAnim->Play(L"a200_510000");
-		}
-		
-		EraseDeathBlowTarget(monster);
-		mDeathBlowTarget = nullptr;
-		monster->DeathBlow();
 	}
 }

@@ -24,6 +24,8 @@ namespace ya
 
 		std::shared_ptr<MeshData> FindMeshData(std::wstring name);
 
+		bool IsUse() { return mbUse; }
+
 	private:
 		bool mbUse;
 		bool mbLoad;

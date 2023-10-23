@@ -13,7 +13,7 @@
 #include "yaObject.h"
 
 #include "yaState.h"
-#include "yaPlayerHpTxture.h"
+#include "yaPlayerHpTexture.h"
 
 
 namespace ya
@@ -46,7 +46,7 @@ namespace ya
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
 		mState = new State();
-		mState->SetHPMax(30.0f);
+		mState->SetHPMax(100.0f);
 		mState->SetHp(mState->GetHPMax());
 		mState->SetPostureMax(100.0f);
 		mState->SetPosture(0);
@@ -83,7 +83,7 @@ namespace ya
 		AddComponent<PlayerAttackScript>();
 		AddComponent<GrappleHookScript>();
 
-		CreateHpTexture();
+		CreatePlayerUI();
 
 		GameObject::Initialize();
 	}
@@ -134,10 +134,9 @@ namespace ya
 		}
 	}
 
-	void Player::CreateHpTexture()
+	void Player::CreatePlayerUI()
 	{		
-		mPlayerHpBar = object::Instantiate<PlayerHpTxture>(eLayerType::UI, GetScene());
-		mPlayerHpBar->SetName(L"player hp bar");
+		mPlayerHpBar = object::Instantiate<PlayerHpTexture>(eLayerType::UI, GetScene());
 		mPlayerHpBar->SetPlayer(this);
 	}
 

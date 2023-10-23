@@ -43,7 +43,7 @@ namespace ya
 		std::map<ePlayerState, std::function<void()>>& GetEndStateEvent() { return mEndStateEvent; }
 
 
-		void CreateHpTexture();
+		void CreatePlayerUI();
 
 		float GetBlockTime();
 
@@ -53,7 +53,7 @@ namespace ya
 
 	private:
 		GameObject* mCamera;
-		class PlayerHpTxture* mPlayerHpBar;
+		class PlayerHpTexture* mPlayerHpBar;
 
 
 		State* mState;
