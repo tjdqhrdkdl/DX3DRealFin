@@ -13,6 +13,8 @@
 
 namespace ya
 {
+	UINT32 Collider3D::_idGenerator = 0u;
+
 	Collider3D::Collider3D()
 		: Collider{ eComponentType::Collider }
 		, _id{ _idGenerator++ }

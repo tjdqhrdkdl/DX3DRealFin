@@ -9,30 +9,43 @@
 #include "StrConverter.h"
 
 #ifdef _DEBUG
-#pragma comment(lib, "Physx/Library/Debug/PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/PhysX_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/PhysXCharacterKinematic_static_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/PhysXCommon_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/PhysXCooking_64.lib")
 #pragma comment(lib, "Physx/Library/Debug/PhysXExtensions_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysX_static_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/PhysXFoundation_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/PhysXTask_static_64.lib")
 #pragma comment(lib, "Physx/Library/Debug/PhysXVehicle_static_64.lib")
 #pragma comment(lib, "Physx/Library/Debug/PhysXVehicle2_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXCharacterKinematic_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXCooking_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXCommon_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXFoundation_static_64.lib")
 #pragma comment(lib, "Physx/Library/Debug/PVDRuntime_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/SceneQuery_static_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/SimulationController_static_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/LowLevel_static_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/LowLevelAABB_static_64.lib")
+#pragma comment(lib, "Physx/Library/Debug/LowLevelDynamics_static_64.lib")
+
 
 
 #else 
 
-#pragma comment(lib, "Physx/Library/Release/PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "Physx/Library/Release/PhysX_64.lib")
+#pragma comment(lib, "Physx/Library/Release/PhysXCharacterKinematic_static_64.lib")
+#pragma comment(lib, "Physx/Library/Release/PhysXCommon_64.lib")
+#pragma comment(lib, "Physx/Library/Release/PhysXCooking_64.lib")
 #pragma comment(lib, "Physx/Library/Release/PhysXExtensions_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysX_static_64.lib")
+#pragma comment(lib, "Physx/Library/Release/PhysXFoundation_64.lib")
+#pragma comment(lib, "Physx/Library/Release/PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "Physx/Library/Release/PhysXTask_static_64.lib")
 #pragma comment(lib, "Physx/Library/Release/PhysXVehicle_static_64.lib")
 #pragma comment(lib, "Physx/Library/Release/PhysXVehicle2_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXCharacterKinematic_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXCooking_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXCommon_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXFoundation_static_64.lib")
 #pragma comment(lib, "Physx/Library/Release/PVDRuntime_64.lib")
+#pragma comment(lib, "Physx/Library/Release/SceneQuery_static_64.lib")
+#pragma comment(lib, "Physx/Library/Release/SimulationController_static_64.lib")
+#pragma comment(lib, "Physx/Library/Release/LowLevel_static_64.lib")
+#pragma comment(lib, "Physx/Library/Release/LowLevelAABB_static_64.lib")
+#pragma comment(lib, "Physx/Library/Release/LowLevelDynamics_static_64.lib")
 
 #endif //_DEBUG
 
@@ -123,7 +136,8 @@ namespace ya
 		if (_currentScene == nullptr)
 			return;
 
-		_currentScene->simulate(_intervals[static_cast<UINT8>(_currentInterval)]);
+		//_currentScene->simulate(_intervals[static_cast<UINT8>(_currentInterval)]);
+		_currentScene->simulate(deltaTime);
 		_currentScene->fetchResults(true);
 		synceTransform();
 	}

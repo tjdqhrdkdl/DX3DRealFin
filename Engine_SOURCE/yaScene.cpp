@@ -1,5 +1,5 @@
 #include "yaScene.h"
-
+#include "PhysXManager.h"
 
 namespace ya
 {
@@ -60,12 +60,20 @@ namespace ya
 			layer.Destroy();
 		}
 	}
+
 	void Scene::OnEnter()
 	{
 	}
+
 	void Scene::OnExit()
 	{
 	}
+
+	void Scene::CreatePhysXScene()
+	{
+		PhysicsManager::createPhysicScene(this);
+	}
+
 	void Scene::AddGameObject(GameObject* gameObj, const eLayerType type)
 	{
 		mLayers[(UINT)type].AddGameObject(gameObj);

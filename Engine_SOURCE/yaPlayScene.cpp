@@ -27,12 +27,14 @@
 #include "yaBoundarySphere.h"
 #include "yaMapCollider.h"
 
+#include "PhysXManager.h"
 
 namespace ya
 {
 	PlayScene::PlayScene()
 		: Scene(eSceneType::Play)
 	{
+		SetName(L"PlayScene");
 	}
 	PlayScene::~PlayScene()
 	{
@@ -85,6 +87,9 @@ namespace ya
 			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+
+
+
 			Collider2D* wallCollider = wall->AddComponent<Collider2D>();
 			wallCollider->SetType(eColliderType::Box);
 			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));

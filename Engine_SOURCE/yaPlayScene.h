@@ -17,9 +17,6 @@ namespace ya
 
 		virtual void OnEnter() override;
 		virtual void OnExit() override;
-
-
-		void Test() { int a = 0; }
 	private:
 		//for test
 		std::shared_ptr<MeshData> mMeshData;

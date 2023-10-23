@@ -5,6 +5,9 @@
 #include "ThreadPool.h"
 #include "yaRenderer.h"
 
+#include "PhysXManager.h"
+#include "yaTime.h"
+
 namespace ya
 {
 	std::vector<Scene*> SceneManager::mScenes = {};
@@ -12,6 +15,12 @@ namespace ya
 
 	void SceneManager::Initialize()
 	{
+		if (false == PhysicsManager::initialize())
+		{
+			assert(false);
+		}
+
+
 		mScenes.resize((UINT)eSceneType::End);
 
 		mScenes[(UINT)eSceneType::Title] = new TitleScene();
@@ -21,7 +30,7 @@ namespace ya
 		mScenes[(UINT)eSceneType::Loading]->SetName(L"LoadingScene");
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
-		mScenes[(UINT)eSceneType::Play]->SetName(L"PlayScene");
+		mScenes[(UINT)eSceneType::Play]->CreatePhysXScene();
 		mScenes[(UINT)eSceneType::Play]->SetThreadLoad(true);
 		mScenes[(UINT)eSceneType::Play]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Play);
 
@@ -47,6 +56,7 @@ namespace ya
 	void SceneManager::Update()
 	{
 		mActiveScene->Update();
+		PhysicsManager::update(Time::DeltaTime());
 	}
 
 	void SceneManager::FixedUpdate()
@@ -84,6 +94,8 @@ namespace ya
 		std::vector<GameObject*> gameObjs 
 			= mActiveScene->GetDontDestroyGameObjects();
 		mActiveScene = mScenes[(UINT)type];
+
+		PhysicsManager::changePhysicScene(mActiveScene);
 		
 		for (GameObject* obj : gameObjs)
 		{

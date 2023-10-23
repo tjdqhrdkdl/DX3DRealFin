@@ -74,6 +74,8 @@ namespace ya::renderer
 		indexes.push_back(0);
 		mesh->CreateIndexBuffer(indexes.data(), indexes.size());
 #pragma endregion
+
+
 		#pragma region DEBUG RECTMESH
 		vertexes[0].pos = Vector4(-0.5f, 0.5f, -0.00001f, 1.0f);
 		vertexes[0].color = Vector4(0.f, 1.f, 0.f, 1.f);
@@ -453,6 +455,30 @@ namespace ya::renderer
 		sphereMesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
 		#pragma endregion
+
+
+#pragma region Line Mesh
+		std::shared_ptr<Mesh> lineMesh = std::make_shared<Mesh>();
+
+		std::vector<Vertex> vertices;
+		v = {};
+		v.pos = Vector4(0.0f, 0.0f, 0.0f, 1.f);
+		v.color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		vertices.push_back(v);
+
+		v = {};
+		v.pos = Vector4(0.0f, 0.0f, 1.0f, 1.f);
+		v.color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		vertices.push_back(v);
+
+		lineMesh->CreateVertexBuffer(vertices.data(), vertices.size());
+		
+
+		std::vector<UINT> indices = { 0, 1 };
+		lineMesh->CreateIndexBuffer(indices.data(), indices.size());
+		
+		Resources::Insert<Mesh>(L"LineMesh", mesh);
+#pragma endregion
 	}
 
 	void LoadShader()

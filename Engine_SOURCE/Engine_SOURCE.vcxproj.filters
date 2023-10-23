@@ -304,6 +304,9 @@
     <ClCompile Include="MathUtil.cpp">
       <Filter>Engine\Common\Math</Filter>
     </ClCompile>
+    <ClCompile Include="PhysXManager.cpp">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -634,6 +637,9 @@
     </ClInclude>
     <ClInclude Include="MathUtil.h">
       <Filter>Engine\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysXManager.h">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

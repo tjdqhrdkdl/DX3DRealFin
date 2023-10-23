@@ -23,6 +23,7 @@ namespace ya
 		virtual void OnEnter();
 		virtual void OnExit();
 
+		void CreatePhysXScene();
 		eSceneType GetSceneType() { return mType; }
 		void AddGameObject(GameObject* gameObj, const eLayerType type);
 		Layer& GetLayer(eLayerType type) { return mLayers[(UINT)type]; }

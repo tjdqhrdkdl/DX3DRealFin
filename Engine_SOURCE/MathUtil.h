@@ -1,5 +1,5 @@
 #pragma once
-#include <PhysX/Include/PxPhysicsAPI.h>
+#include <PxPhysicsAPI.h>
 #include "yaMath.h"
 
 namespace ya

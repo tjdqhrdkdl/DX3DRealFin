@@ -6,8 +6,8 @@
 #pragma warning(disable : 26812)
 #pragma warning(disable : 26451)
 #pragma warning(disable : 6297)
-#define PX_PHYSX_STATIC_LIB
-#include <PhysX/Include/PxPhysicsAPI.h>
+//#define PX_PHYSX_STATIC_LIB
+#include <PxPhysicsAPI.h>
 #pragma warning(default : 26495)
 #pragma warning(default : 33010)
 #pragma warning(default : 26812)
