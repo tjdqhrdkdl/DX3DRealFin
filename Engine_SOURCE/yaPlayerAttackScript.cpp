@@ -758,18 +758,35 @@ namespace ya
 		
 		if (dynamic_cast<Spearman*>(monster) != nullptr)
 		{
-			mPlayerAnim->Play(L"a200_510000");
+			if (monster->IsRecognize())
+			{
+				mPlayerAnim->Play(L"a200_510000");
+			}
+			else
+			{
+				//암살 인살
+			}
 		}
 		else if (dynamic_cast<Musketeerman*>(monster) != nullptr)
 		{
-			mPlayerAnim->Play(L"a200_510000");
+			if (monster->IsRecognize())
+			{
+				mPlayerAnim->Play(L"a200_510000");
+			}
+			else
+			{
+				//암살 인살
+			}
 		}
 		else if (dynamic_cast<Tenzen*>(monster) != nullptr)
 		{
-			if (monster->GetResurrectionCount() > 0)
-				mPlayerAnim->Play(L"a200_510000");
-			else
-				mPlayerAnim->Play(L"a201_510000");
+			if (monster->IsRecognize())
+			{
+				if (monster->GetResurrectionCount() > 0)
+					mPlayerAnim->Play(L"a200_510000");
+				else
+					mPlayerAnim->Play(L"a201_510000");
+			
 		}
 		else
 		{

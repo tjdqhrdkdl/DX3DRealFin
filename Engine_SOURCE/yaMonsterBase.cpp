@@ -52,42 +52,56 @@ namespace ya
 			mMonster2PlayerNormalize = mPlayerPos - monsterPos;
 			mMonster2PlayerNormalize.Normalize();
 
-			// DeathBlow 가능 상태일때
-			if (IsDeathBlow())
+			
+			Transform* playerTr = mPlayerObject->GetComponent<Transform>();
+			Vector3 playerPos = playerTr->GetPosition();
+
+			Transform* tr = GetComponent<Transform>();
+			Vector3 pos = tr->GetPosition();
+
+			// 거리
+			float dist = playerPos.Distance(playerPos, pos);
+
+			// 인식 안됐을때 거리 이내일 경우 인살 가능 상태가 된다
+			if (!mbRecognize)
 			{
-				Transform* playerTr = mPlayerObject->GetComponent<Transform>();
-				Vector3 playerPos = playerTr->GetPosition();
-
-				Transform* tr = GetComponent<Transform>();
-				Vector3 pos = tr->GetPosition();
-
-				// 거리
-				float dist = playerPos.Distance(playerPos, pos);
-
-				// 각도
-				Quaternion quater = Quaternion::FromToRotation(-playerTr->Forward(), Vector3(playerPos.x - pos.x, playerPos.y - pos.y, playerPos.z - pos.z));
-				Vector3 quaterToEuler = quater.ToEuler();
-				Vector3 theta = quaterToEuler * 180.0f / XM_PI;
-
-
-				if (dist <= 5.0f)
+				if(dist < 2.0f)
 				{
-					if (abs(theta.y) <= 60.0f)
+					SetDeathBlow(true);
+					mPlayerObject->SetDeathBlowTarget(this, dist);
+				}
+				else
+				{
+					SetDeathBlow(false);
+					mPlayerObject->EraseDeathBlowTarget(this);
+				}
+			}
+			else
+			{
+				if (IsDeathBlow())
+				{
+					// 각도
+					Quaternion quater = Quaternion::FromToRotation(-playerTr->Forward(), Vector3(playerPos.x - pos.x, playerPos.y - pos.y, playerPos.z - pos.z));
+					Vector3 quaterToEuler = quater.ToEuler();
+					Vector3 theta = quaterToEuler * 180.0f / XM_PI;
+
+					if (dist <= 5.0f)
 					{
-						mPlayerObject->SetDeathBlowTarget(this, dist);
+						if (abs(theta.y) <= 60.0f)
+						{
+							mPlayerObject->SetDeathBlowTarget(this, dist);
+						}
+						else
+						{
+							mPlayerObject->EraseDeathBlowTarget(this);
+						}
 					}
 					else
 					{
 						mPlayerObject->EraseDeathBlowTarget(this);
 					}
 				}
-				else
-				{
-					mPlayerObject->EraseDeathBlowTarget(this);
-				}
 			}
-
-
 			//if (IsDeathBlow())
 			//{
 			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
