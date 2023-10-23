@@ -15,6 +15,7 @@
 #include "yaActionScript.h"
 #include "yaBoneAnimator.h"
 #include "yaMonsterUI.h"
+#include "yaCameraScript.h"
 
 #include <time.h>
 
@@ -163,16 +164,18 @@ namespace ya
         std::shared_ptr<MeshData>   mMeshData;
         MeshObject* mMeshObject;
         ActionScript* mActionScript;
-        bool mbParrying;
-        Attack mAttackParams;
 
         GameObject* mDeathBlowMark;
+        bool                        mbParrying;
+        Attack                      mAttackParams;
+        MonsterUI*                  mMonsterUI;
+        CameraScript*               mCamScript;
+        Player*                     mPlayerObject;
 
     private:
         State* mMonsterState;
         enums::eSituation	mSituation;
 
-        Player*             mPlayerObject;
 
         float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)
 
@@ -191,6 +194,10 @@ namespace ya
         bool                mDeathBlowKill;
 
         bool                mbRecognize;
-        MonsterUI*          mMonsterUI;
+
+        bool                mbPostureRecovery;
+        float               mBeforePosture;
+        float               mPostureRecoveryTimeChecker;
+
     };
 }

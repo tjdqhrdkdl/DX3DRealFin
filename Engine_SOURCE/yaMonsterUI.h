@@ -19,6 +19,7 @@ namespace ya
         void SetMonster(class MonsterBase* mon);
 
         void UIOn() { mbRender = true, mRenderTimeChecker = 0; }
+        void UIOff() { mbRender = false, mRenderTimeChecker = 0; }
         void MonsterMeterCheck();
 
     private:

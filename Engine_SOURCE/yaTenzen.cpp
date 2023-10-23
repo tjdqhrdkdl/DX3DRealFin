@@ -13,6 +13,7 @@
 
 #include "yaNavMesh.h"
 
+
 #define STATE_HAVE(STATE) (mState & STATE) == STATE
 #define ADD_STATE(STATE) mState |= STATE
 #define RM_STATE(STATE) mState &= ~STATE
@@ -219,7 +220,7 @@ namespace ya
 		SetMaxHP(100.0f);
 		SetHp(GetMaxHP());
 		SetPostureMax(100);
-		SetPosture(GetPostureMax());
+		SetPosture(0);
 		SetAlertnessCount(0.f);
 		SetDeathBlow(false);
 		SetResurrectionCount(1);
@@ -255,6 +256,12 @@ namespace ya
 			SettingSituation();
 		}
 
+		else
+		{
+			mCollider->Active(false);
+			mMonsterUI->UIOff();
+			SetSituation(eSituation::Death);
+		}
 		if (mAnimationName != L"")
 		{
 			if (mbAnimReset)
@@ -276,6 +283,26 @@ namespace ya
 	{
 		MonsterBase::Render();
 	}
+	void Tenzen::DeathBlow()
+	{
+		//recognize 상태가 아니면 암살이다.
+
+		//recognize 상태이면 인살이다.
+		ADD_STATE(TenzenState_OnHit);
+		RM_STATE(TenzenState_Groggy);
+		SetDeathBlow(false);
+		mAnimationName = L"DeathBlow1";
+
+		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
+				* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
+					+ GetComponent<Transform>()->GetFinalScale().z / 2 + 1));
+		RM_STATE(TenzenState_Move);
+		RM_STATE(TenzenState_Attack);
+		RM_STATE(TenzenState_Defense);
+		RM_STATE(TenzenState_Trace);
+		ADD_STATE(TenzenState_LookAt);
+		RM_STATE(TenzenState_Idle);
+	}
 	void Tenzen::Idle()
 	{
 		if (STATE_HAVE(TenzenState_Idle))
@@ -286,138 +313,141 @@ namespace ya
 	}
 	void Tenzen::Alert()
 	{
-		if (STATE_HAVE(TenzenState_Recognize))
+		if (mAnimationName != L"DeathBlow1" && mAnimationName != L"DeathBlow1_Death")
 		{
-			RM_STATE(TenzenState_Idle);
-			SetAlertnessCount(0);
-			return;
-		}
-
-		//경계게이지 쌓이는 로직
-		//시야는 체크만. 시야 내부에 있을경우 거리를 측정한다.
-		//거리가 어느정도 가까운가에 따라 경계게이지 축적
-		if (!(STATE_HAVE(TenzenState_Alert)))
-		{
-
-			float cosTheta = EyeSightCheck();
-			if (cosTheta > eyeSightAngleCos)
+			if (STATE_HAVE(TenzenState_Recognize))
 			{
-				float dist = GetDistanceToPlayer();
-				float alert = GetAlertnessCount();
-
-				if (dist < 15)
-					SetAlertnessCount(alert + 50 * Time::DeltaTime());
-				else if (dist < 40)
-					SetAlertnessCount(alert + 20 * Time::DeltaTime());
-
-			}
-			if (GetAlertnessCount() > 100)
-			{
-				mPlayerLastPosition = GetPlayerPos();
-				ADD_STATE(TenzenState_Alert);
-			}
-		}
-
-		//경계상태에서 플레이어 추적
-		//플레이어 추적 실패 시 다시 Idle
-		else if (STATE_HAVE(TenzenState_Alert))
-		{
-			mAnimationName = L"WalkNoSword";
-			float cosTheta = EyeSightCheck();
-			Vector3 dir = mPlayerLastPosition - mTransform->GetPosition();
-			dir.y = 0;
-
-			if (dir.Length() < 5)
-			{
-				mAnimationName = L"LookAround";
-				RM_STATE(TenzenState_Move);
-			}
-			else
-			{
-				dir.Normalize();
-				mMoveDir = dir;
-				ADD_STATE(TenzenState_Move);
-				mActionScript->Velocity(10);
-				SetSpeed(tenzenWalkSpeed);
-			}
-			
-
-			RotateForwardTo(dir);
-			
-			
-			float dist = GetDistanceToPlayer();
-			mAlertTimeChecker += Time::DeltaTime();
-
-			if (mAlertTimeChecker > mAlertTime)
-			{
-				RM_STATE(TenzenState_Alert);
-				RM_STATE(TenzenState_Move);
-				SetSpeed(tenzenWalkSpeed);
-
-				ADD_STATE(TenzenState_Idle);
-				mAlertTimeChecker = 0;
+				RM_STATE(TenzenState_Idle);
 				SetAlertnessCount(0);
+				return;
 			}
-			if (cosTheta > eyeSightAngleCos && dist < 20)
+
+			//경계게이지 쌓이는 로직
+			//시야는 체크만. 시야 내부에 있을경우 거리를 측정한다.
+			//거리가 어느정도 가까운가에 따라 경계게이지 축적
+			if (!(STATE_HAVE(TenzenState_Alert)))
 			{
-				mActionScript->Velocity(18);
-				ADD_STATE(TenzenState_Recognize);
+
+				float cosTheta = EyeSightCheck();
+				if (cosTheta > eyeSightAngleCos)
+				{
+					float dist = GetDistanceToPlayer();
+					float alert = GetAlertnessCount();
+
+					if (dist < 15)
+						SetAlertnessCount(alert + 50 * Time::DeltaTime());
+					else if (dist < 40)
+						SetAlertnessCount(alert + 20 * Time::DeltaTime());
+
+				}
+				if (GetAlertnessCount() > 100)
+				{
+					mPlayerLastPosition = GetPlayerPos();
+					ADD_STATE(TenzenState_Alert);
+				}
+			}
+
+			//경계상태에서 플레이어 추적
+			//플레이어 추적 실패 시 다시 Idle
+			else if (STATE_HAVE(TenzenState_Alert))
+			{
+				mAnimationName = L"WalkNoSword";
+				float cosTheta = EyeSightCheck();
+				Vector3 dir = mPlayerLastPosition - mTransform->GetPosition();
+				dir.y = 0;
+
+				if (dir.Length() < 5)
+				{
+					mAnimationName = L"LookAround";
+					RM_STATE(TenzenState_Move);
+				}
+				else
+				{
+					dir.Normalize();
+					mMoveDir = dir;
+					ADD_STATE(TenzenState_Move);
+					mActionScript->Velocity(10);
+					SetSpeed(tenzenWalkSpeed);
+				}
+
+
+				RotateForwardTo(dir);
+
+
+				float dist = GetDistanceToPlayer();
+				mAlertTimeChecker += Time::DeltaTime();
+
+				if (mAlertTimeChecker > mAlertTime)
+				{
+					RM_STATE(TenzenState_Alert);
+					RM_STATE(TenzenState_Move);
+					SetSpeed(tenzenWalkSpeed);
+
+					ADD_STATE(TenzenState_Idle);
+					mAlertTimeChecker = 0;
+					SetAlertnessCount(0);
+				}
+				if (cosTheta > eyeSightAngleCos && dist < 20)
+				{
+					mActionScript->Velocity(18);
+					ADD_STATE(TenzenState_Recognize);
+				}
 			}
 		}
 	}
 	void Tenzen::Recognize()
 	{
-		if (STATE_HAVE(TenzenState_Recognize))
-		{
-			RM_STATE(TenzenState_Idle);
-			SetRecognize(true);
-			if (!(STATE_HAVE(TenzenState_DrawSword)))
+			if (STATE_HAVE(TenzenState_Recognize))
 			{
-				mAnimationName = L"DrawSword";
-				ADD_STATE(TenzenState_LookAt);
-				RM_STATE(TenzenState_Move);
-			}
-
-			else if (STATE_HAVE(TenzenState_DrawSword))
-			{
-				if (!(STATE_HAVE(TenzenState_Attack)) && !(STATE_HAVE(TenzenState_Defense))
-					&& !(STATE_HAVE(TenzenState_Trace)) && !(STATE_HAVE(TenzenState_GuardSuccess))
-					&& !(STATE_HAVE(TenzenState_OnHit)) && !(STATE_HAVE(TenzenState_AttackBlocked))
-					&& !(STATE_HAVE(TenzenState_Groggy)))
+				RM_STATE(TenzenState_Idle);
+				SetRecognize(true);
+				if (!(STATE_HAVE(TenzenState_DrawSword)))
 				{
-					Vector3 pos = mTransform->GetPosition();
-					Vector3 playerPos = GetPlayerPos();
+					mAnimationName = L"DrawSword";
+					ADD_STATE(TenzenState_LookAt);
+					RM_STATE(TenzenState_Move);
+				}
 
-					//플레이어 거리가 너무 멀어졌을 때
-					float traceDist = 10;
-					if (Vector3::Distance(pos, playerPos) > traceDist)
+				else if (STATE_HAVE(TenzenState_DrawSword))
+				{
+					if (!(STATE_HAVE(TenzenState_Attack)) && !(STATE_HAVE(TenzenState_Defense))
+						&& !(STATE_HAVE(TenzenState_Trace)) && !(STATE_HAVE(TenzenState_GuardSuccess))
+						&& !(STATE_HAVE(TenzenState_OnHit)) && !(STATE_HAVE(TenzenState_AttackBlocked))
+						&& !(STATE_HAVE(TenzenState_Groggy)))
 					{
-						ADD_STATE(TenzenState_Trace);
-					}
+						Vector3 pos = mTransform->GetPosition();
+						Vector3 playerPos = GetPlayerPos();
 
-					//플레이어 거리가 적당히 멀때 -> 근접형 공격 가능
-
-					//플레이어 거리가 가까울 때 -> 백스텝 가능
-					else
-					{
-						int choice = rand() % 2;
-						switch (choice)
+						//플레이어 거리가 너무 멀어졌을 때
+						float traceDist = 10;
+						if (Vector3::Distance(pos, playerPos) > traceDist)
 						{
-						case 0:
-							ADD_STATE(TenzenState_Attack);
-							break;
+							ADD_STATE(TenzenState_Trace);
 						}
-						ADD_STATE(TenzenState_Attack);
 
+						//플레이어 거리가 적당히 멀때 -> 근접형 공격 가능
+
+						//플레이어 거리가 가까울 때 -> 백스텝 가능
+						else
+						{
+							int choice = rand() % 2;
+							switch (choice)
+							{
+							case 0:
+								ADD_STATE(TenzenState_Attack);
+								break;
+							}
+							ADD_STATE(TenzenState_Attack);
+
+						}
 					}
 				}
 			}
-		}
 
-		else
-			SetRecognize(false);
+			else
+				SetRecognize(false);
 
-
+		
 	}
 	void Tenzen::Attack()
 	{
@@ -495,6 +525,10 @@ namespace ya
 			else
 				RM_STATE(TenzenState_Guard);
 		}
+		else if (STATE_HAVE(TenzenState_Trace) || STATE_HAVE(TenzenState_GuardSuccess))
+		{
+			ADD_STATE(TenzenState_Guard);
+		}
 		else
 		{
 			RM_STATE(TenzenState_Guard);
@@ -523,10 +557,10 @@ namespace ya
 
 	void Tenzen::Groggy()
 	{
-		if (!(STATE_HAVE(TenzenState_Groggy)) && GetPosture() <= 0
+		if (!(STATE_HAVE(TenzenState_Groggy)) && GetPosture() >=100
 			&& mAnimationName != L"DeathBlow1" && mAnimationName != L"DeathBlow1_Death")
 		{
-			SetPosture(0);
+			SetPosture(100);
 			ADD_STATE(TenzenState_Groggy);
 			
 			
@@ -572,7 +606,7 @@ namespace ya
 
 	void Tenzen::LookAtPlayer()
 	{
-		if (STATE_HAVE(TenzenState_Recognize) && STATE_HAVE(TenzenState_LookAt))
+		if (STATE_HAVE(TenzenState_LookAt))
 		{
 			RotateForwardTo(GetMonster2PlayerNormalize());
 		}
@@ -680,16 +714,21 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"Hit2") = [this]() { ADD_STATE(TenzenState_OnHit); };
 
 
-		mMeshData->GetAnimationEndEvent(L"GrogyDownFront") = [this]() { RM_STATE(TenzenState_OnHit); RM_STATE(TenzenState_Groggy); SetPosture(20); SetDeathBlow(false); };
+		mMeshData->GetAnimationEndEvent(L"GrogyDownFront") = [this]() { RM_STATE(TenzenState_OnHit); RM_STATE(TenzenState_Groggy); SetPosture(80); SetDeathBlow(false); };
 		mMeshData->GetAnimationStartEvent(L"GrogyDownFront") = [this]() { SetDeathBlow(true); RM_STATE(TenzenState_Guard); };
-		mMeshData->GetAnimationFrameEvent(L"GrogyDownFront", 70) = [this]() { SetDeathBlow(false); SetPosture(20); };
+		mMeshData->GetAnimationFrameEvent(L"GrogyDownFront", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
 
-		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(TenzenState_OnHit); SetResurrectionCount(GetResurrectionCount() - 1); };
-		mMeshData->GetAnimationStartEvent(L"DeathBlow1") = [this]() { ADD_STATE(TenzenState_OnHit); };
-		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 55) = [this]() { if (GetResurrectionCount() <= 0) {  mMeshData->GetAnimator()->SetAnimationChangeTime(0.01f); mAnimationName = L"DeathBlow1_Death"; } };
+		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(TenzenState_OnHit); SetResurrectionCount(GetResurrectionCount() - 1); ADD_STATE(TenzenState_Recognize); SetPosture(0); SetHp(GetMaxHP()); mMonsterUI->UIOn(); };
+		mMeshData->GetAnimationStartEvent(L"DeathBlow1") = [this]() { ADD_STATE(TenzenState_OnHit); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(3); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 55) = [this]() { if (GetResurrectionCount() <= 0) { mMeshData->GetAnimator()->SetAnimationChangeTime(0.01f); mAnimationName = L"DeathBlow1_Death"; } };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 58) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(2); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 95) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())+Vector3(0,0.5,0)); mCamScript->SetCameraZoomDistance(7); };
 
 		mMeshData->GetAnimationEndEvent(L"DeathBlow1_Death") = [this]() { mMeshData->GetAnimator()->SetStop(true); mState = 0; ADD_STATE(TenzenState_Dead); };
 		mMeshData->GetAnimationStartEvent(L"DeathBlow1_Death") = [this]() {ADD_STATE(TenzenState_OnHit); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 3) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(2); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 40) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(7); };
+
 	}
 
 	float Tenzen::EyeSightCheck()
@@ -745,6 +784,8 @@ namespace ya
 	void Tenzen::DrawSwordEndEvent()
 	{
 		ADD_STATE(TenzenState_DrawSword);
+		mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
+		mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0));
 		//ADD_STATE(TenzenState_Guard);
 	}
 	void Tenzen::DefenseEndEvent()
@@ -773,7 +814,9 @@ namespace ya
 		{
 			BoneCollider* boneColObj = dynamic_cast<BoneCollider*>(colObj);
 			if (boneColObj!= nullptr 
-				&& false == boneColObj->CheckHitObjects(this))
+				&& false == boneColObj->CheckHitObjects(this)
+				&& mAnimationName != L"DeathBlow1"
+				&& mAnimationName != L"DeathBlow1_Death")
 			{
 				//막기 상태
 
@@ -813,20 +856,16 @@ namespace ya
 					}
 
 
-					if (true == IsDeathBlow())
-					{
-						ADD_STATE(TenzenState_OnHit);
-						RM_STATE(TenzenState_Groggy);
-						SetDeathBlow(false);
-						mAnimationName = L"DeathBlow1";
-					}
 					RM_STATE(TenzenState_Move);
 					RM_STATE(TenzenState_Attack);
 					RM_STATE(TenzenState_Defense);
 					RM_STATE(TenzenState_Trace);
 
 					mbAnimReset = true;
-					SetPosture(GetPosture() - 1);
+					if (GetHP() == 0)
+						SetPosture(GetPostureMax());
+					else
+						SetPosture(GetPosture() + 5);
 					mMeshData->GetAnimator()->SetAnimationChangeTime(0.1f);
 
 				}
@@ -848,18 +887,14 @@ namespace ya
 
 					SetHp(GetHP() - 5);
 					//체간 깎기
-					SetPosture(GetPosture() - 10);
 
-					//인살가능상태에서 공격당함(인살당함)
-					if (true == IsDeathBlow())
-					{
-						ADD_STATE(TenzenState_OnHit);
-						RM_STATE(TenzenState_Groggy);
-						SetDeathBlow(false);
-						mAnimationName = L"DeathBlow1";
-					}
+					if (GetHP() == 0)
+						SetPosture(GetPostureMax());
+					else
+						SetPosture(GetPosture() + 50);
 
-					else if (!(STATE_HAVE(TenzenState_SuperArmor)))
+
+					if (!(STATE_HAVE(TenzenState_SuperArmor)))
 					{
 						//앞에서 맞는 상황
 						if (theta <90 && theta > -90)

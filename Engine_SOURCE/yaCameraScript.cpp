@@ -5,6 +5,7 @@
 #include "yaTime.h"
 #include "yaCollisionManager.h"
 #include "yaApplication.h"
+#include "yaMonsterBase.h"
 #include "yaSceneManager.h"
 
 extern ya::Application application;
@@ -348,6 +349,11 @@ namespace ya
 		Vector3 plPos = plTr->GetPosition();
 		for (GameObject* mon : mons)
 		{
+			MonsterBase* monBase = dynamic_cast<MonsterBase*>(mon);
+			if (monBase == nullptr)
+				continue;
+			if (monBase->GetSituation() == eSituation::Death)
+				continue;
 			Transform* monTr = mon->GetComponent<Transform>();
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 monCamDiff = monPos - pos;
@@ -393,19 +399,9 @@ namespace ya
 		{
 			Vector3 dest = -(plTr->Forward());
 
-			if (mDistFromTarget == 3)
-			{
-				SetCameraZoomDistance(7);
-				dest += Vector3(0, 0.5, 0);
-				dest.Normalize();
-				SetDestinationDir(dest);
-			}
-			else
-			{
-				SetCameraZoomDistance(3);			
-				dest.Normalize();
-				SetDestinationDir(dest);
-			}
+			dest += Vector3(0, 0.5, 0);
+			dest.Normalize();
+			SetDestinationDir(dest);
 
 		}
 

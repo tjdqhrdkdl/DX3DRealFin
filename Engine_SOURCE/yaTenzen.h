@@ -51,6 +51,8 @@ namespace ya
         virtual void FixedUpdate() override;
         virtual void Render() override;
 
+        virtual void DeathBlow() override;
+
         void Idle();
         void Alert();
         void Recognize();
@@ -69,7 +71,6 @@ namespace ya
 
         void SetAnimationEvent();
        
-
 
         void RotateForwardTo(Vector3 dir);
         float GetDistanceToPlayer();

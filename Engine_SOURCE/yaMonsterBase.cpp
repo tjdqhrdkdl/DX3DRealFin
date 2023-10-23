@@ -37,6 +37,7 @@ namespace ya
 		CreateMonsterState();
 		mMonsterUI = object::Instantiate<MonsterUI>(eLayerType::UI, GetScene());
 		mMonsterUI->SetMonster(this);
+		mCamScript = mainCamera->GetOwner()->GetScript<CameraScript>();
 		GameObject::Initialize();
 	}
 
@@ -85,6 +86,7 @@ namespace ya
 					Vector3 quaterToEuler = quater.ToEuler();
 					Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
+
 					if (dist <= 5.0f)
 					{
 						if (abs(theta.y) <= 60.0f)
@@ -101,7 +103,35 @@ namespace ya
 						mPlayerObject->EraseDeathBlowTarget(this);
 					}
 				}
+
 			}
+			//체간 자연 회복
+			{	
+				if (mBeforePosture < GetPosture())
+				{
+					mbPostureRecovery = false;
+				}
+
+				if (mbPostureRecovery == false)
+				{
+					mPostureRecoveryTimeChecker += Time::DeltaTime();
+					if (mPostureRecoveryTimeChecker > 3)
+					{
+						mPostureRecoveryTimeChecker = 0;
+						mbPostureRecovery = true;
+					}
+				}
+				else
+				{
+					float posture = GetPosture() - Time::DeltaTime() * 3;
+					if (posture < 0)
+						posture = 0;
+					SetPosture(posture);
+				}
+				mBeforePosture = GetPosture(); 
+			}
+
+
 			//if (IsDeathBlow())
 			//{
 			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
