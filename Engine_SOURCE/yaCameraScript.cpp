@@ -24,6 +24,8 @@ namespace ya
 		, mbFirstInit(false)
 		, mbMouseMove(true)
 		, mbSelfCameraMoveMode(false)
+		, mbCameraDistChanging(false)
+		, mZoomSpeed(200)
 	{
 	}
 
@@ -134,9 +136,9 @@ namespace ya
 				TrackTarget();
 				MouseMove();
 				LockOn();
-				MoveToDestination();
+				MoveToDestinationDir();
+				ZoomCamera();
 				ObstacleDetection();
-
 			}
 		}
 	}
@@ -221,7 +223,7 @@ namespace ya
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 							//디버깅시에 문제생기는 부분 막음.
-					if (Time::DeltaTime() < 0.1f && !mbLockOn)
+					if (Time::DeltaTime() < 0.1f && !mbLockOn && !mbDestination)
 					{
 						//두번 계산해줄 것이다.
 						//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
@@ -295,14 +297,25 @@ namespace ya
 
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 dir = mDelayedTargetPos - monPos;
+			dir.y = 0;
 			dir.Normalize();
 			dir.y = 0.3f;
 			dir.Normalize();
+
+			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
+			float monPlDist = monPlDiff.Length();
+			if (monPlDist > lockOnDistanceMax)
+			{
+				mLockOnTarget = nullptr, mbLockOn = false;
+				return;
+			}
+
+
 			Vector3 dest = dir * mDistFromTarget;
 			Vector3 gap = dest - mChildPos;
 			Vector3 gapNormal = dest - mChildPos;
 			gapNormal.Normalize();
-			Vector3 move = 200 * gapNormal * Time::DeltaTime();
+			Vector3 move = gapNormal * Time::DeltaTime();
 			if (gap.Length() < move.Length())
 				return;
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
@@ -310,11 +323,6 @@ namespace ya
 			mChildPos *= mDistFromTarget;
 
 
-
-			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
-			float monPlDist = monPlDiff.Length();
-			if(monPlDist > lockOnDistanceMax)
-				mLockOnTarget = nullptr, mbLockOn = false;
 			
 		}
 
@@ -353,9 +361,9 @@ namespace ya
 			// 카메라 포워드와 각도 체크  (이 각도가 문제임. 각도의 적정수준이 필요할듯)
 			Quaternion rot = Quaternion::FromToRotation(tr->Forward(), monCamDiff);
 			Vector3 theta = rot.ToEuler();
-			if (fabsf(theta.x) > XM_PIDIV2 * 1/ 2)
+			if (fabsf(theta.x) > XM_PIDIV2 * 0.6)
 				continue;
-			if (fabsf(theta.y) > XM_PIDIV2 * 1/ 2)
+			if (fabsf(theta.y) > XM_PIDIV2 * 0.5)
 				continue;
 			//if (fabsf(theta.z) > XM_PI * 2 / 3)
 			//	continue;
@@ -383,21 +391,34 @@ namespace ya
 
 		if (!mbLockOn)
 		{
-			Vector3 dest = -(plTr->Forward()) + Vector3(0, 0.5, 0);
-			dest.Normalize();
-			dest *= mDistFromTarget;
-			SetDestination(dest);
+			Vector3 dest = -(plTr->Forward());
+
+			if (mDistFromTarget == 3)
+			{
+				SetCameraZoomDistance(7);
+				dest += Vector3(0, 0.5, 0);
+				dest.Normalize();
+				SetDestinationDir(dest);
+			}
+			else
+			{
+				SetCameraZoomDistance(3);			
+				dest.Normalize();
+				SetDestinationDir(dest);
+			}
+
 		}
 
 	}
-	void CameraScript::MoveToDestination()
+	void CameraScript::MoveToDestinationDir()
 	{
-		if (mbDestination)
+		if (mbDestination && !mbLockOn)
 		{
-			Vector3 gap = mDestination - mChildPos;
-			Vector3 gapNormal = mDestination - mChildPos;
+			Vector3 destPos = mDestination * mDistFromTarget;
+			Vector3 gap = destPos - mChildPos;
+			Vector3 gapNormal = destPos - mChildPos;
 			gapNormal.Normalize();
-			Vector3 move = 200 * gapNormal * Time::DeltaTime();
+			Vector3 move = 10 * gapNormal * Time::DeltaTime();
 			if (gap.Length() < move.Length())
 			{
 				mbDestination = false;
@@ -406,6 +427,38 @@ namespace ya
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
 			mChildPos.Normalize();
 			mChildPos *= mDistFromTarget;
+		}
+	}
+	void CameraScript::ZoomCamera()
+	{
+		if (mbCameraDistChanging)
+		{
+			if (fabsf(mDistFromTarget - mDestDistFromTarget) < 0.01f)
+			{
+				mDistFromTarget = mDestDistFromTarget;
+				mbCameraDistChanging = false;
+				return;
+			}
+			
+			if (mDistFromTarget > mDestDistFromTarget)
+			{
+				mDistFromTarget -= mZoomSpeed * Time::DeltaTime() * 0.1;
+				if (mDistFromTarget < mDestDistFromTarget)
+				{
+					mDistFromTarget = mDestDistFromTarget;
+					mbCameraDistChanging = false;
+				}
+			}
+			else
+			{
+				mDistFromTarget += mZoomSpeed * Time::DeltaTime() * 0.1;
+				if (mDistFromTarget > mDestDistFromTarget)
+				{
+					mDistFromTarget = mDestDistFromTarget;
+					mbCameraDistChanging = false;
+				}
+			}
+
 		}
 	}
 }
