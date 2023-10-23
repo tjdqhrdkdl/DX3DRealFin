@@ -55,7 +55,7 @@ namespace ya
 		{
 			Transform* tr = GetOwner()->GetComponent<Transform>();
 
-			Vector3 pos = tr->GetPosition();
+			Vector3 pos = tr->GetLocalPosition();
 
 			if (Input::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
 			{
@@ -113,7 +113,7 @@ namespace ya
 					 up = forward.Cross(right);
 					up.Normalize();
 
-					tr->IsCamera(true);
+					tr->SetCameraMode(true);
 					tr->SetForward(forward);
 					tr->SetUp(up);
 					tr->SetRight(right);
@@ -124,7 +124,7 @@ namespace ya
 
 				SetCursorPos(application.GetWidth() / 2, application.GetHeight() / 2);
 			}
-			tr->SetPosition(pos);
+			tr->SetLocalPosition(pos);
 		}
 
 		else
@@ -147,7 +147,7 @@ namespace ya
 	void CameraScript::TrackTarget()
 	{
 
-		Vector3 targetPos = mPlayerTarget->GetComponent<Transform>()->GetPosition();
+		Vector3 targetPos = mPlayerTarget->GetComponent<Transform>()->GetLocalPosition();
 		mQueDelayedTargetPos.push(targetPos);
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 
@@ -170,9 +170,9 @@ namespace ya
 			//delayedPos -= scala.x * tr->Right();
 			mDelayedTargetPos = delayedPos;
 
-			tr->SetPosition(mDelayedTargetPos + mChildPos);
+			tr->SetLocalPosition(mDelayedTargetPos + mChildPos);
 
-			Vector3 pos = tr->GetPosition();
+			Vector3 pos = tr->GetLocalPosition();
 			Vector3 UpVector = Vector3(0.0, 1.0, 0.0);
 
 			Vector3 targetPos = mDelayedTargetPos;
@@ -187,7 +187,7 @@ namespace ya
 			Vector3 up = forward.Cross(right);
 			up.Normalize();
 
-			tr->IsCamera(true);
+			tr->SetCameraMode(true);
 			tr->SetForward(forward);
 			tr->SetUp(up);
 			tr->SetRight(right);
@@ -292,7 +292,7 @@ namespace ya
 				return;
 			}
 
-			Vector3 monPos = monTr->GetPosition();
+			Vector3 monPos = monTr->GetLocalPosition();
 			Vector3 dir = mDelayedTargetPos - monPos;
 			dir.Normalize();
 			dir.y = 0.3f;
@@ -310,7 +310,7 @@ namespace ya
 
 
 
-			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
+			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetLocalPosition();
 			float monPlDist = monPlDiff.Length();
 			if(monPlDist > lockOnDistanceMax)
 				mLockOnTarget = nullptr, mbLockOn = false;
@@ -334,13 +334,13 @@ namespace ya
 		std::vector<GameObject*> mons =  scene->GetGameObjects(eLayerType::Monster);
 		float minDist = 10000000;
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 pos = tr->GetPosition();
+		Vector3 pos = tr->GetLocalPosition();
 		Transform* plTr = mPlayerTarget->GetComponent<Transform>();
-		Vector3 plPos = plTr->GetPosition();
+		Vector3 plPos = plTr->GetLocalPosition();
 		for (GameObject* mon : mons)
 		{
 			Transform* monTr = mon->GetComponent<Transform>();
-			Vector3 monPos = monTr->GetPosition();
+			Vector3 monPos = monTr->GetLocalPosition();
 			Vector3 monCamDiff = monPos - pos;
 			Vector3 monPlDiff = monPos - plPos;
 			float dist = monPlDiff.Length();

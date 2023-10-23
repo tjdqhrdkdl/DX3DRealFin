@@ -25,6 +25,7 @@ namespace ya
 		virtual void FixedUpdate();
 		virtual void PrevRender();
 		virtual void Render();
+		void FrameEnd();
 
 		template <typename T>
 		T* AddComponent()

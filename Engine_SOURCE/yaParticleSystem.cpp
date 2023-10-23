@@ -97,7 +97,7 @@ namespace ya
 		}
 
 		mMaxParticles = mBuffer->GetStride();
-		Vector3 pos = GetOwner()->GetComponent<Transform>()->GetPosition();
+		Vector3 pos = GetOwner()->GetComponent<Transform>()->GetLocalPosition();
 		mCBData.worldPosition = Vector4(pos.x, pos.y, pos.z, 1.0f);
 		mCBData.maxParticles = mMaxParticles;
 		mCBData.radius = mRadius;

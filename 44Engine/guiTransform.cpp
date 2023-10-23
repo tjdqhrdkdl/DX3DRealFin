@@ -27,9 +27,9 @@ namespace gui
 		ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
 		ya::Collider2D* col = GetTarget()->GetComponent<ya::Collider2D>();
 
-		mPosisition = tr->GetPosition();
-		mRotation = tr->GetRotation();
-		mScale = tr->GetScale();
+		mPosition = tr->GetLocalPosition();
+		mRotation = tr->GetLocalRotation();
+		mScale = tr->GetLocalScale();
 		mRotationOffset = tr->GetRotationOffset();
 
 		mForward = tr->Forward();
@@ -46,7 +46,7 @@ namespace gui
 		Component::Update();
 
 		ImGui::Text("Position"); ImGui::SameLine();
-		ImGui::InputFloat3("##Position", (float*)&mPosisition);
+		ImGui::InputFloat3("##Position", (float*)&mPosition);
 
 		ImGui::Text("Rotation"); ImGui::SameLine();
 		ImGui::InputFloat3("##Rotation", (float*)&mRotation);
@@ -70,7 +70,7 @@ namespace gui
 		ImGui::InputFloat3("##ColliderCenter", (float*)&mColliderCenter);
 
 		ya::Transform* camTr = ya::renderer::mainCamera->GetOwner()->GetComponent<ya::Transform>();
-		ya::math::Vector3 camPos = camTr->GetPosition();
+		ya::math::Vector3 camPos = camTr->GetLocalPosition();
 		ImGui::Text("CameraPosition"); ImGui::SameLine();
 		ImGui::InputFloat3("##CameraPosition", (float*)&(camPos));
 
@@ -79,9 +79,9 @@ namespace gui
 			ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
 			//ya::Collider2D* col = GetTarget()->GetComponent<ya::Collider2D>();
 
-			tr->SetPosition(mPosisition);
-			tr->SetRotation(mRotation);
-			tr->SetScale(mScale);
+			tr->SetLocalPosition(mPosition);
+			tr->SetLocalRotation(mRotation);
+			tr->SetLocalScale(mScale);
 			tr->SetRotationOffset(mRotationOffset);
 
 			tr->SetForward(mForward);

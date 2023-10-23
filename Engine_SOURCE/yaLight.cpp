@@ -32,9 +32,9 @@ namespace ya
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		if (eLightType::Point == mAttribute.type)
 		{
-			tr->SetScale(Vector3(mAttribute.radius * 5.f, mAttribute.radius * 5.f, mAttribute.radius * 5.f));
+			tr->SetLocalScale(Vector3(mAttribute.radius * 5.f, mAttribute.radius * 5.f, mAttribute.radius * 5.f));
 		}
-		Vector3 position = tr->GetPosition();
+		Vector3 position = tr->GetLocalPosition();
 		mAttribute.position = Vector4(position.x, position.y, position.z, 1.0f);
 		mAttribute.direction = Vector4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
 		

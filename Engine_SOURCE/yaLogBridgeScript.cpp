@@ -49,10 +49,10 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 	std::vector<eLayerType> layers = {};
 	layers.push_back(eLayerType::Logbridge);
 
-	Vector3 scale = colTransform->GetScale();
+	Vector3 scale = colTransform->GetLocalScale();
 
 	// 절반의 크기를 크기가 1인 기저 벡터에 곱하여 계산
-	Vector3 pos = colTransform->GetPosition();
+	Vector3 pos = colTransform->GetLocalPosition();
 
 	Vector3 xPos = colTransform->Right() * scale / 2.f;
 	Vector3 zPos = colTransform->Forward() * scale / 2.f;
@@ -89,10 +89,10 @@ void ya::LogBridgeScript::OnCollisionStay(Collider2D* collider)
 			if (distance <= scale.z / 2.f)
 			{
 				Vector3 velocity = colRigidbody->GetVelocity();
-				Vector3 pos = colTransform->GetPosition();
+				Vector3 pos = colTransform->GetLocalPosition();
 
 				pos -= velocity * Time::DeltaTime();
-				colTransform->SetPosition(pos);
+				colTransform->SetLocalPosition(pos);
 			}
 
 			break;
@@ -109,10 +109,10 @@ void ya::LogBridgeScript::OnCollisionExit(Collider2D* collider)
 	//if (colRigidbody->IsLogBridge())
 	//{
 	//	Vector3 velocity = colRigidbody->GetVelocity();
-	//	Vector3 pos = colTransform->GetPosition();
+	//	Vector3 pos = colTransform->GetLocalPosition();
 
 	//	pos -= velocity * Time::DeltaTime();
-	//	colTransform->SetPosition(pos);
+	//	colTransform->SetLocalPosition(pos);
 	//}
 
 	//GameObject* colObj = collider->GetOwner();

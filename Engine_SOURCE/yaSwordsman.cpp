@@ -18,10 +18,10 @@ namespace ya
 	{
 		Transform* tr = GetComponent<Transform>();
 		Rigidbody* rigi = GetComponent<Rigidbody>();
-		Vec3 rot = tr->GetRotation();
+		Vec3 rot = tr->GetLocalRotation();
 
 		Vec3 playerPos = GetPlayerPos();
-		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
+		Vec3 monsterPos = GetComponent<Transform>()->GetLocalPosition();
 
 
 		switch (GetSituation())

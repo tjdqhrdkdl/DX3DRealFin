@@ -11,9 +11,9 @@ namespace ya
 	void Musketeerman::Initialize()
 	{
 
-		GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-		//GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
-		GetComponent<Transform>()->SetScale(Vector3(1.5f, 1.5f, 1.5f));
+		GetComponent<Transform>()->SetLocalPosition(Vector3(5.0f, 0.0f, 15.0f));
+		//GetComponent<Transform>()->SetLocalScale(Vector3(1.0f, 1.0f, 1.0f));
+		GetComponent<Transform>()->SetLocalScale(Vector3(1.5f, 1.5f, 1.5f));
 
 		SetName(L"Musketeerman");
 
@@ -47,8 +47,8 @@ namespace ya
 		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
 
 		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
-		meshobjtr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
-		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
+		meshobjtr->SetLocalScale(Vector3(1.0f, 1.0f, 1.0f));
+		meshobjtr->SetLocalRotation(Vector3(180.f, 0.0f, 0.0f));
 		meshobjtr->SetRotationOffset(Vector3(0.0f, 1.0f, 0.0f));
 		meshobjtr->SetParent(GetComponent<Transform>());
 
@@ -71,10 +71,10 @@ namespace ya
 	{
 		Transform* tr = GetComponent<Transform>();
 		Rigidbody* rigi = GetComponent<Rigidbody>();
-		Vec3 rot = tr->GetRotation();
+		Vec3 rot = tr->GetLocalRotation();
 
 		Vec3 playerPos = GetPlayerPos();
-		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
+		Vec3 monsterPos = GetComponent<Transform>()->GetLocalPosition();
 
 		Player* player = (Player*)GetPlayerObject();
 
@@ -231,14 +231,14 @@ namespace ya
 		Musketeerman_Almost* attack = object::Instantiate<Musketeerman_Almost>(eLayerType::MonsterProjectile);
 
 		Transform* tr = GetComponent<Transform>();
-		Vec3 rot = tr->GetRotation();
+		Vec3 rot = tr->GetLocalRotation();
 
 		Transform* attacktr = attack->GetComponent<Transform>();
 
 
-		attacktr->SetPosition(tr->GetPosition() + tr->Forward() * mAttackRange);
-		attacktr->SetScale(Vec3(3.0f, 2.0f, 4.0f));
-		attacktr->SetRotation(rot);
+		attacktr->SetLocalPosition(tr->GetLocalPosition() + tr->Forward() * mAttackRange);
+		attacktr->SetLocalScale(Vec3(3.0f, 2.0f, 4.0f));
+		attacktr->SetLocalRotation(rot);
 
 		Collider2D* attackcol = attack->AddComponent<Collider2D>();
 		attackcol->SetType(eColliderType::Box);
@@ -253,14 +253,14 @@ namespace ya
 		Musketeerman_Shooting* attack = object::Instantiate<Musketeerman_Shooting>(eLayerType::MonsterProjectile);
 
 		Transform* tr = GetComponent<Transform>();
-		Vec3 rot = tr->GetRotation();
+		Vec3 rot = tr->GetLocalRotation();
 
 		Transform* attacktr = attack->GetComponent<Transform>();
 
 
-		attacktr->SetPosition(tr->GetPosition() + tr->Forward() * mAttackRange);
-		attacktr->SetScale(Vec3(1.0f, 1.0f, 1.0f));
-		attacktr->SetRotation(rot);
+		attacktr->SetLocalPosition(tr->GetLocalPosition() + tr->Forward() * mAttackRange);
+		attacktr->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
+		attacktr->SetLocalRotation(rot);
 
 		Collider2D* attackcol = attack->AddComponent<Collider2D>();
 		attackcol->SetType(eColliderType::Box);

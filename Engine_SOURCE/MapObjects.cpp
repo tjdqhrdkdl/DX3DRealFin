@@ -82,9 +82,9 @@ namespace ya
 		Transform* childTr = obj->GetComponent<Transform>();
 		childTr->SetParent(myTr);
 
-		childTr->SetPosition(_positionX, _positionZ, _positionY);
-		childTr->SetRotation(-_rotationX, -_rotationZ, -_rotationY);
-		childTr->SetScale(_scaleX, _scaleZ, _scaleY);
+		childTr->SetLocalPosition(_positionX, _positionZ, _positionY);
+		childTr->SetLocalRotation(-_rotationX, -_rotationZ, -_rotationY);
+		childTr->SetLocalScale(_scaleX, _scaleZ, _scaleY);
 		return obj;
 	}
 

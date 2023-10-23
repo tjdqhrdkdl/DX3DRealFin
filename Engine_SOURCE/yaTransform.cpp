@@ -10,15 +10,23 @@ namespace ya
 
 	Transform::Transform()
 		: Component(eComponentType::Transform)
-		, mForward(Vector3::Forward)
-		, mRight(Vector3::Right)
-		, mUp(Vector3::Up)
-		, mScale(Vector3::One)
-		, mRotation(Vector3::Zero)
-		, mQuaternion()
-		, mPosition(Vector3::Zero)
-		, mRotationOffset(Vector3::Zero)
-		, mParent(nullptr)
+		, mParent()
+		, mLocalScale(Vector3::One)
+		, mLocalRotation(Vector3::Zero)
+		, mLocalPosition(Vector3::Zero)
+		, mLocalMatrix(Matrix::Identity)
+		, mWorldScale(Vector3::One)
+
+		, mLocalRotationOffset()
+
+
+		, mWorldRotation()
+		, mWorldRotationQuaternion()
+		, mWorldMatrix(Matrix::Identity)
+		, mWorldForward(Vector3::UnitX)
+		, mWorldRight(Vector3::UnitY)
+		, mWorldUp(Vector3::UnitZ)
+		, mbCameraMode()
 	{
 	}
 
@@ -26,85 +34,54 @@ namespace ya
 	{
 	}
 
-	void Transform::Initialize()
-	{
-		//cos(180);
-	}
-
-	void Transform::Update()
-	{
-		//실제 로직상 캐릭터이동 처리
-	}
 
 	void Transform::FixedUpdate()
 	{
-		//렌더링에 사용될 위치값들을 업데이트
-
-		// 월드 행렬 생성
-
-
 		// 크기 변환 행렬
-		Vector3 finalScale = mScale;
-		Matrix scale = Matrix::CreateScale(finalScale);
-		mMatScale = scale;
+		mLocalMatrix = Matrix::CreateScale(mLocalScale);
+
 		// 회전 변환 행렬
-		//Matrix rotation = Matrix::Identity;
-
-		Vector3 radian = mRotation * gDegreeToRadFactor;
-		//rotation = Matrix::CreateRotationX(radian.x);
-		//rotation *= Matrix::CreateRotationY(radian.y);
-		//rotation *= Matrix::CreateRotationZ(radian.z);
-
-		//mMatRotation = rotation;
-
-		mQuaternion = Quaternion::CreateFromPitchYawRoll(radian);
-		Matrix rotation = Matrix::CreateFromQuaternion(mQuaternion);
+		Vector3 radian = mLocalRotation * gDegreeToRadFactor;
+		mLocalRotationQuaternion = Quaternion::CreateFromPitchYawRoll(radian);
+		mLocalMatrix *= Matrix::CreateFromQuaternion(mLocalRotationQuaternion);
 
 		// 이동 변환 행렬
-		Matrix position = Matrix::Identity;
-		position.Translation(mPosition);
-		mMatTranslation = position;
-
-		Matrix rotationOffset;
-		rotationOffset.Translation(mRotationOffset);
-		mMatRotationOffset = rotationOffset;
-
-		mWorld = scale * rotationOffset * rotation * position;
-
-
-		if (mbCamera)
-		{
-		}
-		else
-		{
-			mForward = Vector3::TransformNormal(Vector3::Forward, rotation);
-			mRight = Vector3::TransformNormal(Vector3::Right, rotation);
-			mUp = Vector3::TransformNormal(Vector3::Up, rotation);
-		}
-		// 카메라 컴포넌트에서 세팅해준다
-		// 뷰행렬 세팅
-		// 프로젝션 행렬 세팅
+		mLocalMatrix *= Matrix::CreateTranslation(mLocalPosition);
 
 
 		if (mParent)
 		{
-			mWorld *= mParent->mWorld;
-			mFinalScale = mScale * mParent->mFinalScale;
+			mWorldScale = mParent->GetWorldScale() * mLocalScale;
+			mWorldRotation = mParent->GetWorldRotation() + mLocalRotation;
+			mWorldRotationQuaternion = Quaternion::CreateFromPitchYawRoll(mWorldRotation);
 
-			Matrix matScale = Matrix::CreateScale(mFinalScale);
-			Matrix matRT = matScale.Invert() * mWorld;
-			matRT._41 = 0;
-			matRT._42 = 0;
-			matRT._43 = 0;
+			mWorldMatrix = mLocalMatrix * mParent->GetWorldMatrix();
 
-			mForward = Vector3::TransformNormal(Vector3::Forward, matRT);
-			mRight = Vector3::TransformNormal(Vector3::Right, matRT);
-			mUp = Vector3::TransformNormal(Vector3::Up, matRT);
+			//Matrix matScale = Matrix::CreateScale(mWorldScale);
+			//Matrix matRT = matScale.Invert() * mWorld;
+			//matRT._41 = 0;
+			//matRT._42 = 0;
+			//matRT._43 = 0;
+
+			//mForward = Vector3::TransformNormal(Vector3::Forward, matRT);
+			//mRight = Vector3::TransformNormal(Vector3::Right, matRT);
+			//mUp = Vector3::TransformNormal(Vector3::Up, matRT);
 		}
 		
 		else
 		{
-			mFinalScale = mScale;
+			mWorldScale = mLocalScale;
+			mWorldRotation = mLocalRotation;
+			mWorldRotationQuaternion = mLocalRotationQuaternion;
+			mWorldMatrix = mLocalMatrix;
+		}
+
+		if (false == mbCameraMode)
+		{
+			Matrix WorldRot = Matrix::CreateFromQuaternion(mWorldRotationQuaternion);
+			mWorldForward = WorldRot.Forward();
+			mWorldRight = WorldRot.Right();
+			mWorldUp = WorldRot.Up();
 		}
 	}
 
@@ -123,8 +100,8 @@ namespace ya
 	{
 
 		renderer::TransformCB trCb = {};
-		trCb.world = mWorld;
-		trCb.inverseWorld = mWorld.Invert();
+		trCb.world = mWorldMatrix;
+		trCb.inverseWorld = mWorldMatrix.Invert();
 		trCb.view = Camera::GetGpuViewMatrix();
 		trCb.inverseView = trCb.view.Invert();
 		trCb.projection = Camera::GetGpuProjectionMatrix();

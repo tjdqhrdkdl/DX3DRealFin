@@ -61,7 +61,7 @@ namespace ya
 		checkObj->SetParentObj(obj);
 
 		Transform* checkTransform = mCheck->GetComponent<Transform>();
-		checkTransform->SetScale(mTransform->GetScale());
+		checkTransform->SetLocalScale(mTransform->GetLocalScale());
 
 		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
 
@@ -159,7 +159,7 @@ namespace ya
 			return;
 		}
 
-		Vector3 rot = mTransform->GetRotation();
+		Vector3 rot = mTransform->GetLocalRotation();
 		mRotateDirection = dir;
 		
 		if (speed > 0.0f)
@@ -171,7 +171,7 @@ namespace ya
 			rot += mSpeed * 4.0f * mRotateDirection * Time::DeltaTime();
 		}
 
-		mTransform->SetRotation(rot);
+		mTransform->SetLocalRotation(rot);
 	}
 
 	/// <summary>
@@ -218,8 +218,8 @@ namespace ya
 
 	bool ActionScript::ForwardCheck(Vector3 movement)
 	{
-		Vector3 position = mTransform->GetPosition();
-		Vector3 scale = mTransform->GetScale();
+		Vector3 position = mTransform->GetLocalPosition();
+		Vector3 scale = mTransform->GetLocalScale();
 		Vector3 colScale = mCollider->GetSize();
 		Vector3 velocity = movement * Time::DeltaTime();
 		Vector3 dir = movement;

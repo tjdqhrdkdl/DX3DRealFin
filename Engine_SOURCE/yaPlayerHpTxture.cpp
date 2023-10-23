@@ -46,9 +46,9 @@ namespace ya
 
 				Transform* hptr = mPlayerHpLayout->GetComponent<Transform>();
 
-				hptr->SetPosition(Vector3(-650.0f, -400.f, -10.f));
+				hptr->SetLocalPosition(Vector3(-650.0f, -400.f, -10.f));
 
-				hptr->SetScale(Vector3(180.0f, 50.0f, 50.0f));
+				hptr->SetLocalScale(Vector3(180.0f, 50.0f, 50.0f));
 
 
 
@@ -67,10 +67,10 @@ namespace ya
 
 				Transform* hpbartr = mPlayerHpBar->GetComponent<Transform>();
 
-				//hpbartr->SetPosition(Vector3(0.0f, 0.f, 0.f));
-				hpbartr->SetPosition(Vector3(-652.0f, -400.f, -10.f));
+				//hpbartr->SetLocalPosition(Vector3(0.0f, 0.f, 0.f));
+				hpbartr->SetLocalPosition(Vector3(-652.0f, -400.f, -10.f));
 
-				hpbartr->SetScale(Vector3(155.0f, 10.0f, 50.0f));
+				hpbartr->SetLocalScale(Vector3(155.0f, 10.0f, 50.0f));
 				MeshRenderer* meshRenderer = mPlayerHpBar->AddComponent<MeshRenderer>();
 				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 				std::shared_ptr<Material> mat = Resources::Find<Material>(L"MeterMaterial");
@@ -91,8 +91,8 @@ namespace ya
 
 				Transform* Resurrectiontr = mPlayerResurrection->GetComponent<Transform>();
 
-				Resurrectiontr->SetPosition(Vector3(-680.0f, -360.0f, -10.0f));
-				Resurrectiontr->SetScale(Vector3(30.0f, 30.0f, 50.0f));
+				Resurrectiontr->SetLocalPosition(Vector3(-680.0f, -360.0f, -10.0f));
+				Resurrectiontr->SetLocalScale(Vector3(30.0f, 30.0f, 50.0f));
 
 				MeshRenderer* meshRenderer = mPlayerResurrection->AddComponent<MeshRenderer>();
 				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -115,8 +115,8 @@ namespace ya
 
 				Transform* postureLayouttr = mPlayerpostureLayout->GetComponent<Transform>();
 
-				postureLayouttr->SetPosition(Vector3(-30.0f, -360.0f, -10.0f));
-				postureLayouttr->SetScale(Vector3(230.0f, 20.0f, 50.0f));
+				postureLayouttr->SetLocalPosition(Vector3(-30.0f, -360.0f, -10.0f));
+				postureLayouttr->SetLocalScale(Vector3(230.0f, 20.0f, 50.0f));
 
 				MeshRenderer* meshRenderer = mPlayerpostureLayout->AddComponent<MeshRenderer>();
 				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -133,8 +133,8 @@ namespace ya
 
 				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
 
-				postureBartr->SetPosition(Vector3(25.0f, -360.0f, -10.0f));
-				postureBartr->SetScale(Vector3(115.0f, 10.0f, 50.0f));
+				postureBartr->SetLocalPosition(Vector3(25.0f, -360.0f, -10.0f));
+				postureBartr->SetLocalScale(Vector3(115.0f, 10.0f, 50.0f));
 
 				MeshRenderer* meshRenderer = PlayerpostureBar->AddComponent<MeshRenderer>();
 				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -150,9 +150,9 @@ namespace ya
 
 				Transform* postureBartr = PlayerpostureBar->GetComponent<Transform>();
 
-				postureBartr->SetPosition(Vector3(-88.0f, -360.0f, -10.0f));
-				postureBartr->SetScale(Vector3(115.0f, 10.0f, 50.0f));
-				postureBartr->SetRotation(Vector3(0.0f, 180.0f, 0.0f));
+				postureBartr->SetLocalPosition(Vector3(-88.0f, -360.0f, -10.0f));
+				postureBartr->SetLocalScale(Vector3(115.0f, 10.0f, 50.0f));
+				postureBartr->SetLocalRotation(Vector3(0.0f, 180.0f, 0.0f));
 
 				MeshRenderer* meshRenderer = PlayerpostureBar->AddComponent<MeshRenderer>();
 				meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -238,8 +238,8 @@ namespace ya
 
 
 		Transform* Resurrectiontr = mPlayerResurrection->GetComponent<Transform>();
-		Resurrectiontr->SetPosition(Vector3(-680.0f, -360.f, -10.f));
-		Resurrectiontr->SetScale(Vector3(30.0f, 30.0f, 50.0f));
+		Resurrectiontr->SetLocalPosition(Vector3(-680.0f, -360.f, -10.f));
+		Resurrectiontr->SetLocalScale(Vector3(30.0f, 30.0f, 50.0f));
 
 	}
 
@@ -251,8 +251,8 @@ namespace ya
 
 
 		Transform* Resurrectiontr = mPlayerResurrection->GetComponent<Transform>();
-		Resurrectiontr->SetPosition(Vector3(-640.0f, -360.f, -10.f));
-		Resurrectiontr->SetScale(Vector3(200.0f, 20.0f, 50.0f));
+		Resurrectiontr->SetLocalPosition(Vector3(-640.0f, -360.f, -10.f));
+		Resurrectiontr->SetLocalScale(Vector3(200.0f, 20.0f, 50.0f));
 	}
 
 

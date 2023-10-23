@@ -126,7 +126,7 @@ namespace ya
 	void Camera::CreateViewMatrix()
 	{
 		//Transform* tr = GetOwner()->GetComponent<Transform>();
-		//Vector3 pos = tr->GetPosition();
+		//Vector3 pos = tr->GetLocalPosition();
 
 		//// Crate Translate view matrix
 		//mView = Matrix::Identity;
@@ -145,7 +145,7 @@ namespace ya
 		//mView *= viewRotate;
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 pos = tr->GetPosition();
+		Vector3 pos = tr->GetLocalPosition();
 
 		mView = Matrix::Identity;
 		mView = Matrix::CreateLookAtLH(pos, pos + tr->Forward(), tr->Up());
@@ -156,7 +156,7 @@ namespace ya
 	{
 		Matrix view = Matrix::Identity;
 
-		Vector3 pos = tr->GetPosition();
+		Vector3 pos = tr->GetLocalPosition();
 
 		view = Matrix::CreateLookAtLH(pos, pos + tr->Forward(), tr->Up());
 

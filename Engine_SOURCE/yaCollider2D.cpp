@@ -38,13 +38,13 @@ namespace ya
 	{
 		if (!mbActive)
 			return;
-		Vector3 scale = mTransform->GetScale();
+		Vector3 scale = mTransform->GetLocalScale();
 		scale *= Vector3(mSize.x, mSize.y, mSize.z);
 
-		Vector3 rotation = mTransform->GetRotation();
+		Vector3 rotation = mTransform->GetLocalRotation();
 		rotation += mRotation;
 
-		Vector3 position = mTransform->GetPosition();
+		Vector3 position = mTransform->GetLocalPosition();
 		Vector3 colliderPos = position + Vector3(mCenter.x, mCenter.y, mCenter.z);
 		mPosition = colliderPos;
 

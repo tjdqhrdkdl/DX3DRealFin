@@ -181,18 +181,18 @@ namespace gui
 		DebugObject* debugObj = mDebugObjects[(UINT)mesh.type];
 		
 		ya::Transform* tr = debugObj->GetComponent<ya::Transform>();
-		tr->SetPosition(mesh.position);
-		tr->SetRotation(mesh.rotation);
+		tr->SetLocalPosition(mesh.position);
+		tr->SetLocalRotation(mesh.rotation);
 		tr->SetParent((ya::Transform*)mesh.parent);
 		tr->SetRotationOffset(mesh.rotationOffset);
 		if (mesh.type == eColliderType::Rect)
-			tr->SetScale(mesh.scale);
+			tr->SetLocalScale(mesh.scale);
 		else if (mesh.type == eColliderType::Box)
-			tr->SetScale(mesh.scale);
+			tr->SetLocalScale(mesh.scale);
 		else if (mesh.type == eColliderType::Circle)
-			tr->SetScale(Vector3(mesh.radius));
+			tr->SetLocalScale(Vector3(mesh.radius));
 		else if (mesh.type == eColliderType::Sphere)
-			tr->SetScale(Vector3(mesh.radius));
+			tr->SetLocalScale(Vector3(mesh.radius));
 
 		ya::BaseRenderer* renderer = debugObj->GetComponent<ya::BaseRenderer>();
 		ya::Camera* camera = ya::renderer::mainCamera;

@@ -33,7 +33,7 @@ namespace ya
 			
 			BoneCollider* katana = (BoneCollider*)collider->GetOwner();
 			Transform* katanatr = katana->GetComponent<Transform>();
-			if (katanatr->GetPosition() == Vector3::Zero)
+			if (katanatr->GetLocalPosition() == Vector3::Zero)
 				return;
 
 
@@ -74,7 +74,7 @@ namespace ya
 
 
 					Vector3 prevPos = katana->GetPrevPos();
-					Vector3 culPos = katana->GetComponent<Transform>()->GetPosition();
+					Vector3 culPos = katana->GetComponent<Transform>()->GetLocalPosition();
 					Vector3 Dirpos = culPos - prevPos;
 					Dirpos.Normalize();
 					if (Dirpos.x > 0)

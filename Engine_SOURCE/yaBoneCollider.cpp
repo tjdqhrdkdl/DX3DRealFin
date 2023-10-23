@@ -13,12 +13,12 @@ namespace ya
     }
     void BoneCollider::Initialize()
     {
-        mCulPos = GetComponent<Transform>()->GetPosition();
+        mCulPos = GetComponent<Transform>()->GetLocalPosition();
         GameObject::Initialize();
     }
     void BoneCollider::Update()
     {
-        mCulPos = GetComponent<Transform>()->GetPosition();
+        mCulPos = GetComponent<Transform>()->GetLocalPosition();
         Collider2D* col = GetComponent<Collider2D>();
         if (col)
         {
@@ -51,10 +51,10 @@ namespace ya
                         //본데이터 받아서 오브젝트 위치/회전 변경
                         Transform* tr = GetComponent<Transform>();
                         Vector3 pos = mBoneMat.keyFrames[clip][frame].translate;
-                        tr->SetPosition(pos);
+                        tr->SetLocalPosition(pos);
                         Quaternion q = mBoneMat.keyFrames[clip][frame].rotation;
                         Vector3 rot = q.ToEuler();
-                        tr->SetRotation(rot * 180 / XM_PI);
+                        tr->SetLocalRotation(rot * 180 / XM_PI);
                     }
                     else
                     {
@@ -102,7 +102,7 @@ namespace ya
         SetName(L"Weapon");
         Transform* tr = GetComponent<Transform>();
         Transform* meshTr = meshObject->GetComponent<Transform>();
-        tr->SetScale(Vector3(3.f, 0.3f, 0.3f));
+        tr->SetLocalScale(Vector3(3.f, 0.3f, 0.3f));
         tr->SetParent(meshTr);
 
         mAnimationOffsets.resize(mMeshData->GetAnimationClipCount());
@@ -111,7 +111,7 @@ namespace ya
     void BoneCollider::SetScale(Vector3 scale)
     {
         Transform* tr = GetComponent<Transform>();
-        tr->SetScale(scale);
+        tr->SetLocalScale(scale);
     }
     void BoneCollider::SetAnimOffSet(UINT animIdx, Vector3 offset)
     {

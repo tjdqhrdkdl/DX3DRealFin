@@ -122,7 +122,7 @@ namespace ya::enums
 	};
 
 
-	enum class RotationOrder : uint8
+	enum class RotationOrder : UINT8
 	{
 		XYZ,
 		XZY,

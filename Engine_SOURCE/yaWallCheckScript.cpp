@@ -47,7 +47,7 @@ namespace ya
 		{
 
 			Vector3 objVelocity = objRigidbody->GetVelocity();
-			Vector3 objPos = objTransform->GetPosition();
+			Vector3 objPos = objTransform->GetLocalPosition();
 
 			Vector3 wallNormal = colTransform->Right();
 
@@ -63,8 +63,8 @@ namespace ya
 			{
 				objPos -= objVelocity * Time::DeltaTime();
 
-				objTransform->SetPosition(objPos);
-				checkTransform->SetPosition(objPos);
+				objTransform->SetLocalPosition(objPos);
+				checkTransform->SetLocalPosition(objPos);
 			}
 		}
 	}
@@ -84,7 +84,7 @@ namespace ya
 		if (nullptr != colObj->GetScript<WallScript>())
 		{
 			Vector3 objVelocity = objRigidbody->GetVelocity();
-			Vector3 objPos = objTransform->GetPosition();
+			Vector3 objPos = objTransform->GetLocalPosition();
 
 			Vector3 wallNormal = colTransform->Right();
 

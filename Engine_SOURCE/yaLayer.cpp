@@ -10,7 +10,7 @@ namespace ya
 	//	Transform* aTr = a->GetComponent<Transform>();
 	//	Transform* bTr = b->GetComponent<Transform>();
 
-	//	if (aTr->GetPosition().z <= bTr->GetPosition().z)
+	//	if (aTr->GetLocalPosition().z <= bTr->GetLocalPosition().z)
 	//	{
 	//		return true;
 	//	}
@@ -90,6 +90,21 @@ namespace ya
 				continue;
 
 			obj->Render();
+		}
+	}
+
+	void Layer::FrameEnd()
+	{
+		for (int i = 0; i < mGameObjects.size(); i++)
+		{
+			GameObject* obj = mGameObjects[i];
+
+			if (obj == nullptr)
+				continue;
+			if (obj->GetState() != GameObject::eState::Active)
+				continue;
+
+			obj->FrameEnd();
 		}
 	}
 

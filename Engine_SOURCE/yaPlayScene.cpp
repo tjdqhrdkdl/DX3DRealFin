@@ -42,7 +42,7 @@ namespace ya
 		// Main Camera Game Object
 		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera, this);
 		cameraObj->SetName(L"MainCamera");
-		cameraObj->GetComponent<Transform>()->SetPosition(Vector3(20.0f, .0f, -80.0f));
+		cameraObj->GetComponent<Transform>()->SetLocalPosition(Vector3(20.0f, .0f, -80.0f));
 		Camera* cameraComp = cameraObj->AddComponent<Camera>();
 		cameraComp->SetProjectionType(Camera::eProjectionType::Perspective);
 		cameraComp->TurnLayerMask(eLayerType::UI, false);
@@ -51,8 +51,8 @@ namespace ya
 
 
 		Player* player = object::Instantiate<Player>(eLayerType::Player, this);
-		player->GetComponent<Transform>()->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
-		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+		player->GetComponent<Transform>()->SetLocalPosition(Vector3(30.0f, 0.0f, -30.0f));
+		player->GetComponent<Transform>()->SetLocalScale(Vector3(1.0f, 1.0f, 1.0f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -68,7 +68,7 @@ namespace ya
 		{
 			GameObject* uiCam = object::Instantiate<GameObject>(eLayerType::Camera, this);
 			uiCam->SetName(L"UICamera1");
-			uiCam->GetComponent<Transform>()->SetPosition(Vector3::Zero);
+			uiCam->GetComponent<Transform>()->SetLocalPosition(Vector3::Zero);
 			Camera* cameraComp = uiCam->AddComponent<Camera>();
 			cameraComp->SetProjectionType(Camera::eProjectionType::Orthographic);
 			cameraComp->DisableLayerMasks();
@@ -79,9 +79,9 @@ namespace ya
 			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall");
 			Transform* wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(93.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 1.0f));
-			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
+			wallTr->SetLocalPosition(Vector3(93.0f, 15.0f, 10.0f));
+			wallTr->SetLocalScale(Vector3(50.0f, 50.0f, 1.0f));
+			wallTr->SetLocalRotation(Vector3(0.0f, 90.0f, 0.0f));
 			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -95,9 +95,9 @@ namespace ya
 			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall1");
 			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(66.f, 15.0f, 52.0f));
-			wallTr->SetScale(Vector3(50.f, 50.f, 1.f));
-			wallTr->SetRotation(Vector3(0.0f, 45.f, 0.0f));
+			wallTr->SetLocalPosition(Vector3(66.f, 15.0f, 52.0f));
+			wallTr->SetLocalScale(Vector3(50.f, 50.f, 1.f));
+			wallTr->SetLocalRotation(Vector3(0.0f, 45.f, 0.0f));
 			wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -109,9 +109,9 @@ namespace ya
 			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
 			wall->SetName(L"wall2");
 			wallTr = wall->GetComponent<Transform>();
-			wallTr->SetPosition(Vector3(25.0f, 15.0f, 10.0f));
-			wallTr->SetScale(Vector3(50.0f, 50.0f, 4.0f));
-			wallTr->SetRotation(Vector3(0.0f, 90.0f, 0.0f));
+			wallTr->SetLocalPosition(Vector3(25.0f, 15.0f, 10.0f));
+			wallTr->SetLocalScale(Vector3(50.0f, 50.0f, 4.0f));
+			wallTr->SetLocalRotation(Vector3(0.0f, 90.0f, 0.0f));
 			wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -123,8 +123,8 @@ namespace ya
 
 		/*{
 			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
-			player->GetComponent<Transform>()->SetPosition(Vector3(-25.0f, 10.0f, 0.0f));
-			player->GetComponent<Transform>()->SetScale(Vector3(10.0f, 10.0f, 10.0f));
+			player->GetComponent<Transform>()->SetLocalPosition(Vector3(-25.0f, 10.0f, 0.0f));
+			player->GetComponent<Transform>()->SetLocalScale(Vector3(10.0f, 10.0f, 10.0f));
 			player->SetName(L"PPP");
 			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -137,8 +137,8 @@ namespace ya
 		{
 			GameObject* skyBox = object::Instantiate<GameObject>(eLayerType::None, this);
 
-			skyBox->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-			skyBox->GetComponent<Transform>()->SetScale(Vector3(500.0f, 500.0f, 500.0f));
+			skyBox->GetComponent<Transform>()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
+			skyBox->GetComponent<Transform>()->SetLocalScale(Vector3(500.0f, 500.0f, 500.0f));
 			skyBox->SetName(L"SkyBox");
 			MeshRenderer* mr = skyBox->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -150,9 +150,9 @@ namespace ya
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground");
 			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, -11.0f, 10.0f));
-			groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
-			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			groundTr->SetLocalPosition(Vector3(0.0f, -11.0f, 10.0f));
+			groundTr->SetLocalScale(Vector3(1000.0f, 4.0f, 1000.0f));
+			groundTr->SetLocalRotation(Vector3(0.0f, 0.0f, 0.0f));
 			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -166,9 +166,9 @@ namespace ya
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground1");
 			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, -5.0f, 10.0f));
-			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
-			groundTr->SetRotation(Vector3(30.0f, 0.0f, 0.0f));
+			groundTr->SetLocalPosition(Vector3(0.0f, -5.0f, 10.0f));
+			groundTr->SetLocalScale(Vector3(20.0f, 1.0f, 30.0f));
+			groundTr->SetLocalRotation(Vector3(30.0f, 0.0f, 0.0f));
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -182,9 +182,9 @@ namespace ya
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground2");
 			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
-			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
-			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
+			groundTr->SetLocalPosition(Vector3(100.0f, -5.0f, -15.0f));
+			groundTr->SetLocalScale(Vector3(20.0f, 1.0f, 30.0f));
+			groundTr->SetLocalRotation(Vector3(-30.0f, 0.0f, 0.0f));
 			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -197,8 +197,8 @@ namespace ya
 			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::None, this);
 			directionalLight->SetName(L"directionalLight");
 
-			directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 100.0f, 0.0f));
-			directionalLight->GetComponent<Transform>()->SetRotation(Vector3(45.0f, 0.0f, 0.0f));
+			directionalLight->GetComponent<Transform>()->SetLocalPosition(Vector3(0.0f, 100.0f, 0.0f));
+			directionalLight->GetComponent<Transform>()->SetLocalRotation(Vector3(45.0f, 0.0f, 0.0f));
 
 			Light* lightComp = directionalLight->AddComponent<Light>();
 			lightComp->SetType(eLightType::Directional);
@@ -211,9 +211,9 @@ namespace ya
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground2");
 			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
-			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
-			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
+			groundTr->SetLocalPosition(Vector3(100.0f, -5.0f, -15.0f));
+			groundTr->SetLocalScale(Vector3(20.0f, 1.0f, 30.0f));
+			groundTr->SetLocalRotation(Vector3(-30.0f, 0.0f, 0.0f));
 			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
@@ -239,8 +239,8 @@ namespace ya
 
 			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
 			//Transform* objTransform = obj->GetComponent<Transform>();
-			//objTransform->SetPosition(-85.f, 35.f, 130.f);
-			//objTransform->SetRotation(-90.f, 0.f, 0.f);
+			//objTransform->SetLocalPosition(-85.f, 35.f, 130.f);
+			//objTransform->SetLocalRotation(-90.f, 0.f, 0.f);
 			//2411 5640 5710 6600 6610 6620 3651 3313 
 		}
 
@@ -249,8 +249,8 @@ namespace ya
 			GameObject* hookTarget = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			hookTarget->SetName(L"hookTarget1");
 			Transform* groundTr = hookTarget->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(40.0f, 10.0f, -40.0f));
-			groundTr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+			groundTr->SetLocalPosition(Vector3(40.0f, 10.0f, -40.0f));
+			groundTr->SetLocalScale(Vector3(1.0f, 1.0f, 1.0f));
 			MeshRenderer* groundRenderer = hookTarget->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);

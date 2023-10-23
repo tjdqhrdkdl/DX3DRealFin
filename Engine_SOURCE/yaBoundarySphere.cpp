@@ -21,13 +21,13 @@ namespace ya
 	}
 	void BoundarySphere::FixedUpdate()
 	{
-		Vector3 scale = mTransform->GetScale();
+		Vector3 scale = mTransform->GetLocalScale();
 		mMaxScale = scale.x;
 		mMaxScale = max(mMaxScale, scale.y);
 		mMaxScale = max(mMaxScale, scale.z);
-		Vector3 rotation = mTransform->GetRotation();
+		Vector3 rotation = mTransform->GetLocalRotation();
 
-		Vector3 position = mTransform->GetPosition();
+		Vector3 position = mTransform->GetLocalPosition();
 		Vector3 centerPos = position + Vector3(mCenter.x * scale.x, mCenter.y * scale.y, mCenter.z * scale.z);
 
 		DebugMesh meshAttribute = {};
@@ -40,7 +40,7 @@ namespace ya
 
 		Vector4 pos = Vector4::Transform(Vector4(mCenter.x, mCenter.y, mCenter.z, 1), mTransform->GetWorldMatrix());
 		mPosition = Vector3(pos.x, pos.y, pos.z);
-		scale = mTransform->GetFinalScale();
+		scale = mTransform->GetWorldScale();
 
 		mMaxScale = scale.x;
 		mMaxScale = max(mMaxScale, scale.y);

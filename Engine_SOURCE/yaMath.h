@@ -524,7 +524,7 @@ namespace ya::math
         Vector3 Forward() const noexcept { return Vector3(_31, _32, _33); }
         void Forward(const Vector3& v) noexcept { _31 = v.x; _32 = v.y; _33 = v.z; }
 
-        Vector3 Backward() const noexcept { return Vector3(_31, _32, _33); }
+        Vector3 Backward() const noexcept { return Vector3(-_31, -_32, -_33); }
         void Backward(const Vector3& v) noexcept { _31 = v.x; _32 = v.y; _33 = v.z; }
 
         Vector3 Translation() const  noexcept { return Vector3(_41, _42, _43); }

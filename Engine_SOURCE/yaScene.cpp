@@ -46,6 +46,12 @@ namespace ya
 		{
 			layer.Render();
 		}
+
+		//모든 레이어 렌더링이 끝나면 FrameEnd 호출
+		for (Layer& layer : mLayers)
+		{
+			layer.FrameEnd();
+		}
 	}
 	void Scene::Destroy()
 	{

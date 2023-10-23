@@ -37,8 +37,8 @@ namespace ya
 			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::None, this);
 			directionalLight->SetName(L"Title_directionalLight");
 
-			directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-			directionalLight->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			directionalLight->GetComponent<Transform>()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
+			directionalLight->GetComponent<Transform>()->SetLocalRotation(Vector3(0.0f, 0.0f, 0.0f));
 
 			Light* lightComp = directionalLight->AddComponent<Light>();
 			lightComp->SetType(eLightType::Directional);
@@ -57,8 +57,8 @@ namespace ya
 			titleCopy2->SetName(L"TitleScene_text");
 
 			Transform* titleCopy2Tr = titleCopy2->GetComponent<Transform>();
-			titleCopy2Tr->SetPosition(Vector3(0.0f, 0.f, 0.f));
-			titleCopy2Tr->SetScale(Vector3(605.0f, 380.0f, 0.0f));
+			titleCopy2Tr->SetLocalPosition(Vector3(0.0f, 0.f, 0.f));
+			titleCopy2Tr->SetLocalScale(Vector3(605.0f, 380.0f, 0.0f));
 
 			std::shared_ptr<Material> titleCopy2tMaterial = std::make_shared<Material>();
 			titleCopy2tMaterial->SetRenderingMode(eRenderingMode::Transparent);
@@ -76,8 +76,8 @@ namespace ya
 			titleCopy->SetName(L"TitleScene_Sekiro_shadowsdietwice");
 
 			Transform* titleCopyTr = titleCopy->GetComponent<Transform>();
-			titleCopyTr->SetPosition(Vector3(0.0f, 0.f, 0.f));
-			titleCopyTr->SetScale(Vector3(1000.0f, 250.0f, 0.0f));
+			titleCopyTr->SetLocalPosition(Vector3(0.0f, 0.f, 0.f));
+			titleCopyTr->SetLocalScale(Vector3(1000.0f, 250.0f, 0.0f));
 
 			std::shared_ptr<Material> titleCopytMaterial = std::make_shared<Material>();
 			titleCopytMaterial->SetRenderingMode(eRenderingMode::Transparent);

@@ -499,7 +499,7 @@ namespace ya
 		Transform* tr = colObj->GetComponent<Transform>();
 		Collider2D* col = colObj->GetComponent<Collider2D>();
 		Matrix worldMatrix = tr->GetWorldMatrix();
-		Vector3 scale = tr->GetFinalScale();
+		Vector3 scale = tr->GetWorldScale();
 		Vector3 colScale = col->GetSize();
 		scale.x *= colScale.x;
 		scale.y *= colScale.y;

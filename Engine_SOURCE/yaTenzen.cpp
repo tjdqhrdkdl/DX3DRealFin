@@ -124,7 +124,7 @@ namespace ya
 				mKatanaHandleObjectTr = childObjects[i]->GetComponent<Transform>();
 		}
 		if(mKatanaObjectTr)
-			mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+			mKatanaObjectTr->SetLocalScale(Vector3(0, 0, 0));
 		
 		
 		
@@ -132,15 +132,15 @@ namespace ya
 
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
-		tr->SetPosition(Vector3(0, 20, 0));
-		tr->SetScale(Vector3(2, 2, 2));
+		tr->SetLocalPosition(Vector3(0, 20, 0));
+		tr->SetLocalScale(Vector3(2, 2, 2));
 		mTransform = tr;
 
 		//메시 데이터 트랜스폼
 		Transform* meshTr = object->GetComponent<Transform>();
-		meshTr->SetRotation(Vector3(180, 0, 0));
-		meshTr->SetPosition(Vector3(0, -1, 0));
-		meshTr->SetScale(Vector3(1, 1, 1));
+		meshTr->SetLocalRotation(Vector3(180, 0, 0));
+		meshTr->SetLocalPosition(Vector3(0, -1, 0));
+		meshTr->SetLocalScale(Vector3(1, 1, 1));
 		meshTr->SetParent(tr);
 
 
@@ -313,7 +313,7 @@ namespace ya
 		{
 			mAnimationName = L"WalkNoSword";
 			float cosTheta = EyeSightCheck();
-			Vector3 dir = mPlayerLastPosition - mTransform->GetPosition();
+			Vector3 dir = mPlayerLastPosition - mTransform->GetLocalPosition();
 			dir.y = 0;
 
 			if (dir.Length() < 5)
@@ -374,7 +374,7 @@ namespace ya
 					&& !(STATE_HAVE(TenzenState_OnHit)) && !(STATE_HAVE(TenzenState_AttackBlocked))
 					&& !(STATE_HAVE(TenzenState_Groggy)))
 				{
-					Vector3 pos = mTransform->GetPosition();
+					Vector3 pos = mTransform->GetLocalPosition();
 					Vector3 playerPos = GetPlayerPos();
 					
 					//플레이어 거리가 너무 멀어졌을 때
@@ -456,7 +456,7 @@ namespace ya
 			ADD_STATE(TenzenState_Move);
 			mMoveDir = mTransform->Forward();
 			SetSpeed(200);
-			Vector3 pos = mTransform->GetPosition();
+			Vector3 pos = mTransform->GetLocalPosition();
 			Vector3 playerPos = GetPlayerPos();
 			if (Vector3::Distance(pos, playerPos) < 10)
 			{
@@ -569,8 +569,8 @@ namespace ya
 		//End Event 는 애니메이션이 종료 또는 Complete될 때 생기는 이벤트
 		//Start Event 는 애니메이션이 다른 애니메이션으로 전환되며 새로운 애니메이션이 시작할 때 생기는 이벤트
 		mMeshData->GetAnimationFrameEvent(L"DrawSword", 20) = [this]() {
-		mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
-		mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0));
+		mKatanaObjectTr->SetLocalScale(Vector3(1, 1, 1));
+		mKatanaHandleObjectTr->SetLocalScale(Vector3(0, 0, 0));
 		};
 
 		mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
@@ -677,13 +677,13 @@ namespace ya
 
 	float Tenzen::EyeSightCheck()
 	{
-		Vector3 pos = mTransform->GetPosition();
+		Vector3 pos = mTransform->GetLocalPosition();
 
 		if (GetPlayerObject() == nullptr)
 			return 0.0f;
 
 		Transform* playerTr = GetPlayerObject()->GetComponent<Transform>();
-		Vector3 playerPos = playerTr->GetPosition();
+		Vector3 playerPos = playerTr->GetLocalPosition();
 
 		//시야체크(y축이 동일하다고 가정)
 		Vector3 posY = pos;
@@ -696,16 +696,16 @@ namespace ya
 
 	float Tenzen::GetDistanceToPlayer()
 	{
-		Vector3 pos = mTransform->GetPosition();
+		Vector3 pos = mTransform->GetLocalPosition();
 		Transform* playerTr = GetPlayerObject()->GetComponent<Transform>();
-		Vector3 playerPos = playerTr->GetPosition();
+		Vector3 playerPos = playerTr->GetLocalPosition();
 
 		//거리체크(y축 스케일고려)
 		Vector3 scaledPos = pos;
 		Vector3 scaledPlayerPos = playerPos;
 
-		scaledPos.y -= mTransform->GetScale().y / 2;
-		scaledPlayerPos.y -= playerTr->GetScale().y / 2;
+		scaledPos.y -= mTransform->GetLocalScale().y / 2;
+		scaledPlayerPos.y -= playerTr->GetLocalScale().y / 2;
 
 		return Vector3::Distance(scaledPos, scaledPlayerPos);
 	}

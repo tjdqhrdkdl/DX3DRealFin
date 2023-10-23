@@ -59,8 +59,8 @@ namespace ya
 			return;
 
 		// 플레이어와 몬스터의 forward 비교. 몬스터가 플레이어쪽으로 90도 이내 일때만 방어 유효
-		Vector3 playerPos = playerTr->GetPosition();
-		Vector3 monsterPos = monsterTr->GetPosition();
+		Vector3 playerPos = playerTr->GetLocalPosition();
+		Vector3 monsterPos = monsterTr->GetLocalPosition();
 		Quaternion quater = Quaternion::FromToRotation(monsterTr->Forward(), playerPos-monsterPos);
 		Vector3 quaterToEuler = quater.ToEuler();
 		Vector3 theta = quaterToEuler * 180.0f / XM_PI;

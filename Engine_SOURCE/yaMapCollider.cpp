@@ -33,9 +33,9 @@ namespace ya
 		obj->SetName(mWalkerName + L"_WallCollider_" + num);
 		obj->AddComponent<Collider2D>()->SetType(eColliderType::Box);
 		Transform* tr = obj->GetComponent<Transform>();
-		tr->SetPosition(transform);
-		tr->SetRotation(rotation);
-		tr->SetScale(size);
+		tr->SetLocalPosition(transform);
+		tr->SetLocalRotation(rotation);
+		tr->SetLocalScale(size);
 		obj->AddComponent<WallScript>();
 	}
 	void MapCollider::AddGroundCollider(Vector3 transform, Vector3 rotation, Vector3 size)
@@ -45,8 +45,8 @@ namespace ya
 		obj->SetName(mWalkerName + L"_GroundCollider_" + num);
 		obj->AddComponent<Collider2D>()->SetType(eColliderType::Box);
 		Transform* tr = obj->GetComponent<Transform>();
-		tr->SetPosition(transform);
-		tr->SetRotation(rotation);
-		tr->SetScale(size);
+		tr->SetLocalPosition(transform);
+		tr->SetLocalRotation(rotation);
+		tr->SetLocalScale(size);
 	}
 }

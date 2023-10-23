@@ -64,14 +64,14 @@ namespace ya
 
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
-		tr->SetPosition(Vector3(-30, 20, 0));
-		tr->SetScale(Vector3(3, 3, 3));
+		tr->SetLocalPosition(Vector3(-30, 20, 0));
+		tr->SetLocalScale(Vector3(3, 3, 3));
 
 		//메시 데이터 트랜스폼
 		Transform* meshTr = object->GetComponent<Transform>();
-		meshTr->SetRotation(Vector3(180, 180, 0));
-		meshTr->SetPosition(Vector3(0, 0, 0));
-		meshTr->SetScale(Vector3(1, 1, 1));
+		meshTr->SetLocalRotation(Vector3(180, 180, 0));
+		meshTr->SetLocalPosition(Vector3(0, 0, 0));
+		meshTr->SetLocalScale(Vector3(1, 1, 1));
 		//meshTr->SetRotationOffset(Vector3(0, 1.5, 0));
 		meshTr->SetParent(GetComponent<Transform>());
 

@@ -58,8 +58,8 @@ namespace ya::object
 		layer.AddGameObject(gameObj);
 
 		Transform* tr = gameObj->GameObject::GetComponent<Transform>();
-		tr->SetPosition(position);
-		tr->SetRotation(rotation);
+		tr->SetLocalPosition(position);
+		tr->SetLocalRotation(rotation);
 		gameObj->SetLayerType(type);
 
 		return gameObj;
@@ -74,8 +74,8 @@ namespace ya::object
 		layer.AddGameObject(gameObj);
 
 		Transform* tr = gameObj->GameObject::GetComponent<Transform>();
-		tr->SetPosition(position);
-		tr->SetRotation(rotation);
+		tr->SetLocalPosition(position);
+		tr->SetLocalRotation(rotation);
 		tr->SetParent(parent);
 		gameObj->SetLayerType(type);
 

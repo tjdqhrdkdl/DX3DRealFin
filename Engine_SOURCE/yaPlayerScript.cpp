@@ -59,10 +59,10 @@ namespace ya
 		//		mPlayer->GetState()->AddPosture(-10);
 
 		//		Transform* playerTr = mPlayer->GetComponent<Transform>();
-		//		Vector3 playerPos = playerTr->GetPosition();
+		//		Vector3 playerPos = playerTr->GetLocalPosition();
 		//		Vector3 playerDir = playerTr->Forward();
 
-		//		Vector3 colliderPos = collider->GetPosition();
+		//		Vector3 colliderPos = collider->GetLocalPosition();
 
 		//		// 플레이어의 방향과 collider간의 각도를 구한다.
 		//		Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));
@@ -87,10 +87,10 @@ namespace ya
 		//		mPlayer->SetStateFlag(ePlayerState::Hit, true); // 경직상태
 
 		//		Transform* playerTr = mPlayer->GetComponent<Transform>();
-		//		Vector3 playerPos = playerTr->GetPosition();
+		//		Vector3 playerPos = playerTr->GetLocalPosition();
 		//		Vector3 playerDir = playerTr->Forward();
 
-		//		Vector3 colliderPos = collider->GetPosition();
+		//		Vector3 colliderPos = collider->GetLocalPosition();
 
 		//		// 플레이어의 방향과 collider간의 각도를 구한다.
 		//		Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));

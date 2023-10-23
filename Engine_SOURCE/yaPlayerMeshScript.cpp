@@ -91,9 +91,9 @@ namespace ya
             meshData->Instantiate(eLayerType::Player, scene);
 
             Transform* meshTr = meshData->GetMeshObject()->GetComponent<Transform>();
-            meshTr->SetPosition(Vector3(0.0f, -0.5f, 0.0f));
-            meshTr->SetRotation(Vector3(-180.0f, 0.0f, 0.0f));
-            meshTr->SetScale(Vector3(2.0f, 2.0f, 2.0f));
+            meshTr->SetLocalPosition(Vector3(0.0f, -0.5f, 0.0f));
+            meshTr->SetLocalRotation(Vector3(-180.0f, 0.0f, 0.0f));
+            meshTr->SetLocalScale(Vector3(2.0f, 2.0f, 2.0f));
             meshTr->SetParent(playerTr);
         }
 

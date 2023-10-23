@@ -24,9 +24,9 @@ namespace ya
 	{
 		Transform* ownerTransform = mObj->GetComponent<Transform>();
 		Transform* myTransform = GetComponent<Transform>();
-		Vector3 pos = ownerTransform->GetPosition();
+		Vector3 pos = ownerTransform->GetLocalPosition();
 
-		myTransform->SetPosition(pos);
+		myTransform->SetLocalPosition(pos);
 
 		GameObject::Update();
 	}

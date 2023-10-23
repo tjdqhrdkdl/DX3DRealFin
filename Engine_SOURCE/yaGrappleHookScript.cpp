@@ -44,7 +44,7 @@ namespace ya
 	{
 		/*GameObject* camera = mPlayer->GetCamera();
 		Transform* cameraTr = camera->GetComponent<Transform>();
-		Vector3 cameraPos = cameraTr->GetPosition();*/
+		Vector3 cameraPos = cameraTr->GetLocalPosition();*/
 
 		if (Input::GetKey(eKeyCode::F))
 		{
@@ -60,14 +60,14 @@ namespace ya
 			if (mCurrentDistance < mDistance)
 			{
 				Transform* tr = mPlayer->GetComponent<Transform>();
-				Vector3 pos = tr->GetPosition();
+				Vector3 pos = tr->GetLocalPosition();
 
 				float speed = mSpeed * Time::DeltaTime();
 				pos += mDirection * speed;
 				mCurrentDistance += speed;
 				
 				float height = pos.y + 0.2f + ((-mCurrentDistance * mCurrentDistance + mDistance * mCurrentDistance) / (mDistance * mDistance * 1000.0f));
-				tr->SetPosition(Vector3(pos.x, height, pos.z));
+				tr->SetLocalPosition(Vector3(pos.x, height, pos.z));
 			}
 			else
 			{
@@ -138,10 +138,10 @@ namespace ya
 		}
 
 		Transform* playerTr = mPlayer->GetComponent<Transform>();
-		Vector3 playerPos = playerTr->GetPosition();
+		Vector3 playerPos = playerTr->GetLocalPosition();
 
 		Transform* targetTr = mHookTarget->GetComponent<Transform>();
-		mHookTargetPosition = targetTr->GetPosition();
+		mHookTargetPosition = targetTr->GetLocalPosition();
 
 		// 거리 구하기
 		Vector3 hookVector = mHookTargetPosition - playerPos;
@@ -153,6 +153,6 @@ namespace ya
 		dir.Normalize();
 		mDirection = dir;
 
-		playerTr->SetRotation(mDirection);
+		playerTr->SetLocalRotation(mDirection);
 	}
 }

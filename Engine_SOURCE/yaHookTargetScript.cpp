@@ -31,10 +31,10 @@ namespace ya
 			return;
 
 		Transform* playerTr = player->GetComponent<Transform>();
-		Vector3 playerPos = playerTr->GetPosition();
+		Vector3 playerPos = playerTr->GetLocalPosition();
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 pos = tr->GetPosition();
+		Vector3 pos = tr->GetLocalPosition();
 
 		// 거리
 		float dist = playerPos.Distance(playerPos, pos);

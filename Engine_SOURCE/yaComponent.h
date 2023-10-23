@@ -17,6 +17,7 @@ namespace ya
 		virtual void FixedUpdate() = 0;
 		virtual void PrevRender() {};
 		virtual void Render() = 0;
+		virtual void FrameEnd() {};
 
 		eComponentType GetOrder() { return mType; };
 

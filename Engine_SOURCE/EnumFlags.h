@@ -3,7 +3,7 @@
 
 namespace ya
 {
-	template <typename T, typename Size = uint8>
+	template <typename T, typename Size = UINT8>
 	class EnumFlags
 	{
 	public:
@@ -38,9 +38,9 @@ namespace ya
 		EnumFlags<T, Size> operator~(void) const;
 
 		operator bool(void) const;
-		operator uint8(void) const;
-		operator uint16(void) const;
-		operator uint32(void) const;
+		operator UINT8(void) const;
+		operator UINT16(void) const;
+		operator UINT32(void) const;
 
 		void				clear(T e);
 		void				raise(T e);
@@ -199,13 +199,13 @@ namespace ya
 	EnumFlags<T, Size>::operator bool(void) const { return _bits ? true : false; }
 
 	template <typename T, typename Size>
-	EnumFlags<T, Size>::operator uint8(void) const { return static_cast<uint8_t>(_bits); }
+	EnumFlags<T, Size>::operator UINT8(void) const { return static_cast<UINT8>(_bits); }
 
 	template <typename T, typename Size>
-	EnumFlags<T, Size>::operator uint16(void) const { return static_cast<uint16_t>(_bits); }
+	EnumFlags<T, Size>::operator UINT16(void) const { return static_cast<UINT16>(_bits); }
 
 	template <typename T, typename Size>
-	EnumFlags<T, Size>::operator uint32(void) const { return static_cast<uint32_t>(_bits); }
+	EnumFlags<T, Size>::operator UINT32(void) const { return static_cast<UINT32>(_bits); }
 
 	template <typename T, typename Size>
 	void EnumFlags<T, Size>::clear(T e) { _bits &= ~static_cast<Size>(e); }

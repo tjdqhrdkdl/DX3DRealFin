@@ -29,7 +29,7 @@ namespace ya
 	void AudioListener::FixedUpdate()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 pos = tr->GetPosition();
+		Vector3 pos = tr->GetLocalPosition();
 		Vector3 foward = tr->Forward();
 		Vector3 up = tr->Up();
 

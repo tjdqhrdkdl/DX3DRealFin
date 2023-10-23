@@ -30,8 +30,8 @@ namespace ya
 		SetName(L"Wolf");
 
 		Transform* tr = GetComponent<Transform>();
-		tr->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
-		tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
+		tr->SetLocalPosition(Vector3(30.0f, 0.0f, -30.0f));
+		tr->SetLocalScale(Vector3(0.4f, 0.4f, 0.4f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));

@@ -35,8 +35,8 @@ void ya::HangingScript::DoHanging(Collider2D* collider)
 	if (!objTransform)
 		assert(nullptr);
 
-	Vector3 objPos = objTransform->GetPosition();
-	Vector3 colPos = colTransform->GetPosition();
+	Vector3 objPos = objTransform->GetLocalPosition();
+	Vector3 colPos = colTransform->GetLocalPosition();
 	
 	Vector3 direction = objTransform->Forward();
 

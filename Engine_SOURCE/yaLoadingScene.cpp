@@ -34,8 +34,8 @@ namespace ya
 			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::None, this);
 			directionalLight->SetName(L"Loading_directionalLight");
 
-			directionalLight->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-			directionalLight->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			directionalLight->GetComponent<Transform>()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
+			directionalLight->GetComponent<Transform>()->SetLocalRotation(Vector3(0.0f, 0.0f, 0.0f));
 
 			Light* lightComp = directionalLight->AddComponent<Light>();
 			lightComp->SetType(eLightType::Directional);
@@ -65,9 +65,9 @@ namespace ya
 			background->SetName(L"Load_background");
 
 			Transform* backgroundTr = background->GetComponent<Transform>();
-			backgroundTr->SetPosition(Vector3(0.0f, 0.f, 0.f));
-			//backgroundTr->SetPosition(Vector3(-652.0f, -400.f, -10.f));
-			backgroundTr->SetScale(Vector3(1600.0f, 900.0f, 50.0f));
+			backgroundTr->SetLocalPosition(Vector3(0.0f, 0.f, 0.f));
+			//backgroundTr->SetLocalPosition(Vector3(-652.0f, -400.f, -10.f));
+			backgroundTr->SetLocalScale(Vector3(1600.0f, 900.0f, 50.0f));
 
 			std::shared_ptr<Texture> texture = Resources::Load<Texture>(L"MENU_Load_00004", L"Texture\\Menu\\Load\\MENU_Load_00004.png");
 

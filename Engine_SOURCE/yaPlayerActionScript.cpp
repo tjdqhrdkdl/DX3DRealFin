@@ -229,13 +229,13 @@ namespace ya
 		if (mPlayer->IsStateFlag(ePlayerState::Attack))
 			return;
 
-		Vector3 pos = mTransform->GetPosition();
-		Vector3 rot = mTransform->GetRotation();
+		Vector3 pos = mTransform->GetLocalPosition();
+		Vector3 rot = mTransform->GetLocalRotation();
 
 		GameObject* camera = mPlayer->GetCamera();
 		CameraScript* cameraScript = camera->GetScript<CameraScript>();
 		Transform* cameraTr = camera->GetComponent<Transform>();
-		Vector3 cameraPos = cameraTr->GetPosition();
+		Vector3 cameraPos = cameraTr->GetLocalPosition();
 		Vector3 cameraForward = cameraTr->Forward();
 		Vector3 cameraRight = cameraTr->Right();
 		bool bLockOn = cameraScript->IsLockOn();
@@ -245,7 +245,7 @@ namespace ya
 		if (bLockOn)
 		{	// lockon 상태인 경우 항상 lockon 타겟을 바라본다.
 			GameObject* lockOnTarget = cameraScript->GetLockOnTarget();
-			Vector3 lockOnTargetPos = lockOnTarget->GetComponent<Transform>()->GetPosition();
+			Vector3 lockOnTargetPos = lockOnTarget->GetComponent<Transform>()->GetLocalPosition();
 
 			Quaternion quater = Quaternion::FromToRotation(mTransform->Forward(), Vector3(lockOnTargetPos.x - pos.x, pos.y, lockOnTargetPos.z - pos.z));
 			Vector3 quaterToEuler = quater.ToEuler();
@@ -281,7 +281,7 @@ namespace ya
 			if (theta < mFrontTheta)
 			{	// 회전 종료. 진행하려는 방향과 player의 forward가 비슷해지면 회전이 끝난다.
 				mbRotate = false;
-				//mTransform->SetRotation(Vector3(0.0f, rot.y + theta, 0.0f));
+				//mTransform->SetLocalRotation(Vector3(0.0f, rot.y + theta, 0.0f));
 				Vector3 cameraDir = Vector3(cameraForward.x, 0.0f, cameraForward.z);
 				cameraDir.Normalize();
 				mTransform->SetForward(cameraDir);

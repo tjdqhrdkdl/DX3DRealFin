@@ -76,6 +76,7 @@ namespace ya
 
 		//GetMaterial()->Clear();
 		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
+
 		BoneAnimator* animator
 			= GetOwner()->GetComponent<BoneAnimator>();
 

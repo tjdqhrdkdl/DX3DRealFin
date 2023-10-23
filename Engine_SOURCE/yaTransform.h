@@ -10,71 +10,107 @@ namespace ya
 		Transform();
 		virtual ~Transform();
 
-		virtual void Initialize() override;
-		virtual void Update() override;
+		virtual void Initialize() override {};
+		virtual void Update() override {};
 		virtual void FixedUpdate() override;
 		virtual void PrevRender() override;
 		virtual void Render() override;
+		virtual void FrameEnd() override {};
 
 		void SetConstantBuffer();
 
 		void SetParent(Transform* parent) { mParent = parent; }
 		Transform* GetParent() { return mParent; }
 
-		Vector3 GetPosition() { return mPosition; };
-		Vector3 GetRotation() { return mRotation; };
-		Quaternion GetRotationQuaternion() { return mQuaternion; }
-		Vector3 GetScale() { return mScale; };
-		Vector3 GetRotationOffset() { return mRotationOffset; };
-		Matrix& GetRotationMatrix() { return mMatRotation; };
+		Vector3 GetLocalPosition() { return mLocalPosition; }
 
 
-		Vector3 GetFinalScale() { return mFinalScale; }
+		Vector3 GetLocalRotation() { return mLocalRotation; }
+		Vector3 GetWorldRotation() { return mWorldRotation; }
+		Quaternion GetLocalRotationQuaternion() { return mLocalRotationQuaternion; }
+		Vector3 GetLocalScale() { return mLocalScale; };
+
+		Vector3 Forward() { return mWorldForward; }
+		Vector3 Right() { return mWorldRight; }
+		Vector3 Up() { return mWorldUp; }
 
 
-		void SetPosition(Vector3 position) { mPosition = position; };
-		void SetPosition(float _x, float _y, float _z) { mPosition.x = _x; mPosition.y = _y; mPosition.z = _z; }
-		void SetRotation(Vector3 degree) { mRotation = degree; };
-		void SetRotation(float _x, float _y, float _z) { mRotation.x = _x; mRotation.y = _y; mRotation.z = _z; };
-		void SetScale(Vector3 scale) { mScale = scale; };
-		void SetScale(float _x, float _y, float _z) { mScale.x = _x; mScale.y = _y; mScale.z = _z; };
-		void SetRotationOffset(Vector3 offset) { mRotationOffset = offset; };
+		Vector3 GetRotationOffset() { return mLocalRotationOffset; };
+		//Matrix& GetRotationMatrix() { return mMatRotation; };
 
-		Vector3 Forward() { return mForward; }
-		Vector3 Right() { return mRight; }
-		Vector3 Up() { return mUp; }
 
-		void SetForward(Vector3 forward) { mForward = forward; }
-		void SetRight(Vector3 right) { mRight = right; }
-		void SetUp(Vector3 up) { mUp = up; }
+		Vector3 GetWorldScale() { return mWorldScale; }
 
-		Matrix& GetTranslationMatrix() { return mMatTranslation; }
-		Matrix& GetWorldMatrix() { return mWorld; }
 
-		void IsCamera(bool cam) { mbCamera = cam; }
-		Vector3 GetWorldPosition() { return Vector3(mWorld._41, mWorld._42, mWorld._43); }
+		void SetLocalPosition(const Vector3& position) { mLocalPosition = position; };
+		void SetLocalPosition(float _x, float _y, float _z) { mLocalPosition.x = _x; mLocalPosition.y = _y; mLocalPosition.z = _z; }
+		void SetLocalRotation(const Vector3& degree) { mLocalRotation = degree; };
+		void SetLocalRotation(float _x, float _y, float _z) { mLocalRotation.x = _x; mLocalRotation.y = _y; mLocalRotation.z = _z; };
+		void SetLocalScale(const Vector3& scale) { mLocalScale = scale; };
+		void SetLocalScale(float _x, float _y, float _z) { mLocalScale.x = _x; mLocalScale.y = _y; mLocalScale.z = _z; };
+
+		void SetForward(const Vector3& _forward) { mWorldForward = _forward; }
+		void SetRight(const Vector3& _right) { mWorldRight = _right; }
+		void SetUp(const Vector3& _up) { mWorldUp = _up; }
+
+		void SetCameraMode(bool _isCamera) { mbCameraMode = _isCamera; }
+
+		void SetRotationOffset(const Vector3& offset) { mLocalRotationOffset = offset; };
+
+
+
+		//void SetForward(Vector3 forward) { mForward = forward; }
+		//void SetRight(Vector3 right) { mRight = right; }
+		//void SetUp(Vector3 up) { mUp = up; }
+
+		//Matrix& GetTranslationMatrix() { return mMatTranslation; }
+		const Matrix& GetWorldMatrix() { return mWorldMatrix; }
+
+		//void IsCamera(bool cam) { mbCamera = cam; }
+		Vector3 GetWorldPosition() { return Vector3(mWorldMatrix._41, mWorldMatrix._42, mWorldMatrix._43); }
 	private:
 		Transform* mParent;
 
-		Vector3 mForward;
-		Vector3 mRight;
-		Vector3 mUp;
+		Vector3 mLocalScale;
+		Vector3 mLocalRotation;
+		Quaternion mLocalRotationQuaternion;
+		Vector3 mLocalPosition;
+		Matrix mLocalMatrix;
 
-		Vector3 mPosition;
-		Vector3 mRotation;
-		Quaternion mQuaternion;
-		Vector3 mScale;
-		Vector3 mRotationOffset;
+		Vector3 mLocalRotationOffset;
 
-		Vector3 mFinalScale;
+		Vector3 mWorldScale;
+		Vector3 mWorldRotation;
+		Quaternion mWorldRotationQuaternion;
+		Matrix mWorldMatrix;
 
-		bool mbCamera;
+		Vector3 mWorldForward;
+		Vector3 mWorldRight;
+		Vector3 mWorldUp;
 
-		Matrix mMatScale;
-		Matrix mMatTranslation;
-		Matrix mMatRotation;
-		Matrix mMatRotationOffset;
+		bool mbCameraMode;
 
-		Matrix mWorld;
+		//Vector3 mLocalScale;
+		//Vector3 mLocalPosition;
+		//Vector3 mLocalRotation;
+		//Vector3 mLocalRotationOffset;
+		//Matrix  mLocalMatrix;
+
+		//Vector3 mWorldRotation;
+		//Vector3 mWorldScale;
+		//
+		//
+
+		//bool mbCamera;
+
+		//Vector3 mWorldRotation;
+		//Quaternion mWorldQuaternion;
+
+		//Matrix mMatScale;
+		//Matrix mMatTranslation;
+		//Matrix mMatRotation;
+		//Matrix mMatRotationOffset;
+
+		//Matrix mWorld;
 	};
 }

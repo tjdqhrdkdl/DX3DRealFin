@@ -154,10 +154,10 @@ namespace ya
 
 			velo = mRightWallDir * projLength;
 
-			Vector3 objPos = mTransform->GetPosition();
+			Vector3 objPos = mTransform->GetLocalPosition();
 			objPos -= mVelocity * Time::DeltaTime();
 
-			mTransform->SetPosition(objPos);
+			mTransform->SetLocalPosition(objPos);
 		}
 
 		if (mbForwardBlocked && mbJumping)
@@ -170,15 +170,15 @@ namespace ya
 		{
 			velo = Vector3::Zero;
 
-			Vector3 objPos = mTransform->GetPosition();
+			Vector3 objPos = mTransform->GetLocalPosition();
 			objPos -= mVelocity * Time::DeltaTime();
 
-			mTransform->SetPosition(objPos);
+			mTransform->SetLocalPosition(objPos);
 		}
 
-		Vector3 pos = tr->GetPosition();
+		Vector3 pos = tr->GetLocalPosition();
 		pos += velo * Time::DeltaTime();
-		tr->SetPosition(pos);
+		tr->SetLocalPosition(pos);
 
 		ClearForce();
 	}
@@ -199,9 +199,9 @@ namespace ya
 
 	void Rigidbody::CheckGround()
 	{
-		Vector3 position = mTransform->GetPosition();
+		Vector3 position = mTransform->GetLocalPosition();
 		Vector3 objPos = mCollider->GetCenter();
-		Vector3 Scale = mTransform->GetScale();
+		Vector3 Scale = mTransform->GetLocalScale();
 		Vector3 objScale = mCollider->GetSize();
 
 		position += objPos;
@@ -290,13 +290,13 @@ namespace ya
 				// 물체의 y 크기의 절반과 가운데에서 쏜 레이의 길이를 뺐을때
 				// 수치가 0보다 크면 물체는 땅을 뚫었다고 판단.
 				float overPos = objScale.y / 2.f - CorrectionHit.length;
-				Vector3 correctionPos = mTransform->GetPosition();
+				Vector3 correctionPos = mTransform->GetLocalPosition();
 
 				// 땅을 뚫을때
 				if (0.f < overPos)
 				{
 					correctionPos.y += overPos;
-					mTransform->SetPosition(correctionPos);
+					mTransform->SetLocalPosition(correctionPos);
 				}
 			}
 		}
@@ -321,8 +321,8 @@ namespace ya
 	}
 	bool Rigidbody::ForwardCheck(Vector3 movement)
 	{
-		Vector3 position = mTransform->GetPosition();
-		Vector3 scale = mTransform->GetScale();
+		Vector3 position = mTransform->GetLocalPosition();
+		Vector3 scale = mTransform->GetLocalScale();
 		Vector3 colScale = mCollider->GetSize();
 		Vector3 velocity = movement * Time::DeltaTime();
 		Vector3 dir = movement;

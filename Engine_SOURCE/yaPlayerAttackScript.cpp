@@ -616,7 +616,7 @@ namespace ya
 		if (boneCollider != nullptr)
 		{
 			Transform* playerTr = mPlayer->GetComponent<Transform>();
-			Vector3 playerPos = playerTr->GetPosition();
+			Vector3 playerPos = playerTr->GetLocalPosition();
 			Vector3 playerDir = playerTr->Forward();
 
 			Vector3 colliderPos = collider->GetPosition();

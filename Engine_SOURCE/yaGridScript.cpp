@@ -43,7 +43,7 @@ namespace ya
 		GameObject* gameObj = mCamera->GetOwner();
 		Transform* tr = gameObj->GetComponent<Transform>();
 		
-		Vector3 cameraPos = tr->GetPosition();
+		Vector3 cameraPos = tr->GetLocalPosition();
 		Vector4 position = Vector4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f);
 
 		float scale = mCamera->GetScale();

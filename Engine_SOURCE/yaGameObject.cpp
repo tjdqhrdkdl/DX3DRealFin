@@ -126,6 +126,17 @@ namespace ya
 		}
 	}
 
+	void GameObject::FrameEnd()
+	{
+		for (Component* comp : mComponents)
+		{
+			if (comp == nullptr)
+				continue;
+
+			comp->FrameEnd();
+		}
+	}
+
 	void GameObject::AddComponent(Component* comp)
 	{
 		eComponentType order = comp->GetOrder();
