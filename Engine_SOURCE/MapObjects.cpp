@@ -76,7 +76,7 @@ namespace ya
 		mapMeshPath.replace_extension(L".fbx");
 		std::shared_ptr<MeshData> meshdata = Resources::Load<MeshData>(mapMeshPath.filename(), mapMeshPath);
 		assert(nullptr != meshdata);
-
+		meshdata->SetBoundarySphere(true);
 		GameObject* obj = meshdata->Instantiate(eLayerType::Ground, GetScene());
 		Transform* myTr = GetComponent<Transform>();
 		Transform* childTr = obj->GetComponent<Transform>();
