@@ -30,7 +30,7 @@ namespace ya
 
 		Transform* tr = GetComponent<Transform>();
 		tr->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
-		tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
+		//tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
@@ -40,8 +40,8 @@ namespace ya
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
 
-		col->SetCenter(Vector3(0.f, 1.2f, 0.f));
-		col->SetSize(Vector3(0.8f, 3.4f, 0.8f));
+		col->SetCenter(Vector3(0.f, 0.25f, 0.f));
+		col->SetSize(Vector3(0.6f, 1.6f, 0.6f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
