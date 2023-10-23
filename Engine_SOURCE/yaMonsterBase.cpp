@@ -19,7 +19,7 @@ namespace ya
 		/*, mPlayerPos(Vec3::Zero)
 		, mMonster2PlayerNormalize(Vec3::Zero)
 		, mPlayer2MonsterNormalize(Vec3::Zero)*/
-		, mRecoveryTime(3.0f)
+		//, mRecoveryTime(3.0f)
 	{
 	}
 
@@ -432,7 +432,7 @@ namespace ya
 			return false;
 	}
 
-	int MonsterBase::RandomNumber(int ieast, int Max)
+	/*int MonsterBase::RandomNumber(int ieast, int Max)
 	{
 		int result = 0;
 		if (Max - ieast + 1 == 0)
@@ -441,7 +441,7 @@ namespace ya
 
 
 		return result;
-	}
+	}*/
 
 	void MonsterBase::OnceAniamtion(const std::wstring& animation)
 	{
@@ -452,6 +452,7 @@ namespace ya
 		}
 	}
 
+	/*
 	Vector3 MonsterBase::Convert3DTo2DScreenPos(Transform* tr)
 	{
 		Matrix viewMatrix;         // 뷰 매트릭스   (카메라의 위치와 방향 정보)
@@ -494,6 +495,7 @@ namespace ya
 
 		return monsterScreenPosition;
 	}
+	*/
 
 	/// Monster 인살 이벤트
 	void MonsterBase::DeathBlow()
