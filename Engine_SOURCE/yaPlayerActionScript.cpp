@@ -312,10 +312,10 @@ namespace ya
 			if (theta < mFrontTheta)
 			{	// 회전 종료. 진행하려는 방향과 player의 forward가 비슷해지면 회전이 끝난다.
 				mbRotate = false;
-				if (cross.y < 0.0f)
-					mTransform->SetRotation(Vector3(0.0f, rot.y - theta, 0.0f));
-				else
-					mTransform->SetRotation(Vector3(0.0f, rot.y + theta, 0.0f));
+				//mTransform->SetRotation(Vector3(0.0f, rot.y + theta, 0.0f));
+				Vector3 cameraDir = Vector3(cameraForward.x, 0.0f, cameraForward.z);
+				cameraDir.Normalize();
+				mTransform->SetForward(cameraDir);
 			}
 			else
 			{	// 진행하려는 방향과 player의 forward가 비슷해질 때 까지 회전한다. theta 각에 따라 회전 방향을 결정한다.
