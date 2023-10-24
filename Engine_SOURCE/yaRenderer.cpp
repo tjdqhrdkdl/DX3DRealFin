@@ -31,6 +31,9 @@ namespace ya::renderer
 
 	ya::GameObject* inspectorGameObject = nullptr;
 
+
+	
+
 	void LoadMesh()
 	{
 		#pragma region POINT MESH
@@ -479,6 +482,136 @@ namespace ya::renderer
 		
 		Resources::Insert<Mesh>(L"LineMesh", mesh);
 #pragma endregion
+
+#pragma region Cylinder
+		constexpr float	 kRadius = 1.f;
+		constexpr float	 kHeight = 2.f;
+		constexpr float	 kHalfHeight = kHeight / 2.f;
+		constexpr UINT32 kSlices = 20;
+		constexpr float	 kRadianPerTheta = XM_2PI / kSlices;
+		constexpr UINT32 kStacks = 10;
+		constexpr float	 kStackHeight = kHeight / kStacks;
+
+		std::vector<Vertex> verticies{};
+		std::vector<UINT32> indicies{};
+
+		//몸통
+		{
+			const UINT32 vertexCount = (kSlices + 1) * (kStacks + 1);
+			verticies.reserve(vertexCount);
+			for (UINT32 i = 0; i < kStacks + 1; ++i)
+			{
+				const float y = -kHalfHeight + i * kStackHeight;
+
+				for (UINT32 j = 0; j <= kSlices; ++j)
+				{
+					const float theta = j * kRadianPerTheta;
+
+					Vertex vertex{};
+					vertex.pos = Vector4{ kRadius * std::cosf(theta), y, kRadius * std::sinf(theta), 1.f };
+					vertex.color = Vector4{ 1.f, 1.f, 1.f, 1.f };
+					vertex.normal = Vector3{ std::cosf(theta), 0.0f, std::sinf(theta) };
+					vertex.tangent = Vector3{ -std::sinf(theta), 0.0f, std::cosf(theta) };
+					vertex.uv = Vector2{ theta / XM_2PI, 1.0f - static_cast<float>(i) / kStacks };
+
+					verticies.push_back(vertex);
+				};
+			}
+		}
+
+		const UINT32 indexCount = 6 * kSlices * kStacks;
+		indicies.reserve(indexCount);
+		for (UINT32 i = 0; i < kStacks; ++i)
+		{
+			for (UINT32 j = 0; j < kSlices; ++j)
+			{
+				indicies.push_back(i * (kSlices + 1) + j);
+				indicies.push_back((i + 1) * (kSlices + 1) + j);
+				indicies.push_back((i + 1) * (kSlices + 1) + j + 1);
+
+				indicies.push_back(i * (kSlices + 1) + j);
+				indicies.push_back((i + 1) * (kSlices + 1) + j + 1);
+				indicies.push_back(i * (kSlices + 1) + j + 1);
+			}
+		}
+
+		//뚜껑
+		{
+			const UINT32 vertexCount = (kSlices + 1) * (kStacks + 3) + 2;
+			verticies.reserve(verticies.size() + vertexCount);
+
+			// 상단원 중앙에 배치
+			Vertex topCenterVertex{};
+			topCenterVertex.pos = Vector4(0.0f, kHalfHeight, 0.0f, 1.f);
+			topCenterVertex.color = Vector4{ 1.f, 1.f, 1.f, 1.f };
+			topCenterVertex.normal = Vector3(0.0f, 1.0f, 0.0f);
+			topCenterVertex.tangent = Vector3(1.0f, 0.0f, 0.0f);
+			topCenterVertex.uv = Vector2(0.5f, 0.5f);
+			verticies.push_back(topCenterVertex);
+
+			for (UINT32 i = 0; i <= kSlices; ++i)
+			{
+				const float theta = i * kRadianPerTheta;
+
+				Vertex circleVertex{};
+				circleVertex.pos = Vector4{ kRadius * std::cosf(theta), kHalfHeight, kRadius * std::sinf(theta), 1.f };
+				circleVertex.color = Vector4{ 1.f, 1.f, 1.f, 1.f };
+				circleVertex.normal = Vector3{ 0.0f, 1.0f, 0.0f };
+				circleVertex.tangent = Vector3{ 1.0f, 0.0f, 0.0f };
+				circleVertex.uv = Vector2{ std::cosf(theta) * kRadius / kHeight + 0.5f, std::sinf(theta) * kRadius / kHeight + 0.5f };
+
+				verticies.push_back(circleVertex);
+			};
+
+			// 하단원 중앙에 배치
+			Vertex bottomCenterVertex{};
+			bottomCenterVertex.pos = Vector4(0.0f, -kHalfHeight, 0.0f, 1.f);
+			bottomCenterVertex.color = Vector4{ 1.f, 1.f, 1.f, 1.f };
+			bottomCenterVertex.normal = Vector3(0.0f, -1.0f, 0.0f);
+			bottomCenterVertex.tangent = Vector3(-1.0f, 0.0f, 0.0f);
+			bottomCenterVertex.uv = Vector2(0.5f, 0.5f);
+			verticies.push_back(bottomCenterVertex);
+
+			for (UINT32 i = 0; i <= kSlices; ++i)
+			{
+				const float theta = i * kRadianPerTheta;
+				Vertex		circleVertex{};
+				circleVertex.pos = Vector4{ kRadius * std::cosf(theta), -kHalfHeight, kRadius * std::sinf(theta), 1.f };
+				circleVertex.color = Vector4{ 1.f, 1.f, 1.f, 1.f };
+				circleVertex.normal = Vector3{ 0.0f, -1.0f, 0.0f };
+				circleVertex.tangent = Vector3{ -1.0f, 0.0f, 0.0f };
+				circleVertex.uv = Vector2{ std::cosf(theta) * kRadius / kHeight + 0.5f, std::sinf(theta) * kRadius / kHeight + 0.5f };
+				verticies.push_back(circleVertex);
+			}
+
+			const UINT32 indexCount = 6 * kSlices * (kStacks + 1);
+			indicies.reserve(indicies.size() + indexCount);
+
+			UINT32 offset = (kSlices + 1) * (kStacks + 1);
+			// 상단 인덱스
+			for (UINT32 i = 1; i <= kSlices; ++i)
+			{
+				indicies.push_back(offset);
+				indicies.push_back(offset + i % (kSlices + 1) + 1);
+				indicies.push_back(offset + i);
+			}
+
+			// 하단 인덱스
+			offset += kSlices + 2;
+			for (UINT32 i = 1; i <= kSlices; ++i)
+			{
+				indicies.push_back(offset);
+				indicies.push_back(offset + i);
+				indicies.push_back(offset + i % (kSlices + 1) + 1);
+			}
+		}
+
+		std::shared_ptr<Mesh> cylinderMesh = std::make_shared<Mesh>();
+		cylinderMesh->CreateVertexBuffer(vertices.data(), vertices.size());
+		cylinderMesh->CreateIndexBuffer(indices.data(), indices.size());
+		
+		Resources::Insert<Mesh>(strKeys::mesh::CylinderMesh, cylinderMesh);
+#pragma endregion Cylinder
 	}
 
 	void LoadShader()
@@ -642,10 +775,27 @@ namespace ya::renderer
 		Resources::Insert<Shader>(L"SkyBoxShader", skyBoxShader);
 #pragma endregion
 
-		//Compute
+#pragma region PhysX Debug Shader
+		std::shared_ptr<Shader> physXDebugShader = std::make_shared<Shader>();
+		physXDebugShader->Create(eShaderStage::VS, L"PhysXDebugVS.hlsl", "main");
+		physXDebugShader->Create(eShaderStage::PS, L"PhysXDebugPS.hlsl", "main");
+		physXDebugShader->SetRSState(eRSType::SolidNone);
+		physXDebugShader->SetDSState(eDSType::NoWrite);
+		//debugShader->SetBSState(eBSType::AlphaBlend);
+		physXDebugShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
+		Resources::Insert<Shader>(L"PhysXDebugShader", physXDebugShader);
+#pragma endregion
+
+
+#pragma region COMPUTE
 		std::shared_ptr<BoneShader> computeShader = std::make_shared<BoneShader>();
 		computeShader->Create(L"BoneAnimationCS.hlsl", "CS_Animation3D");
 		Resources::Insert<BoneShader>(L"BoneComputeShader", computeShader);
+#pragma endregion COMPUTE
+
+
+
 	}
 
 	void SetUpState()

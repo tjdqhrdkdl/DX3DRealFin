@@ -41,6 +41,8 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
+		CreatePhysXScene();
+
 		// Main Camera Game Object
 		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera, this);
 		cameraObj->SetName(L"MainCamera");
@@ -89,11 +91,14 @@ namespace ya
 			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 
 
-
-			Collider2D* wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+			Collider3D* wallCollider = wall->AddComponent<Collider3D>();
+			wallCollider->setType(eColliderType::Box, true);
 			wall->AddComponent<WallScript>();
+
+			//Collider2D* wallCollider = wall->AddComponent<Collider2D>();
+			//wallCollider->SetType(eColliderType::Box);
+			//wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+			//wall->AddComponent<WallScript>();
 
 
 
@@ -106,9 +111,10 @@ namespace ya
 			wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+
+
+			wallCollider = wall->AddComponent<Collider3D>();
+			wallCollider->setType(eColliderType::Box, true);
 			wall->AddComponent<WallScript>();
 
 			wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
@@ -120,9 +126,10 @@ namespace ya
 			wallRenderer = wall->AddComponent<MeshRenderer>();
 			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			wallCollider = wall->AddComponent<Collider2D>();
-			wallCollider->SetType(eColliderType::Box);
-			wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
+
+
+			wallCollider = wall->AddComponent<Collider3D>();
+			wallCollider->setType(eColliderType::Box, true);
 			wall->AddComponent<WallScript>();
 		}
 

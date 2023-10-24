@@ -15,22 +15,13 @@ namespace ya
 
 	void SceneManager::Initialize()
 	{
-		if (false == PhysicsManager::initialize())
-		{
-			assert(false);
-		}
-
-
 		mScenes.resize((UINT)eSceneType::End);
 
 		mScenes[(UINT)eSceneType::Title] = new TitleScene();
-		mScenes[(UINT)eSceneType::Title]->SetName(L"TitleScene");
 
 		mScenes[(UINT)eSceneType::Loading] = new LoadingScene();
-		mScenes[(UINT)eSceneType::Loading]->SetName(L"LoadingScene");
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
-		mScenes[(UINT)eSceneType::Play]->CreatePhysXScene();
 		mScenes[(UINT)eSceneType::Play]->SetThreadLoad(true);
 		mScenes[(UINT)eSceneType::Play]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Play);
 
@@ -56,7 +47,6 @@ namespace ya
 	void SceneManager::Update()
 	{
 		mActiveScene->Update();
-		PhysicsManager::update(Time::DeltaTime());
 	}
 
 	void SceneManager::FixedUpdate()
@@ -95,7 +85,7 @@ namespace ya
 			= mActiveScene->GetDontDestroyGameObjects();
 		mActiveScene = mScenes[(UINT)type];
 
-		PhysicsManager::changePhysicScene(mActiveScene);
+		//PhysicsManager::changePhysicScene(mActiveScene);
 		
 		for (GameObject* obj : gameObjs)
 		{

@@ -31,7 +31,7 @@ namespace ya
 		UINT GetHeight() { return mHeight; }
 
 	private:
-		bool initialized = false;
+		bool initialized;
 		std::unique_ptr<graphics::GraphicDevice_DX11> graphicDevice;
 
 		HWND mHwnd;

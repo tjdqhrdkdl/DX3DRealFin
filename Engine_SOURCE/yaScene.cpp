@@ -72,6 +72,7 @@ namespace ya
 	void Scene::CreatePhysXScene()
 	{
 		PhysicsManager::createPhysicScene(this);
+		PhysicsManager::changePhysicScene(this);
 	}
 
 	void Scene::AddGameObject(GameObject* gameObj, const eLayerType type)

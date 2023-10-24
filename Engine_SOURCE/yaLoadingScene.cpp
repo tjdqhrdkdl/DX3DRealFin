@@ -14,7 +14,7 @@ namespace ya
 	LoadingScene::LoadingScene()
 		: Scene(eSceneType::Loading)
 	{
-
+		SetName(L"LoadingScene");
 	}
 
 	LoadingScene::~LoadingScene()

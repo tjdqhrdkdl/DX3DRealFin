@@ -29,9 +29,9 @@ namespace ya
 		, _positionBuffer()
 		, _wireFrameBuffer()
 	{
-		_positionBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
+		//_positionBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
 		//_wireFrameBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
-		_mesh = Resources::Find<Mesh>(L"SphereMesh");
+		//_mesh = Resources::Find<Mesh>(L"SphereMesh");
 		//_shader = ResourceManager::getGraphicShader("WIRE_FRAME");
 	}
 
@@ -74,20 +74,51 @@ namespace ya
 
 	void Collider3D::Render()
 	{
-		_positionBufferData.world = _worldMatrix;
+		//_positionBufferData.world = _worldMatrix;
 
 		//const Camera& camera = *(renderer::cameras[(UINT)eSceneType::Play]);
-		_positionBufferData.view = Camera::GetGpuViewMatrix();
-		_positionBufferData.projection = Camera::GetGpuProjectionMatrix();
-		_positionBuffer->SetData(&_positionBufferData);
-		_positionBuffer->Bind(eShaderStage::ALL);
+		//_positionBufferData.view = Camera::GetGpuViewMatrix();
+		//_positionBufferData.projection = Camera::GetGpuProjectionMatrix();
+		//_positionBuffer->SetData(&_positionBufferData);
+		//_positionBuffer->Bind(eShaderStage::ALL);
 
 		//_wireFrameData.collisionCount = _collisionCount;
 		//_wireFrameBuffer->uploadData(&_wireFrameData, sizeof(cbWireFrame));
 		//_wireFrameBuffer->bindToPipeline(ConstBufferType::cbWireFrame);
 
-		_shader->Binds();
-		_mesh->Render(0u);
+		//_shader->Binds();
+		//_mesh->Render(0u);
+
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		Vector3 scale = tr->GetWorldScale();
+		scale *= _offsetScale;
+
+		Vector3 rotation = tr->GetWorldRotation();
+		//rotation += mRotation;
+
+		Vector3 position = tr->GetWorldPosition();
+		Vector3 colliderPos = position + _offsetPosition;
+
+		Matrix scaleMatrix = Matrix::CreateScale(scale);
+		Matrix rotationMatrix;
+		rotationMatrix =  Matrix::CreateRotationX(rotation.x);
+		rotationMatrix *= Matrix::CreateRotationY(rotation.y);
+		rotationMatrix *= Matrix::CreateRotationZ(rotation.z);
+
+		Matrix positionMatrix;
+		positionMatrix.Translation(Vector3(colliderPos.x, colliderPos.y, colliderPos.z));
+
+		Matrix worldMatrix = scaleMatrix * rotationMatrix * positionMatrix;
+
+		DebugMesh meshAttribute = {};
+		meshAttribute.position = Vector3(colliderPos.x, colliderPos.y, colliderPos.z);
+		//meshAttribute.radius = mRadius;
+		meshAttribute.rotation = rotation;
+		meshAttribute.scale = scale;
+		meshAttribute.parent = tr->GetParent();
+		meshAttribute.type = _type;
+
+		renderer::debugMeshes.push_back(meshAttribute);
 	}
 
 	void Collider3D::setType(eColliderType type, bool isStatic)

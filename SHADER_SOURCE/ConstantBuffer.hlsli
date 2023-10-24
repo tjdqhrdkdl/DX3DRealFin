@@ -57,7 +57,7 @@ cbuffer ParticleSystem : register(b5)
     
     float startLifeTime;
     float deltaTime;
-    float elapsedTime; //´©Àû½Ã°£
+    float elapsedTime; //ëˆ„ì ì‹œê°„
     int padding;
 }
 
@@ -100,3 +100,11 @@ cbuffer UniformDataCB : register(b9)
 //    float   meterendtime;
 //    float2  metersize;
 //}
+
+
+cbuffer WireFrameCB : register(b11)
+{
+	uint g_collisionCount;
+	uint g_bTrigger;
+	float2 WireFrameCB_padding;
+}

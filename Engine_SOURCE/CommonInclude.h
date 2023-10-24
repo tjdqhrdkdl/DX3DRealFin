@@ -10,12 +10,12 @@
 #include <vector>
 #include <bitset>
 #include "yaMath.h"
+#include "strKeys.h"
 
 namespace std
 {
 	namespace fs = filesystem;
 }
-#define STRKEY constexpr const wchar_t*
 
 #ifdef _DEBUG
 STRKEY gResPath = L"..\\Resources";

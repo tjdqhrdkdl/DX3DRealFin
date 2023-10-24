@@ -1,6 +1,8 @@
 #include "yaCollisionManager.h"
 #include "yaScene.h"
 #include "yaSceneManager.h"
+#include "PhysXManager.h"
+#include "yaTime.h"
 
 namespace ya
 {
@@ -9,9 +11,15 @@ namespace ya
 
 	void CollisionManager::Initialize()
 	{
+		if (false == PhysicsManager::initialize())
+		{
+			assert(false);
+		}
 	}
 	void CollisionManager::Update()
 	{
+		PhysicsManager::update(Time::DeltaTime());
+
 		Scene* scene = SceneManager::GetActiveScene();
 		for (UINT row = 0; row < (UINT)eLayerType::End; row++)
 		{

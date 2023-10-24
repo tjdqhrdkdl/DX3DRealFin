@@ -17,7 +17,7 @@ namespace ya
 	TitleScene::TitleScene()
 		: Scene(eSceneType::Title)
 	{
-		
+		SetName(L"TitleScene");
 	}
 
 	TitleScene::~TitleScene()

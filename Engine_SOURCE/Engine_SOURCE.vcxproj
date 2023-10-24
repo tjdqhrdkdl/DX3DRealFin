@@ -182,6 +182,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="PhysXManager.h" />
     <ClInclude Include="PhysXWrapper.h" />
+    <ClInclude Include="strKeys.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="UICanvasObj.h" />
     <ClInclude Include="UICanvas_InGame.h" />

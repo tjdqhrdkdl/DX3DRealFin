@@ -641,6 +641,9 @@
     <ClInclude Include="PhysXManager.h">
       <Filter>Engine\Component\Collider\PhysX</Filter>
     </ClInclude>
+    <ClInclude Include="strKeys.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

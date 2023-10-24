@@ -14,12 +14,14 @@ namespace ya
 	using namespace graphics;
 
 	Application::Application()
+		: initialized(false)
+		, graphicDevice()
+		, mHwnd{}
+		, mHdc{}
+		, mHeight{}
+		, mWidth{}
 	{
 		Plane pla = Plane::Plane(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f));
-
-		
-
-
 	}
 
 	Application::~Application()
@@ -117,5 +119,4 @@ namespace ya
 		ShowWindow(mHwnd, true);
 		UpdateWindow(mHwnd);
 	}
-
 }
