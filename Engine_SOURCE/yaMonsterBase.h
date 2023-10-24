@@ -40,6 +40,29 @@ namespace ya
             SpecialAttack special;
         };
 
+        enum eMonsterState
+        {
+            MonsterState_None = 0x00000000,
+            MonsterState_Idle = 0x00000001,
+            MonsterState_Alert = 0x00000002,
+            MonsterState_Recognize = 0x00000004,
+            MonsterState_DrawSword = 0x00000008,
+            MonsterState_Attack = 0x00000010,
+            MonsterState_Defense = 0x00000020,
+            MonsterState_Guard = 0x00000040,
+            MonsterState_GuardSuccess = 0x00000080,
+            MonsterState_GuardLeft = 0x00000100,
+            MonsterState_Trace = 0x00000200,
+            MonsterState_Move = 0x00000400,
+            MonsterState_OnHit = 0x00000800,
+            MonsterState_OnHitFront = 0x00001000,
+            MonsterState_AttackBlocked = 0x00002000,
+            MonsterState_SuperArmor = 0x00004000,
+            MonsterState_Groggy = 0x00004000,
+            MonsterState_DeathBlow = 0x00008000,
+            MonsterState_LookAt = 0x00010000,
+            MonsterState_Dead = 0x00020000,
+        };
     public:
         MonsterBase();
         virtual ~MonsterBase();
@@ -153,6 +176,10 @@ namespace ya
 
         Attack GetAttackParams() { return mAttackParams; }
 
+
+        virtual void OnCollisionEnter(Collider2D* collider) = 0 ;
+        virtual void OnCollisionStay(Collider2D* collider) = 0;
+        virtual void OnCollisionExit(Collider2D* collider) = 0;
      protected: // MonsterUI
          void CreateDeathBlowMark();
 

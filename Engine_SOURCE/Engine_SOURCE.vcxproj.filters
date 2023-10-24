@@ -154,8 +154,8 @@
     <ClCompile Include="yaFbxLoader.cpp">
       <Filter>Engine\Resource\FbxLoader</Filter>
     </ClCompile>
-    <ClCompile Include="yaSpearman.cpp">
-      <Filter>Contents\Monster\Spearman</Filter>
+    <ClCompile Include="yaSwordMan.cpp">
+      <Filter>Contents\Monster\SwordMan</Filter>
     </ClCompile>
     <ClCompile Include="yaSpearman_Sting.cpp">
       <Filter>Contents\Monster\Attack</Filter>
@@ -332,9 +332,6 @@
     <ClCompile Include="yaLoadingScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="yaTenzenCollisionScript.cpp">
-      <Filter>Contents\Monster\Tenzen</Filter>
-    </ClCompile>
     <ClCompile Include="yaTenzenSwordScript.cpp">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClCompile>
@@ -376,6 +373,12 @@
     </ClCompile>
     <ClCompile Include="yaPlayerHpTexture.cpp">
       <Filter>Contents\Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMonsterCollisionScript.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSwordManSwordScript.cpp">
+      <Filter>Contents\Monster\SwordMan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -541,8 +544,8 @@
     <ClInclude Include="yaFbxLoader.h">
       <Filter>Engine\Resource\FbxLoader</Filter>
     </ClInclude>
-    <ClInclude Include="yaSpearman.h">
-      <Filter>Contents\Monster\Spearman</Filter>
+    <ClInclude Include="yaSwordMan.h">
+      <Filter>Contents\Monster\SwordMan</Filter>
     </ClInclude>
     <ClInclude Include="yaSpearman_Sting.h">
       <Filter>Contents\Monster\Attack</Filter>
@@ -715,9 +718,6 @@
     <ClInclude Include="yaLoadingScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="yaTenzenCollisionScript.h">
-      <Filter>Contents\Monster\Tenzen</Filter>
-    </ClInclude>
     <ClInclude Include="yaTenzenSwordScript.h">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClInclude>
@@ -759,6 +759,12 @@
     </ClInclude>
     <ClInclude Include="yaPlayerHpTexture.h">
       <Filter>Contents\Player\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSwordManSwordScript.h">
+      <Filter>Contents\Monster\SwordMan</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMonsterCollisionScript.h">
+      <Filter>Contents\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -900,9 +906,6 @@
     <Filter Include="Engine\Resource\FbxLoader">
       <UniqueIdentifier>{e67fd783-9dd6-43ad-a3e6-53602667ccc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\Monster\Spearman">
-      <UniqueIdentifier>{afcd2e4b-ab7d-4f73-89d8-1c28d841c4d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Contents\Monster\Attack">
       <UniqueIdentifier>{5283ac8b-2cf8-4c08-96bd-4df3af8f7500}</UniqueIdentifier>
     </Filter>
@@ -971,6 +974,9 @@
     </Filter>
     <Filter Include="Contents\Player\UI">
       <UniqueIdentifier>{9a93656c-7983-4a70-865a-4495ca83e472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\SwordMan">
+      <UniqueIdentifier>{afcd2e4b-ab7d-4f73-89d8-1c28d841c4d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

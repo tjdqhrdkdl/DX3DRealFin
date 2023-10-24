@@ -27,8 +27,6 @@ namespace ya
 	void NavMesh::Update()
 	{
 
-		if (Input::GetKeyDown(eKeyCode::V))
-			mbNavOn = !mbNavOn;
 		if (mbNavOn)
 		{
 			NavMeshTool* tool = NavMeshTool::GetInst();
@@ -104,6 +102,7 @@ namespace ya
 		{
 			mDestPos = dest;
 			mbNavOn = true;
+			mbTraceOn = true;
 			mRenewTimer = 0;
 		}
 		 else

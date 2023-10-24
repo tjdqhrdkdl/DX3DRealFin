@@ -211,7 +211,7 @@ namespace ya
 				
 				//ui 전체 포지션 값
 				Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-				world._42 += 3;
+				world._42 += 1.5;
 				Matrix fin = world * mainCamera->GetViewMatrix();
 				fin *= mainCamera->GetProjectionMatrix();
 				Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
@@ -247,14 +247,19 @@ namespace ya
 				}
 
 				//레저렉션 카운트
-				if (mMonster->GetResurrectionCountMax() > 0)
+				if (mMonster->GetResurrectionCountMax() > 1)
 				{
 					if (mMonster->GetResurrectionCount() == 0)
+					{
+						mMonsterResurectionCount1->SetRender(false);
+						mMonsterResurectionCount2->SetRender(false);
+					}
+					else if (mMonster->GetResurrectionCount() == 1)
 					{
 						mMonsterResurectionCount1->SetRender(true);
 						mMonsterResurectionCount2->SetRender(false);
 					}
-					else if (mMonster->GetResurrectionCount() == 1)
+					else if (mMonster->GetResurrectionCount() == 2)
 					{
 						mMonsterResurectionCount1->SetRender(true);
 						mMonsterResurectionCount2->SetRender(true);
@@ -262,29 +267,7 @@ namespace ya
 					}
 				}
 
-				{
-					if (mMonster->IsDeathBlow())
-					{
-						world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-						world._42 += -0.5;
-						fin = world * mainCamera->GetViewMatrix();
-						fin *= mainCamera->GetProjectionMatrix();
-						ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
-						ndc = ndc / ndc.w;
 
-						UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
-						UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-						mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
-						if (ndc.z > 1 or ndc.z < 0)
-							mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
-						mMonsterDeathBlow->SetRender(true);
-
-					}
-					else
-					{
-						mMonsterDeathBlow->SetRender(false);
-					}
-				}
 			}
 			else
 			{
@@ -305,7 +288,7 @@ namespace ya
 					== mMonster)
 				{
 					Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-					world._42 += 0.5;
+					world._42 += 0.25;
 					Matrix fin = world * mainCamera->GetViewMatrix();
 					fin *= mainCamera->GetProjectionMatrix();
 					Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
@@ -327,6 +310,29 @@ namespace ya
 				}
 
 
+			}
+			{
+				if (mMonster->IsDeathBlow())
+				{
+					Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
+					world._42 += -0.25;
+					Matrix fin = world * mainCamera->GetViewMatrix();
+					fin *= mainCamera->GetProjectionMatrix();
+					Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
+					ndc = ndc / ndc.w;
+
+					Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
+					UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
+					mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
+					if (ndc.z > 1 or ndc.z < 0)
+						mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
+					mMonsterDeathBlow->SetRender(true);
+
+				}
+				else
+				{
+					mMonsterDeathBlow->SetRender(false);
+				}
 			}
 		}
 		GameObject::Update();

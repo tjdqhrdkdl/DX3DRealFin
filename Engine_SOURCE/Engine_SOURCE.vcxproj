@@ -268,6 +268,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaPlayerActionScript.h" />
     <ClInclude Include="yaPlayerProjectileScript.h" />
     <ClInclude Include="StrConverter.h" />
+    <ClInclude Include="yaSwordManSwordScript.h" />
     <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaPrefab.h" />
     <ClInclude Include="yaRedOgre.h" />
@@ -282,12 +283,12 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaShader.h" />
     <ClInclude Include="yaSpearman_Sting.h" />
     <ClInclude Include="yaState.h" />
-    <ClInclude Include="yaSpearman.h" />
+    <ClInclude Include="yaSwordMan.h" />
     <ClInclude Include="yaSpriteRenderer.h" />
     <ClInclude Include="yaStructedBuffer.h" />
     <ClInclude Include="yaSwordsman.h" />
     <ClInclude Include="yaTenzen.h" />
-    <ClInclude Include="yaTenzenCollisionScript.h" />
+    <ClInclude Include="yaMonsterCollisionScript.h" />
     <ClInclude Include="yaTenzenSwordScript.h" />
     <ClInclude Include="yaTexture.h" />
     <ClInclude Include="yaTime.h" />
@@ -398,6 +399,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaPlayerActionScript.cpp" />
     <ClCompile Include="yaPlayerProjectileScript.cpp" />
     <ClCompile Include="StrConverter.cpp" />
+    <ClCompile Include="yaSwordManSwordScript.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />
     <ClCompile Include="yaRedOgre.cpp" />
@@ -411,12 +413,12 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaShader.cpp" />
     <ClCompile Include="yaSpearman_Sting.cpp" />
     <ClCompile Include="yaState.cpp" />
-    <ClCompile Include="yaSpearman.cpp" />
+    <ClCompile Include="yaSwordMan.cpp" />
     <ClCompile Include="yaSpriteRenderer.cpp" />
     <ClCompile Include="yaStructedBuffer.cpp" />
     <ClCompile Include="yaSwordsman.cpp" />
     <ClCompile Include="yaTenzen.cpp" />
-    <ClCompile Include="yaTenzenCollisionScript.cpp" />
+    <ClCompile Include="yaMonsterCollisionScript.cpp" />
     <ClCompile Include="yaTenzenSwordScript.cpp" />
     <ClCompile Include="yaTexture.cpp" />
     <ClCompile Include="yaTime.cpp" />

@@ -12,21 +12,21 @@ extern ya::Application application;
 
 namespace ya
 {
-	const float lockOnDistanceMax = 80.0f;
+	const float lockOnDistanceMax = 40.0f;
 
 	CameraScript::CameraScript()
 		: Script()
 		, mChildPos(Vector3(0, 0, -40))
 		, mThetaAxisY(1.57f)
 		, mThetaAxisX(1.57f)
-		, mDistFromTarget(7.0f)
+		, mDistFromTarget(3.5f)
 		, mDelayTime(0.2f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
 		, mbMouseMove(true)
 		, mbSelfCameraMoveMode(false)
 		, mbCameraDistChanging(false)
-		, mZoomSpeed(200)
+		, mZoomSpeed(100)
 	{
 	}
 
@@ -151,7 +151,7 @@ namespace ya
 	{
 
 		Vector3 targetPos = mPlayerTarget->GetComponent<Transform>()->GetPosition();
-		targetPos.y += 2.5f;
+		targetPos.y += mPlayerTarget->GetComponent<Transform>()->GetScale().y;
 		mQueDelayedTargetPos.push(targetPos);
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 

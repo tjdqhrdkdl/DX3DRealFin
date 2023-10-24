@@ -20,7 +20,7 @@
 
 #include "yaApplication.h"
 
-#include "yaSpearman.h"
+#include "yaSwordMan.h"
 #include "yaMusketeerman.h"
 #include "yaTenzen.h"
 
@@ -813,7 +813,7 @@ namespace ya
 		// 인살 가능한 몬스터가 있는 상태일때
 		// 몬스터 
 
-		if (dynamic_cast<Spearman*>(monster) != nullptr)
+		if (dynamic_cast<SwordMan*>(monster) != nullptr)
 		{
 			if (monster->IsRecognize())
 			{
