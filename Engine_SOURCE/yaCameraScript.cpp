@@ -289,6 +289,11 @@ namespace ya
 			mbLockOn = false, mLockOnTarget = nullptr;
 		if (mbLockOn)
 		{
+			if (dynamic_cast<MonsterBase*>(mLockOnTarget)->GetSituation() == eSituation::Death)
+			{
+				mbLockOn = false;
+				mLockOnTarget = nullptr;
+			}
 			Transform* monTr = mLockOnTarget->GetComponent<Transform>();
 			if (monTr == nullptr)
 			{
@@ -410,6 +415,7 @@ namespace ya
 	{
 		if (mbDestination && !mbLockOn)
 		{
+			
 			Vector3 destPos = mDestination * mDistFromTarget;
 			Vector3 gap = destPos - mChildPos;
 			Vector3 gapNormal = destPos - mChildPos;
@@ -420,6 +426,7 @@ namespace ya
 				mbDestination = false;
 				return;
 			}
+
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
 			mChildPos.Normalize();
 			mChildPos *= mDistFromTarget;

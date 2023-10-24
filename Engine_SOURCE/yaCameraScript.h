@@ -18,8 +18,9 @@ namespace ya
 
 		GameObject* GetLockOnTarget() { return mLockOnTarget; }
 		void SetLockOnTarget(GameObject* target) { mLockOnTarget = target; mbLockOn = true; }
+		void SetLockOnFree() { mLockOnTarget = nullptr; mbLockOn = false; }
 
-		void SetDestinationDir(Vector3 destDir) { mbDestination = true, mDestination = destDir; }
+		void SetDestinationDir(Vector3 destDir) { mbDestination = true, destDir.Normalize(), mDestination = destDir; }
 		void SetDestinationFree() { mbDestination = false; }
 
 		//기본 줌은 현재 3

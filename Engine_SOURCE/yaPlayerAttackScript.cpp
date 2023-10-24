@@ -823,6 +823,10 @@ namespace ya
 			{
 				//암살 인살
 			}
+
+			EraseDeathBlowTarget(monster);
+			mDeathBlowTarget = nullptr;
+			monster->DeathBlow();
 		}
 		else if (dynamic_cast<Musketeerman*>(monster) != nullptr)
 		{
