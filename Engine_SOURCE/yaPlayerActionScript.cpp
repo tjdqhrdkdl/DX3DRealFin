@@ -20,7 +20,7 @@ namespace ya
 		, mbRotate(false)
 		, mLastDir(eDirection::Forward)
 		, mbDash(false)
-		, mDashSpeed(120.0f)
+		, mDashSpeed(150.0f)
 		, mDashTimer(0.0f)
 		, mDashDirection(eDirection::Forward)
 		, mHitTimer(1.0f)
@@ -81,7 +81,7 @@ namespace ya
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(20.0f);
+			action->Velocity(17.0f);
 			player->SetStateFlag(ePlayerState::Walk, false);
 			}));
 
@@ -312,10 +312,10 @@ namespace ya
 			if (theta < mFrontTheta)
 			{	// 회전 종료. 진행하려는 방향과 player의 forward가 비슷해지면 회전이 끝난다.
 				mbRotate = false;
-				//mTransform->SetRotation(Vector3(0.0f, rot.y + theta, 0.0f));
-				Vector3 cameraDir = Vector3(cameraForward.x, 0.0f, cameraForward.z);
-				cameraDir.Normalize();
-				mTransform->SetForward(cameraDir);
+				if (cross.y < 0.0f)
+					mTransform->SetRotation(Vector3(0.0f, rot.y - theta, 0.0f));
+				else
+					mTransform->SetRotation(Vector3(0.0f, rot.y + theta, 0.0f));
 			}
 			else
 			{	// 진행하려는 방향과 player의 forward가 비슷해질 때 까지 회전한다. theta 각에 따라 회전 방향을 결정한다.
@@ -876,8 +876,6 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 
-			Velocity(40.0f);
-
 			mbDash = true;
 
 			if (mDashTimer <= 0.0f)
@@ -886,33 +884,30 @@ namespace ya
 			if (Input::GetKey(eKeyCode::A))
 			{
 				mDashDirection = eDirection::Left;
-				mPlayerAnim->Play(L"a000_001152");
+				//mPlayerAnim->Play(L"a000_001153");
 			}
 			else if (Input::GetKey(eKeyCode::D))
 			{
 				mDashDirection = eDirection::Right;
-				mPlayerAnim->Play(L"a000_001153");
+				//mPlayerAnim->Play(L"a000_001152");
 			}
 			else if (Input::GetKey(eKeyCode::S))
 			{
 				mDashDirection = eDirection::Back;
-				mPlayerAnim->Play(L"a000_001154");
+				//mPlayerAnim->Play(L"a000_001154");
 			}
 			else
 			{
 				mDashDirection = eDirection::Forward;
-				mPlayerAnim->Play(L"a000_001151");
+				//mPlayerAnim->Play(L"a000_001151");
 			}
+			mPlayerAnim->Play(L"a000_001151");
 
 		}
 
 		if (Input::GetKey(eKeyCode::LSHIFT))
 		{
-			if (Input::GetKeyDown(eKeyCode::A))
-				mPlayerAnim->Play(L"a000_001152");
-			else if (Input::GetKeyDown(eKeyCode::D))
-				mPlayerAnim->Play(L"a000_001153");
-
+			mPlayerAnim->Play(L"a000_001151");
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 		}
 

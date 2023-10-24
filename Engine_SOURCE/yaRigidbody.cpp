@@ -37,8 +37,8 @@ namespace ya
 		, mGroundEvent(nullptr)
 		, mJumpCount(0)
 	{
-		mGravity = Vector3(0.0f, -120.0f, 0.0f);
-		mLimitVelocity = Vector3(10.0f, 10.0f, 10.0f);
+		mGravity = Vector3(0.0f, -140.0f, 0.0f);
+		mLimitVelocity = Vector3(10.0f, 30.0f, 10.0f);
 	}
 
 	Rigidbody::~Rigidbody()

@@ -22,7 +22,7 @@ extern ya::Application application;
 
 namespace ya
 {
-	const float defaultJumpForce = 400.0f;
+	const float defaultJumpForce = 200.0f;
 
 	ActionScript::ActionScript()
 		: Script()
