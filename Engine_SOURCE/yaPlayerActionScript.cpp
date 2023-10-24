@@ -20,7 +20,7 @@ namespace ya
 		, mbRotate(false)
 		, mLastDir(eDirection::Forward)
 		, mbDash(false)
-		, mDashSpeed(120.0f)
+		, mDashSpeed(150.0f)
 		, mDashTimer(0.0f)
 		, mDashDirection(eDirection::Forward)
 		, mHitTimer(1.0f)
@@ -81,7 +81,7 @@ namespace ya
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(20.0f);
+			action->Velocity(17.0f);
 			player->SetStateFlag(ePlayerState::Walk, false);
 			}));
 
@@ -876,8 +876,6 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 
-			Velocity(40.0f);
-
 			mbDash = true;
 
 			if (mDashTimer <= 0.0f)
@@ -903,8 +901,7 @@ namespace ya
 				mDashDirection = eDirection::Forward;
 				//mPlayerAnim->Play(L"a000_001151");
 			}
-				mPlayerAnim->Play(L"a000_001151");
-			}
+			mPlayerAnim->Play(L"a000_001151");
 
 		}
 
