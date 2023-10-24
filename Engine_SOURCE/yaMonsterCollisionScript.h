@@ -3,12 +3,12 @@
 
 namespace ya
 {
-	class TenzenCollisionScript : public Script
+	class MonsterCollisionScript : public Script
 	{
 
 	public:
-		TenzenCollisionScript();
-		~TenzenCollisionScript();
+		MonsterCollisionScript();
+		~MonsterCollisionScript();
 
 		virtual void Initialize() override;
 		//virtual void Update() override;
@@ -20,7 +20,7 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider);
 
 	private:
-		class Tenzen* mTenzen;
+		class MonsterBase* mMonster;
 	};
 
 }

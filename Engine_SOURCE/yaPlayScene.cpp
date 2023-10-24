@@ -17,7 +17,7 @@
 #include "yaPlayer.h"
 
 #include "yaMonster.h"
-#include "yaSpearman.h"
+#include "yaSwordMan.h"
 #include "yaMusketeerman.h"
 #include "yaSwordsman.h"
 #include "yaTenzen.h"
