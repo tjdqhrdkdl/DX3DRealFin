@@ -13,9 +13,14 @@ namespace ya
 
 	void PhysXDebugObj::Initialize()
 	{
+		Transform* tr = GetComponent<Transform>();
+		tr->SetLocalScale(Vector3(100.f));
+
 		Collider3D* col3d = AddComponent<Collider3D>();
 		col3d->setType(eColliderType::Box);
-		AddComponent<PhysXPlayerScript>();
+		
+
+		GameObject::Initialize();
 	}
 
 }

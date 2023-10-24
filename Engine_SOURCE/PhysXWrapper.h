@@ -106,7 +106,7 @@ namespace ya
 		std::array<float, static_cast<UINT8>(UpdateInterval::END)> _intervals;
 		UpdateInterval											   _currentInterval;
 
-		std::vector<physx::PxScene*>  _scenes;
+		std::unordered_map<Scene*, physx::PxScene*>  _scenes;
 		inline static constexpr float _kDefaultDensity = 10.f;
 #ifdef _DEBUG
 		physx::PxPvd* _pvd{};

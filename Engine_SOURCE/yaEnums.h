@@ -81,6 +81,7 @@ namespace ya::enums
 		Circle,
 		Box,
 		Sphere,
+		Cylinder,
 		End,
 	};
 

@@ -29,10 +29,10 @@ namespace ya
 		, _positionBuffer()
 		, _wireFrameBuffer()
 	{
-		//_positionBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
-		//_wireFrameBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
-		//_mesh = Resources::Find<Mesh>(L"SphereMesh");
-		//_shader = ResourceManager::getGraphicShader("WIRE_FRAME");
+		_positionBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
+		_wireFrameBuffer = renderer::constantBuffers[(UINT)eCBType::WireFrame];
+		_mesh = Resources::Find<Mesh>(strKeys::mesh::CubeMesh);
+		_shader = Resources::Find<Shader>(strKeys::shader::PhysXDebugShader);
 	}
 
 	Collider3D::~Collider3D()
@@ -66,6 +66,29 @@ namespace ya
 		_worldMatrix = _worldMatrix * inverseObjectScale * objectWorldMatrix;
 
 		syncPhysics();
+
+
+
+		//Debug Render
+		DebugMesh meshAttribute = {};
+
+		meshAttribute.type = _type;
+
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		meshAttribute.scale = tr->GetLocalScale();
+		meshAttribute.scale *= _offsetScale;
+
+		meshAttribute.position = tr->GetWorldPosition();
+		meshAttribute.position += _offsetPosition;
+
+		meshAttribute.rotation = tr->GetWorldRotation();
+
+		meshAttribute.parent = tr->GetParent();
+
+		meshAttribute.collisionCount = _collisionCount;
+		meshAttribute.isTrigger = _isTrigger;
+
+		renderer::debugMeshes.push_back(meshAttribute);
 	}
 
 	void Collider3D::FixedUpdate()
@@ -76,49 +99,19 @@ namespace ya
 	{
 		//_positionBufferData.world = _worldMatrix;
 
-		//const Camera& camera = *(renderer::cameras[(UINT)eSceneType::Play]);
+		////const Camera& camera = *(renderer::cameras[(UINT)eSceneType::Play]);
 		//_positionBufferData.view = Camera::GetGpuViewMatrix();
 		//_positionBufferData.projection = Camera::GetGpuProjectionMatrix();
 		//_positionBuffer->SetData(&_positionBufferData);
 		//_positionBuffer->Bind(eShaderStage::ALL);
 
 		//_wireFrameData.collisionCount = _collisionCount;
-		//_wireFrameBuffer->uploadData(&_wireFrameData, sizeof(cbWireFrame));
-		//_wireFrameBuffer->bindToPipeline(ConstBufferType::cbWireFrame);
+		//_wireFrameBuffer->SetData(&_wireFrameData);
+		//_wireFrameBuffer->Bind(eShaderStage::PS);
 
 		//_shader->Binds();
 		//_mesh->Render(0u);
 
-		Transform* tr = GetOwner()->GetComponent<Transform>();
-		Vector3 scale = tr->GetWorldScale();
-		scale *= _offsetScale;
-
-		Vector3 rotation = tr->GetWorldRotation();
-		//rotation += mRotation;
-
-		Vector3 position = tr->GetWorldPosition();
-		Vector3 colliderPos = position + _offsetPosition;
-
-		Matrix scaleMatrix = Matrix::CreateScale(scale);
-		Matrix rotationMatrix;
-		rotationMatrix =  Matrix::CreateRotationX(rotation.x);
-		rotationMatrix *= Matrix::CreateRotationY(rotation.y);
-		rotationMatrix *= Matrix::CreateRotationZ(rotation.z);
-
-		Matrix positionMatrix;
-		positionMatrix.Translation(Vector3(colliderPos.x, colliderPos.y, colliderPos.z));
-
-		Matrix worldMatrix = scaleMatrix * rotationMatrix * positionMatrix;
-
-		DebugMesh meshAttribute = {};
-		meshAttribute.position = Vector3(colliderPos.x, colliderPos.y, colliderPos.z);
-		//meshAttribute.radius = mRadius;
-		meshAttribute.rotation = rotation;
-		meshAttribute.scale = scale;
-		meshAttribute.parent = tr->GetParent();
-		meshAttribute.type = _type;
-
-		renderer::debugMeshes.push_back(meshAttribute);
 	}
 
 	void Collider3D::setType(eColliderType type, bool isStatic)
@@ -166,6 +159,11 @@ namespace ya
 	void Collider3D::OnCollisionEnter(Collider3D* other, const Vector3& collisionPosition)
 	{
 		++_collisionCount;
+
+		if (this == other)
+		{
+			int a = 3;
+		}
 
 		const auto& scripts = GetOwner()->GetScripts();
 		for (auto& script : scripts)
@@ -359,11 +357,17 @@ namespace ya
 			if (rigidActor->is<physx::PxRigidStatic>())
 				return;
 
-			Matrix		   withoutScale = Matrix::CreateScale(getWorldScale()).Invert() * _worldMatrix;
-			physx::PxMat44 matrix{};
-			std::memcpy(&matrix, &withoutScale, sizeof(Matrix));
-			physx::PxTransform transform{ matrix };
+			//Matrix		   withoutScale = Matrix::CreateScale(getWorldScale()).Invert() * _worldMatrix;
+			//physx::PxMat44 matrix{};
+			//std::memcpy(&matrix, &withoutScale, sizeof(Matrix));
 
+
+			physx::PxTransformT<float> transform{};
+			memcpy(&transform.p, _worldMatrix.m[3], sizeof(float) * 3);
+
+			Quaternion q = GetOwner()->GetComponent<Transform>()->GetWorldRotationQuaternion();
+			memcpy(&transform.q, &q, sizeof(Quaternion));
+			
 			rigidActor->setGlobalPose(transform);
 		}
 	}

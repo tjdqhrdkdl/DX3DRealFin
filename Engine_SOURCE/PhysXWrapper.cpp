@@ -74,11 +74,11 @@ namespace ya
 	{
 		for (auto& scene : _scenes)
 		{
-			const PxU32 actorCount = scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+			const PxU32 actorCount = scene.second->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 			if (actorCount > 0)
 			{
 				std::vector<PxRigidActor*> actors(actorCount);
-				scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
+				scene.second->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
 				for (const auto& actor : actors)
 				{
 					GameObject* gameObject = static_cast<GameObject*>(actor->userData);
@@ -86,7 +86,7 @@ namespace ya
 						gameObject->GetComponent<Collider3D>()->destroyShape();
 				}
 			}
-			PX_RELEASE(scene);
+			PX_RELEASE(scene.second);
 		}
 		PX_RELEASE(_dispatcher);
 		PX_RELEASE(_physics);
@@ -228,6 +228,8 @@ namespace ya
 			GameObject* rightGameObject = static_cast<GameObject*>(pairHeader.actors[1]->userData);
 			if (leftGameObject->IsDead() || rightGameObject->IsDead())
 				continue;
+			else if (leftGameObject == rightGameObject)
+				continue;
 
 			Collider3D* leftCollider = leftGameObject->GetComponent<Collider3D>();
 			Collider3D* rightCollider = rightGameObject->GetComponent<Collider3D>();
@@ -312,7 +314,9 @@ namespace ya
 	void PhysxWrapper::createScene(Scene* scene)
 	{
 		assert(scene);
-		const auto iter = std::find_if(_scenes.begin(), _scenes.end(), [scene](const PxScene* pxScene) { return pxScene->getName() == scene->GetNameChar(); });
+		const auto iter = _scenes.find(scene);
+			
+			//std::find_if(_scenes.begin(), _scenes.end(), [scene](const PxScene* pxScene) { return pxScene->getName() == scene->GetNameChar(); });
 
 		//이미 생성된 씬이 있을 경우 return
 		if (iter != _scenes.end())
@@ -333,21 +337,23 @@ namespace ya
 		
 		newScene->setName(scene->GetNameChar().c_str());
 
-		_scenes.push_back(newScene);
+		_scenes.insert(std::make_pair(scene, newScene));
+		//_scenes.push_back(newScene);
 	}
 
 	void PhysxWrapper::changeScene(Scene* scene)
 	{
-		const auto iter = std::find_if(_scenes.begin(), _scenes.end(), [scene](const PxScene* pxScene) {
-			return pxScene->getName() == scene->GetNameChar();
-			});
+		const auto iter = _scenes.find(scene);
+			//std::find_if(_scenes.begin(), _scenes.end(), [scene](const PxScene* pxScene) {
+			//return pxScene->getName() == scene->GetNameChar();
+			//});
 		//assert(iter != _scenes.end());
 
 		physx::PxScene* pxScene = nullptr;
 
 		if (iter != _scenes.end())
 		{
-			pxScene = *iter;
+			pxScene = iter->second;
 		}
 		
 		_currentScene = pxScene;
@@ -358,6 +364,9 @@ namespace ya
 	{
 		Transform* component = gameObject->GetComponent<Transform>();
 
+		auto iter = _scenes.find(gameObject->GetScene());
+		assert(_scenes.end() != iter);
+
 		PxTransform t{};
 		t.p = MathUtil::vector3ToPx(component->GetWorldPosition());
 		t.q = MathUtil::quaternionToPx(component->GetWorldRotationQuaternion());
@@ -365,7 +374,8 @@ namespace ya
 		if (isStatic)
 		{
 			PxRigidStatic* staticObject = PxCreateStatic(*_physics, t, PxSphereGeometry{ radius }, *_material);
-			_currentScene->addActor(*staticObject);
+			//_currentScene->addActor(*staticObject);
+			iter->second->addActor(*staticObject);
 
 			PxShape* shapes{};
 			const PxU32 count = staticObject->getShapes(&shapes, 1);
@@ -379,7 +389,8 @@ namespace ya
 		{
 			PxRigidDynamic* dynamic = PxCreateDynamic(*_physics, t, PxSphereGeometry{ radius }, *_material, _kDefaultDensity);
 
-			_currentScene->addActor(*dynamic);
+			iter->second->addActor(*dynamic);
+			//currentScene->addActor(*dynamic);
 			dynamic->setAngularDamping(100.f);
 			PxShape* shapes{};
 			const PxU32 count = dynamic->getShapes(&shapes, 1);
@@ -394,6 +405,9 @@ namespace ya
 	{
 		Transform* component =gameObject->GetComponent<Transform>();
 
+		auto iter = _scenes.find(gameObject->GetScene());
+		assert(_scenes.end() != iter);
+
 		PxTransform t{};
 		t.p = *outShape ? MathUtil::vector3ToPx(component->GetWorldPosition()) : MathUtil::vector3ToPx(component->GetLocalPosition());
 		t.q = *outShape ? MathUtil::quaternionToPx(component->GetWorldRotationQuaternion()) : MathUtil::quaternionToPx(component->GetLocalRotationQuaternion());
@@ -401,7 +415,8 @@ namespace ya
 		if (isStatic)
 		{
 			PxRigidStatic* staticObject = PxCreateStatic(*_physics, t, PxCapsuleGeometry{ radius, height }, *_material);
-			_currentScene->addActor(*staticObject);
+			//_currentScene->addActor(*staticObject);
+			iter->second->addActor(*staticObject);
 
 			PxShape* shapes{};
 			const PxU32 count = staticObject->getShapes(&shapes, 1);
@@ -415,7 +430,8 @@ namespace ya
 			PxRigidDynamic* dynamic = PxCreateDynamic(*_physics, t, PxCapsuleGeometry{ radius, height }, *_material, _kDefaultDensity);
 			dynamic->setAngularDamping(100.f);
 
-			_currentScene->addActor(*dynamic);
+			iter->second->addActor(*dynamic);
+			//_currentScene->addActor(*dynamic);
 
 			PxShape* shapes{};
 			const PxU32 count = dynamic->getShapes(&shapes, 1);
@@ -429,7 +445,12 @@ namespace ya
 
 	void PhysxWrapper::createActorCube(GameObject* gameObject, const Vector3& halfExtents, PxShape** outShape, bool isStatic)
 	{
-		Transform* component =gameObject->GetComponent<Transform>();
+		Transform* component = gameObject->GetComponent<Transform>();
+
+		auto iter = _scenes.find(gameObject->GetScene());
+		assert(_scenes.end() != iter);
+
+
 
 		PxTransform t{};
 		t.p = *outShape ? MathUtil::vector3ToPx(component->GetWorldPosition()) : MathUtil::vector3ToPx(component->GetLocalPosition());
@@ -438,7 +459,8 @@ namespace ya
 		if (isStatic)
 		{
 			PxRigidStatic* staticObject = PxCreateStatic(*_physics, t, PxBoxGeometry{ halfExtents.x, halfExtents.y, halfExtents.z }, *_material);
-			_currentScene->addActor(*staticObject);
+			//targetScene->addActor(*staticObject);
+			iter->second->addActor(*staticObject);
 
 			PxShape* shapes{};
 			const PxU32 count = staticObject->getShapes(&shapes, 1);
@@ -450,7 +472,8 @@ namespace ya
 		else
 		{
 			PxRigidDynamic* dynamic = PxCreateDynamic(*_physics, t, PxBoxGeometry{ halfExtents.x, halfExtents.y, halfExtents.z }, *_material, _kDefaultDensity);
-			_currentScene->addActor(*dynamic);
+			//_currentScene->addActor(*dynamic);
+			iter->second->addActor(*dynamic);
 
 			PxShape* shapes{};
 			const PxU32 count = dynamic->getShapes(&shapes, 1);

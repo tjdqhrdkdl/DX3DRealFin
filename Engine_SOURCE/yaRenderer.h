@@ -119,12 +119,7 @@ namespace ya
 			Matrix lightProjection;
 		};
 
-		CBUFFER(WireFrameCB, CBSLOT_WIREFRAME)
-		{
-			UINT32 collisionCount;
-			UINT32 isTrigger;
-			Vector2 WirdFrameCB_Pad;
-		};
+
 
 
 		CBUFFER(UniformDataCB, CBSLOT_UNIFORM_DATA)
@@ -163,6 +158,12 @@ namespace ya
 			float   Nul_2;
 		};
 
+		CBUFFER(WireFrameCB, CBSLOT_WIREFRAME)
+		{
+			UINT32 collisionCount;
+			UINT32 isTrigger;
+			Vector2 WirdFrameCB_Pad;
+		};
 
 		extern Vertex vertexes[4];
 		extern Camera* mainCamera;

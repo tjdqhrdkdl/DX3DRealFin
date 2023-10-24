@@ -16,23 +16,33 @@ namespace ya
 
 		Vector3 pos = tr->GetLocalPosition();
 
-		constexpr float speed = 100.f;
+		constexpr float speed = 1.f;
 
-		if (Input::GetKey(eKeyCode::W))
+		bool changed = false;
+		if (Input::GetKey(eKeyCode::UP))
 		{
 			pos += tr->Forward() * speed;
+			changed = true;
 		}
-		else if (Input::GetKey(eKeyCode::A))
+		else if (Input::GetKey(eKeyCode::LEFT))
 		{
 			pos -= tr->Right() * speed;
+			changed = true;
 		}
-		else if (Input::GetKey(eKeyCode::S))
+		else if (Input::GetKey(eKeyCode::DOWN))
 		{
 			pos -= tr->Forward() * speed;
+			changed = true;
 		}
-		else if (Input::GetKey(eKeyCode::D))
+		else if (Input::GetKey(eKeyCode::RIGHT))
 		{
 			pos += tr->Right() * speed;
+			changed = true;
+		}
+
+		if (changed)
+		{
+			tr->SetLocalPosition(pos);
 		}
 
 	}

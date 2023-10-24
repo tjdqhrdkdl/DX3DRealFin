@@ -7,6 +7,7 @@
 #include "yaGridScript.h"
 #include "yaObject.h"
 #include "yaApplication.h"
+#include "yaRenderer.h"
 #include "yaGraphicDevice_DX11.h"
 
 #include "imgui.h"
@@ -69,16 +70,17 @@ namespace gui
 
 		renderer->SetMaterial(material, 0);
 
-		//그리드 이쪽으로 옮겨줘야 한다.
-		// Grid Object
-		//EditorObject* gridObject = new EditorObject();
-		//ya::MeshRenderer* gridMr = gridObject->AddComponent<ya::MeshRenderer>();
-		//gridMr->SetMesh(ya::Resources::Find<ya::Mesh>(L"RectMesh"));
-		//gridMr->SetMaterial(ya::Resources::Find<Material>(L"GridMaterial"));
-		//ya::GridScript* gridScript = gridObject->AddComponent<ya::GridScript>();
-		//gridScript->SetCamera(mainCamera);
 
-		//mEditorObjects.push_back(gridObject);
+		std::shared_ptr<ya::Mesh> cylinderMesh = ya::Resources::Find<ya::Mesh>(strKeys::mesh::CylinderMesh);
+
+		mDebugObjects[(UINT)eColliderType::Cylinder] = new DebugObject();
+		renderer
+			= mDebugObjects[(UINT)eColliderType::Cylinder]->AddComponent<ya::MeshRenderer>();
+		renderer->SetMesh(cylinderMesh);
+
+		renderer->SetMaterial(material, 0);
+
+
 
 		ImGui_Initialize();
 
@@ -194,13 +196,20 @@ namespace gui
 		else if (mesh.type == eColliderType::Sphere)
 			tr->SetLocalScale(Vector3(mesh.radius));
 
-		ya::BaseRenderer* renderer = debugObj->GetComponent<ya::BaseRenderer>();
+		ya::BaseRenderer* baseRender = debugObj->GetComponent<ya::BaseRenderer>();
 		ya::Camera* camera = ya::renderer::mainCamera;
 
 		tr->FixedUpdate();
 
 		ya::Camera::SetGpuViewMatrix(ya::renderer::mainCamera->GetViewMatrix());
 		ya::Camera::SetGpuProjectionMatrix(ya::renderer::mainCamera->GetProjectionMatrix());
+
+		WireFrameCB cbdata{};
+		cbdata.collisionCount = mesh.collisionCount;
+		cbdata.isTrigger = mesh.isTrigger;
+		ConstantBuffer* cb = ya::renderer::constantBuffers[(UINT)eCBType::WireFrame];
+		cb->SetData(&cbdata);
+		cb->Bind(eShaderStage::PS);
 
 		debugObj->Render();
 	}

@@ -30,6 +30,8 @@
 #include "PhysXManager.h"
 
 #include "PhysXDebugObj.h"
+#include "TestCameraScript.h"
+#include "PhysXPlayerScript.h"
 
 namespace ya
 {
@@ -44,8 +46,6 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
-		CreatePhysXScene();
-
 		//CreateRealScene();
 		CreateTestScene();
 
@@ -329,7 +329,7 @@ namespace ya
 		Camera* cameraComp = cameraObj->AddComponent<Camera>();
 		cameraComp->SetProjectionType(Camera::eProjectionType::Perspective);
 		cameraComp->TurnLayerMask(eLayerType::UI, false);
-		CameraScript* camScript = cameraObj->AddComponent<CameraScript>();
+		TestCameraScript* camScript = cameraObj->AddComponent<TestCameraScript>();
 		mainCamera = cameraComp;
 
 		//Light
@@ -348,6 +348,25 @@ namespace ya
 		}
 
 		//디버그 플레이어
-		PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Player, this);
+		{
+			PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Player, this);
+			player->SetName(L"testObj");
+			player->AddComponent<PhysXPlayerScript>();
+
+			Transform* tr = player->GetComponent<Transform>();
+			tr->SetLocalScale(Vector3(30.f, 30.f, 30.f));
+			tr->SetLocalPosition(Vector3(-10.f, 10.f, -10.f));
+		}
+
+		{
+			PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Monster, this);
+			player->SetName(L"testObj2");
+			Transform* tr = player->GetComponent<Transform>();
+			tr->SetLocalScale(Vector3(30.f, 30.f, 30.f));
+			tr->SetLocalPosition(Vector3(10.f, 10.f, 10.f));
+		}
+
+		PhysicsManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Monster, true);
+
 	}
 }

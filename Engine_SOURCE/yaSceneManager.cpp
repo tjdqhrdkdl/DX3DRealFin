@@ -24,6 +24,7 @@ namespace ya
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
 		mScenes[(UINT)eSceneType::Play]->SetThreadLoad(true);
+		mScenes[(UINT)eSceneType::Play]->CreatePhysXScene();
 		//mScenes[(UINT)eSceneType::Play]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Play);
 
 		ChangeScene(eSceneType::Title);
@@ -66,6 +67,7 @@ namespace ya
 				}
 
 				PhysicsManager::changePhysicScene(mActiveScene);
+
 				for (GameObject* obj : gameObjs)
 				{
 					auto* col3D = obj->GetComponent<Collider3D>();

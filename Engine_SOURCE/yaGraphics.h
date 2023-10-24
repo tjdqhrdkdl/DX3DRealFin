@@ -210,6 +210,9 @@ namespace ya::graphics
 		float radius;
 		float duration;
 		float time;
+
+		UINT32 collisionCount;
+		UINT32 isTrigger;
 	};
 
 	struct LightAttribute

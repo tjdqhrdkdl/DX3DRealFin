@@ -60,6 +60,7 @@ namespace ya
 		{
 			return mMousePosition;
 		}
+		static __forceinline math::Vector2 GetMouseDir() { return mMouseDir; }
 
 		//GetKey()		키를 누르는 시간만큼 true를 반환
 		//GetKeyDown()	키를 눌렀을 때, 딱 한번 true를 반환
@@ -92,5 +93,7 @@ namespace ya
 	private:
 		static std::vector<Key> mKeys;
 		static math::Vector2 mMousePosition;
+		static math::Vector2 mMousePositionPrev;
+		static math::Vector2 mMouseDir;
 	};
 }

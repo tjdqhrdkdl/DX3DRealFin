@@ -313,6 +313,9 @@
     <ClCompile Include="PhysXPlayerScript.cpp">
       <Filter>Contents\PhysXDebug</Filter>
     </ClCompile>
+    <ClCompile Include="TestCameraScript.cpp">
+      <Filter>Contents\PhysXDebug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -654,6 +657,9 @@
       <Filter>Contents\PhysXDebug</Filter>
     </ClInclude>
     <ClInclude Include="PhysXPlayerScript.h">
+      <Filter>Contents\PhysXDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCameraScript.h">
       <Filter>Contents\PhysXDebug</Filter>
     </ClInclude>
   </ItemGroup>
