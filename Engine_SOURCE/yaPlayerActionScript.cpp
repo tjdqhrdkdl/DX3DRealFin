@@ -907,7 +907,6 @@ namespace ya
 
 		if (Input::GetKey(eKeyCode::LSHIFT))
 		{
-			mPlayerAnim->Play(L"a000_001151");
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 		}
 
