@@ -886,21 +886,23 @@ namespace ya
 			if (Input::GetKey(eKeyCode::A))
 			{
 				mDashDirection = eDirection::Left;
-				mPlayerAnim->Play(L"a000_001152");
+				//mPlayerAnim->Play(L"a000_001153");
 			}
 			else if (Input::GetKey(eKeyCode::D))
 			{
 				mDashDirection = eDirection::Right;
-				mPlayerAnim->Play(L"a000_001153");
+				//mPlayerAnim->Play(L"a000_001152");
 			}
 			else if (Input::GetKey(eKeyCode::S))
 			{
 				mDashDirection = eDirection::Back;
-				mPlayerAnim->Play(L"a000_001154");
+				//mPlayerAnim->Play(L"a000_001154");
 			}
 			else
 			{
 				mDashDirection = eDirection::Forward;
+				//mPlayerAnim->Play(L"a000_001151");
+			}
 				mPlayerAnim->Play(L"a000_001151");
 			}
 
@@ -908,11 +910,7 @@ namespace ya
 
 		if (Input::GetKey(eKeyCode::LSHIFT))
 		{
-			if (Input::GetKeyDown(eKeyCode::A))
-				mPlayerAnim->Play(L"a000_001152");
-			else if (Input::GetKeyDown(eKeyCode::D))
-				mPlayerAnim->Play(L"a000_001153");
-
+			mPlayerAnim->Play(L"a000_001151");
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 		}
 
