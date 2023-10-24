@@ -85,9 +85,7 @@ namespace ya
 					Quaternion quater = Quaternion::FromToRotation(-playerTr->Forward(), Vector3(playerPos.x - pos.x, playerPos.y - pos.y, playerPos.z - pos.z));
 					Vector3 quaterToEuler = quater.ToEuler();
 					Vector3 theta = quaterToEuler * 180.0f / XM_PI;
-
-
-					if (dist <= 5.0f)
+					if (dist <= 4.0f)
 					{
 						if (abs(theta.y) <= 60.0f)
 						{
@@ -102,6 +100,10 @@ namespace ya
 					{
 						mPlayerObject->EraseDeathBlowTarget(this);
 					}
+				}
+				else
+				{
+					mPlayerObject->EraseDeathBlowTarget(this);
 				}
 
 			}
