@@ -22,7 +22,7 @@ namespace ya
 		void SetDestinationDir(Vector3 destDir) { mbDestination = true, mDestination = destDir; }
 		void SetDestinationFree() { mbDestination = false; }
 
-		//기본 줌은 현재 7
+		//기본 줌은 현재 3
 		void SetCameraZoomDistance(float destDist) { mbCameraDistChanging = true, mDestDistFromTarget = destDist; }
 		void SetCameraZoomSpeed(float speed) { mZoomSpeed = speed; }
 

@@ -136,7 +136,7 @@ namespace ya
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
 		tr->SetPosition(Vector3(0, 0, 0));
-		tr->SetScale(Vector3(2, 2, 2));
+		tr->SetScale(Vector3(1, 1, 1));
 		mTransform = tr;
 
 		//메시 데이터 트랜스폼
@@ -223,8 +223,8 @@ namespace ya
 		SetPosture(0);
 		SetAlertnessCount(0.f);
 		SetDeathBlow(false);
-		SetResurrectionCount(1);
-		SetResurrectionCountMax(1);
+		SetResurrectionCount(2);
+		SetResurrectionCountMax(2);
 
 
 	}
@@ -296,6 +296,8 @@ namespace ya
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 				* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
 					+ GetComponent<Transform>()->GetFinalScale().z / 2 + 1));
+		SetPosture(0);
+		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(TenzenState_Move);
 		RM_STATE(TenzenState_Attack);
 		RM_STATE(TenzenState_Defense);
@@ -718,16 +720,16 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"GrogyDownFront") = [this]() { SetDeathBlow(true); RM_STATE(TenzenState_Guard); };
 		mMeshData->GetAnimationFrameEvent(L"GrogyDownFront", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
 
-		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(TenzenState_OnHit); SetResurrectionCount(GetResurrectionCount() - 1); ADD_STATE(TenzenState_Recognize); SetPosture(0); SetHp(GetMaxHP()); mMonsterUI->UIOn(); };
-		mMeshData->GetAnimationStartEvent(L"DeathBlow1") = [this]() { ADD_STATE(TenzenState_OnHit); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(3); };
-		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 55) = [this]() { if (GetResurrectionCount() <= 0) { mMeshData->GetAnimator()->SetAnimationChangeTime(0.01f); mAnimationName = L"DeathBlow1_Death"; } };
-		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 58) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(2); };
-		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 95) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())+Vector3(0,0.5,0)); mCamScript->SetCameraZoomDistance(7); };
+		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(TenzenState_OnHit); ADD_STATE(TenzenState_Recognize); SetPosture(0); SetHp(GetMaxHP()); mMonsterUI->UIOn(); };
+		mMeshData->GetAnimationStartEvent(L"DeathBlow1") = [this]() { ADD_STATE(TenzenState_OnHit); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(1.5); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 55) = [this]() { if (GetResurrectionCount() <= 0) {mMeshData->GetAnimator()->SetAnimationChangeTime(0.01f); mAnimationName = L"DeathBlow1_Death"; } };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 58) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(1); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 95) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())+Vector3(0,0.5,0)); mCamScript->SetCameraZoomDistance(3.5); };
 
 		mMeshData->GetAnimationEndEvent(L"DeathBlow1_Death") = [this]() { mMeshData->GetAnimator()->SetStop(true); mState = 0; ADD_STATE(TenzenState_Dead); };
-		mMeshData->GetAnimationStartEvent(L"DeathBlow1_Death") = [this]() {ADD_STATE(TenzenState_OnHit); };
-		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 3) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(2); };
-		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 40) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(7); };
+		mMeshData->GetAnimationStartEvent(L"DeathBlow1_Death") = [this]() {ADD_STATE(TenzenState_OnHit); SetHp(0); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 3) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(1); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 40) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); };
 
 	}
 
