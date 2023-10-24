@@ -127,9 +127,12 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a000_000601_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_000602_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_000603_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
-               
+
                 // 달리기 정지
                 meshData->GetAnimationCompleteEvent(L"a000_001151_" + name) = [meshData, name]() { meshData->Play(L"a000_001200_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_001152_" + name) = [meshData, name]() { meshData->Play(L"a000_001200_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_001153_" + name) = [meshData, name]() { meshData->Play(L"a000_001200_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_001154_" + name) = [meshData, name]() { meshData->Play(L"a000_001200_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_001510_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_001511_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_001512_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
@@ -193,11 +196,12 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a050_308000_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a050_308010_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
 
-                // 매달리기
+                // 매달리기 공격
                 meshData->GetAnimationCompleteEvent(L"a050_314000_" + name) = [meshData, name]() { meshData->Play(L"a000_020000_" + name); };
 
                 // 인살
                 meshData->GetAnimationCompleteEvent(L"a200_510000_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a201_510000_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
             }
 
             Play(L"a000_000000");

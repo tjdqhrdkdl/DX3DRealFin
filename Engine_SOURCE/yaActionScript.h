@@ -20,7 +20,7 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider) override;
 
 	public:
-		void Velocity(const float velocity = 18.0f);
+		void Velocity(const float velocity = 12.0f);
 
 		void SetSpeed(const float speed = 200.0f) { mSpeed = speed; }
 		float GetSpeed() const { return mSpeed; }
