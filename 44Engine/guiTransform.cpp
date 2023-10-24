@@ -69,10 +69,14 @@ namespace gui
 		ImGui::Text("ColliderCenter"); ImGui::SameLine();
 		ImGui::InputFloat3("##ColliderCenter", (float*)&mColliderCenter);
 
-		ya::Transform* camTr = ya::renderer::mainCamera->GetOwner()->GetComponent<ya::Transform>();
-		ya::math::Vector3 camPos = camTr->GetLocalPosition();
-		ImGui::Text("CameraPosition"); ImGui::SameLine();
-		ImGui::InputFloat3("##CameraPosition", (float*)&(camPos));
+		if (ya::renderer::mainCamera)
+		{
+			ya::Transform* camTr = ya::renderer::mainCamera->GetOwner()->GetComponent<ya::Transform>();
+			ya::math::Vector3 camPos = camTr->GetLocalPosition();
+			ImGui::Text("CameraPosition"); ImGui::SameLine();
+			ImGui::InputFloat3("##CameraPosition", (float*)&(camPos));
+		}
+
 
 		if (GetTarget())
 		{

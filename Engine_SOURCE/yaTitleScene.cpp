@@ -98,7 +98,7 @@ namespace ya
 
 		if (Input::GetKeyDown(eKeyCode::N))
 		{
-			SceneManager::LoadScene(eSceneType::Loading);
+			SceneManager::ChangeScene(eSceneType::Loading);
 		}
 
 
@@ -117,7 +117,7 @@ namespace ya
 
 	void TitleScene::OnEnter()
 	{
-
+		SceneManager::ChangeScene(eSceneType::Play);
 	}
 
 	void TitleScene::OnExit()

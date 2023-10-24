@@ -6,6 +6,14 @@
 namespace ya
 {
 	using namespace ya::enums;
+
+	enum class eLoadStatus
+	{
+		NotLoaded,
+		Loading,
+		LoadComplete
+	};
+
 	class Player;
 	class Scene : public Entity
 	{
@@ -13,7 +21,10 @@ namespace ya
 		Scene(eSceneType type);
 		virtual ~Scene();
 
+
 		virtual void Initialize();
+		void ThreadedInitialize();
+
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void Render();
@@ -36,15 +47,16 @@ namespace ya
 
 		void SetThreadLoad(bool thread) { mbThreadLoad = thread; }
 		bool IsThreadLoad() { return mbThreadLoad; }
+		eLoadStatus GetLoadStatus() const { return mLoadStatus; }
+		bool IsLoadComplete() const { return eLoadStatus::LoadComplete == mLoadStatus; }
 
-		std::function<void()>& GetCallBack() { return mInitCallBack; }
 
 	private:
 		std::vector<Layer> mLayers;
 		eSceneType mType;
 		Player* mPlayer;
 
-		bool mbThreadLoad;						// 스레드로 로드할지 여부
-		std::function<void()> mInitCallBack;	// initialize 완료 후 callback
+		bool mbThreadLoad;							// 스레드로 로드할지 여부
+		eLoadStatus mLoadStatus;
 	};
 }

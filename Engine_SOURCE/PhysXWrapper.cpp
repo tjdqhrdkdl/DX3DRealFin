@@ -313,7 +313,14 @@ namespace ya
 	{
 		assert(scene);
 		const auto iter = std::find_if(_scenes.begin(), _scenes.end(), [scene](const PxScene* pxScene) { return pxScene->getName() == scene->GetNameChar(); });
-		assert(iter == _scenes.end());
+
+		//이미 생성된 씬이 있을 경우 return
+		if (iter != _scenes.end())
+		{
+			return;
+		}
+
+		//assert(iter == _scenes.end());
 
 		PxSceneDesc sceneDescription = PxSceneDesc{ _physics->getTolerancesScale() };
 		sceneDescription.gravity = PxVec3{ 0.f, -0.5f, 0.f };
@@ -334,10 +341,18 @@ namespace ya
 		const auto iter = std::find_if(_scenes.begin(), _scenes.end(), [scene](const PxScene* pxScene) {
 			return pxScene->getName() == scene->GetNameChar();
 			});
-		assert(iter != _scenes.end());
+		//assert(iter != _scenes.end());
 
-		_currentScene = *iter;
+		physx::PxScene* pxScene = nullptr;
+
+		if (iter != _scenes.end())
+		{
+			pxScene = *iter;
+		}
+		
+		_currentScene = pxScene;
 	}
+
 
 	void PhysxWrapper::createActorSphere(GameObject* gameObject, float radius, PxShape** outShape, bool isStatic)
 	{

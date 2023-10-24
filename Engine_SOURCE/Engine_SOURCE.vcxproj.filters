@@ -307,6 +307,12 @@
     <ClCompile Include="PhysXManager.cpp">
       <Filter>Engine\Component\Collider\PhysX</Filter>
     </ClCompile>
+    <ClCompile Include="PhysXDebugObj.cpp">
+      <Filter>Contents\PhysXDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXPlayerScript.cpp">
+      <Filter>Contents\PhysXDebug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -644,6 +650,12 @@
     <ClInclude Include="strKeys.h">
       <Filter>Engine\Common</Filter>
     </ClInclude>
+    <ClInclude Include="PhysXDebugObj.h">
+      <Filter>Contents\PhysXDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysXPlayerScript.h">
+      <Filter>Contents\PhysXDebug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -834,6 +846,9 @@
     </Filter>
     <Filter Include="Engine\Component\Collider\PhysX">
       <UniqueIdentifier>{74c96652-f68b-431b-b57f-4ae80ea2b57e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\PhysXDebug">
+      <UniqueIdentifier>{5649797f-bec9-4c4c-adb0-783baf30c717}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

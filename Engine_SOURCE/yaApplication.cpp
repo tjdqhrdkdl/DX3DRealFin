@@ -48,8 +48,8 @@ namespace ya
 	{
 		Time::Update();
 		Input::Update();
-		CollisionManager::Update();
 		SceneManager::Update();
+		CollisionManager::Update();
 	}
 
 	// GPU update

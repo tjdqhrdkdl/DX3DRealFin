@@ -21,5 +21,6 @@ namespace gui
 
 	private:
 		TreeWidget* mTreeWidget;
+		std::string mSceneName;
 	};
 }

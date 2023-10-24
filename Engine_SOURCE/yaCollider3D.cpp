@@ -139,7 +139,7 @@ namespace ya
 			PhysxWrapper::getInstance().changeGeometry(this, _shape, _type);
 		}
 
-		_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(L"CubeMesh") : Resources::Find<Mesh>(L"SphereMesh");
+		_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
 	}
 
 	void Collider3D::setOffsetScale(Vector3 offset)
@@ -236,6 +236,18 @@ namespace ya
 		}
 
 		_shape->setFlags(flags);
+	}
+
+	void Collider3D::SceneChanged()
+	{
+		if (_shape)
+		{
+			physx::PxActor* actor = _shape->getActor();
+			actor->userData = nullptr;
+			actor->release();
+			_shape = nullptr;
+		}
+		setType(getCollider3DType(), _isStatic);
 	}
 
 	void Collider3D::enableGravity(bool enable)
@@ -355,4 +367,4 @@ namespace ya
 			rigidActor->setGlobalPose(transform);
 		}
 	}
-} // namespace pa
+} // namespace ya

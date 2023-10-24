@@ -13,12 +13,13 @@ namespace ya
 		static void Destroy();
 		static void Release();
 
-		static void LoadScene(eSceneType type);
+		static void ChangeScene(eSceneType type) { mNextScene = mScenes[(UINT)type]; }
 		static Scene* GetActiveScene() { return mActiveScene; }
 		static Scene* GetScene(eSceneType type) { return mScenes[(UINT)type]; }
 
 	private:
 		static std::vector<Scene*> mScenes;
 		static Scene* mActiveScene;
+		static Scene* mNextScene;
 	};
 }

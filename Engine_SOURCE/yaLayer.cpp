@@ -146,6 +146,18 @@ namespace ya
 		}
 	}
 
+	void Layer::Reset()
+	{
+		for (size_t i = 0; i < mGameObjects.size(); ++i)
+		{
+			if (mGameObjects[i])
+			{
+				delete mGameObjects[i];
+			}
+		}
+		mGameObjects.clear();
+	}
+
 	void Layer::AddGameObject(GameObject* gameObject)
 	{
 		if (gameObject == nullptr)

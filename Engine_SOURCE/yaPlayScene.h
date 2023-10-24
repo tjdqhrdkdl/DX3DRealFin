@@ -17,9 +17,11 @@ namespace ya
 
 		virtual void OnEnter() override;
 		virtual void OnExit() override;
+
+
 	private:
-		//for test
-		std::shared_ptr<MeshData> mMeshData;
+		void CreateRealScene();
+		void CreateTestScene();
 
 	};
 }

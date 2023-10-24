@@ -6,8 +6,9 @@ namespace ya
 	Scene::Scene(eSceneType type)
 		: mType(type)
 		, mbThreadLoad(false)
-		, mInitCallBack(nullptr)
+		, mLoadStatus(eLoadStatus::NotLoaded)
 		, mPlayer(nullptr)
+
 	{
 		mLayers.resize((UINT)eLayerType::End);
 	}
@@ -23,9 +24,17 @@ namespace ya
 			layer.Initialize();
 		}
 		
-		if(mInitCallBack != nullptr)
-			mInitCallBack();
+		
+		mLoadStatus = eLoadStatus::LoadComplete;
 	}
+
+	void Scene::ThreadedInitialize()
+	{
+		mLoadStatus = eLoadStatus::Loading;
+
+		Initialize();
+	}
+
 	void Scene::Update()
 	{
 		for (Layer& layer : mLayers)
@@ -67,6 +76,12 @@ namespace ya
 
 	void Scene::OnExit()
 	{
+		for (size_t i = 0; i < mLayers.size(); ++i)
+		{
+			mLayers[i].Reset();
+		}
+		mPlayer = nullptr;
+		mLoadStatus = eLoadStatus::NotLoaded;
 	}
 
 	void Scene::CreatePhysXScene()

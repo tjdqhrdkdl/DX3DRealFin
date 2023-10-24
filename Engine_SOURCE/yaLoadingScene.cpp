@@ -87,10 +87,10 @@ namespace ya
 
 	void LoadingScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::N))
-		{
-			SceneManager::LoadScene(eSceneType::Play);
-		}
+		//if (Input::GetKeyDown(eKeyCode::N))
+		//{
+		//	SceneManager::LoadScene(eSceneType::Play);
+		//}
 
 		Scene::Update();
 	}

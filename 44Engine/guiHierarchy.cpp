@@ -16,6 +16,7 @@ namespace gui
 {
 	Hierarchy::Hierarchy()
 		: mTreeWidget(nullptr)
+		, mSceneName()
 	{
 		SetName("Hierarchy");
 		SetSize(ImVec2(1600 / 2, 900 / 2));
@@ -28,8 +29,6 @@ namespace gui
 			, std::bind(&Hierarchy::InitializeInspector, this, std::placeholders::_1));
 
 		mTreeWidget->SetDummyRoot(true);
-
-		InitializeScene();
 	}
 
 	Hierarchy::~Hierarchy()
@@ -44,6 +43,10 @@ namespace gui
 
 	void Hierarchy::Update()
 	{
+		if (mSceneName.empty() && ya::SceneManager::GetActiveScene())
+		{
+			InitializeScene();
+		}
 	}
 
 	void Hierarchy::LateUpdate()
@@ -68,10 +71,10 @@ namespace gui
 
 		ya::Scene* scene = ya::SceneManager::GetActiveScene();
 
-		std::string sceneName = StrConverter::ConvertUnicodeToANSI(scene->GetName());
+		mSceneName  = StrConverter::ConvertUnicodeToANSI(scene->GetName());
 		//std::string sceneName(scene->GetName().begin(), scene->GetName().end());
 
-		TreeWidget::Node* root = mTreeWidget->AddNode(nullptr, sceneName, 0, true);
+		TreeWidget::Node* root = mTreeWidget->AddNode(nullptr, mSceneName, 0, true);
 
 		for (size_t i = 0; i < (UINT)ya::enums::eLayerType::End; i++)
 		{

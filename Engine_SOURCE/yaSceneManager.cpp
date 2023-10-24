@@ -12,6 +12,7 @@ namespace ya
 {
 	std::vector<Scene*> SceneManager::mScenes = {};
 	Scene* SceneManager::mActiveScene = nullptr;
+	Scene* SceneManager::mNextScene = nullptr;
 
 	void SceneManager::Initialize()
 	{
@@ -23,29 +24,65 @@ namespace ya
 
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
 		mScenes[(UINT)eSceneType::Play]->SetThreadLoad(true);
-		mScenes[(UINT)eSceneType::Play]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Play);
+		//mScenes[(UINT)eSceneType::Play]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Play);
 
-		for (Scene* scene : mScenes)
-		{
-			mActiveScene = scene;
-
-			if (scene->IsThreadLoad())
-			{
-				ThreadPool::EnqueueJob([scene]() {
-					scene->Initialize();
-				});
-			}
-			else
-			{
-				scene->Initialize();
-			}
-		}
-
-		mActiveScene = mScenes[(UINT)eSceneType::Title];
+		ChangeScene(eSceneType::Title);
+		//mActiveScene = mScenes[(UINT)eSceneType::Title];
 	}
 
 	void SceneManager::Update()
 	{
+		if (mNextScene)
+		{
+			if (mNextScene->IsThreadLoad() && eLoadStatus::NotLoaded == mNextScene->GetLoadStatus())
+			{
+				ThreadPool::EnqueueJob([](Scene* nextScene) {
+					nextScene->ThreadedInitialize();
+					}, mNextScene);
+			}
+			else
+			{
+				mNextScene->Initialize();
+			}
+
+
+			if (mNextScene->IsLoadComplete())
+			{
+				Scene* prevScene = mActiveScene;
+				mActiveScene = mNextScene;
+
+				//mNextScene은 OnEnter 함수에서 새로 등록될 수도 있으므로 미리 비워준다.
+				mNextScene = nullptr;
+
+				//renderer 클리어
+				renderer::ClearLights();
+
+				// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.
+				std::vector<GameObject*> gameObjs{};
+
+				if (prevScene)
+				{
+					gameObjs = prevScene->GetDontDestroyGameObjects();
+				}
+
+				PhysicsManager::changePhysicScene(mActiveScene);
+				for (GameObject* obj : gameObjs)
+				{
+					auto* col3D = obj->GetComponent<Collider3D>();
+					if (col3D)
+					{
+						col3D->SceneChanged();
+					}
+					eLayerType type = obj->GetLayerType();
+					mActiveScene->AddGameObject(obj, type);
+				}
+
+				if (prevScene)
+					prevScene->OnExit();
+				mActiveScene->OnEnter();
+			}
+		}
+
 		mActiveScene->Update();
 	}
 
@@ -72,27 +109,5 @@ namespace ya
 			scene = nullptr;
 		}
 	}
-	void SceneManager::LoadScene(eSceneType type)
-	{
-		if (mActiveScene)
-			mActiveScene->OnExit();
 
-		//renderer 클리어
-		renderer::ClearLights();
-
-		// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.
-		std::vector<GameObject*> gameObjs 
-			= mActiveScene->GetDontDestroyGameObjects();
-		mActiveScene = mScenes[(UINT)type];
-
-		//PhysicsManager::changePhysicScene(mActiveScene);
-		
-		for (GameObject* obj : gameObjs)
-		{
-			eLayerType type = obj->GetLayerType();
-			mActiveScene->AddGameObject(obj, type);
-		}
-
-		mActiveScene->OnEnter();
-	}
 }

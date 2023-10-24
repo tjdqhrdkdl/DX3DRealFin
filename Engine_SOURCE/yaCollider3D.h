@@ -71,6 +71,8 @@ namespace ya
 		bool isTrigger(void) const { return _isTrigger; }
 		void setTrigger(bool enable);
 
+		//씬 변경시 dontdestroy에 의해 제거되지 않고 씬만 변경 되었을 경우
+		void SceneChanged();
 		physx::PxShape* getShape() const { return _shape; }
 		void			enableGravity(bool enable);
 		bool			isGravityEnabled(void) const { return _isGravityEnabled; }
