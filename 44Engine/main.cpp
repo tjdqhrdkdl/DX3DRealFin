@@ -18,13 +18,9 @@
 #pragma comment(lib, "..\\x64\\Release\\Lib\\Engine_SOURCE.lib") 
 #endif
 
-
-
-
-#ifdef _DEBUG
-#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
-#endif
-
+//#ifdef _DEBUG
+//#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+//#endif
 
 #define MAX_LOADSTRING 100
 

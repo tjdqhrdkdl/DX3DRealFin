@@ -61,18 +61,22 @@ namespace ya
 		sortGameObjects();
 
 		// View proj  행렬 direction light 껄로 바뀌어야한다.
-		Transform* tr = renderer::lights[0]->GetOwner()->GetComponent<Transform>();
-		View = CreateViewMatrix(tr);
-		Projection = CreateProjectionMatrix(eProjectionType::Perspective, 1600, 900, 1.0f, 1000.0f);
+		if (false == renderer::lights.empty())
+		{
+			Transform* tr = renderer::lights[0]->GetOwner()->GetComponent<Transform>();
+			View = CreateViewMatrix(tr);
+			Projection = CreateProjectionMatrix(eProjectionType::Perspective, 1600, 900, 1.0f, 1000.0f);
 
-		ConstantBuffer* lightCB = renderer::constantBuffers[(UINT)eCBType::LightMatrix];
+			ConstantBuffer* lightCB = renderer::constantBuffers[(UINT)eCBType::LightMatrix];
 
-		LightMatrixCB data = {};
-		data.lightView = View;
-		data.lightProjection = Projection;
-		lightCB->SetData(&data);
-		lightCB->Bind(eShaderStage::VS);
-		lightCB->Bind(eShaderStage::PS);
+			LightMatrixCB data = {};
+			data.lightView = View;
+			data.lightProjection = Projection;
+			lightCB->SetData(&data);
+			lightCB->Bind(eShaderStage::VS);
+			lightCB->Bind(eShaderStage::PS);
+		}
+
 
 
 		// shadow
@@ -121,46 +125,40 @@ namespace ya
 
 	void Camera::CreateViewMatrix()
 	{
+		//Transform* tr = GetOwner()->GetComponent<Transform>();
+		//Vector3 pos = tr->GetPosition();
+
+		//// Crate Translate view matrix
+		//mView = Matrix::Identity;
+		//mView *= Matrix::CreateTranslation(-pos);
+		////회전 정보
+
+		//Vector3 up = tr->Up();
+		//Vector3 right = tr->Right();
+		//Vector3 foward = tr->Forward();
+
+		//Matrix viewRotate;
+		//viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
+		//viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
+		//viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
+
+		//mView *= viewRotate;
+
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		Vector3 pos = tr->GetPosition();
 
-		// Crate Translate view matrix
 		mView = Matrix::Identity;
-		mView *= Matrix::CreateTranslation(-pos);
-		//회전 정보
+		mView = Matrix::CreateLookAtLH(pos, pos + tr->Forward(), tr->Up());
 
-		Vector3 up = tr->Up();
-		Vector3 right = tr->Right();
-		Vector3 foward = tr->Forward();
-
-		Matrix viewRotate;
-		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
-		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
-		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
-
-		mView *= viewRotate;
 	}
 
 	Matrix Camera::CreateViewMatrix(Transform* tr)
 	{
 		Matrix view = Matrix::Identity;
+
 		Vector3 pos = tr->GetPosition();
 
-		// Crate Translate view matrix
-		view = Matrix::Identity;
-		view *= Matrix::CreateTranslation(-pos);
-		//회전 정보
-
-		Vector3 up = tr->Up();
-		Vector3 right = tr->Right();
-		Vector3 foward = tr->Forward();
-
-		Matrix viewRotate;
-		viewRotate._11 = right.x; viewRotate._12 = up.x; viewRotate._13 = foward.x;
-		viewRotate._21 = right.y; viewRotate._22 = up.y; viewRotate._23 = foward.y;
-		viewRotate._31 = right.z; viewRotate._32 = up.z; viewRotate._33 = foward.z;
-
-		view *= viewRotate;
+		view = Matrix::CreateLookAtLH(pos, pos + tr->Forward(), tr->Up());
 
 		return view;
 	}
@@ -215,7 +213,8 @@ namespace ya
 
 	void Camera::RegisterCameraInRenderer()
 	{
-		eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
+		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
+		eSceneType type = GetOwner()->GetScene()->GetSceneType();
 		renderer::cameras[(UINT)type].push_back(this);
 	}
 
@@ -232,7 +231,8 @@ namespace ya
 		mTransparentGameObjects.clear();
 		mPostProcessGameObjects.clear();
 
-		Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = GetOwner()->GetScene();
 		for (size_t i = 0; i < (UINT)eLayerType::End; i++)
 		{
 			if (mLayerMasks[i] == true)
@@ -272,13 +272,13 @@ namespace ya
 
 	void Camera::renderShadow()
 	{
-		for (GameObject* obj : mDeferredOpaqueGameObjects)
-		{
-			if (obj == nullptr)
-				continue;
+		//for (GameObject* obj : mDeferredOpaqueGameObjects)
+		//{
+		//	if (obj == nullptr)
+		//		continue;
 
-			obj->PrevRender();
-		}
+		//	obj->PrevRender();
+		//}
 
 		//for (GameObject* obj : mOpaqueGameObjects)
 		//{

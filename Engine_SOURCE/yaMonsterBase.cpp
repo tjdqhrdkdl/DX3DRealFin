@@ -1,8 +1,14 @@
 #include "yaMonsterBase.h"
 
-#include "yaPlayer.h"
+#include <iostream>
 
 extern ya::Application application;
+
+
+
+
+#include "yaPlayer.h"
+
 
 namespace ya
 {
@@ -13,7 +19,7 @@ namespace ya
 		/*, mPlayerPos(Vec3::Zero)
 		, mMonster2PlayerNormalize(Vec3::Zero)
 		, mPlayer2MonsterNormalize(Vec3::Zero)*/
-		, mRecoveryTime(3.0f)
+		//, mRecoveryTime(3.0f)
 	{
 	}
 
@@ -29,9 +35,9 @@ namespace ya
 	void MonsterBase::Initialize()
 	{
 		CreateMonsterState();
-
-		SetDeathBlow(true);
-
+		mMonsterUI = object::Instantiate<MonsterUI>(eLayerType::UI, GetScene());
+		mMonsterUI->SetMonster(this);
+		mCamScript = mainCamera->GetOwner()->GetScript<CameraScript>();
 		GameObject::Initialize();
 	}
 
@@ -47,29 +53,48 @@ namespace ya
 			mMonster2PlayerNormalize = mPlayerPos - monsterPos;
 			mMonster2PlayerNormalize.Normalize();
 
-			// DeathBlow 가능 상태일때
-			if (IsDeathBlow())
+			
+			Transform* playerTr = mPlayerObject->GetComponent<Transform>();
+			Vector3 playerPos = playerTr->GetPosition();
+
+			Transform* tr = GetComponent<Transform>();
+			Vector3 pos = tr->GetPosition();
+
+			// 거리
+			float dist = playerPos.Distance(playerPos, pos);
+
+			// 인식 안됐을때 거리 이내일 경우 인살 가능 상태가 된다
+			if (!mbRecognize)
 			{
-				Transform* playerTr = mPlayerObject->GetComponent<Transform>();
-				Vector3 playerPos = playerTr->GetPosition();
-
-				Transform* tr = GetComponent<Transform>();
-				Vector3 pos = tr->GetPosition();
-
-				// 거리
-				float dist = playerPos.Distance(playerPos, pos);
-
-				// 각도
-				Quaternion quater = Quaternion::FromToRotation(-playerTr->Forward(), Vector3(playerPos.x - pos.x, playerPos.y - pos.y, playerPos.z - pos.z));
-				Vector3 quaterToEuler = quater.ToEuler();
-				Vector3 theta = quaterToEuler * 180.0f / XM_PI;
-
-
-				if (dist <= 5.0f)
+				if(dist < 2.0f)
 				{
-					if (abs(theta.y) <= 60.0f)
+					SetDeathBlow(true);
+					mPlayerObject->SetDeathBlowTarget(this, dist);
+				}
+				else
+				{
+					SetDeathBlow(false);
+					mPlayerObject->EraseDeathBlowTarget(this);
+				}
+			}
+			else
+			{
+				if (IsDeathBlow())
+				{
+					// 각도
+					Quaternion quater = Quaternion::FromToRotation(-playerTr->Forward(), Vector3(playerPos.x - pos.x, playerPos.y - pos.y, playerPos.z - pos.z));
+					Vector3 quaterToEuler = quater.ToEuler();
+					Vector3 theta = quaterToEuler * 180.0f / XM_PI;
+					if (dist <= 4.0f)
 					{
-						mPlayerObject->SetDeathBlowTarget(this, dist);
+						if (abs(theta.y) <= 60.0f)
+						{
+							mPlayerObject->SetDeathBlowTarget(this, dist);
+						}
+						else
+						{
+							mPlayerObject->EraseDeathBlowTarget(this);
+						}
 					}
 					else
 					{
@@ -80,7 +105,54 @@ namespace ya
 				{
 					mPlayerObject->EraseDeathBlowTarget(this);
 				}
+
 			}
+			//체간 자연 회복
+			{	
+				if (mBeforePosture < GetPosture())
+				{
+					mbPostureRecovery = false;
+				}
+
+				if (mbPostureRecovery == false)
+				{
+					mPostureRecoveryTimeChecker += Time::DeltaTime();
+					if (mPostureRecoveryTimeChecker > 3)
+					{
+						mPostureRecoveryTimeChecker = 0;
+						mbPostureRecovery = true;
+					}
+				}
+				else
+				{
+					float posture = GetPosture() - Time::DeltaTime() * 3;
+					if (posture < 0)
+						posture = 0;
+					SetPosture(posture);
+				}
+				mBeforePosture = GetPosture(); 
+			}
+
+
+			//if (IsDeathBlow())
+			//{
+			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+			//	//Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
+			//	Transform* camtr = mainCamera->GetOwner()->GetComponent<Transform>();
+			//	Vector3 rot = TurnToPointDir(camtr->GetPosition());
+			//	
+			//	marktr->SetRotation(Vec3(0.0f, rot.y, 0.0f));
+			//	//marktr->SetRotation(rot);
+			//	marktr->SetPosition(monsterPos + mDeathBlowMarkOffSet);
+      //
+			//}
+			//else
+			//{
+			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
+			//	marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
+			//}
+
+			
 
 			////DeathBlowRecovery
 			//if (IsDeathBlowOnOff())
@@ -120,6 +192,7 @@ namespace ya
 			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
 			//	marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
 			//}
+
 
 		}
 
@@ -230,6 +303,8 @@ namespace ya
 
 
 
+	
+
 	bool MonsterBase::NavigationPlayer(float range)
 	{
 		Vec3 monsterPos = GetComponent<Transform>()->GetPosition();
@@ -276,10 +351,31 @@ namespace ya
 		return monDirection.y;
 	}
 
+	Vector3 MonsterBase::TurnToPointDir(Vector3 point)
+	{
+		Transform* tr = GetComponent<Transform>();
+		Vec3 rot = tr->GetRotation();
+
+		
+		Vector3 pointNomalize = point - tr->GetPosition();
+		pointNomalize.Normalize();
+
+		Quaternion quater = Quaternion::FromToRotation
+		(tr->Forward(), pointNomalize);
+		Vec3 monDirection = quater.ToEuler();
+
+		monDirection *= 180.f / XM_PI;
+
+		//tr->SetRotation(Vec3(0.0f, rot.y + monDirection.y, 0.0f));
+
+		return monDirection;
+	}
+
 	bool MonsterBase::WalkToPlayer(float range, float Speed)
 	{
 		Transform* tr = GetComponent<Transform>();
 		Rigidbody* rigi = GetComponent<Rigidbody>();
+		
 
 		if (NavigationPlayer(range))
 		{
@@ -291,6 +387,7 @@ namespace ya
 			mActionScript->Move(tr->Forward(), Speed);
 			return false;
 		}
+
 	}
 
 	void MonsterBase::MonsterRotation(Vector3 target_point)
@@ -367,7 +464,7 @@ namespace ya
 			return false;
 	}
 
-	int MonsterBase::RandomNumber(int ieast, int Max)
+	/*int MonsterBase::RandomNumber(int ieast, int Max)
 	{
 		int result = 0;
 		if (Max - ieast + 1 == 0)
@@ -376,7 +473,7 @@ namespace ya
 
 
 		return result;
-	}
+	}*/
 
 	void MonsterBase::OnceAniamtion(const std::wstring& animation)
 	{
@@ -387,6 +484,7 @@ namespace ya
 		}
 	}
 
+	/*
 	Vector3 MonsterBase::Convert3DTo2DScreenPos(Transform* tr)
 	{
 		Matrix viewMatrix;         // 뷰 매트릭스   (카메라의 위치와 방향 정보)
@@ -400,12 +498,13 @@ namespace ya
 		Transform* cameratr = mainCamera->GetOwner()->GetComponent<Transform>();
 
 
-		//worldMatrix = Matrix::CreateWorld(tr->GetPosition(), tr->Forward(), tr->Up());
-		worldMatrix = Matrix::CreateWorld(tr->GetPosition(), cameratr->Forward(), cameratr->Up());
+		worldMatrix = Matrix::CreateWorld(tr->GetPosition(), tr->Forward(), tr->Up());
+		
+		viewMatrix = Camera::GetGpuViewMatrix();
+		projectionMatrix = Camera::GetGpuProjectionMatrix();
 
-
-		viewMatrix = mainCamera->GetViewMatrix();
-		projectionMatrix = mainCamera->GetProjectionMatrix();
+		//viewMatrix = mainCamera->GetViewMatrix();
+		//projectionMatrix = mainCamera->GetProjectionMatrix();
 
 
 		Matrix worldViewProjection = worldMatrix * viewMatrix * projectionMatrix;
@@ -413,9 +512,9 @@ namespace ya
 
 		Vector3 monsterScreenPosition;
 
-		monsterScreenPosition.x = (MonsterNDCPos.x + 1.0f) * 0.5f * (float)width;
-		monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (float)height;
-		monsterScreenPosition.z = 1.0f;
+		//monsterScreenPosition.x = (MonsterNDCPos.x + 1.0f) * 0.5f * (float)width;
+		//monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (float)height;
+		//monsterScreenPosition.z = 1.0f;
 
 		float LeftMax = -800;
 		float RightMax = 800;
@@ -425,8 +524,10 @@ namespace ya
 		monsterScreenPosition.x = (MonsterNDCPos.x + 1.0f) * 0.5f * (RightMax - LeftMax) + LeftMax;
 		monsterScreenPosition.y = (1.0f - MonsterNDCPos.y) * 0.5f * (TopMax - BottomMax) + BottomMax;
 
+
 		return monsterScreenPosition;
 	}
+	*/
 
 	/// Monster 인살 이벤트
 	void MonsterBase::DeathBlow()
@@ -436,6 +537,8 @@ namespace ya
 		mMonsterState->AddResurrectionCount(-1);
 		mMonsterState->SetPosture(0);
 		mMonsterState->SetHp(mMonsterState->GetHPMax());
+
+		mMonsterState->SetDeathBlow(false);
 	}
 
 
@@ -444,12 +547,21 @@ namespace ya
 		if (nullptr == mMonsterState)
 		{
 			mMonsterState = new State();
-			//mMonsterState->SetMaxHP(10.0f);				//HP 총 량
-			mMonsterState->SetHp(10.0f);				//
+
+
+			mMonsterState->SetSituation(enums::eSituation::None);
+			mMonsterState->SetHPMax(20.0f);				//HP 총 량
+			mMonsterState->SetHp(20.0f);				//
+
+
+
 			mMonsterState->SetSpeed(5.0f);				//기본 이동속도
 			mMonsterState->SetDeathBlowCount(0.f);		//현재 체간 상태
 			mMonsterState->SetMaxDeathBlowCount(10.f);	//총 체간
 			mMonsterState->SetDeathBlow(false);			//인살 가능한 상태
+
+			mMonsterState->SetResurrectionCountMax(0);
+			mMonsterState->SetResurrectionCount(0);
 		}
 	}
 
@@ -457,22 +569,20 @@ namespace ya
 	{
 
 		Transform* tr = GetComponent<Transform>();
-		mDeathBlowMark = object::Instantiate<GameObject>(eLayerType::UI);
+		mDeathBlowMark = object::Instantiate<GameObject>(eLayerType::MonsterProjectile);
 		mDeathBlowMark->SetName(L"DeathBlowMark");
 
 		Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
 		marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
 		//marktr->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-		marktr->SetScale(Vector3(100.0f, 100.0f, 100.0f));
+		marktr->SetScale(Vector3(0.75f, 0.75f, 0.75f));
 		MeshRenderer* faceRenderer = mDeathBlowMark->AddComponent<MeshRenderer>();
-		faceRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		faceRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));		
 		std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
 
 		faceRenderer->SetMaterial(mat, 0);
-		mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"TEST"));
-
-
-
+		mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
+	
 
 	}
 

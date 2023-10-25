@@ -48,7 +48,7 @@ namespace ya
 								tenzen->SetAnimationName(L"ParriedRight");
 
 							//체간 게이지 영향
-							tenzen->SetPosture(tenzen->GetPosture() - 7);
+							tenzen->SetPosture(tenzen->GetPosture() + 7);
 						}
 						//그냥 막힘
 						else
@@ -58,7 +58,7 @@ namespace ya
 							else
 								tenzen->SetAnimationName(L"BlockedRight");
 						}
-						tenzen->AddTenzenState(Tenzen::eTenzenState::TenzenState_AttackBlocked);
+						tenzen->AddMonsterState(Tenzen::eMonsterState::MonsterState_AttackBlocked);
 						tenzen->SetAnimationChangeTime(0.05f);
 						
 						// 죽음 인살 체간 방어 

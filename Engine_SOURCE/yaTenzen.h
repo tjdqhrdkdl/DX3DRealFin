@@ -20,29 +20,7 @@ namespace ya
         //
 
     public:
-        enum eTenzenState
-        {
-            TenzenState_None = 0x00000000,
-            TenzenState_Idle = 0x00000001,
-            TenzenState_Alert = 0x00000002,
-            TenzenState_Recognize = 0x00000004,
-            TenzenState_DrawSword = 0x00000008,
-            TenzenState_Attack = 0x00000010,
-            TenzenState_Defense = 0x00000020,
-            TenzenState_Guard = 0x00000040,
-            TenzenState_GuardSuccess = 0x00000080,
-            TenzenState_GuardLeft = 0x00000100,
-            TenzenState_Trace = 0x00000200,
-            TenzenState_Move = 0x00000400,
-            TenzenState_OnHit = 0x00000800,
-            TenzenState_OnHitFront = 0x00001000,
-            TenzenState_AttackBlocked = 0x00002000,
-            TenzenState_SuperArmor = 0x00004000,
-            TenzenState_Groggy = 0x00004000,
-            TenzenState_DeathBlow = 0x00008000,
-            TenzenState_LookAt = 0x00010000,
-            TenzenState_Dead = 0x00020000,
-        };
+
         Tenzen();
         virtual ~Tenzen();
 
@@ -50,6 +28,8 @@ namespace ya
         virtual void Update() override;
         virtual void FixedUpdate() override;
         virtual void Render() override;
+
+        virtual void DeathBlow() override;
 
         void Idle();
         void Alert();
@@ -70,7 +50,6 @@ namespace ya
         void SetAnimationEvent();
        
 
-
         void RotateForwardTo(Vector3 dir);
         float GetDistanceToPlayer();
         float EyeSightCheck();
@@ -81,12 +60,12 @@ namespace ya
         void AttackEndEvent();
         void TraceEndEvent();
 
-        void OnCollisionEnter(Collider2D* collider);
-        void OnCollisionStay(Collider2D* collider);
-        void OnCollisionExit(Collider2D* collider);
+        void OnCollisionEnter(Collider2D* collider) override;
+        void OnCollisionStay(Collider2D* collider)  override;
+        void OnCollisionExit(Collider2D* collider)  override;
 
         void SetAnimationName(const std::wstring& name) { mAnimationName = name; }
-        void AddTenzenState(eTenzenState state);
+        void AddMonsterState(eMonsterState state);
 		
         void SetAnimationChangeTime(float time ){ mMeshData->GetAnimator()->SetAnimationChangeTime(time); }
     private:

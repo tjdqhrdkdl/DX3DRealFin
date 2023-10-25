@@ -60,7 +60,7 @@ namespace ya
 		mMeshData = std::make_shared<MeshData>();
 		mMeshData->Load(L"Monster\\RedOgre\\MeshData\\c5020.meshdata");
 		mMeshData->AnimationLoad(L"Monster\\RedOgre\\AnimationData\\RedOgre.animationdata");
-		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster);
+		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster, GetScene());
 
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
@@ -83,7 +83,7 @@ namespace ya
 		//LHand->SetAnimOffSet(L"a100_003005", Vector3(1, 0.5, 1));
 		LHand->SetColliderActiveFrame(L"a100_003005", 1, 17);
 
-		LHand->SetScale(Vector3(2, 0.3, 0.3));
+		LHand->SetScale(Vector3(2.f, 0.3f, 0.3f));
 		mLHandCollider = LHand;
 
 		// 피격 충돌체

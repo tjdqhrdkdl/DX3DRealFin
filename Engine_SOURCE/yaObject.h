@@ -14,8 +14,9 @@ namespace ya::object
 		Scene* scene = SceneManager::GetActiveScene();
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
-		gameObj->Initialize();
+		gameObj->SetScene(scene);
 		gameObj->SetLayerType(type);
+		gameObj->Initialize();
 
 		return gameObj;
 	}
@@ -26,7 +27,9 @@ namespace ya::object
 		T* gameObj = new T();
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
+		gameObj->SetScene(scene);
 		gameObj->SetLayerType(type);
+		gameObj->Initialize();
 
 		return gameObj;
 	}

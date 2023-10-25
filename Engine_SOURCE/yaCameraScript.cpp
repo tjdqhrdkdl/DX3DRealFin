@@ -5,25 +5,28 @@
 #include "yaTime.h"
 #include "yaCollisionManager.h"
 #include "yaApplication.h"
+#include "yaMonsterBase.h"
 #include "yaSceneManager.h"
 
 extern ya::Application application;
 
 namespace ya
 {
-	const float lockOnDistanceMax = 80.0f;
+	const float lockOnDistanceMax = 40.0f;
 
 	CameraScript::CameraScript()
 		: Script()
 		, mChildPos(Vector3(0, 0, -40))
-		, mThetaAxisY(1.57)
-		, mThetaAxisX(1.57)
-		, mDistFromTarget(10)
-		, mDelayTime(0.2f)
+		, mThetaAxisY(1.57f)
+		, mThetaAxisX(1.57f)
+		, mDistFromTarget(3.5f)
+		, mDelayTime(0.1f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
 		, mbMouseMove(true)
 		, mbSelfCameraMoveMode(false)
+		, mbCameraDistChanging(false)
+		, mZoomSpeed(100)
 	{
 	}
 
@@ -39,6 +42,12 @@ namespace ya
 
 	void CameraScript::Update()
 	{
+		if (Input::GetKey(eKeyCode::N_9))
+			mDistFromTarget += Time::DeltaTime() * 10;
+		if (Input::GetKey(eKeyCode::N_0))
+			mDistFromTarget -= Time::DeltaTime() * 10;
+
+
 		if (Input::GetKeyDown(eKeyCode::ESC))
 			mbMouseMove = !mbMouseMove;
 
@@ -79,7 +88,12 @@ namespace ya
 			if (Input::GetKeyState(eKeyCode::MBTN) == eKeyState::PRESSED)
 			{
 				Vector2 mousePos = Input::GetMousePosition();
-				POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
+				POINT center = 
+				{ 
+					static_cast<LONG>(application.GetWidth() / 2u), 
+					static_cast<LONG>(application.GetHeight() / 2u) 
+				};
+
 				ScreenToClient(application.GetHwnd(), &center);
 
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
@@ -123,9 +137,9 @@ namespace ya
 				TrackTarget();
 				MouseMove();
 				LockOn();
-				MoveToDestination();
+				MoveToDestinationDir();
+				ZoomCamera();
 				ObstacleDetection();
-
 			}
 		}
 	}
@@ -137,6 +151,7 @@ namespace ya
 	{
 
 		Vector3 targetPos = mPlayerTarget->GetComponent<Transform>()->GetPosition();
+		targetPos.y += mPlayerTarget->GetComponent<Transform>()->GetScale().y;
 		mQueDelayedTargetPos.push(targetPos);
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 
@@ -199,13 +214,17 @@ namespace ya
 			else
 			{
 				Vector2 mousePos = Input::GetMousePosition();
-				POINT center = { application.GetWidth() / 2, application.GetHeight() / 2 };
+				POINT center = 
+				{ 
+					static_cast<LONG>(application.GetWidth() / 2u), 
+					static_cast<LONG>(application.GetHeight() / 2u) 
+				};
 				ScreenToClient(application.GetHwnd(), &center);
 
 				Vector2 mouseMovement = { mousePos.x - center.x, center.y - mousePos.y };
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 							//디버깅시에 문제생기는 부분 막음.
-					if (Time::DeltaTime() < 0.1f && !mbLockOn)
+					if (Time::DeltaTime() < 0.1f && !mbLockOn && !mbDestination)
 					{
 						//두번 계산해줄 것이다.
 						//카메라를 원점(플레이어) 기준으로 먼저 위치를 이동시키고
@@ -222,10 +241,10 @@ namespace ya
 						mChildPos *= mDistFromTarget;
 
 						//y축 이동 한계 지정
-						if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2)
-							mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2;
-						if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5)
-							mChildPos.y = mDistFromTarget - mDistFromTarget / 5;
+						if (mChildPos.y < -mDistFromTarget + mDistFromTarget / 1.2f)
+							mChildPos.y = -mDistFromTarget + mDistFromTarget / 1.2f;
+						if (mChildPos.y > mDistFromTarget - mDistFromTarget / 5.f)
+							mChildPos.y = mDistFromTarget - mDistFromTarget / 5.f;
 
 
 
@@ -270,6 +289,12 @@ namespace ya
 			mbLockOn = false, mLockOnTarget = nullptr;
 		if (mbLockOn)
 		{
+			if (dynamic_cast<MonsterBase*>(mLockOnTarget)->GetSituation() == eSituation::Death)
+			{
+				mbLockOn = false;
+				mLockOnTarget = nullptr;
+				return;
+			}
 			Transform* monTr = mLockOnTarget->GetComponent<Transform>();
 			if (monTr == nullptr)
 			{
@@ -279,14 +304,25 @@ namespace ya
 
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 dir = mDelayedTargetPos - monPos;
+			dir.y = 0;
 			dir.Normalize();
-			dir.y = 0.3;
+			dir.y = 0.3f;
 			dir.Normalize();
+
+			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
+			float monPlDist = monPlDiff.Length();
+			if (monPlDist > lockOnDistanceMax)
+			{
+				mLockOnTarget = nullptr, mbLockOn = false;
+				return;
+			}
+
+
 			Vector3 dest = dir * mDistFromTarget;
 			Vector3 gap = dest - mChildPos;
 			Vector3 gapNormal = dest - mChildPos;
 			gapNormal.Normalize();
-			Vector3 move = 200 * gapNormal * Time::DeltaTime();
+			Vector3 move = gapNormal * Time::DeltaTime();
 			if (gap.Length() < move.Length())
 				return;
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
@@ -294,11 +330,6 @@ namespace ya
 			mChildPos *= mDistFromTarget;
 
 
-
-			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();
-			float monPlDist = monPlDiff.Length();
-			if(monPlDist > lockOnDistanceMax)
-				mLockOnTarget = nullptr, mbLockOn = false;
 			
 		}
 
@@ -314,7 +345,8 @@ namespace ya
 		//장애물을 고려할때, 사실 일부분만 보여도 락온이 되던데. 레이를 여러방 쏴야하나??
 		//락온 대상이 장애물 등에 완전히 가려지거나 너무 멀어지면 락온이 풀려야한다.
 
-		Scene* scene =  SceneManager::GetActiveScene();
+		//Scene* scene =  SceneManager::GetActiveScene();
+		Scene* scene = GetOwner()->GetScene();
 		std::vector<GameObject*> mons =  scene->GetGameObjects(eLayerType::Monster);
 		float minDist = 10000000;
 		Transform* tr = GetOwner()->GetComponent<Transform>();
@@ -323,6 +355,11 @@ namespace ya
 		Vector3 plPos = plTr->GetPosition();
 		for (GameObject* mon : mons)
 		{
+			MonsterBase* monBase = dynamic_cast<MonsterBase*>(mon);
+			if (monBase == nullptr)
+				continue;
+			if (monBase->GetSituation() == eSituation::Death)
+				continue;
 			Transform* monTr = mon->GetComponent<Transform>();
 			Vector3 monPos = monTr->GetPosition();
 			Vector3 monCamDiff = monPos - pos;
@@ -336,9 +373,9 @@ namespace ya
 			// 카메라 포워드와 각도 체크  (이 각도가 문제임. 각도의 적정수준이 필요할듯)
 			Quaternion rot = Quaternion::FromToRotation(tr->Forward(), monCamDiff);
 			Vector3 theta = rot.ToEuler();
-			if (fabsf(theta.x) > XM_PIDIV2 * 1/ 2)
+			if (fabsf(theta.x) > XM_PIDIV2 * 0.6)
 				continue;
-			if (fabsf(theta.y) > XM_PIDIV2 * 1/ 2)
+			if (fabsf(theta.y) > XM_PIDIV2 * 0.5)
 				continue;
 			//if (fabsf(theta.z) > XM_PI * 2 / 3)
 			//	continue;
@@ -366,29 +403,66 @@ namespace ya
 
 		if (!mbLockOn)
 		{
-			Vector3 dest = -(plTr->Forward()) + Vector3(0, 0.5, 0);
+			Vector3 dest = -(plTr->Forward());
+
+			dest += Vector3(0, 0.5, 0);
 			dest.Normalize();
-			dest *= mDistFromTarget;
-			SetDestination(dest);
+			SetDestinationDir(dest);
+
 		}
 
 	}
-	void CameraScript::MoveToDestination()
+	void CameraScript::MoveToDestinationDir()
 	{
-		if (mbDestination)
+		if (mbDestination && !mbLockOn)
 		{
-			Vector3 gap = mDestination - mChildPos;
-			Vector3 gapNormal = mDestination - mChildPos;
+			
+			Vector3 destPos = mDestination * mDistFromTarget;
+			Vector3 gap = destPos - mChildPos;
+			Vector3 gapNormal = destPos - mChildPos;
 			gapNormal.Normalize();
-			Vector3 move = 200 * gapNormal * Time::DeltaTime();
+			Vector3 move = 10 * gapNormal * Time::DeltaTime();
 			if (gap.Length() < move.Length())
 			{
 				mbDestination = false;
 				return;
 			}
+
 			mChildPos += 10 * gap.Length() * gapNormal * Time::DeltaTime();
 			mChildPos.Normalize();
 			mChildPos *= mDistFromTarget;
+		}
+	}
+	void CameraScript::ZoomCamera()
+	{
+		if (mbCameraDistChanging)
+		{
+			if (fabsf(mDistFromTarget - mDestDistFromTarget) < 0.01f)
+			{
+				mDistFromTarget = mDestDistFromTarget;
+				mbCameraDistChanging = false;
+				return;
+			}
+			
+			if (mDistFromTarget > mDestDistFromTarget)
+			{
+				mDistFromTarget -= (float)mZoomSpeed * Time::DeltaTime() * 0.1;
+				if (mDistFromTarget < mDestDistFromTarget)
+				{
+					mDistFromTarget = mDestDistFromTarget;
+					mbCameraDistChanging = false;
+				}
+			}
+			else
+			{
+				mDistFromTarget += (float)mZoomSpeed * Time::DeltaTime() * 0.1;
+				if (mDistFromTarget > mDestDistFromTarget)
+				{
+					mDistFromTarget = mDestDistFromTarget;
+					mbCameraDistChanging = false;
+				}
+			}
+
 		}
 	}
 }

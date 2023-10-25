@@ -53,71 +53,64 @@ namespace ya
 		const std::vector<GameObject*>& lefts = scene->GetGameObjects(left);
 		const std::vector<GameObject*>& rights = scene->GetGameObjects(right);
 
+		//동일 레이어 내부 충돌 검사일 경우
 		if (left == right)
 		{
 			for (size_t i = 0; i < lefts.size(); i++)
 			{
-				GameObject* left = lefts[i];
+				GameObject* leftObj = lefts[i];
 
 				{
-					if (left->GetState() != GameObject::Active)
+					if (leftObj->GetState() != GameObject::Active)
 						continue;
-					if (left->GetComponent<Collider2D>() == nullptr)
-						continue;
-					if (!left->GetComponent<Collider2D>()->IsActive())
+					if (leftObj->GetComponent<Collider2D>() == nullptr)
 						continue;
 
 					for (size_t k = i; k < rights.size(); k++)
 					{
-						GameObject* right = rights[k];
+						GameObject* rightObj = rights[k];
 
-						if (right->GetState() != GameObject::Active)
+						if (rightObj->GetState() != GameObject::Active)
 							continue;
-						if (right->GetComponent<Collider2D>() == nullptr)
+						if (rightObj->GetComponent<Collider2D>() == nullptr)
 							continue;
-						if (!right->GetComponent<Collider2D>()->IsActive())
-							continue;
-						if (left == right)
+						if (leftObj == rightObj)
 							continue;
 
-						ColliderCollision(left->GetComponent<Collider2D>(), right->GetComponent<Collider2D>());
+						ColliderCollision(leftObj->GetComponent<Collider2D>(), rightObj->GetComponent<Collider2D>());
 					}
 
-					if ((UINT)left == (UINT)right)
-						break;
+					//if (leftObj == rightObj)
+					//	break;
 				}
 			}
 		}
 
 		else
 		{
-			for (GameObject* left : lefts)
+			for (GameObject* leftObj : lefts)
 			{
-				if (left->GetState() != GameObject::Active)
+				if (leftObj->GetState() != GameObject::Active)
 					continue;
-				if (left->GetComponent<Collider2D>() == nullptr)
-					continue;
-				if (!left->GetComponent<Collider2D>()->IsActive())
+				if (leftObj->GetComponent<Collider2D>() == nullptr)
 					continue;
 
-				for (GameObject* right : rights)
+				for (GameObject* rightObj : rights)
 				{
-					if (right->GetState() != GameObject::Active)
+					if (rightObj->GetState() != GameObject::Active)
 						continue;
-					if (right->GetComponent<Collider2D>() == nullptr)
+					if (rightObj->GetComponent<Collider2D>() == nullptr)
 						continue;
-					if (!right->GetComponent<Collider2D>()->IsActive())
+					if (leftObj == rightObj)
 						continue;
-					if (left == right)
-						continue;
-					if (!right->GetComponent<Collider2D>()->IsActive())
+					if (!rightObj->GetComponent<Collider2D>()->IsActive())
 						continue;
 
-					ColliderCollision(left->GetComponent<Collider2D>(), right->GetComponent<Collider2D>());
+					ColliderCollision(leftObj->GetComponent<Collider2D>(), rightObj->GetComponent<Collider2D>());
 				}
 
-				if ((UINT)left == (UINT)right)
-					break;
+				//if (reinterpret_cast<UINT>(left)== (UINT)right)
+				//	break;
 			}
 		}
 	}
@@ -138,7 +131,24 @@ namespace ya
 			mCollisionMap.insert(std::make_pair(colliderID.id, false));
 			iter = mCollisionMap.find(colliderID.id);
 		}
+		if (!left->IsActive() || !right->IsActive())
+		{
+			if (iter->second == true)
+			{
+				if (left->IsTriiger())
+					left->OnTriggerExit(right);
+				else
+					left->OnCollisionExit(right);
 
+				if (right->IsTriiger())
+					right->OnTriggerExit(left);
+				else
+					right->OnCollisionExit(left);
+
+				iter->second = false;
+			}
+			return;
+		}
 		// 충돌체크를 해준다.
 		if (Intersect(left, right)) // 충돌을 한 상태
 		{
@@ -360,7 +370,8 @@ namespace ya
 
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers)
 	{
-		Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = owner->GetScene();
 		Matrix worldMat = owner->GetComponent<Transform>()->GetWorldMatrix();
 		Vector3 position = Vector3(worldMat._41, worldMat._42, worldMat._43);
 		ya::Ray ray = ya::Ray(position, direction);
@@ -395,7 +406,8 @@ namespace ya
 
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 position, Vector3 direction, float length, std::vector<eLayerType> layers)
 	{
-		Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = owner->GetScene();
 		ya::Ray ray = ya::Ray(position, direction);
 
 		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
@@ -430,7 +442,8 @@ namespace ya
 
 	RayHit CollisionManager::RayCast(GameObject* owner, Vector3 position, Vector3 direction, std::vector<eLayerType> layers)
 	{
-		Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
+		Scene* scene = owner->GetScene();
 		ya::Ray ray = ya::Ray(position, direction);
 
 		RayHit hit = RayHit(false, nullptr, Vector3::Zero);
@@ -503,7 +516,7 @@ namespace ya
 
 		float tMin = 0.0f;
 		float tMax = 100000.0f;
-		float threshHold = 0.00000001;
+		float threshHold = 0.00000001f;
 
 
 		Vector3 colCenter = col->GetCenter();

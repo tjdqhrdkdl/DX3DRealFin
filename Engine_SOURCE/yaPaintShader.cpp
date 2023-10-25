@@ -17,8 +17,8 @@ namespace ya::graphics
 	{
 		mTarget->BindUnorderedAccessView(0);
 
-		mGroupX = mTarget->GetWidth() / mThreadGroupCountX + 1;
-		mGroupY = mTarget->GetHeight() / mThreadGroupCountY + 1;
+		mGroupX = (UINT)mTarget->GetWidth() / mThreadGroupCountX + 1u;
+		mGroupY = (UINT)mTarget->GetHeight() / mThreadGroupCountY + 1u;
 		mGroupZ = 1;
 	}
 

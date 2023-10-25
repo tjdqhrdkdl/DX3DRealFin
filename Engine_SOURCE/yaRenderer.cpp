@@ -21,6 +21,7 @@ namespace ya::renderer
 	graphics::MultiRenderTarget* renderTargets[(UINT)eRTType::End] = {};
 
 	Camera* mainCamera = nullptr;
+	Camera* UICamera = nullptr;
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
 	std::vector<Light*> lights;
@@ -40,7 +41,7 @@ namespace ya::renderer
 		pointMesh->CreateVertexBuffer(&v, 1);
 		UINT pointIndex = 0;
 		pointMesh->CreateIndexBuffer(&pointIndex, 1);
-#pragma endregion
+		#pragma endregion
 		#pragma region RECT MESH
 		//RECT
 		vertexes[0].pos = Vector4(-0.5f, 0.5f, 0.0f, 1.0f);
@@ -79,15 +80,15 @@ namespace ya::renderer
 		vertexes[0].color = Vector4(0.f, 1.f, 0.f, 1.f);
 		vertexes[0].uv = Vector2(0.f, 0.f);
 
-		vertexes[1].pos = Vector4(0.5f, 0.5f, -0.00001, 1.0f);
+		vertexes[1].pos = Vector4(0.5f, 0.5f, -0.00001f, 1.0f);
 		vertexes[1].color = Vector4(1.f, 1.f, 1.f, 1.f);
 		vertexes[1].uv = Vector2(1.0f, 0.0f);
 
-		vertexes[2].pos = Vector4(0.5f, -0.5f, -0.00001, 1.0f);
+		vertexes[2].pos = Vector4(0.5f, -0.5f, -0.00001f, 1.0f);
 		vertexes[2].color = Vector4(1.f, 0.f, 0.f, 1.f);
 		vertexes[2].uv = Vector2(1.0f, 1.0f);
 
-		vertexes[3].pos = Vector4(-0.5f, -0.5f, -0.00001, 1.0f);
+		vertexes[3].pos = Vector4(-0.5f, -0.5f, -0.00001f, 1.0f);
 		vertexes[3].color = Vector4(0.f, 0.f, 1.f, 1.f);
 		vertexes[3].uv = Vector2(0.0f, 1.0f);
 
@@ -125,9 +126,9 @@ namespace ya::renderer
 			circleVtxes.push_back(vtx);
 		}
 		indexes.clear();
-		for (size_t i = 0; i < iSlice - 2; i++)
+		for (UINT i = 0; i < (UINT)(iSlice - 2); i++)
 		{
-			indexes.push_back(i + 1);
+			indexes.push_back(i + 1u);
 		}
 		indexes.push_back(1);
 
@@ -324,15 +325,15 @@ namespace ya::renderer
 		arrCube[23].biNormal = Vector3(0.0f, 1.0f, 1.0f);
 
 		indexes.clear();
-		for (size_t i = 0; i < 6; i++)
+		for (UINT i = 0; i < 6; i++)
 		{
-			indexes.push_back(i * 4);
-			indexes.push_back(i * 4 + 1);
-			indexes.push_back(i * 4 + 2);
+			indexes.push_back(i * 4u);
+			indexes.push_back(i * 4u + 1u);
+			indexes.push_back(i * 4u + 2u);
 
-			indexes.push_back(i * 4);
-			indexes.push_back(i * 4 + 2);
-			indexes.push_back(i * 4 + 3);
+			indexes.push_back(i * 4u);
+			indexes.push_back(i * 4u + 2u);
+			indexes.push_back(i * 4u + 3u);
 		}
 
 		// Crate Mesh
@@ -469,15 +470,34 @@ namespace ya::renderer
 		spriteShader->Create(eShaderStage::VS, L"SpriteVS.hlsl", "main");
 		spriteShader->Create(eShaderStage::PS, L"SpritePS.hlsl", "main");
 		spriteShader->SetRSState(eRSType::SolidNone);
+		spriteShader->SetDSState(eDSType::None);
 		Resources::Insert<Shader>(L"SpriteShader", spriteShader);
 #pragma endregion
+#pragma region POSTURE SHADER
+		std::shared_ptr<Shader> postureShader = std::make_shared<Shader>();
+		postureShader->Create(eShaderStage::VS, L"PostureVS.hlsl", "main");
+		postureShader->Create(eShaderStage::PS, L"PosturePS.hlsl", "main");
+		postureShader->SetRSState(eRSType::SolidNone);
+		postureShader->SetDSState(eDSType::None);
+		Resources::Insert<Shader>(L"PostureShader", postureShader);
+#pragma endregion
+
+
 #pragma region UI SHADER
 		std::shared_ptr<Shader> uiShader = std::make_shared<Shader>();
 		uiShader->Create(eShaderStage::VS, L"UserInterfaceVS.hlsl", "main");
 		uiShader->Create(eShaderStage::PS, L"UserInterfacePS.hlsl", "main");
-		uiShader->SetBSState(eBSType::AlphaBlend);
+		//uiShader->SetBSState(eBSType::AlphaBlend);
 
 		Resources::Insert<Shader>(L"UIShader", uiShader);
+#pragma endregion
+#pragma region METER SHADER
+		std::shared_ptr<Shader> meterShader = std::make_shared<Shader>();
+		meterShader->Create(eShaderStage::VS, L"MeterVS.hlsl", "main");
+		meterShader->Create(eShaderStage::PS, L"MeterPS.hlsl", "main");
+		meterShader->SetDSState(eDSType::None);
+
+		Resources::Insert<Shader>(L"MeterShader", meterShader);
 #pragma endregion
 #pragma region GRID SHADER
 		std::shared_ptr<Shader> gridShader = std::make_shared<Shader>();
@@ -499,6 +519,15 @@ namespace ya::renderer
 		debugShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 		Resources::Insert<Shader>(L"DebugShader", debugShader);
+#pragma endregion
+#pragma region DEBUG PAINTED SHADER
+		std::shared_ptr<Shader> debugPaintedShader = std::make_shared<Shader>();
+		debugPaintedShader->Create(eShaderStage::VS, L"DebugVS.hlsl", "main");
+		debugPaintedShader->Create(eShaderStage::PS, L"DebugPaintedPS.hlsl", "main");
+		debugPaintedShader->SetRSState(eRSType::SolidNone);
+		debugPaintedShader->SetBSState(eBSType::AlphaBlend);
+
+		Resources::Insert<Shader>(L"DebugPaintedShader", debugPaintedShader);
 #pragma endregion
 #pragma region PAINT SHADER
 		std::shared_ptr<PaintShader> paintShader = std::make_shared<PaintShader>();
@@ -674,6 +703,12 @@ namespace ya::renderer
 			, shader->GetVSBlobBufferSize()
 			, shader->GetInputLayoutAddressOf());
 
+		std::shared_ptr<Shader> postureShader = Resources::Find<Shader>(L"PostureShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, postureShader->GetVSBlobBufferPointer()
+			, postureShader->GetVSBlobBufferSize()
+			, postureShader->GetInputLayoutAddressOf());
+
 		std::shared_ptr<Shader> spriteShader = Resources::Find<Shader>(L"SpriteShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
 			, spriteShader->GetVSBlobBufferPointer()
@@ -699,6 +734,12 @@ namespace ya::renderer
 			, debugShader->GetVSBlobBufferSize()
 			, debugShader->GetInputLayoutAddressOf());
 
+		std::shared_ptr<Shader> debugPaintedShader = Resources::Find<Shader>(L"DebugPaintedShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, debugPaintedShader->GetVSBlobBufferPointer()
+			, debugPaintedShader->GetVSBlobBufferSize()
+			, debugPaintedShader->GetInputLayoutAddressOf());
+
 		std::shared_ptr<Shader> particleShader = Resources::Find<Shader>(L"ParticleShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
 			, particleShader->GetVSBlobBufferPointer()
@@ -710,6 +751,12 @@ namespace ya::renderer
 			, postProcessShader->GetVSBlobBufferPointer()
 			, postProcessShader->GetVSBlobBufferSize()
 			, postProcessShader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> meterShader = Resources::Find<Shader>(L"MeterShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, meterShader->GetVSBlobBufferPointer()
+			, meterShader->GetVSBlobBufferSize()
+			, meterShader->GetInputLayoutAddressOf());
 
 		std::shared_ptr<Shader> basicShader = Resources::Find<Shader>(L"BasicShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
@@ -931,6 +978,9 @@ namespace ya::renderer
 
 		constantBuffers[(UINT)eCBType::UniformData] = new ConstantBuffer(eCBType::UniformData);
 		constantBuffers[(UINT)eCBType::UniformData]->Create(sizeof(UniformDataCB));
+
+		constantBuffers[(UINT)eCBType::HpMeter] = new ConstantBuffer(eCBType::HpMeter);
+		constantBuffers[(UINT)eCBType::HpMeter]->Create(sizeof(MeterCB));
 		
 
 #pragma endregion
@@ -944,8 +994,11 @@ namespace ya::renderer
 	{
 		#pragma region STATIC TEXTURE
 		Resources::Load<Texture>(L"SmileTexture", L"Smile.png");
+		Resources::Load<Texture>(L"DeathBlowTexture", L"UI\\Texture\\DeathBlow.png");
+		Resources::Load<Texture>(L"LockOnTexture", L"UI\\Texture\\LockOn.png");
+
 		Resources::Load<Texture>(L"DefaultSprite", L"Light.png");
-		Resources::Load<Texture>(L"HPBarTexture", L"HPBar.png");
+		
 		Resources::Load<Texture>(L"CartoonSmoke", L"particle\\CartoonSmoke.png");
 		Resources::Load<Texture>(L"noise_01", L"noise\\noise_01.png");
 		Resources::Load<Texture>(L"noise_02", L"noise\\noise_02.png");
@@ -981,17 +1034,37 @@ namespace ya::renderer
 		material->SetShader(shader);
 		material->SetTexture(eTextureSlot::Albedo, texture);
 		Resources::Insert<Material>(L"RectMaterial", material);
-#pragma endregion
+		#pragma endregion
 		#pragma region SPRITE
 		std::shared_ptr <Texture> spriteTexture= Resources::Find<Texture>(L"DefaultSprite");
 		std::shared_ptr<Shader> spriteShader = Resources::Find<Shader>(L"SpriteShader");
-		std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+		std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();	
 		spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		spriteMaterial->SetShader(spriteShader);
 		spriteMaterial->SetTexture(eTextureSlot::Albedo, spriteTexture);
 		Resources::Insert<Material>(L"SpriteMaterial", spriteMaterial);
 
+		#pragma endregion
+#pragma region POSTURE
+		std::shared_ptr<Shader> postureBarShader = Resources::Find<Shader>(L"PostureShader");
+		std::shared_ptr<Material> postureBarMaterial = std::make_shared<Material>();
+		postureBarMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		postureBarMaterial->SetShader(postureBarShader);
+		Resources::Insert<Material>(L"PostureBarMaterial", postureBarMaterial);
+
 #pragma endregion
+
+#pragma region HpLayout
+		
+		std::shared_ptr<Shader> hpLayoutShader = Resources::Find<Shader>(L"SpriteShader");
+		std::shared_ptr<Material> hpLayoutMaterial = std::make_shared<Material>();
+		hpLayoutMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		hpLayoutMaterial->SetShader(hpLayoutShader);
+		Resources::Insert<Material>(L"HpLayoutMaterial", hpLayoutMaterial);
+
+#pragma endregion
+
+
 		#pragma region UI
 		std::shared_ptr<Shader> uiShader = Resources::Find<Shader>(L"UIShader");
 		std::shared_ptr<Material> uiMaterial = std::make_shared<Material>();
@@ -999,19 +1072,34 @@ namespace ya::renderer
 	
 		uiMaterial->SetShader(uiShader);
 		Resources::Insert<Material>(L"UIMaterial", uiMaterial);
-#pragma endregion
+		#pragma endregion
+
+		#pragma region METER
+		std::shared_ptr<Shader> meterShader = Resources::Find<Shader>(L"MeterShader");
+		std::shared_ptr<Material> meterMaterial = std::make_shared<Material>();
+		meterMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		meterMaterial->SetShader(meterShader);
+		Resources::Insert<Material>(L"MeterMaterial", meterMaterial);
+		#pragma endregion
 		#pragma region GRID
 		std::shared_ptr<Shader> gridShader = Resources::Find<Shader>(L"GridShader");
 		std::shared_ptr<Material> gridMaterial = std::make_shared<Material>();
 		gridMaterial->SetShader(gridShader);
 		Resources::Insert<Material>(L"GridMaterial", gridMaterial);
 #pragma endregion
-		#pragma region DEBUG
+#pragma region DEBUG
 		std::shared_ptr<Shader> debugShader = Resources::Find<Shader>(L"DebugShader");
 		std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
 		debugMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		debugMaterial->SetShader(debugShader);
 		Resources::Insert<Material>(L"DebugMaterial", debugMaterial);
+#pragma endregion
+#pragma region DEBUG PAINTED
+		std::shared_ptr<Shader> debugPaintedShader = Resources::Find<Shader>(L"DebugPaintedShader");
+		std::shared_ptr<Material> debugPaintedMaterial = std::make_shared<Material>();
+		debugPaintedMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		debugPaintedMaterial->SetShader(debugPaintedShader);
+		Resources::Insert<Material>(L"DebugPaintedMaterial", debugPaintedMaterial);
 #pragma endregion
 		#pragma region PARTICLE
 		std::shared_ptr<Shader> particleShader = Resources::Find<Shader>(L"ParticleShader");
@@ -1019,8 +1107,8 @@ namespace ya::renderer
 		particleMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		particleMaterial->SetShader(particleShader);
 		Resources::Insert<Material>(L"ParticleMaterial", particleMaterial);
-#pragma endregion
-#pragma region POSTPROCESS
+		#pragma endregion
+		#pragma region POSTPROCESS
 		std::shared_ptr<Shader> postProcessShader = Resources::Find<Shader>(L"PostProcessShader");
 		std::shared_ptr<Material> postProcessMaterial = std::make_shared<Material>();
 		postProcessMaterial->SetRenderingMode(eRenderingMode::PostProcess);
@@ -1128,7 +1216,7 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"ShadowMapMaterial", shadowMaterial);
 #pragma endregion
 
-
+		
 	}
 
 	void Initialize()
@@ -1164,6 +1252,7 @@ namespace ya::renderer
 			renderTargets[i] = nullptr;
 		}
 	}
+
 
 	void Render()
 	{
@@ -1303,14 +1392,14 @@ namespace ya::renderer
 
 	void BindLights()
 	{
-		lightsBuffer->SetData(lightAttributes.data(), lightAttributes.size());
+		lightsBuffer->SetData(lightAttributes.data(), (UINT)lightAttributes.size());
 		lightsBuffer->BindSRV(eShaderStage::VS, 13);
 		lightsBuffer->BindSRV(eShaderStage::PS, 13);
 
 		renderer::LightCB trCb = {};
-		trCb.numberOfLight = lightAttributes.size();
+		trCb.numberOfLight = (UINT)lightAttributes.size();
 
-		for (size_t i = 0; i < lights.size(); i++)
+		for (UINT i = 0; i < (UINT)lights.size(); i++)
 			lights[i]->SetIndex(i);
 		
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Light];
@@ -1331,8 +1420,8 @@ namespace ya::renderer
 		noise->BindShaderResource(eShaderStage::CS, 16);
 
 		NoiseCB info = {};
-		info.noiseSize.x = noise->GetWidth();
-		info.noiseSize.y = noise->GetHeight();
+		info.noiseSize.x = (float)noise->GetWidth();
+		info.noiseSize.y = (float)noise->GetHeight();
 		noiseTime -= Time::DeltaTime();
 		info.noiseTime = noiseTime;
 

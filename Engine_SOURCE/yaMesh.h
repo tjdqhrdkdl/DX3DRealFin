@@ -27,8 +27,8 @@ namespace ya
 		virtual HRESULT Save(const std::wstring& name, FILE* file = nullptr) override;
 		virtual HRESULT Load(const std::wstring& name, FILE* file = nullptr) override;
 
-		bool CreateVertexBuffer(void* data, UINT count);
-		bool CreateIndexBuffer(void* data, UINT count);
+		bool CreateVertexBuffer(void* data, size_t count_t);
+		bool CreateIndexBuffer(void* data, size_t count_t);
 		void BindBuffer(UINT subSet);
 		void Render(UINT subSet);
 		void RenderInstanced(UINT count, UINT subSet = 0);
@@ -40,7 +40,8 @@ namespace ya
 		MeshData* GetParentMeshData() { return mParentMeshData; }
 
 		void SetVertexBuffer(Microsoft::WRL::ComPtr<ID3D11Buffer> buffer) { mVertexBuffer = buffer; }
-		
+		Microsoft::WRL::ComPtr<ID3D11Buffer> GetVertexBuffer() { return mVertexBuffer; }
+
 		
 
 	private:

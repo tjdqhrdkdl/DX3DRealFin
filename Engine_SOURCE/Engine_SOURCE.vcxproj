@@ -125,8 +125,9 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH_Engine.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External\FBXLoader\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\External\FBXLoader\Include;$(SolutionDir)\Engine_SOURCE\\Detour\\Include;$(SolutionDir)\Engine_SOURCE\\Recast\\Include;$(SolutionDir)\Engine_SOURCE\\DebugUtils\\Include;$(SolutionDir)\Engine_SOURCE\\DetourTileCache\\Include;$(SolutionDir)\Engine_SOURCE\\DetourCrowd\\Include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -134,8 +135,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>copy "$(SolutionDir)fmodL.dll" "$(SolutionDir)\x64\Debug\"
-copy "$(SolutionDir)FW1FontWrapperL.dll" "$(SolutionDir)\x64\Debug\"</Command>
+      <Command>cd $(SolutionDir)
+call CopyDLL.bat $(Configuration)</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalDependencies>libfbxsdk-md.lib</AdditionalDependencies>
@@ -154,6 +155,7 @@ copy "$(SolutionDir)FW1FontWrapperL.dll" "$(SolutionDir)\x64\Debug\"</Command>
       <PrecompiledHeaderFile>PCH_Engine.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -163,17 +165,30 @@ copy "$(SolutionDir)FW1FontWrapperL.dll" "$(SolutionDir)\x64\Debug\"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>copy "$(SolutionDir)fmodL.dll" "$(SolutionDir)\x64\Debug\"
-copy "$(SolutionDir)fmodstudioL.dll" "$(SolutionDir)\x64\Debug\"
-copy "$(SolutionDir)FW1FontWrapperL.dll" "$(SolutionDir)\x64\Debug\"
-copy "$(SolutionDir)fmod.dl" "$(SolutionDir)\x64\Release\"
-copy "$(SolutionDir)FW1FontWrapper.dll" "$(SolutionDir)\x64\Release\"
-copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
+      <Command>cd $(SolutionDir)
+call CopyDLL.bat $(Configuration)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CSVEditor.h" />
+    <ClInclude Include="DebugUtils\Include\DebugDraw.h" />
+    <ClInclude Include="DebugUtils\Include\DetourDebugDraw.h" />
+    <ClInclude Include="DebugUtils\Include\RecastDebugDraw.h" />
+    <ClInclude Include="DebugUtils\Include\RecastDump.h" />
+    <ClInclude Include="Detour\Include\DetourAlloc.h" />
+    <ClInclude Include="Detour\Include\DetourAssert.h" />
+    <ClInclude Include="Detour\Include\DetourCommon.h" />
+    <ClInclude Include="Detour\Include\DetourMath.h" />
+    <ClInclude Include="Detour\Include\DetourNavMesh.h" />
+    <ClInclude Include="Detour\Include\DetourNavMeshBuilder.h" />
+    <ClInclude Include="Detour\Include\DetourNavMeshQuery.h" />
+    <ClInclude Include="Detour\Include\DetourNode.h" />
+    <ClInclude Include="Detour\Include\DetourStatus.h" />
     <ClInclude Include="MapObjects.h" />
+    <ClInclude Include="Recast\Include\Recast.h" />
+    <ClInclude Include="Recast\Include\RecastAlloc.h" />
+    <ClInclude Include="Recast\Include\RecastAssert.h" />
+    <ClInclude Include="PhysXWrapper.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="UICanvasObj.h" />
     <ClInclude Include="UICanvas_InGame.h" />
@@ -182,9 +197,15 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="Utils.h" />
     <ClInclude Include="yaBoundarySphere.h" />
     <ClInclude Include="yaFrustum.h" />
+    <ClInclude Include="yaHPMeterScript.h" />
     <ClInclude Include="yaLoadingScene.h" />
     <ClInclude Include="yaMapCollider.h" />
+    <ClInclude Include="yaNavMesh.h" />
+    <ClInclude Include="yaNavMeshTool.h" />
+    <ClInclude Include="yaMonsterUI.h" />
+    <ClInclude Include="yaMonsterUIScript.h" />
     <ClInclude Include="yaPlayerAttackScript.h" />
+    <ClInclude Include="yaPlayerHpTexture.h" />
     <ClInclude Include="yaPlayerMeshScript.h" />
     <ClInclude Include="yaBoneAnimator.h" />
     <ClInclude Include="yaBoneShader.h" />
@@ -246,8 +267,9 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaPlayer.h" />
     <ClInclude Include="yaPlayerActionScript.h" />
     <ClInclude Include="yaPlayerProjectileScript.h" />
-    <ClInclude Include="yaPlayerScript.h" />
-    <ClInclude Include="yaPlayScene.h" />
+    <ClInclude Include="StrConverter.h" />
+    <ClInclude Include="yaSwordManSwordScript.h" />
+    <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaPrefab.h" />
     <ClInclude Include="yaRedOgre.h" />
     <ClInclude Include="yaRenderer.h" />
@@ -261,16 +283,16 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClInclude Include="yaShader.h" />
     <ClInclude Include="yaSpearman_Sting.h" />
     <ClInclude Include="yaState.h" />
-    <ClInclude Include="yaSpearman.h" />
+    <ClInclude Include="yaSwordMan.h" />
     <ClInclude Include="yaSpriteRenderer.h" />
     <ClInclude Include="yaStructedBuffer.h" />
     <ClInclude Include="yaSwordsman.h" />
     <ClInclude Include="yaTenzen.h" />
-    <ClInclude Include="yaTenzenCollisionScript.h" />
+    <ClInclude Include="yaMonsterCollisionScript.h" />
     <ClInclude Include="yaTenzenSwordScript.h" />
     <ClInclude Include="yaTexture.h" />
     <ClInclude Include="yaTime.h" />
-    <ClInclude Include="yaTitleScene.h" />
+    <ClInclude Include="yaPlayScene.h" />
     <ClInclude Include="yaTransform.h" />
     <ClInclude Include="yaWallCheckObject.h" />
     <ClInclude Include="yaWallCheckScript.h" />
@@ -279,7 +301,30 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CSVEditor.cpp" />
+    <ClCompile Include="DebugUtils\Source\DebugDraw.cpp" />
+    <ClCompile Include="DebugUtils\Source\DetourDebugDraw.cpp" />
+    <ClCompile Include="DebugUtils\Source\RecastDebugDraw.cpp" />
+    <ClCompile Include="DebugUtils\Source\RecastDump.cpp" />
+    <ClCompile Include="Detour\Source\DetourAlloc.cpp" />
+    <ClCompile Include="Detour\Source\DetourAssert.cpp" />
+    <ClCompile Include="Detour\Source\DetourCommon.cpp" />
+    <ClCompile Include="Detour\Source\DetourNavMesh.cpp" />
+    <ClCompile Include="Detour\Source\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="Detour\Source\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="Detour\Source\DetourNode.cpp" />
     <ClCompile Include="MapObjects.cpp" />
+    <ClCompile Include="Recast\Source\Recast.cpp" />
+    <ClCompile Include="Recast\Source\RecastAlloc.cpp" />
+    <ClCompile Include="Recast\Source\RecastArea.cpp" />
+    <ClCompile Include="Recast\Source\RecastAssert.cpp" />
+    <ClCompile Include="Recast\Source\RecastContour.cpp" />
+    <ClCompile Include="Recast\Source\RecastFilter.cpp" />
+    <ClCompile Include="Recast\Source\RecastLayers.cpp" />
+    <ClCompile Include="Recast\Source\RecastMesh.cpp" />
+    <ClCompile Include="Recast\Source\RecastMeshDetail.cpp" />
+    <ClCompile Include="Recast\Source\RecastRasterization.cpp" />
+    <ClCompile Include="Recast\Source\RecastRegion.cpp" />
+    <ClCompile Include="PhysXWrapper.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="UICanvasObj.cpp" />
     <ClCompile Include="UICanvas_InGame.cpp" />
@@ -287,9 +332,15 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="yaBoundarySphere.cpp" />
     <ClCompile Include="yaFrustum.cpp" />
+    <ClCompile Include="yaHPMeterScript.cpp" />
     <ClCompile Include="yaLoadingScene.cpp" />
     <ClCompile Include="yaMapCollider.cpp" />
+    <ClCompile Include="yaNavMesh.cpp" />
+    <ClCompile Include="yaNavMeshTool.cpp" />
+    <ClCompile Include="yaMonsterUI.cpp" />
+    <ClCompile Include="yaMonsterUIScript.cpp" />
     <ClCompile Include="yaPlayerAttackScript.cpp" />
+    <ClCompile Include="yaPlayerHpTexture.cpp" />
     <ClCompile Include="yaPlayerMeshScript.cpp" />
     <ClCompile Include="yaBoneAnimator.cpp" />
     <ClCompile Include="yaBoneShader.cpp" />
@@ -347,8 +398,9 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaPlayer.cpp" />
     <ClCompile Include="yaPlayerActionScript.cpp" />
     <ClCompile Include="yaPlayerProjectileScript.cpp" />
-    <ClCompile Include="yaPlayerScript.cpp" />
-    <ClCompile Include="yaPlayScene.cpp" />
+    <ClCompile Include="StrConverter.cpp" />
+    <ClCompile Include="yaSwordManSwordScript.cpp" />
+    <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />
     <ClCompile Include="yaRedOgre.cpp" />
     <ClCompile Include="yaRenderer.cpp" />
@@ -361,16 +413,16 @@ copy "$(SolutionDir)fmodstudio.dll" "$(SolutionDir)\x64\Release\"</Command>
     <ClCompile Include="yaShader.cpp" />
     <ClCompile Include="yaSpearman_Sting.cpp" />
     <ClCompile Include="yaState.cpp" />
-    <ClCompile Include="yaSpearman.cpp" />
+    <ClCompile Include="yaSwordMan.cpp" />
     <ClCompile Include="yaSpriteRenderer.cpp" />
     <ClCompile Include="yaStructedBuffer.cpp" />
     <ClCompile Include="yaSwordsman.cpp" />
     <ClCompile Include="yaTenzen.cpp" />
-    <ClCompile Include="yaTenzenCollisionScript.cpp" />
+    <ClCompile Include="yaMonsterCollisionScript.cpp" />
     <ClCompile Include="yaTenzenSwordScript.cpp" />
     <ClCompile Include="yaTexture.cpp" />
     <ClCompile Include="yaTime.cpp" />
-    <ClCompile Include="yaTitleScene.cpp" />
+    <ClCompile Include="yaPlayScene.cpp" />
     <ClCompile Include="yaTransform.cpp" />
     <ClCompile Include="yaWallCheckObject.cpp" />
     <ClCompile Include="yaWallCheckScript.cpp" />

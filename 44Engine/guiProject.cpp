@@ -22,7 +22,7 @@ namespace gui
 		UINT width = 1600;
 		UINT height = 900;
 
-		Vector2 size(width, height);
+		Vector2 size((float)width, (float)height);
 
 		SetSize(ImVec2((float)size.x / 2 + size.x / 5, size.y / 4));
 
@@ -47,7 +47,7 @@ namespace gui
 	{
 		Widget::FixedUpdate();
 
-		//¸®¼Ò½º°¡ ¹Ù²ï´Ù¸é ¸®¼Ò½º¸ñ·Ï ÃÊ±âÈ­
+		//ë¦¬ì†ŒìŠ¤ê°€ ë°”ë€ë‹¤ë©´ ë¦¬ì†ŒìŠ¤ëª©ë¡ ì´ˆê¸°í™”
 	}
 
 	void Project::Update()

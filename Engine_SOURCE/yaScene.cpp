@@ -5,6 +5,7 @@ namespace ya
 {
 	Scene::Scene(eSceneType type)
 		: mType(type)
+		, mbInitComplete(false)
 		, mbThreadLoad(false)
 		, mInitCallBack(nullptr)
 		, mPlayer(nullptr)
@@ -23,6 +24,8 @@ namespace ya
 			layer.Initialize();
 		}
 		
+		mbInitComplete = true;
+
 		if(mInitCallBack != nullptr)
 			mInitCallBack();
 	}

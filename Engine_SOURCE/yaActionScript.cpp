@@ -22,7 +22,7 @@ extern ya::Application application;
 
 namespace ya
 {
-	const float defaultJumpForce = 400.0f;
+	const float defaultJumpForce = 200.0f;
 
 	ActionScript::ActionScript()
 		: Script()
@@ -32,6 +32,7 @@ namespace ya
 		, mTransform(nullptr)
 		, mCollider(nullptr)
 		, mSpeed(200.0f)
+
 		, mDirection(Vector3::Zero)
 		, mRotateDirection(Vector3::Zero)
 		, mJumpTimer(0.0f)
@@ -53,20 +54,30 @@ namespace ya
 		mRigidbody = obj->GetComponent<Rigidbody>();
 		mCollider = obj->GetComponent<Collider2D>();
 
-		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::WallCheckCollision);
+		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::WallCheckCollision, obj->GetScene());
 		assert(checkObj != nullptr);
 		mCheck = checkObj;
 		checkObj->SetName(L"WallCheck");
 		checkObj->SetParentObj(obj);
 
-		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
 		Transform* checkTransform = mCheck->GetComponent<Transform>();
-		
-		checkTransform->SetScale(Vector3(1.f, 1.f ,1.f));
+		checkTransform->SetScale(mTransform->GetScale());
 
-		checkCol->SetType(eColliderType::Box);
-		checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
-		checkCol->SetSize(Vector3(1.0, 3.0f, 1.0f));
+		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
+
+		Collider2D* ownerCol = obj->GetComponent<Collider2D>();
+		if (ownerCol != nullptr)
+		{
+			checkCol->SetType(ownerCol->GetColliderType());
+			checkCol->SetCenter(ownerCol->GetCenter());
+			checkCol->SetSize(ownerCol->GetSize());
+		}
+		else
+		{
+			checkCol->SetType(eColliderType::Box);
+			checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
+			checkCol->SetSize(Vector3(1.0, 3.0f, 1.0f));
+		}
 	}
 
 	void ActionScript::Update()
@@ -105,6 +116,11 @@ namespace ya
 
 	void ActionScript::OnCollisionExit(Collider2D* collider)
 	{
+	}
+
+	void ActionScript::SetCheckCollider(bool on)
+	{
+		mCheck->GetComponent<Collider2D>()->Active(on);
 	}
 
 	/// <summary> limit velocity를 늘려서 최대 속도를 변경한다. 인자없을시 default값(40.0f)으로 설정됨. </summary>

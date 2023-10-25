@@ -1,4 +1,5 @@
 #include "globals.hlsli"
+
 struct VSIn
 {
     float4 Pos : POSITION;
@@ -25,7 +26,7 @@ VSOut main(VSIn In)
     Out.WorldPos = worldPosition;
     Out.Pos = ProjPosition;
     Out.Color = In.Color;
-    Out.UV = In.UV;
-    
+    Out.UV = In.UV;        
+
     return Out;
 }

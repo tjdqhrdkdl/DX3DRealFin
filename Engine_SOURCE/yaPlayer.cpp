@@ -2,7 +2,6 @@
 
 #include "yaRigidbody.h"
 
-#include "yaPlayerScript.h"
 #include "yaGrappleHookScript.h"
 #include "yaHookTargetScript.h"
 #include "yaPlayerMeshScript.h"
@@ -14,11 +13,14 @@
 #include "yaObject.h"
 
 #include "yaState.h"
+#include "yaPlayerHpTexture.h"
+
 
 namespace ya
 {
 	Player::Player()
-		: mCamera(nullptr)
+		: GameObject()
+		, mCamera(nullptr)
 		, mProsthetic(eProsthetics::None)
 		, mWeaponCollider(nullptr)
 		, mStartStateEvent {}
@@ -26,37 +28,30 @@ namespace ya
 	{
 		SetName(L"Player");
 
+		Transform* tr = GetComponent<Transform>();
+		tr->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
+		//tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
+
+		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
+
 		Collider2D* col = AddComponent<Collider2D>();
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
-		col->SetCenter(Vector3(0.f, 0.85f, 0.f));
-		col->SetSize(Vector3(0.3f, 2.7f, 0.3f));
+
+		col->SetCenter(Vector3(0.f, 0.25f, 0.f));
+		col->SetSize(Vector3(0.6f, 1.6f, 0.6f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
 		mState = new State();
-		mState->SetHPMax(100);
+		mState->SetHPMax(100.0f);
 		mState->SetHp(mState->GetHPMax());
-		mState->SetPostureMax(100);
-		mState->SetPosture(mState->GetPostureMax());
-
-		PlayerMeshScript* meshScript = AddComponent<PlayerMeshScript>();	// 메쉬, 애니메이션이므로 먼저 load
-
-		std::shared_ptr<MeshData> weaponMeshData = meshScript->FindMeshData(ARM);
-		if (weaponMeshData != nullptr)
-		{
-			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile);
-			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
-			mWeaponCollider->SetScale(Vector3(1.6, 0.2, 0.2));
-
-			PlayerProjectileScript* projectileScript = mWeaponCollider->AddComponent<PlayerProjectileScript>();
-			projectileScript->SetPlayer(this);
-		}
-
-		AddComponent<PlayerScript>();
-		AddComponent<PlayerActionScript>();
-		AddComponent<PlayerAttackScript>();
-		AddComponent<GrappleHookScript>();
+		mState->SetPostureMax(100.0f);
+		mState->SetPosture(0);
+		mState->SetResurrectionCountMax(3);
+		mState->SetResurrectionCount(mState->GetResurrectionCountMax());
 	}
 
 	Player::~Player()
@@ -67,6 +62,29 @@ namespace ya
 
 	void Player::Initialize()
 	{
+		PlayerMeshScript* meshScript = AddComponent<PlayerMeshScript>();	// 메쉬, 애니메이션이므로 먼저 load
+
+		std::shared_ptr<MeshData> weaponMeshData = meshScript->FindMeshData(ARM);
+		if (weaponMeshData != nullptr)
+		{
+			mWeaponCollider = object::Instantiate<BoneCollider>(eLayerType::PlayerProjectile,GetScene());
+			mWeaponCollider->SetMeshAndBone(weaponMeshData, L"R_Weapon");
+			mWeaponCollider->SetScale(Vector3(1.6f, 0.2f, 0.2f));
+
+			mWeaponCollider->SetBCOwner(this);
+		}
+
+		{
+			PlayerProjectileScript* projectileScript = mWeaponCollider->AddComponent<PlayerProjectileScript>();
+			projectileScript->SetPlayer(this);
+		}
+
+		AddComponent<PlayerActionScript>();
+		AddComponent<PlayerAttackScript>();
+		AddComponent<GrappleHookScript>();
+
+		CreatePlayerUI();
+
 		GameObject::Initialize();
 	}
 
@@ -116,6 +134,12 @@ namespace ya
 		}
 	}
 
+	void Player::CreatePlayerUI()
+	{		
+		mPlayerHpBar = object::Instantiate<PlayerHpTexture>(eLayerType::UI, GetScene());
+		mPlayerHpBar->SetPlayer(this);
+	}
+
 	float Player::GetBlockTime()
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
@@ -124,6 +148,7 @@ namespace ya
 		else
 			return attack->GetBlockTime();
 	}
+
 	void Player::SetDeathBlowTarget(MonsterBase* monster, float distance)
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
@@ -132,6 +157,7 @@ namespace ya
 		else
 			attack->SetDeathBlowTarget(monster, distance);
 	}
+
 	void Player::EraseDeathBlowTarget(MonsterBase* monster)
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
@@ -140,4 +166,5 @@ namespace ya
 		else
 			attack->EraseDeathBlowTarget(monster);
 	}
+
 }

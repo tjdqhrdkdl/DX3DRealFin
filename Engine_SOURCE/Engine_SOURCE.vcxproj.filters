@@ -55,15 +55,6 @@
     <ClCompile Include="yaMonster.cpp">
       <Filter>Contents\Contents</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="yaActionScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="yaGrappleHookScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
     <ClCompile Include="yaGroundScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
@@ -151,23 +142,20 @@
     <ClCompile Include="yaCameraScript.cpp">
       <Filter>Contents\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayScene.cpp">
+    <ClCompile Include="yaTitleScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="yaTitleScene.cpp">
+    <ClCompile Include="yaPlayScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
     <ClCompile Include="yaWallScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerActionScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
     <ClCompile Include="yaFbxLoader.cpp">
       <Filter>Engine\Resource\FbxLoader</Filter>
     </ClCompile>
-    <ClCompile Include="yaSpearman.cpp">
-      <Filter>Contents\Monster\Spearman</Filter>
+    <ClCompile Include="yaSwordMan.cpp">
+      <Filter>Contents\Monster\SwordMan</Filter>
     </ClCompile>
     <ClCompile Include="yaSpearman_Sting.cpp">
       <Filter>Contents\Monster\Attack</Filter>
@@ -227,9 +215,6 @@
     <ClCompile Include="yaBoneShader.cpp">
       <Filter>Engine\Resource\Shader\CS</Filter>
     </ClCompile>
-    <ClCompile Include="yaHangingScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
     <ClCompile Include="yaHangingObjectScript.cpp">
       <Filter>Contents\Ground</Filter>
     </ClCompile>
@@ -238,12 +223,6 @@
     </ClCompile>
     <ClCompile Include="yaBoneCollider.cpp">
       <Filter>Contents\BoneCollider</Filter>
-    </ClCompile>
-    <ClCompile Include="yaPlayerMeshScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="yaPlayerAttackScript.cpp">
-      <Filter>Contents\Player</Filter>
     </ClCompile>
     <ClCompile Include="yaRedOgre.cpp">
       <Filter>Contents\Monster\RedOgre</Filter>
@@ -263,9 +242,6 @@
     <ClCompile Include="UIHPBarScript.cpp">
       <Filter>Contents\UI</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerProjectileScript.cpp">
-      <Filter>Contents\Player</Filter>
-    </ClCompile>
     <ClCompile Include="CSVEditor.cpp">
       <Filter>Engine\Common</Filter>
     </ClCompile>
@@ -274,6 +250,78 @@
     </ClCompile>
     <ClCompile Include="ThreadPool.cpp">
       <Filter>Engine\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugUtils\Source\DebugDraw.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourAlloc.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourAssert.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourCommon.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugUtils\Source\DetourDebugDraw.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourNavMesh.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourNavMeshBuilder.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourNavMeshQuery.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Detour\Source\DetourNode.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\Recast.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastAlloc.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastArea.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastAssert.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastContour.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugUtils\Source\RecastDebugDraw.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugUtils\Source\RecastDump.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastFilter.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastLayers.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastMesh.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastMeshDetail.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastRasterization.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast\Source\RecastRegion.cpp">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="yaNavMeshTool.cpp">
+      <Filter>Engine\Component\NavMesh\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="yaNavMesh.cpp">
+      <Filter>Engine\Component\NavMesh</Filter>
     </ClCompile>
     <ClCompile Include="yaBoundarySphere.cpp">
       <Filter>Engine\Component\BoundarySphere</Filter>
@@ -284,9 +332,6 @@
     <ClCompile Include="yaLoadingScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="yaTenzenCollisionScript.cpp">
-      <Filter>Contents\Monster\Tenzen</Filter>
-    </ClCompile>
     <ClCompile Include="yaTenzenSwordScript.cpp">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClCompile>
@@ -294,6 +339,47 @@
       <Filter>Contents\Map</Filter>
     </ClCompile>
     <ClCompile Include="yaMapCollider.cpp" />
+    <ClCompile Include="yaMonsterUI.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaHPMeterScript.cpp" />
+    <ClCompile Include="PhysXWrapper.cpp">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="StrConverter.cpp">
+      <Filter>Engine\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMonsterUIScript.cpp" />
+    <ClCompile Include="yaHangingScript.cpp">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="yaGrappleHookScript.cpp">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerActionScript.cpp">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerAttackScript.cpp">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerMeshScript.cpp">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerProjectileScript.cpp">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="yaActionScript.cpp">
+      <Filter>Contents\GameObject\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerHpTexture.cpp">
+      <Filter>Contents\Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMonsterCollisionScript.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSwordManSwordScript.cpp">
+      <Filter>Contents\Monster\SwordMan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -355,15 +441,6 @@
     </ClInclude>
     <ClInclude Include="yaMonster.h">
       <Filter>Contents\Contents</Filter>
-    </ClInclude>
-    <ClInclude Include="yaPlayerScript.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="yaActionScript.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="yaGrappleHookScript.h">
-      <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaGroundScript.h">
       <Filter>Contents\Ground</Filter>
@@ -455,10 +532,10 @@
     <ClInclude Include="yaCameraScript.h">
       <Filter>Contents\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayScene.h">
+    <ClInclude Include="yaTitleScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="yaTitleScene.h">
+    <ClInclude Include="yaPlayScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
     <ClInclude Include="yaWallScript.h">
@@ -467,8 +544,8 @@
     <ClInclude Include="yaFbxLoader.h">
       <Filter>Engine\Resource\FbxLoader</Filter>
     </ClInclude>
-    <ClInclude Include="yaSpearman.h">
-      <Filter>Contents\Monster\Spearman</Filter>
+    <ClInclude Include="yaSwordMan.h">
+      <Filter>Contents\Monster\SwordMan</Filter>
     </ClInclude>
     <ClInclude Include="yaSpearman_Sting.h">
       <Filter>Contents\Monster\Attack</Filter>
@@ -481,9 +558,6 @@
     </ClInclude>
     <ClInclude Include="yaMusketeerman_Shooting.h">
       <Filter>Contents\Monster\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="yaPlayerActionScript.h">
-      <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaLogBridgeScript.h">
       <Filter>Contents\Ground</Filter>
@@ -531,9 +605,6 @@
     <ClInclude Include="yaBoneShader.h">
       <Filter>Engine\Resource\Shader\CS</Filter>
     </ClInclude>
-    <ClInclude Include="yaHangingScript.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
     <ClInclude Include="yaHangingObjectScript.h">
       <Filter>Contents\Ground</Filter>
     </ClInclude>
@@ -543,12 +614,6 @@
     <ClInclude Include="yaBoneCollider.h">
       <Filter>Contents\BoneCollider</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayerMeshScript.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="yaPlayerAttackScript.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
     <ClInclude Include="yaRedOgre.h">
       <Filter>Contents\Monster\RedOgre</Filter>
     </ClInclude>
@@ -556,9 +621,6 @@
     <ClInclude Include="UICanvas_InGame.h" />
     <ClInclude Include="UIHPBarScript.h" />
     <ClInclude Include="UINames.h" />
-    <ClInclude Include="yaPlayerProjectileScript.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
     <ClInclude Include="yaWallCheckObject.h">
       <Filter>Contents\Contents</Filter>
     </ClInclude>
@@ -587,6 +649,60 @@
     <ClInclude Include="ThreadPool.h">
       <Filter>Engine\Common</Filter>
     </ClInclude>
+    <ClInclude Include="DebugUtils\Include\DebugDraw.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourAlloc.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourAssert.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourCommon.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugUtils\Include\DetourDebugDraw.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourMath.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourNavMesh.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourNavMeshBuilder.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourNavMeshQuery.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourNode.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Detour\Include\DetourStatus.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Recast\Include\Recast.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Recast\Include\RecastAlloc.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Recast\Include\RecastAssert.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugUtils\Include\RecastDebugDraw.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugUtils\Include\RecastDump.h">
+      <Filter>Engine\Component\NavMesh\Recast&amp;Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="yaNavMeshTool.h">
+      <Filter>Engine\Component\NavMesh\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="yaNavMesh.h">
+      <Filter>Engine\Component\NavMesh</Filter>
+    </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents\Common</Filter>
     </ClInclude>
@@ -602,9 +718,6 @@
     <ClInclude Include="yaLoadingScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="yaTenzenCollisionScript.h">
-      <Filter>Contents\Monster\Tenzen</Filter>
-    </ClInclude>
     <ClInclude Include="yaTenzenSwordScript.h">
       <Filter>Contents\Monster\Tenzen</Filter>
     </ClInclude>
@@ -612,6 +725,47 @@
       <Filter>Contents\Map</Filter>
     </ClInclude>
     <ClInclude Include="yaMapCollider.h" />
+    <ClInclude Include="yaMonsterUI.h">
+      <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaHPMeterScript.h" />
+    <ClInclude Include="PhysXWrapper.h">
+      <Filter>Engine\Component\Collider\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="StrConverter.h">
+      <Filter>Engine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMonsterUIScript.h" />
+    <ClInclude Include="yaHangingScript.h">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="yaGrappleHookScript.h">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerActionScript.h">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerAttackScript.h">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerMeshScript.h">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerProjectileScript.h">
+      <Filter>Contents\Player\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="yaActionScript.h">
+      <Filter>Contents\GameObject\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerHpTexture.h">
+      <Filter>Contents\Player\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSwordManSwordScript.h">
+      <Filter>Contents\Monster\SwordMan</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMonsterCollisionScript.h">
+      <Filter>Contents\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -752,9 +906,6 @@
     <Filter Include="Engine\Resource\FbxLoader">
       <UniqueIdentifier>{e67fd783-9dd6-43ad-a3e6-53602667ccc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\Monster\Spearman">
-      <UniqueIdentifier>{afcd2e4b-ab7d-4f73-89d8-1c28d841c4d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Contents\Monster\Attack">
       <UniqueIdentifier>{5283ac8b-2cf8-4c08-96bd-4df3af8f7500}</UniqueIdentifier>
     </Filter>
@@ -791,6 +942,15 @@
     <Filter Include="Contents\UI">
       <UniqueIdentifier>{89ccb457-4d9f-4146-b05b-69c31a195ef3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Component\NavMesh">
+      <UniqueIdentifier>{4f6abc09-8937-4cda-a6ef-fcc622da472b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\NavMesh\Recast&amp;Detour">
+      <UniqueIdentifier>{2fe5a869-a7a6-49b3-b9e2-9c12bacb47fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\NavMesh\Tool">
+      <UniqueIdentifier>{893204a7-d276-46a6-97d9-e9f17b9fc5d8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Contents\Player">
       <UniqueIdentifier>{3ae756da-fa2e-468d-8aa0-63f5a56be8cf}</UniqueIdentifier>
     </Filter>
@@ -799,6 +959,24 @@
     </Filter>
     <Filter Include="Contents\Map">
       <UniqueIdentifier>{fb88424e-b5ef-496d-80de-99299c8fe25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\Collider\PhysX">
+      <UniqueIdentifier>{74c96652-f68b-431b-b57f-4ae80ea2b57e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\GameObject">
+      <UniqueIdentifier>{502c8966-2078-4a90-a1e1-97170f834113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\GameObject\Scripts">
+      <UniqueIdentifier>{d6029936-2eaf-485b-8c64-97a0c1cbe989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Player\Scripts">
+      <UniqueIdentifier>{062074f1-06d1-4714-a281-14761b889525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Player\UI">
+      <UniqueIdentifier>{9a93656c-7983-4a70-865a-4495ca83e472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\SwordMan">
+      <UniqueIdentifier>{afcd2e4b-ab7d-4f73-89d8-1c28d841c4d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

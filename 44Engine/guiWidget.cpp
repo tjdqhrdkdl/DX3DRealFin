@@ -54,7 +54,7 @@ namespace gui
 		if (mState != eState::Active)
 			return;
 
-		// ÃÖ»óÀ§ºÎ¸ğ ÀÏ¶§
+		// ìµœìƒìœ„ë¶€ëª¨ ì¼ë•Œ
 		if (mParent == nullptr) 
 		{
 			bool open = (bool)GetState();
@@ -73,7 +73,7 @@ namespace gui
 		{
 			FixedUpdate();
 			ImGui::BeginChild(GetName().c_str(), mSize);
-			//size Ãß°¡ ÇØÁà¾ßÇÑ´Ù.-
+			//size ì¶”ê°€ í•´ì¤˜ì•¼í•œë‹¤.-
 			Update();
 			for (Widget* child : mChilds)
 			{
