@@ -18,13 +18,12 @@ namespace ya
 		eLayerType layer = colObj->GetLayerType();
 		if (layer == eLayerType::Player)
 		{
-			if (mbBlock)
-			{
+			
 				Player* pl = dynamic_cast<Player*>(colObj);
 				if (pl->IsStateFlag(ePlayerState::Block))
 				{
-
-					Transform* colTr = GetOwner()->GetComponent<Transform>();
+					GameObject* bigOwner = dynamic_cast<BoneCollider*>(GetOwner())->GetBoneColliderOwner();
+					Transform* colTr = bigOwner->GetComponent<Transform>();
 					Transform* plTr = colObj->GetComponent<Transform>();
 					Vector3 colPos = colTr->GetWorldPositioin();
 					Vector3 plPos = plTr->GetWorldPositioin();
@@ -37,7 +36,7 @@ namespace ya
 					if (theta <90 && theta > -90)
 					{
 
-						GameObject* bigOwner = dynamic_cast<BoneCollider*>(GetOwner())->GetBoneColliderOwner();
+						
 						SwordMan* swordMan = dynamic_cast<SwordMan*>(bigOwner);
 						//패링당함
 						if (pl->GetBlockTime() < 0.2f)
@@ -61,7 +60,7 @@ namespace ya
 							swordMan->SetPosture(swordMan->GetPosture() + 7);
 						}
 						//그냥 막힘
-						else
+						else if (mbBlock)
 						{
 							switch (mAttackDir)
 							{
@@ -95,7 +94,7 @@ namespace ya
 					}
 
 
-				}
+				
 			}
 		}
 	}

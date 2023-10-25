@@ -20,7 +20,7 @@ namespace ya
 		, mThetaAxisY(1.57f)
 		, mThetaAxisX(1.57f)
 		, mDistFromTarget(3.5f)
-		, mDelayTime(0.2f)
+		, mDelayTime(0.1f)
 		, mDelayTimeChecker(0)
 		, mbFirstInit(false)
 		, mbMouseMove(true)
@@ -305,13 +305,7 @@ namespace ya
 			Vector3 dir = mDelayedTargetPos - monPos;
 			dir.y = 0;
 			dir.Normalize();
-			float dist = Vector3::Distance(monPos, mDelayedTargetPos) - 3;
-			if (dist < 0)
-				dir.y = 0.9f;
-			else if (dist > 4)
-				dir.y = 0.3f;
-			else
-				dir.y = 0.9 - dist * 0.15;
+			dir.y = 0.3f;
 			dir.Normalize();
 
 			Vector3 monPlDiff = monPos - mPlayerTarget->GetComponent<Transform>()->GetPosition();

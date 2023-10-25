@@ -65,8 +65,6 @@ namespace ya
 						continue;
 					if (leftObj->GetComponent<Collider2D>() == nullptr)
 						continue;
-					if (!leftObj->GetComponent<Collider2D>()->IsActive())
-						continue;
 
 					for (size_t k = i; k < rights.size(); k++)
 					{
@@ -75,8 +73,6 @@ namespace ya
 						if (rightObj->GetState() != GameObject::Active)
 							continue;
 						if (rightObj->GetComponent<Collider2D>() == nullptr)
-							continue;
-						if (!rightObj->GetComponent<Collider2D>()->IsActive())
 							continue;
 						if (leftObj == rightObj)
 							continue;
@@ -98,16 +94,12 @@ namespace ya
 					continue;
 				if (leftObj->GetComponent<Collider2D>() == nullptr)
 					continue;
-				if (!leftObj->GetComponent<Collider2D>()->IsActive())
-					continue;
 
 				for (GameObject* rightObj : rights)
 				{
 					if (rightObj->GetState() != GameObject::Active)
 						continue;
 					if (rightObj->GetComponent<Collider2D>() == nullptr)
-						continue;
-					if (!rightObj->GetComponent<Collider2D>()->IsActive())
 						continue;
 					if (leftObj == rightObj)
 						continue;
@@ -139,7 +131,24 @@ namespace ya
 			mCollisionMap.insert(std::make_pair(colliderID.id, false));
 			iter = mCollisionMap.find(colliderID.id);
 		}
+		if (!left->IsActive() || !right->IsActive())
+		{
+			if (iter->second == true)
+			{
+				if (left->IsTriiger())
+					left->OnTriggerExit(right);
+				else
+					left->OnCollisionExit(right);
 
+				if (right->IsTriiger())
+					right->OnTriggerExit(left);
+				else
+					right->OnCollisionExit(left);
+
+				iter->second = false;
+			}
+			return;
+		}
 		// 충돌체크를 해준다.
 		if (Intersect(left, right)) // 충돌을 한 상태
 		{
