@@ -368,11 +368,15 @@ namespace ya
 
 				//플레이어 거리가 너무 멀어졌을 때
 				float traceDist = 10;
-				if (Vector3::Distance(pos, playerPos) > traceDist)
+				if (GetDistanceToPlayer() > traceDist)
 				{
 					ADD_STATE(MonsterState_Trace);
 				}
 
+				else if (fabsf(playerPos.y - pos.y) > 1)
+				{
+					ADD_STATE(MonsterState_Trace);
+				}
 				//플레이어 거리가 적당히 멀때 -> 근접형 공격 가능
 
 				//플레이어 거리가 가까울 때 -> 백스텝 가능
@@ -404,36 +408,45 @@ namespace ya
 		{
 			//if (curName.substr(0, 11) == L"SwordAttack")
 			//	return;
-			int choice = rand() % 8;
-			switch (choice)
+			if (GetDistanceToPlayer() > 6)
 			{
-			case 0:
-				mAnimationName = L"SwordAttack_1";
-				break;
-			case 1:
-				mAnimationName = L"SwordAttack_2";
-				break;
-			case 2:
-				mAnimationName = L"SwordAttack_3";
-				break;
-			case 3:
-				mAnimationName = L"SwordAttack_4";
-				break;
-			case 4:
-				mAnimationName = L"SwordAttack_5";
-				break;
-			case 5:
-				mAnimationName = L"SwordAttack_6";
-				break;
-			case 6:
-				mAnimationName = L"SwordAttack_7";
-				break;
-			case 7:
-				mAnimationName = L"SwordAttack_8";
-				break;
+				int choice = rand() % 2;
+				switch (choice)
+				{
+				case 0:
+					mAnimationName = L"SwordAttack_1";
+					break;
+				case 1:
+					mAnimationName = L"SwordAttack_2";
+					break;
+				}
 			}
+			else
+			{
+				int choice = rand() % 6;
 
-			mAnimationName = L"SwordAttack_8";
+				switch (choice)
+				{
+				case 0:
+					mAnimationName = L"SwordAttack_3";
+					break;
+				case 1:
+					mAnimationName = L"SwordAttack_4";
+					break;
+				case 2:
+					mAnimationName = L"SwordAttack_5";
+					break;
+				case 3:
+					mAnimationName = L"SwordAttack_6";
+					break;
+				case 4:
+					mAnimationName = L"SwordAttack_7";
+					break;
+				case 5:
+					mAnimationName = L"SwordAttack_8";
+					break;
+				}
+			}
 		}
 
 	}
@@ -456,7 +469,7 @@ namespace ya
 			GetComponent<NavMesh>()->RenewPath(playerPos);
 			RM_STATE(MonsterState_LookAt);
 			RotateForwardTo(GetComponent<NavMesh>()->GetDir());
-			if (GetDistanceToPlayer() < 5)
+			if (GetDistanceToPlayer() < 10)
 			{
 				ADD_STATE(MonsterState_LookAt);
 				RM_STATE(MonsterState_Move);
@@ -591,40 +604,54 @@ namespace ya
 		//mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&SwordMan::DrawSwordEndEvent, this);
 
 		////공격
-		//// 중거리 근접기
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(SwordManBaseSpeed * 4); mLSwordScript->SetBlock(true); mLSwordScript->SetAttackDir(2); };
+		//// 중거리 근접기 3000
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(SwordManBaseSpeed * 1.5); mLSwordScript->SetBlock(false); mLSwordScript->SetAttackDir(2); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 35) = [this]() {  RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 57) = [this]() {  RM_STATE(MonsterState_LookAt); };
-		//// 중거리 근접기 2
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(SwordManBaseSpeed * 4); mLSwordScript->SetBlock(true); mLSwordScript->SetAttackDir(0); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 40) = [this]() { RM_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 57) = [this]() {  RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 98) = std::bind(&SwordMan::AttackEndEvent, this);
+		//// 중거리 근접기 2 3001
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(SwordManBaseSpeed * 1.3); mLSwordScript->SetBlock(true); mLSwordScript->SetAttackDir(0); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 37) = [this]() { RM_STATE(MonsterState_Move); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 57) = [this]() {  RM_STATE(MonsterState_LookAt); };		
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 92) = std::bind(&SwordMan::AttackEndEvent, this);
 
-		//// 왼손 내려베기
+
+		//// 왼손 내려베기 3010
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 1) = [this]() { ADD_STATE(MonsterState_Move); SetSpeed(SwordManBaseSpeed); mRSwordScript->SetBlock(true); mRSwordScript->SetAttackDir(1); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 25) = [this]() { RM_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 36) = [this]() { RM_STATE(MonsterState_LookAt);};
-		//// 오른손 내려베기
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 36) = [this]() { RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 60) = std::bind(&SwordMan::AttackEndEvent, this);
+
+		//// 오른손 내려베기 3011
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 5) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(SwordManBaseSpeed); mLSwordScript->SetBlock(true); mLSwordScript->SetAttackDir(0);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 25) = [this]() { RM_STATE(MonsterState_Move);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 30) = [this]() { RM_STATE(MonsterState_LookAt); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 50) = std::bind(&SwordMan::AttackEndEvent, this);
-		//// 좌측 에서 우측으로 두번 베기
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 68) = std::bind(&SwordMan::AttackEndEvent, this);
+
+		//// 좌측 에서 우측으로 두번 베기 3006
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 1) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(SwordManBaseSpeed * 2); mLSwordScript->SetBlock(true); mLSwordScript->SetAttackDir(0); mRSwordScript->SetBlock(true); mRSwordScript->SetAttackDir(1); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 18) = [this]() { RM_STATE(MonsterState_Move);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 32) = [this]() { RM_STATE(MonsterState_LookAt); };
-		//// 양손 찌르기 못막는
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 75) = std::bind(&SwordMan::AttackEndEvent, this);
+
+		//// 양손 찌르기 못막는 3007
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 1) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(SwordManBaseSpeed * (float)1.5); mRSwordScript->SetBlock(false); mRSwordScript->SetAttackDir(2);  mAttackParams.damage = 30; mAttackParams.unGuardable = true; };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 15) = [this]() { RM_STATE(MonsterState_Move);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 32) = [this]() { RM_STATE(MonsterState_LookAt); };
-		//// 양손 x자 베기 제자리
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 60) = std::bind(&SwordMan::AttackEndEvent, this);
+
+		//// 양손 x자 베기 제자리 3012
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 1) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(SwordManBaseSpeed * (float)1.5); mLSwordScript->SetBlock(true); mLSwordScript->SetAttackDir(0);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 15) = [this]() { RM_STATE(MonsterState_Move);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 32) = [this]() { RM_STATE(MonsterState_LookAt); };
-		//// 양손 우에서 좌로 베기
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 65) = std::bind(&SwordMan::AttackEndEvent, this);
+
+		//// 양손 우에서 좌로 베기 3016
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 1) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(SwordManBaseSpeed * (float)1.5); mLSwordScript->SetBlock(false); mLSwordScript->SetAttackDir(2);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 22) = [this]() { RM_STATE(MonsterState_Move);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 32) = [this]() { RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 60) = std::bind(&SwordMan::AttackEndEvent, this);
+
 
 
 
@@ -637,6 +664,16 @@ namespace ya
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_6") = std::bind(&SwordMan::AttackEndEvent, this);
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_7") = std::bind(&SwordMan::AttackEndEvent, this);
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_8") = std::bind(&SwordMan::AttackEndEvent, this);
+
+		mMeshData->GetAnimationStartEvent(L"SwordAttack_1") = std::bind(&SwordMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"SwordAttack_2") = std::bind(&SwordMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"SwordAttack_3") = std::bind(&SwordMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"SwordAttack_4") = std::bind(&SwordMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"SwordAttack_5") = std::bind(&SwordMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"SwordAttack_6") = std::bind(&SwordMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"SwordAttack_7") = std::bind(&SwordMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"SwordAttack_8") = std::bind(&SwordMan::AttackStartEvent, this);
+
 		//mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&SwordMan::DefenseEndEvent, this);
 
 		mMeshData->GetAnimationFrameEvent(L"GuardLeft", 27) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
@@ -713,6 +750,13 @@ namespace ya
 		Vector3 dir = playerPosY - posY;
 		dir.Normalize();
 		return dir.Dot(mTransform->Forward());
+	}
+
+	void SwordMan::AttackStartEvent()
+	{
+		ADD_STATE(MonsterState_Attack);
+		mBeforeState |= MonsterState_Attack;
+
 	}
 
 	float SwordMan::GetDistanceToPlayer()
@@ -838,7 +882,7 @@ namespace ya
 					if (GetHP() == 0)
 						SetPosture(GetPostureMax());
 					else
-						SetPosture(GetPosture() + 1);
+						SetPosture(GetPosture() + 10);
 					mMeshData->GetAnimator()->SetAnimationChangeTime(0.1f);
 
 				}
@@ -864,7 +908,7 @@ namespace ya
 					if (GetHP() == 0)
 						SetPosture(GetPostureMax());
 					else
-						SetPosture(GetPosture() + 1);
+						SetPosture(GetPosture() + 10);
 
 
 					if (!(STATE_HAVE(MonsterState_SuperArmor)))

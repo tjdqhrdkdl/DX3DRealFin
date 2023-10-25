@@ -527,7 +527,9 @@ namespace ya
 			else
 				RM_STATE(MonsterState_Guard);
 		}
-		else if (STATE_HAVE(MonsterState_Trace) || STATE_HAVE(MonsterState_GuardSuccess))
+		else if (STATE_HAVE(MonsterState_Trace) || STATE_HAVE(MonsterState_GuardSuccess)
+			|| STATE_HAVE(MonsterState_OnHit)
+			|| animator->GetPlayAnimationName().substr(0, 3) == L"Hit")
 		{
 			ADD_STATE(MonsterState_Guard);
 		}
@@ -535,12 +537,18 @@ namespace ya
 		{
 			RM_STATE(MonsterState_Guard);
 		}
+		if (STATE_HAVE(MonsterState_SuperArmor) || STATE_HAVE(MonsterState_AttackBlocked))
+		{
+			RM_STATE(MonsterState_Guard);
+		}
+
 		if (STATE_HAVE(MonsterState_GuardSuccess))
 		{
-			if(STATE_HAVE(MonsterState_GuardLeft))
+			if (STATE_HAVE(MonsterState_GuardLeft))
 				mAnimationName = L"GuardLeft";
 			else
 				mAnimationName = L"GuardRight";
+			RM_STATE(MonsterState_OnHit);
 		}
 	}
 
