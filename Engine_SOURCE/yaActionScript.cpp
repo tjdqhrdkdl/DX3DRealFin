@@ -118,6 +118,11 @@ namespace ya
 	{
 	}
 
+	void ActionScript::SetCheckCollider(bool on)
+	{
+		mCheck->GetComponent<Collider2D>()->Active(on);
+	}
+
 	/// <summary> limit velocity를 늘려서 최대 속도를 변경한다. 인자없을시 default값(40.0f)으로 설정됨. </summary>
 	/// <param name="velocity">최대속도</param>
 	void ActionScript::Velocity(const float velocity)

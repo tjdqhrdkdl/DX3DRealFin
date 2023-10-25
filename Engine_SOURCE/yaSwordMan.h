@@ -37,6 +37,7 @@ namespace ya
         float GetDistanceToPlayer();
         float EyeSightCheck();
 
+        void AttackStartEvent();
 
         void DrawSwordEndEvent();
         void DefenseEndEvent();

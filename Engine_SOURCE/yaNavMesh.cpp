@@ -18,7 +18,7 @@ namespace ya
 	void NavMesh::Initialize()
 	{
 		mbNavOn = false;
-		mDestPos = Vector3(100.532, -23.113, -3.576);
+		mDestPos = Vector3((float)100.532, (float)-23.113, (float)-3.576);
 
 		mbTraceOn = true;
 		mSpeed = 80;
