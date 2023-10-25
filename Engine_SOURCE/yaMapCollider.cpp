@@ -46,6 +46,12 @@ namespace ya
 		AddGroundCollider(Vector3(131.0, -24.8, 26.50), Vector3(0.0, 40.0, 0.0), Vector3(24.0, 1.0, 13.0));
 		AddGroundCollider(Vector3(140.0, -24.8, 15.0), Vector3(0.0, 40.0, 0.0), Vector3(6.0, 1.0, 7.0));
 		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
+
+		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
+		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
+		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
+		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
+		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
 		
 		//AddGroundCollider(Vector3(1, 1, 1));
 
@@ -70,6 +76,7 @@ namespace ya
 
 		//상수
 		mWalkerName = L"KSS";
+
 	}
 	void MapCollider::AddWallCollider(Vector3 transform, Vector3 rotation, Vector3 size)
 	{
