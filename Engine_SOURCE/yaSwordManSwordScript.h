@@ -20,10 +20,10 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* collider);
 
 		void SetBlock(bool b) { mbBlock = b; }
-		void SetAttackLeft(bool b) { mbAttackLeft = b; }
+		void SetAttackDir(UINT i) { mAttackDir = i; }
 	private:
 		bool mbBlock;
-		bool mbAttackLeft;
+		UINT mAttackDir;
 	};
 
 }

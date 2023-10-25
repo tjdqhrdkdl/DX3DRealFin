@@ -42,10 +42,20 @@ namespace ya
 						//패링당함
 						if (pl->GetBlockTime() < 0.2f)
 						{
-							if (mbAttackLeft)
+							switch (mAttackDir)
+							{
+							case 0:
 								swordMan->SetAnimationName(L"ParriedLeft");
-							else
+								break;
+							case 1:
 								swordMan->SetAnimationName(L"ParriedRight");
+								break;
+							case 2:
+								swordMan->SetAnimationName(L"ParriedBoth");
+								break;
+							default:
+								break;
+							}
 
 							//체간 게이지 영향
 							swordMan->SetPosture(swordMan->GetPosture() + 7);
@@ -53,10 +63,20 @@ namespace ya
 						//그냥 막힘
 						else
 						{
-							if (mbAttackLeft)
+							switch (mAttackDir)
+							{
+							case 0:
 								swordMan->SetAnimationName(L"ParriedLeft");
-							else
+								break;
+							case 1:
 								swordMan->SetAnimationName(L"ParriedRight");
+								break;
+							case 2:
+								swordMan->SetAnimationName(L"ParriedBoth");
+								break;
+							default:
+								break;
+							}
 						}
 						swordMan->AddMonsterState(SwordMan::eMonsterState::MonsterState_AttackBlocked);
 						swordMan->SetAnimationChangeTime(0.05f);
