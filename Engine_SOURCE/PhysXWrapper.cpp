@@ -453,7 +453,8 @@ namespace ya
 
 
 		PxTransform t{};
-		t.p = *outShape ? MathUtil::vector3ToPx(component->GetWorldPosition()) : MathUtil::vector3ToPx(component->GetLocalPosition());
+		t.p = *outShape ? 
+			MathUtil::vector3ToPx(component->GetWorldPosition()) : MathUtil::vector3ToPx(component->GetLocalPosition());
 		t.q = *outShape ? MathUtil::quaternionToPx(component->GetWorldRotationQuaternion()) : MathUtil::quaternionToPx(component->GetLocalRotationQuaternion());
 
 		if (isStatic)

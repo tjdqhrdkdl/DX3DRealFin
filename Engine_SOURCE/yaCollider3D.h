@@ -44,11 +44,16 @@ namespace ya
 		virtual ~Collider3D();
 
 		virtual void Initialize() override;
+		virtual void Start() override;
 		virtual void Update() override;
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
-		void		 setType(eColliderType type, bool isStatic = false);
+		void		 setType(eColliderType type, bool isStatic = false)
+		{
+			_type = type;
+			_isStatic = isStatic;
+		}
 		eColliderType getCollider3DType(void) const { return _type; }
 
 		Matrix	getWorldMatrix(void) const { return _worldMatrix; }

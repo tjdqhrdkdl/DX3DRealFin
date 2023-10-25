@@ -172,10 +172,14 @@ namespace gui
 			obj = nullptr;
 		}
 
-		delete mDebugObjects[(UINT)eColliderType::Rect];
-		delete mDebugObjects[(UINT)eColliderType::Circle];
-		delete mDebugObjects[(UINT)eColliderType::Box];
-		delete mDebugObjects[(UINT)eColliderType::Sphere];
+		for (UINT i = 0; i < (UINT)eColliderType::End; ++i)
+		{
+			if (mDebugObjects[i])
+			{
+				delete mDebugObjects[i];
+				mDebugObjects[i] = nullptr;
+			}
+		}
 	}
 
 	void Editor::DebugRender(ya::graphics::DebugMesh& mesh)

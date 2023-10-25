@@ -354,8 +354,10 @@ namespace ya
 			player->AddComponent<PhysXPlayerScript>();
 
 			Transform* tr = player->GetComponent<Transform>();
-			tr->SetLocalScale(Vector3(30.f, 30.f, 30.f));
 			tr->SetLocalPosition(Vector3(-10.f, 10.f, -10.f));
+
+			Collider3D* coll3D = player->GetComponent<Collider3D>();
+			coll3D->setOffsetScale(Vector3(30.f, 30.f, 30.f));
 		}
 
 		{
@@ -364,6 +366,9 @@ namespace ya
 			Transform* tr = player->GetComponent<Transform>();
 			tr->SetLocalScale(Vector3(30.f, 30.f, 30.f));
 			tr->SetLocalPosition(Vector3(10.f, 10.f, 10.f));
+
+			Collider3D* coll3D = player->GetComponent<Collider3D>();
+			coll3D->setOffsetScale(Vector3(30.f, 30.f, 30.f));
 		}
 
 		PhysicsManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Monster, true);

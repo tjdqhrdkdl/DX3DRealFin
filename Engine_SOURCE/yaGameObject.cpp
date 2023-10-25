@@ -58,6 +58,7 @@ namespace ya
 
 	void GameObject::Start()
 	{
+		mbStart = true;
 		for (Component* comp : mComponents)
 		{
 			if (comp == nullptr)

@@ -50,20 +50,41 @@ namespace ya
 	{
 	}
 
+	void Collider3D::Start()
+	{
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		Vector3 realScale = _offsetScale * 0.5f;
+		
+
+		if (_shape == nullptr)
+		{
+			if (_type == eColliderType::Box)
+				PhysxWrapper::getInstance().createActorCube(GetOwner(), realScale, &_shape, _isStatic);
+			else if (_type == eColliderType::Sphere)
+				PhysxWrapper::getInstance().createActorSphere(GetOwner(), realScale.x, &_shape, _isStatic);
+		}
+		else if (_shape)
+		{
+			PhysxWrapper::getInstance().changeGeometry(this, _shape, _type);
+		}
+
+		//_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
+	}
+
 	void Collider3D::Update()
 	{
 		assert(_type != eColliderType::End);
 
 		const Matrix translation = Matrix::CreateTranslation(_offsetPosition);
-		const Matrix rotation = Matrix{};
 		const Matrix scale = Matrix::CreateScale(_offsetScale);
-		_worldMatrix = scale * rotation * translation;
+		_worldMatrix = scale * translation;
 
-		const Vector3 objectScale = GetOwner()->GetComponent<Transform>()->GetLocalScale();
-		const Matrix  inverseObjectScale = Matrix::CreateScale(objectScale).Invert();
+		const Vector3 objectScale = GetOwner()->GetComponent<Transform>()->GetWorldScale();
+		const Matrix objectScaleInvMatrix = Matrix::CreateScale(objectScale).Invert();
 		const Matrix  objectWorldMatrix = GetOwner()->GetComponent<Transform>()->GetWorldMatrix();
 		// 충돌체 상대행렬 * 오브젝트 월드 크기 역행렬 * 오브젝트 월드 행렬(크기 * 회전 * 이동)
-		_worldMatrix = _worldMatrix * inverseObjectScale * objectWorldMatrix;
+		//트랜스폼의 Scale은 반영하지 않는다
+		_worldMatrix = _worldMatrix * objectScaleInvMatrix * objectWorldMatrix;
 
 		syncPhysics();
 
@@ -75,15 +96,14 @@ namespace ya
 		meshAttribute.type = _type;
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
-		meshAttribute.scale = tr->GetLocalScale();
-		meshAttribute.scale *= _offsetScale;
+		meshAttribute.scale = _offsetScale;
 
-		meshAttribute.position = tr->GetWorldPosition();
-		meshAttribute.position += _offsetPosition;
+		meshAttribute.position = Vector3(_worldMatrix.m[3]);
+		//meshAttribute.position += _offsetPosition;
 
 		meshAttribute.rotation = tr->GetWorldRotation();
 
-		meshAttribute.parent = tr->GetParent();
+		meshAttribute.parent = nullptr;
 
 		meshAttribute.collisionCount = _collisionCount;
 		meshAttribute.isTrigger = _isTrigger;
@@ -114,34 +134,10 @@ namespace ya
 
 	}
 
-	void Collider3D::setType(eColliderType type, bool isStatic)
-	{
-		_isStatic = isStatic;
 
-		Transform* tr = GetOwner()->GetComponent<Transform>();
-		//const Vector3& trScale = tr->GetLocal
-
-		if (_shape == nullptr)
-		{
-			_type = type;
-			if (_type == eColliderType::Box)
-				PhysxWrapper::getInstance().createActorCube(GetOwner(), _offsetScale, &_shape, _isStatic);
-			else if (_type == eColliderType::Sphere)
-				PhysxWrapper::getInstance().createActorSphere(GetOwner(), _offsetScale.x, &_shape, _isStatic);
-		}
-		else if (_shape && _type != type)
-		{
-			_type = type;
-			PhysxWrapper::getInstance().changeGeometry(this, _shape, _type);
-		}
-
-		//_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
-	}
 
 	void Collider3D::setOffsetScale(Vector3 offset)
 	{
-		//assert(_shape);
-
 		_offsetScale = offset;
 		
 		if (_type == eColliderType::Sphere)
@@ -150,8 +146,9 @@ namespace ya
 
 			if (_shape)
 			{
+				Vector3 realScale = GetOwner()->GetComponent<Transform>()->GetWorldScale() * _offsetScale * 0.5f;
 				physx::PxGeometryHolder holder{ _shape->getGeometry() };
-				holder.sphere().radius = _offsetScale.x;
+				holder.sphere().radius = realScale.x;
 				_shape->setGeometry(holder.sphere());
 			}
 		}
@@ -159,8 +156,9 @@ namespace ya
 		{
 			if (_shape)
 			{
+				Vector3 realScale = GetOwner()->GetComponent<Transform>()->GetWorldScale() * _offsetScale * 0.5f;
 				physx::PxGeometryHolder holder{ _shape->getGeometry() };
-				holder.box().halfExtents = MathUtil::vector3ToPx(_offsetScale);
+				holder.box().halfExtents = MathUtil::vector3ToPx(realScale);
 				_shape->setGeometry(holder.box());
 			}
 		}
@@ -169,11 +167,6 @@ namespace ya
 	void Collider3D::OnCollisionEnter(Collider3D* other, const Vector3& collisionPosition)
 	{
 		++_collisionCount;
-
-		if (this == other)
-		{
-			int a = 3;
-		}
 
 		const auto& scripts = GetOwner()->GetScripts();
 		for (auto& script : scripts)
@@ -376,7 +369,8 @@ namespace ya
 			memcpy(&transform.p, _worldMatrix.m[3], sizeof(float) * 3);
 
 			Quaternion q = GetOwner()->GetComponent<Transform>()->GetWorldRotationQuaternion();
-			memcpy(&transform.q, &q, sizeof(Quaternion));
+			transform.q = MathUtil::quaternionToPx(q);
+			//memcpy(&transform.q, &q, sizeof(Quaternion));
 			
 			rigidActor->setGlobalPose(transform);
 		}
