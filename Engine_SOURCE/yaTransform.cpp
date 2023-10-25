@@ -35,6 +35,11 @@ namespace ya
 	}
 
 
+	void Transform::Start()
+	{
+		FixedUpdate();
+	}
+
 	void Transform::FixedUpdate()
 	{
 		// 크기 변환 행렬

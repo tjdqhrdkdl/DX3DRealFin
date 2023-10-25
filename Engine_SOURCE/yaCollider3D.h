@@ -61,6 +61,7 @@ namespace ya
 		void	setOffsetScale(Vector3 offset);
 		Vector3 getOffsetScale(void) const { return _offsetScale; }
 
+
 		void OnCollisionEnter(Collider3D* other, const Vector3& collisionPosition);
 		void OnCollision(Collider3D* other, const Vector3& collisionPosition);
 		void OnCollisionExit(Collider3D* other, const Vector3& collisionPosition);
@@ -108,13 +109,13 @@ namespace ya
 		UINT32		 _collisionCount;
 		Matrix		 _worldMatrix;
 
-		std::shared_ptr<Mesh>			_mesh;
-		std::shared_ptr<Shader>			_shader;
+		//std::shared_ptr<Mesh>			_mesh;
+		//std::shared_ptr<Shader>			_shader;
 
-		ConstantBuffer* _positionBuffer;
-		renderer::TransformCB						_positionBufferData;
+		//ConstantBuffer* _positionBuffer;
+		//renderer::TransformCB						_positionBufferData;
 
-		ConstantBuffer* _wireFrameBuffer;
+		//ConstantBuffer* _wireFrameBuffer;
 		renderer::WireFrameCB						_wireFrameData;
 
 		physx::PxShape* _shape;

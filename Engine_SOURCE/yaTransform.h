@@ -11,6 +11,7 @@ namespace ya
 		virtual ~Transform();
 
 		virtual void Initialize() override {};
+		virtual void Start() override;
 		virtual void Update() override {};
 		virtual void FixedUpdate() override;
 		virtual void PrevRender() override;

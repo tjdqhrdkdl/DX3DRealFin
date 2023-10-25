@@ -47,8 +47,13 @@ namespace ya
 
 			if (obj == nullptr)
 				continue;
-			if (obj->GetState() != GameObject::eState::Active)
+			else if (obj->GetState() != GameObject::eState::Active)
 				continue;
+
+			if (false == obj->IsStart())
+			{
+				obj->Start();
+			}
 
 			obj->Update();
 		}
@@ -66,6 +71,11 @@ namespace ya
 				continue;
 			if (obj->GetState() != GameObject::eState::Active)
 				continue;
+
+			if (false == obj->IsStart())
+			{
+				obj->Start();
+			}
 
 			obj->FixedUpdate();
 		}

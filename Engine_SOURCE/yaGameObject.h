@@ -21,6 +21,7 @@ namespace ya
 		virtual ~GameObject();
 
 		virtual void Initialize();
+		void Start();
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void PrevRender();
@@ -119,6 +120,8 @@ namespace ya
 		Scene* GetScene() { return mScene; }
 		void SetScene(Scene* scene) { mScene = scene; }
 
+		bool IsStart() const { return mbStart; }
+
 	protected:
 		std::vector<Component*> mComponents;
 
@@ -129,7 +132,9 @@ namespace ya
 		bool mbDontDestroy;
 		Scene* mScene;
 
+		
 		bool mbRender;
+		bool mbStart;
 	};
 }
 

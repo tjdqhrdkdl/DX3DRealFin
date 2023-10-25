@@ -9,6 +9,7 @@ namespace ya
 		, mbDontDestroy(false)
 		, mbRender(true)
 		, mScene(nullptr)
+		, mbStart(false)
 	{
 		mComponents.resize((UINT)eComponentType::End);
 		AddComponent(new Transform());
@@ -53,6 +54,17 @@ namespace ya
 			//script->Initialize();
 		}
 
+	}
+
+	void GameObject::Start()
+	{
+		for (Component* comp : mComponents)
+		{
+			if (comp == nullptr)
+				continue;
+
+			comp->Start();
+		}
 	}
 
 	void GameObject::Update()

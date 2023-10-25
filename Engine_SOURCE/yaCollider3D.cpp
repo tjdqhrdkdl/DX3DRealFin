@@ -26,13 +26,13 @@ namespace ya
 		, _otherOverlapping{ nullptr }
 		, _freezeRotationFlag{ FreezeRotationFlag::END }
 		, _enableDraw{ true }
-		, _positionBuffer()
-		, _wireFrameBuffer()
+		//, _positionBuffer()
+		//, _wireFrameBuffer()
 	{
-		_positionBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
-		_wireFrameBuffer = renderer::constantBuffers[(UINT)eCBType::WireFrame];
-		_mesh = Resources::Find<Mesh>(strKeys::mesh::CubeMesh);
-		_shader = Resources::Find<Shader>(strKeys::shader::PhysXDebugShader);
+		//_positionBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
+		//_wireFrameBuffer = renderer::constantBuffers[(UINT)eCBType::WireFrame];
+		//_mesh = Resources::Find<Mesh>(strKeys::mesh::CubeMesh);
+		//_shader = Resources::Find<Shader>(strKeys::shader::PhysXDebugShader);
 	}
 
 	Collider3D::~Collider3D()
@@ -118,6 +118,9 @@ namespace ya
 	{
 		_isStatic = isStatic;
 
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		//const Vector3& trScale = tr->GetLocal
+
 		if (_shape == nullptr)
 		{
 			_type = type;
@@ -132,27 +135,34 @@ namespace ya
 			PhysxWrapper::getInstance().changeGeometry(this, _shape, _type);
 		}
 
-		_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
+		//_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
 	}
 
 	void Collider3D::setOffsetScale(Vector3 offset)
 	{
-		assert(_shape);
+		//assert(_shape);
 
 		_offsetScale = offset;
+		
 		if (_type == eColliderType::Sphere)
 		{
 			_offsetScale.x = _offsetScale.y = _offsetScale.z;
 
-			physx::PxGeometryHolder holder{ _shape->getGeometry() };
-			holder.sphere().radius = _offsetScale.x;
-			_shape->setGeometry(holder.sphere());
+			if (_shape)
+			{
+				physx::PxGeometryHolder holder{ _shape->getGeometry() };
+				holder.sphere().radius = _offsetScale.x;
+				_shape->setGeometry(holder.sphere());
+			}
 		}
 		else
 		{
-			physx::PxGeometryHolder holder{ _shape->getGeometry() };
-			holder.box().halfExtents = MathUtil::vector3ToPx(_offsetScale);
-			_shape->setGeometry(holder.box());
+			if (_shape)
+			{
+				physx::PxGeometryHolder holder{ _shape->getGeometry() };
+				holder.box().halfExtents = MathUtil::vector3ToPx(_offsetScale);
+				_shape->setGeometry(holder.box());
+			}
 		}
 	}
 
