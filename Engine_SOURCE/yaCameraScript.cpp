@@ -293,6 +293,7 @@ namespace ya
 			{
 				mbLockOn = false;
 				mLockOnTarget = nullptr;
+				return;
 			}
 			Transform* monTr = mLockOnTarget->GetComponent<Transform>();
 			if (monTr == nullptr)
