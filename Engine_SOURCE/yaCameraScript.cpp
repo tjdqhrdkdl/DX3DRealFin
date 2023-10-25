@@ -445,7 +445,7 @@ namespace ya
 			
 			if (mDistFromTarget > mDestDistFromTarget)
 			{
-				mDistFromTarget -= mZoomSpeed * Time::DeltaTime() * 0.1;
+				mDistFromTarget -= (float)mZoomSpeed * Time::DeltaTime() * 0.1;
 				if (mDistFromTarget < mDestDistFromTarget)
 				{
 					mDistFromTarget = mDestDistFromTarget;
@@ -454,7 +454,7 @@ namespace ya
 			}
 			else
 			{
-				mDistFromTarget += mZoomSpeed * Time::DeltaTime() * 0.1;
+				mDistFromTarget += (float)mZoomSpeed * Time::DeltaTime() * 0.1;
 				if (mDistFromTarget > mDestDistFromTarget)
 				{
 					mDistFromTarget = mDestDistFromTarget;

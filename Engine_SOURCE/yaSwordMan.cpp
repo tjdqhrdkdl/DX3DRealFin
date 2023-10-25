@@ -233,7 +233,7 @@ namespace ya
 	void SwordMan::DeathBlow()
 	{
 		//recognize 상태가 아니면 암살이다.
-		if (STATE_HAVE(MonsterState_Recognize))
+		if (!(STATE_HAVE(MonsterState_Recognize)))
 			mAnimationName = L"DeathBlowAssasinated";
 
 		//recognize 상태이면 인살이다.
@@ -605,12 +605,12 @@ namespace ya
 
 		////공격
 		//// 중거리 근접기 3000
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(SwordManBaseSpeed * 1.5); mLSwordScript->SetBlock(false); mLSwordScript->SetAttackDir(2); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(SwordManBaseSpeed * (float)1.5); mLSwordScript->SetBlock(false); mLSwordScript->SetAttackDir(2); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 35) = [this]() {  RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 57) = [this]() {  RM_STATE(MonsterState_LookAt); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 98) = std::bind(&SwordMan::AttackEndEvent, this);
 		//// 중거리 근접기 2 3001
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(SwordManBaseSpeed * 1.3); mLSwordScript->SetBlock(true); mLSwordScript->SetAttackDir(0); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(SwordManBaseSpeed * (float)1.3); mLSwordScript->SetBlock(true); mLSwordScript->SetAttackDir(0); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 37) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 57) = [this]() {  RM_STATE(MonsterState_LookAt); };		
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 92) = std::bind(&SwordMan::AttackEndEvent, this);

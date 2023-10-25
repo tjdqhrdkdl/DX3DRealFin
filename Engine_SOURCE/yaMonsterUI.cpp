@@ -219,7 +219,7 @@ namespace ya
 
 				Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
 				UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-				GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
+				GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
 				if (ndc.z > 1 or ndc.z < 0)
 					GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
 
@@ -296,7 +296,7 @@ namespace ya
 
 					Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
 					UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-					mMonsterLockOn->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
+					mMonsterLockOn->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
 					if (ndc.z > 1 or ndc.z < 0)
 						mMonsterLockOn->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
 					mMonsterLockOn->SetRender(true);
@@ -323,7 +323,7 @@ namespace ya
 
 					Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
 					UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-					mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, 0.00001));
+					mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
 					if (ndc.z > 1 or ndc.z < 0)
 						mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
 					mMonsterDeathBlow->SetRender(true);
