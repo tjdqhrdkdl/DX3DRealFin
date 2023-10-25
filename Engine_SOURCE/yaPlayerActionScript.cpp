@@ -278,7 +278,7 @@ namespace ya
 			GameObject* lockOnTarget = cameraScript->GetLockOnTarget();
 			Vector3 lockOnTargetPos = lockOnTarget->GetComponent<Transform>()->GetPosition();
 
-			Quaternion quater = Quaternion::FromToRotation(mTransform->Forward(), Vector3(lockOnTargetPos.x - pos.x, pos.y, lockOnTargetPos.z - pos.z));
+			Quaternion quater = Quaternion::FromToRotation(mTransform->Forward(), Vector3(lockOnTargetPos.x - pos.x, 0.0f, lockOnTargetPos.z - pos.z));
 			Vector3 quaterToEuler = quater.ToEuler();
 			Vector3 quaterTheta = quaterToEuler * 180.0f / XM_PI;
 			
@@ -907,7 +907,6 @@ namespace ya
 
 		if (Input::GetKey(eKeyCode::LSHIFT))
 		{
-			mPlayerAnim->Play(L"a000_001151");
 			mPlayer->SetStateFlag(ePlayerState::Sprint, true);
 		}
 

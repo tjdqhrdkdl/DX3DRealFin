@@ -228,6 +228,13 @@ namespace ya
 			{
 				if (mbKeyInput)
 				{
+					if (mDeathBlowTarget != nullptr)
+					{
+						DeathBlow(mDeathBlowTarget);
+						mAttackState = eAttackState::DeathBlow;
+						return;
+					}
+
 					mAttackState = eAttackState::Attack2;
 					mPlayerAnim->Play(L"a050_305101");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
@@ -259,6 +266,13 @@ namespace ya
 			{
 				if (mbKeyInput)
 				{
+					if (mDeathBlowTarget != nullptr)
+					{
+						DeathBlow(mDeathBlowTarget);
+						mAttackState = eAttackState::DeathBlow;
+						return;
+					}
+
 					mAttackState = eAttackState::Attack3;
 					mPlayerAnim->Play(L"a050_300020");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
@@ -290,6 +304,13 @@ namespace ya
 			{
 				if (mbKeyInput)
 				{
+					if (mDeathBlowTarget != nullptr)
+					{
+						DeathBlow(mDeathBlowTarget);
+						mAttackState = eAttackState::DeathBlow;
+						return;
+					}
+
 					mAttackState = eAttackState::Attack4;
 					mPlayerAnim->Play(L"a050_300030");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
@@ -321,6 +342,13 @@ namespace ya
 			{
 				if (mbKeyInput)
 				{
+					if (mDeathBlowTarget != nullptr)
+					{
+						DeathBlow(mDeathBlowTarget);
+						mAttackState = eAttackState::DeathBlow;
+						return;
+					}
+
 					mAttackState = eAttackState::Attack5;
 					mPlayerAnim->Play(L"a050_300040");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
@@ -352,6 +380,13 @@ namespace ya
 			{
 				if (mbKeyInput)
 				{
+					if (mDeathBlowTarget != nullptr)
+					{
+						DeathBlow(mDeathBlowTarget);
+						mAttackState = eAttackState::DeathBlow;
+						return;
+					}
+
 					mAttackState = eAttackState::Attack1;
 					mPlayerAnim->Play(L"a050_300100");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
@@ -803,7 +838,12 @@ namespace ya
 	void PlayerAttackScript::EraseDeathBlowTarget(MonsterBase* monster)
 	{
 		if (mDeathBlowTargets.find(monster) != mDeathBlowTargets.end())
+		{
 			mDeathBlowTargets.erase(monster);
+
+			if(mDeathBlowTargets.size() == 0)
+				mDeathBlowTarget = nullptr;
+		}
 	}
 
 	void PlayerAttackScript::DeathBlow(MonsterBase* monster)
