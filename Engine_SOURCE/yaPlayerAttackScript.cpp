@@ -867,7 +867,7 @@ namespace ya
 		Vector3 quaterTheta = quaterToEuler * 180.0f / XM_PI;
 
 		playerTr->SetRotation(Vector3(0.0f, playerTr->GetRotation().y + quaterTheta.y, 0.0f));
-
+		playerTr->Update();
 
 		// 인살 가능한 몬스터가 있는 상태일때
 		// 몬스터 
