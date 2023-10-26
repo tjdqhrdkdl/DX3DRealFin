@@ -18,10 +18,8 @@
 
 #include "yaMonster.h"
 #include "yaSwordMan.h"
-#include "yaMusketeerman.h"
-#include "yaSwordsman.h"
 #include "yaTenzen.h"
-#include "yaRedOgre.h"
+#include "yaAshinaSoldier.h"
 
 #include "MapObjects.h"
 #include "yaBoundarySphere.h"
@@ -241,7 +239,8 @@ namespace ya
 			m->Init(this);
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		object::Instantiate<SwordMan>(eLayerType::Monster, this);
+		//object::Instantiate<AshinaSoldier>(eLayerType::Monster, this);
+		object::Instantiate<Tenzen>(eLayerType::Monster, this);
 
 		Scene::Initialize();
 	}

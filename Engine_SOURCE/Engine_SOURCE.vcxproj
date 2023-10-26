@@ -195,6 +195,8 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="UIHPBarScript.h" />
     <ClInclude Include="UINames.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="yaAnimationData.h" />
+    <ClInclude Include="yaAshinaSoldier.h" />
     <ClInclude Include="yaBoundarySphere.h" />
     <ClInclude Include="yaFrustum.h" />
     <ClInclude Include="yaHPMeterScript.h" />
@@ -268,6 +270,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaPlayerActionScript.h" />
     <ClInclude Include="yaPlayerProjectileScript.h" />
     <ClInclude Include="StrConverter.h" />
+    <ClInclude Include="yaSoldierSwordScript.h" />
     <ClInclude Include="yaSwordManSwordScript.h" />
     <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaPrefab.h" />
@@ -330,6 +333,8 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="UICanvas_InGame.cpp" />
     <ClCompile Include="UIHPBarScript.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="yaAnimationData.cpp" />
+    <ClCompile Include="yaAshinaSoldier.cpp" />
     <ClCompile Include="yaBoundarySphere.cpp" />
     <ClCompile Include="yaFrustum.cpp" />
     <ClCompile Include="yaHPMeterScript.cpp" />
@@ -399,6 +404,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaPlayerActionScript.cpp" />
     <ClCompile Include="yaPlayerProjectileScript.cpp" />
     <ClCompile Include="StrConverter.cpp" />
+    <ClCompile Include="yaSoldierSwordScript.cpp" />
     <ClCompile Include="yaSwordManSwordScript.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />

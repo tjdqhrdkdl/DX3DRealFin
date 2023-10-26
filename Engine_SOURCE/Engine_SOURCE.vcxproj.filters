@@ -380,6 +380,15 @@
     <ClCompile Include="yaSwordManSwordScript.cpp">
       <Filter>Contents\Monster\SwordMan</Filter>
     </ClCompile>
+    <ClCompile Include="yaAshinaSoldier.cpp">
+      <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSoldierSwordScript.cpp">
+      <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClCompile>
+    <ClCompile Include="yaAnimationData.cpp">
+      <Filter>Engine\Resource\MeshData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -766,6 +775,15 @@
     <ClInclude Include="yaMonsterCollisionScript.h">
       <Filter>Contents\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="yaAshinaSoldier.h">
+      <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSoldierSwordScript.h">
+      <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="yaAnimationData.h">
+      <Filter>Engine\Resource\MeshData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -977,6 +995,9 @@
     </Filter>
     <Filter Include="Contents\Monster\SwordMan">
       <UniqueIdentifier>{afcd2e4b-ab7d-4f73-89d8-1c28d841c4d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Monster\AshinaSoldier">
+      <UniqueIdentifier>{60eb5981-72f1-4d65-bbeb-32cc16935806}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
