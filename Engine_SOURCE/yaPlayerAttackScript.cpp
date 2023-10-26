@@ -34,7 +34,7 @@ namespace ya
 		, mPlayerAnim(nullptr)
 		, mAttackState(eAttackState::None)
 		, mTimer{ 0.0f }
-		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.15f, 1.0f,  2.0f }
+		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.15f, 1.0f,  3.0f }
 		, mbKeyInput(false)
 		, mHitDirection(Vector3::Zero)
 		, mDeathBlowTarget(nullptr)
@@ -850,6 +850,20 @@ namespace ya
 	{
 		mPlayer->SetStateFlag(ePlayerState::DeathBlow, true);
 
+		// 플레이어가 몬스터를 보도록 회전한다.
+		Transform* playerTr = GetOwner()->GetComponent<Transform>();
+		Vector3 playerPos = playerTr->GetPosition();
+
+		Transform* monsterTr = monster->GetComponent<Transform>();
+		Vector3 monsterPos = monsterTr->GetPosition();
+
+		Quaternion quater = Quaternion::FromToRotation(playerTr->Forward(), Vector3(monsterPos.x - playerPos.x, 0.0f, monsterPos.z - playerPos.z));
+		Vector3 quaterToEuler = quater.ToEuler();
+		Vector3 quaterTheta = quaterToEuler * 180.0f / XM_PI;
+
+		playerTr->SetRotation(Vector3(0.0f, playerTr->GetRotation().y + quaterTheta.y, 0.0f));
+
+
 		// 인살 가능한 몬스터가 있는 상태일때
 		// 몬스터 
 
@@ -893,6 +907,7 @@ namespace ya
 			{
 				mPlayerAnim->Play(L"a200_510000");
 			}
+		}
 
 			EraseDeathBlowTarget(monster);
 			mDeathBlowTarget = nullptr;
