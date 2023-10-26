@@ -28,6 +28,7 @@ namespace ya
 		, _enableDraw{ true }
 		, _mass(100.f)
 		, _restitution(0.f)
+		, _syncScaleToTransform(true)
 		//, _positionBuffer()
 		//, _wireFrameBuffer()
 	{
@@ -54,7 +55,11 @@ namespace ya
 
 	void Collider3D::Start()
 	{
-		Transform* tr = GetOwner()->GetComponent<Transform>();
+		if (_syncScaleToTransform)
+		{
+			Transform* tr = GetOwner()->GetComponent<Transform>();
+			_offsetScale = tr->GetWorldScale();
+		}
 		Vector3 realScale = _offsetScale * 0.5f;
 		
 
@@ -252,7 +257,7 @@ namespace ya
 			actor->release();
 			_shape = nullptr;
 		}
-		setType(getCollider3DType(), _isStatic);
+		SetType(getCollider3DType(), _isStatic);
 	}
 
 	void Collider3D::enableGravity(bool enable)

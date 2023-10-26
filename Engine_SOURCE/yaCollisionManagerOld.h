@@ -47,8 +47,8 @@
 //
 //		static void CollisionLayerCheck(eLayerType left, eLayerType right, bool enable = true);
 //		static void LayerCollision(class Scene* scene, eLayerType left, eLayerType right);
-//		static void ColliderCollision(Collider2D* left, Collider2D* right);
-//		static bool Intersect(Collider2D* left, Collider2D* right);
+//		static void ColliderCollision(Collider3D* left, Collider3D* right);
+//		static bool Intersect(Collider3D* left, Collider3D* right);
 //
 //		static RayHit RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers);
 //		static RayHit RayCast(GameObject* owner, Vector3 position, Vector3 direction, float length, std::vector<eLayerType> layers);

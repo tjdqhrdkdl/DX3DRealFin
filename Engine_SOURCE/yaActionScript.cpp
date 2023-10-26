@@ -52,7 +52,7 @@ namespace ya
 
 		mTransform = obj->GetComponent<Transform>();
 		mRigidbody = obj->GetComponent<Rigidbody>();
-		mCollider = obj->GetComponent<Collider2D>();
+		mCollider = obj->GetComponent<Collider3D>();
 
 		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::WallCheckCollision, obj->GetScene());
 		assert(checkObj != nullptr);
@@ -63,9 +63,9 @@ namespace ya
 		Transform* checkTransform = mCheck->GetComponent<Transform>();
 		checkTransform->SetLocalScale(mTransform->GetLocalScale());
 
-		Collider2D* checkCol = mCheck->AddComponent<Collider2D>();
+		Collider3D* checkCol = mCheck->AddComponent<Collider3D>();
 
-		Collider2D* ownerCol = obj->GetComponent<Collider2D>();
+		Collider3D* ownerCol = obj->GetComponent<Collider3D>();
 		if (ownerCol != nullptr)
 		{
 			checkCol->SetType(ownerCol->GetColliderType());

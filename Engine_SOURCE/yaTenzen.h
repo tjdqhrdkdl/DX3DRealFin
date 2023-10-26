@@ -81,9 +81,9 @@ namespace ya
         void AttackEndEvent();
         void TraceEndEvent();
 
-        void OnCollisionEnter(Collider2D* collider);
-        void OnCollisionStay(Collider2D* collider);
-        void OnCollisionExit(Collider2D* collider);
+        void OnCollisionEnter(Collider3D* collider);
+        void OnCollisionStay(Collider3D* collider);
+        void OnCollisionExit(Collider3D* collider);
 
         void SetAnimationName(const std::wstring& name) { mAnimationName = name; }
         void AddTenzenState(eTenzenState state);
@@ -96,7 +96,7 @@ namespace ya
         Transform* mKatanaHandleObjectTr;
         Transform* mTransform;
         
-        Collider2D* mCollider;
+        Collider3D* mCollider;
         class ActionScript* mActionScript;
 
         int mBeforeState;

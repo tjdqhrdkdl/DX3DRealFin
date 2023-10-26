@@ -49,7 +49,7 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
-		void		 setType(eColliderType type, bool isStatic = false)
+		void		 SetType(eColliderType type, bool isStatic = false)
 		{
 			_type = type;
 			_isStatic = isStatic;
@@ -126,6 +126,7 @@ namespace ya
 		bool			_isTrigger;
 		bool			_isGravityEnabled;
 		bool			_isStatic;
+		bool			_syncScaleToTransform;
 		 
 		GameObject* _otherOverlapping;
 

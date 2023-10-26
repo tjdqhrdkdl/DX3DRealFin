@@ -4,24 +4,24 @@
 //
 //namespace ya
 //{
-//	class Collider2D : public Collider
+//	class Collider3D : public Collider
 //	{
 //	public:
-//		Collider2D();
-//		~Collider2D();
+//		Collider3D();
+//		~Collider3D();
 //		
 //		virtual void Initialize() override;
 //		virtual void Update() override;
 //		virtual void FixedUpdate() override;
 //		virtual void Render() override;
 //
-//		void OnCollisionEnter(Collider2D* collider);
-//		void OnCollisionStay( Collider2D* collider);
-//		void OnCollisionExit( Collider2D* collider);
+//		void OnCollisionEnter(Collider3D* collider);
+//		void OnCollisionStay( Collider3D* collider);
+//		void OnCollisionExit( Collider3D* collider);
 //
-//		void OnTriggerEnter(  Collider2D* collider);
-//		//void OnTriggerStay(   Collider2D* collider);
-//		void OnTriggerExit(   Collider2D* collider);
+//		void OnTriggerEnter(  Collider3D* collider);
+//		//void OnTriggerStay(   Collider3D* collider);
+//		void OnTriggerExit(   Collider3D* collider);
 //
 //		void SetType(eColliderType type) { mType = type; }
 //		void SetSize(Vector3 size) { mSize = size; }

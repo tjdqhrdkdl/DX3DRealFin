@@ -15,9 +15,9 @@ namespace ya
 		//virtual void FixedUpdate() override;
 		//virtual void Render() override;
 
-		virtual void OnCollisionEnter(Collider2D* collider);
-		virtual void OnCollisionStay(Collider2D* collider);
-		virtual void OnCollisionExit(Collider2D* collider);
+		virtual void OnCollisionEnter(Collider3D* collider);
+		virtual void OnCollisionStay(Collider3D* collider);
+		virtual void OnCollisionExit(Collider3D* collider);
 
 		void SetBlock(bool b) { mbBlock = b; }
 		void SetAttackLeft(bool b) { mbAttackLeft = b; }

@@ -17,7 +17,7 @@ namespace ya
 		tr->SetLocalScale(Vector3(100.f));
 
 		Collider3D* col3d = AddComponent<Collider3D>();
-		col3d->setType(eColliderType::Box);
+		col3d->SetType(eColliderType::Box);
 		
 
 		GameObject::Initialize();

@@ -12,7 +12,7 @@ namespace ya
 	void TenzenSwordScript::Initialize()
 	{
 	}
-	void TenzenSwordScript::OnCollisionEnter(Collider2D* collider)
+	void TenzenSwordScript::OnCollisionEnter(Collider3D* collider)
 	{
 		GameObject* colObj = collider->GetOwner();
 		eLayerType layer = colObj->GetLayerType();
@@ -79,10 +79,10 @@ namespace ya
 			}
 		}
 	}
-	void TenzenSwordScript::OnCollisionStay(Collider2D* collider)
+	void TenzenSwordScript::OnCollisionStay(Collider3D* collider)
 	{
 	}
-	void TenzenSwordScript::OnCollisionExit(Collider2D* collider)
+	void TenzenSwordScript::OnCollisionExit(Collider3D* collider)
 	{
 	}
 }

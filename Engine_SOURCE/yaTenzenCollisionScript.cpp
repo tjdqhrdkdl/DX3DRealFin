@@ -14,16 +14,16 @@ namespace ya
 	{
 		mTenzen = dynamic_cast<Tenzen*>(GetOwner());
 	}
-	void TenzenCollisionScript::OnCollisionEnter(Collider2D* collider)
+	void TenzenCollisionScript::OnCollisionEnter(Collider3D* collider)
 	{
 		mTenzen->OnCollisionEnter(collider);
 	}
-	void TenzenCollisionScript::OnCollisionStay(Collider2D* collider)
+	void TenzenCollisionScript::OnCollisionStay(Collider3D* collider)
 	{
 		mTenzen->OnCollisionStay(collider);
 
 	}
-	void TenzenCollisionScript::OnCollisionExit(Collider2D* collider)
+	void TenzenCollisionScript::OnCollisionExit(Collider3D* collider)
 	{
 		mTenzen->OnCollisionExit(collider);
 

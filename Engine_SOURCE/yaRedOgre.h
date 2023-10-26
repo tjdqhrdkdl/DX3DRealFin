@@ -21,7 +21,7 @@ namespace ya
         GameObject* mLHandCollider;
         GameObject* mRHandCollider;
 
-        Collider2D* mCollider;
+        Collider3D* mCollider;
         class ActionScript* mActionScript;
 
         int mState;

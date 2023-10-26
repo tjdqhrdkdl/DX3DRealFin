@@ -20,7 +20,7 @@ namespace ya
 
 	}
 
-	void MonsterScript::OnCollisionEnter(Collider2D* collider)
+	void MonsterScript::OnCollisionEnter(Collider3D* collider)
 	{
 		MonsterBase* monster = (MonsterBase*)GetOwner();
 		if (monster->GetSituation() == eSituation::Death)
@@ -44,7 +44,7 @@ namespace ya
 				
 				//Player* player = (Player*)katana->GetBCOwner();
 				//if (player->IsStateFlag(ePlayerState::Attack))
-				if (katana->GetComponent<Collider2D>()->IsActive())
+				if (katana->GetComponent<Collider3D>()->IsActive())
 				{
 					if (monster->IsDeathBlow())
 					{
@@ -106,11 +106,11 @@ namespace ya
 		
 	}
 
-	void MonsterScript::OnCollisionStay(Collider2D* collider)
+	void MonsterScript::OnCollisionStay(Collider3D* collider)
 	{
 	}
 
-	void MonsterScript::OnCollisionExit(Collider2D* collider)
+	void MonsterScript::OnCollisionExit(Collider3D* collider)
 	{
 	}
 

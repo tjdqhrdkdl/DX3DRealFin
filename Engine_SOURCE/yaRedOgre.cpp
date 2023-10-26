@@ -87,7 +87,7 @@ namespace ya
 		mLHandCollider = LHand;
 
 		// 피격 충돌체
-		Collider2D* mCollider = AddComponent<Collider2D>();
+		Collider3D* mCollider = AddComponent<Collider3D>();
 		mCollider->SetType(eColliderType::Box);
 		mCollider->SetSize(Vector3(1.0, 3.0f, 1.0f));
 

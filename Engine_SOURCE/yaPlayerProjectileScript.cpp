@@ -34,7 +34,7 @@ namespace ya
 	void PlayerProjectileScript::Render()
 	{
 	}
-	void PlayerProjectileScript::OnCollisionEnter(Collider2D* collider)
+	void PlayerProjectileScript::OnCollisionEnter(Collider3D* collider)
 	{
 		Transform* playerTr = mPlayer->GetComponent<Transform>();
 		PlayerAttackScript* attack = mPlayer->GetScript<PlayerAttackScript>();
@@ -99,19 +99,19 @@ namespace ya
 			mPlayerAnim->Play(L"a050_130200");
 		}
 	}
-	void PlayerProjectileScript::OnCollisionStay(Collider2D* collider)
+	void PlayerProjectileScript::OnCollisionStay(Collider3D* collider)
 	{
 	}
-	void PlayerProjectileScript::OnCollisionExit(Collider2D* collider)
+	void PlayerProjectileScript::OnCollisionExit(Collider3D* collider)
 	{
 	}
-	void PlayerProjectileScript::OnTriggerEnter(Collider2D* collider)
+	void PlayerProjectileScript::OnTriggerEnter(Collider3D* collider)
 	{
 	}
-	void PlayerProjectileScript::OnTriggerStay(Collider2D* collider)
+	void PlayerProjectileScript::OnTriggerStay(Collider3D* collider)
 	{
 	}
-	void PlayerProjectileScript::OnTriggerExit(Collider2D* collider)
+	void PlayerProjectileScript::OnTriggerExit(Collider3D* collider)
 	{
 	}
 	void PlayerProjectileScript::SetPlayer(Player* player)

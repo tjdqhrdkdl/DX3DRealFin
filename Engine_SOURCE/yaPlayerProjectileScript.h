@@ -16,13 +16,13 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
-		virtual void OnCollisionEnter(Collider2D* collider);
-		virtual void OnCollisionStay(Collider2D* collider);
-		virtual void OnCollisionExit(Collider2D* collider);
+		virtual void OnCollisionEnter(Collider3D* collider);
+		virtual void OnCollisionStay(Collider3D* collider);
+		virtual void OnCollisionExit(Collider3D* collider);
 
-		virtual void OnTriggerEnter(Collider2D* collider);
-		virtual void OnTriggerStay(Collider2D* collider);
-		virtual void OnTriggerExit(Collider2D* collider);
+		virtual void OnTriggerEnter(Collider3D* collider);
+		virtual void OnTriggerStay(Collider3D* collider);
+		virtual void OnTriggerExit(Collider3D* collider);
 
 	public:
 		void SetPlayer(Player* player);

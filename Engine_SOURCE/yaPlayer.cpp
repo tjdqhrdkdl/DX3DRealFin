@@ -37,7 +37,7 @@ namespace ya
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
 
-		Collider2D* col = AddComponent<Collider2D>();
+		Collider3D* col = AddComponent<Collider3D>();
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
 

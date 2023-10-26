@@ -19,7 +19,7 @@ namespace ya
     void BoneCollider::Update()
     {
         mCulPos = GetComponent<Transform>()->GetLocalPosition();
-        Collider2D* col = GetComponent<Collider2D>();
+        Collider3D* col = GetComponent<Collider3D>();
         if (col)
         {
             BoneAnimator* animator = mMeshData->GetAnimator();
@@ -29,7 +29,7 @@ namespace ya
                 if (mBeforeClipIdx != clip)
                 {
                     //콜라이더 센터 변경
-                    col->SetCenter(mAnimationOffsets[clip]);
+                    col->setOffsetPosition(mAnimationOffsets[clip]);
                     mBeforeClipIdx = clip;
                 }
                 int frame = animator->GetCurrentFrameIdx();
@@ -98,7 +98,7 @@ namespace ya
         if (noBoneNameAssert)
             assert(NULL);
 
-        AddComponent<Collider2D>()->SetType(eColliderType::Box);
+        AddComponent<Collider3D>()->SetType(eColliderType::Box);
         SetName(L"Weapon");
         Transform* tr = GetComponent<Transform>();
         Transform* meshTr = meshObject->GetComponent<Transform>();

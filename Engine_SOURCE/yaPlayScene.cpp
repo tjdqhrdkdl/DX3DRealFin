@@ -27,7 +27,7 @@
 #include "yaBoundarySphere.h"
 #include "yaMapCollider.h"
 
-#include "PhysXManager.h"
+//#include "PhysXManager.h"
 
 #include "PhysXDebugObj.h"
 #include "TestCameraScript.h"
@@ -131,7 +131,7 @@ namespace ya
 
 
 			Collider3D* wallCollider = wall->AddComponent<Collider3D>();
-			wallCollider->setType(eColliderType::Box);
+			wallCollider->SetType(eColliderType::Box);
 
 
 			//wall->AddComponent<WallScript>();
@@ -155,7 +155,7 @@ namespace ya
 
 
 			//wallCollider = wall->AddComponent<Collider3D>();
-			//wallCollider->setType(eColliderType::Box, true);
+			//wallCollider->SetType(eColliderType::Box, true);
 			//wall->AddComponent<WallScript>();
 
 			//wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
@@ -170,7 +170,7 @@ namespace ya
 
 
 			//wallCollider = wall->AddComponent<Collider3D>();
-			//wallCollider->setType(eColliderType::Box, true);
+			//wallCollider->SetType(eColliderType::Box, true);
 			//wall->AddComponent<WallScript>();
 		}
 
@@ -210,7 +210,7 @@ namespace ya
 			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			Collider3D* groundCollider = ground->AddComponent<Collider3D>();
-			groundCollider->setType(eColliderType::Box);
+			groundCollider->SetType(eColliderType::Box);
 			groundCollider->setOffsetScale(Vector3(1000.0f, 1.0f, 1000.0f));
 		}
 
@@ -275,18 +275,18 @@ namespace ya
 			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Monster, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::PlayerProjectile, eLayerType::Monster, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::MonsterProjectile, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::PlayerProjectile, eLayerType::MonsterProjectile, true);
+		CollisionManager::enableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::Player, true);
+		CollisionManager::enableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::Monster, true);
+		CollisionManager::enableCollision((UINT32)eLayerType::PlayerProjectile, (UINT32)eLayerType::Monster, true);
+		CollisionManager::enableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::MonsterProjectile, true);
+		CollisionManager::enableCollision((UINT32)eLayerType::PlayerProjectile, (UINT32)eLayerType::MonsterProjectile, true);
 
-		//CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Player, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Ground, eLayerType::Monster, true);
+		//CollisionManager::enalbeCollision(eLayerType::Ground, eLayerType::Player, true);
+		CollisionManager::enableCollision((UINT32)eLayerType::Ground, (UINT32)eLayerType::Monster, true);
 
-		//CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::Player, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Wall, eLayerType::WallCheckCollision, true);
-		//CollisionManager::CollisionLayerCheck(eLayerType::Logbridge, eLayerType::Player, true);
+		//CollisionManager::enalbeCollision(eLayerType::Wall, eLayerType::Player, true);
+		CollisionManager::enableCollision((UINT32)eLayerType::Wall, (UINT32)eLayerType::WallCheckCollision, true);
+		//CollisionManager::enalbeCollision(eLayerType::Logbridge, eLayerType::Player, true);
 
 		{
 
@@ -358,7 +358,7 @@ namespace ya
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
 			coll3D->setOffsetScale(Vector3(30.f, 30.f, 30.f));
 			coll3D->setMass(50000.f);
-			coll3D->setType(eColliderType::Box);
+			coll3D->SetType(eColliderType::Box);
 			coll3D->enableGravity(true);
 		}
 
@@ -371,7 +371,7 @@ namespace ya
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
 			coll3D->setOffsetScale(Vector3(1000.f, 30.f, 1000.f));
-			coll3D->setType(eColliderType::Box, true);
+			coll3D->SetType(eColliderType::Box, true);
 		}
 
 		CollisionManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);

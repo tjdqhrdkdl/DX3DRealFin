@@ -31,7 +31,10 @@ namespace ya
 		GameObject* obj = object::Instantiate<GameObject>(eLayerType::Wall);
 		std::wstring num = std::to_wstring(mWallCount++);
 		obj->SetName(mWalkerName + L"_WallCollider_" + num);
-		obj->AddComponent<Collider2D>()->SetType(eColliderType::Box);
+		Collider3D* col3D = obj->AddComponent<Collider3D>();
+		col3D->SetType(eColliderType::Box, true);
+
+
 		Transform* tr = obj->GetComponent<Transform>();
 		tr->SetLocalPosition(transform);
 		tr->SetLocalRotation(rotation);
@@ -43,7 +46,7 @@ namespace ya
 		GameObject* obj = object::Instantiate<GameObject>(eLayerType::Wall);
 		std::wstring num = std::to_wstring(mGroundCount++);
 		obj->SetName(mWalkerName + L"_GroundCollider_" + num);
-		obj->AddComponent<Collider2D>()->SetType(eColliderType::Box);
+		obj->AddComponent<Collider3D>()->SetType(eColliderType::Box, true);
 		Transform* tr = obj->GetComponent<Transform>();
 		tr->SetLocalPosition(transform);
 		tr->SetLocalRotation(rotation);

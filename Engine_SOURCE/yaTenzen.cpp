@@ -170,7 +170,7 @@ namespace ya
 		mKatanaCollider = katana;
 
 		//피격 콜라이더
-		mCollider = AddComponent<Collider2D>();
+		mCollider = AddComponent<Collider3D>();
 		mCollider->SetType(eColliderType::Box);
 		mCollider->SetSize(Vector3(1.f, 2.f, 0.5f));
 		mCollider->SetCenter(Vector3(0.f, 0.f, 0.f));
@@ -748,7 +748,7 @@ namespace ya
 		RM_STATE(TenzenState_Trace);
 	}
 
-	void Tenzen::OnCollisionEnter(Collider2D* collider)
+	void Tenzen::OnCollisionEnter(Collider3D* collider)
 	{
 		GameObject* colObj = collider->GetOwner();
 		eLayerType layer = colObj->GetLayerType();
@@ -874,10 +874,10 @@ namespace ya
 		}
 	}
 
-	void Tenzen::OnCollisionStay(Collider2D* collider)
+	void Tenzen::OnCollisionStay(Collider3D* collider)
 	{
 	}
-	void Tenzen::OnCollisionExit(Collider2D* collider)
+	void Tenzen::OnCollisionExit(Collider3D* collider)
 	{
 	}
 	void Tenzen::AddTenzenState(eTenzenState state)

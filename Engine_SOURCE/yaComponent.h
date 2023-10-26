@@ -25,8 +25,12 @@ namespace ya
 		GameObject* GetOwner() { return mOwner; }
 		void SetOwner(GameObject* owner) { mOwner = owner; }
 
+		void SetActive(bool _bActive) { mbActive = _bActive; }
+		bool IsActive() const { return mbActive; }
+
 	private:
 		const eComponentType mType;
 		GameObject* mOwner;
+		bool	mbActive;
 	};
 }

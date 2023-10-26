@@ -64,6 +64,7 @@ namespace ya
 			if (comp == nullptr)
 				continue;
 
+
 			comp->Start();
 		}
 	}
@@ -72,7 +73,7 @@ namespace ya
 	{
 		for (Component* comp : mComponents)
 		{
-			if (comp == nullptr)
+			if (comp == nullptr || false == comp->IsActive())
 				continue;
 
 			comp->Update();
@@ -80,7 +81,7 @@ namespace ya
 
 		for (Component* script : mScripts)
 		{
-			if (script == nullptr)
+			if (script == nullptr || false == script->IsActive())
 				continue;
 
 			script->Update();
@@ -91,7 +92,7 @@ namespace ya
 	{
 		for (Component* comp : mComponents)
 		{
-			if (comp == nullptr)
+			if (comp == nullptr || false == comp->IsActive())
 				continue;
 
 			comp->FixedUpdate();
@@ -99,7 +100,7 @@ namespace ya
 
 		for (Component* script : mScripts)
 		{
-			if (script == nullptr)
+			if (script == nullptr || false == script->IsActive())
 				continue;
 
 			script->FixedUpdate();
@@ -110,7 +111,7 @@ namespace ya
 	{
 		for (Component* comp : mComponents)
 		{
-			if (comp == nullptr)
+			if (comp == nullptr || false == comp->IsActive())
 				continue;
 
 			comp->PrevRender();
@@ -123,15 +124,15 @@ namespace ya
 		{
 			for (Component* comp : mComponents)
 			{
-				if (comp == nullptr)
+				if (comp == nullptr || false == comp->IsActive())
 					continue;
 
 				comp->Render();
 			}
 
-			for (Component* script : mScripts)
+			for (Component* script : mScripts )
 			{
-				if (script == nullptr)
+				if (script == nullptr || false == script->IsActive())
 					continue;
 
 				script->Render();
@@ -143,7 +144,7 @@ namespace ya
 	{
 		for (Component* comp : mComponents)
 		{
-			if (comp == nullptr)
+			if (comp == nullptr || false == comp->IsActive())
 				continue;
 
 			comp->FrameEnd();

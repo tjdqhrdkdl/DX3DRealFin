@@ -17,7 +17,7 @@ namespace ya
 
 		SetName(L"Musketeerman");
 
-		Collider2D* spearmancol = AddComponent <Collider2D>();
+		Collider3D* spearmancol = AddComponent <Collider3D>();
 		spearmancol->SetType(eColliderType::Box);
 		spearmancol->SetSize(Vector3(1.0, 2.2f, 1.0f));
 
@@ -240,7 +240,7 @@ namespace ya
 		attacktr->SetLocalScale(Vec3(3.0f, 2.0f, 4.0f));
 		attacktr->SetLocalRotation(rot);
 
-		Collider2D* attackcol = attack->AddComponent<Collider2D>();
+		Collider3D* attackcol = attack->AddComponent<Collider3D>();
 		attackcol->SetType(eColliderType::Box);
 		attackcol->SetSize(Vector3(3.0, 2.0f, 4.0f));
 
@@ -262,7 +262,7 @@ namespace ya
 		attacktr->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
 		attacktr->SetLocalRotation(rot);
 
-		Collider2D* attackcol = attack->AddComponent<Collider2D>();
+		Collider3D* attackcol = attack->AddComponent<Collider3D>();
 		attackcol->SetType(eColliderType::Box);
 		attackcol->SetSize(Vector3(1.0, 1.0f, 1.0f));
 

@@ -94,7 +94,7 @@ namespace ya
 	{
 		assert(nullptr != obj);
 
-		Collider2D* col = obj->AddComponent<Collider2D>();
+		Collider3D* col = obj->AddComponent<Collider3D>();
 		
 		col->SetType(eColliderType::Box);
 		col->SetRotation(Vector3(_rotationX, _rotationZ, _rotationY));

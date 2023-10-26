@@ -5,8 +5,8 @@
 //
 //namespace ya
 //{
-//	UINT Collider2D::ColliderNumber = 0;
-//	Collider2D::Collider2D()
+//	UINT Collider3D::ColliderNumber = 0;
+//	Collider3D::Collider3D()
 //		: Collider(eComponentType::Collider)
 //		, mType(eColliderType::None)
 //		, mTransform(nullptr)
@@ -21,21 +21,21 @@
 //		mID = ColliderNumber++;
 //	}
 //
-//	Collider2D::~Collider2D()
+//	Collider3D::~Collider3D()
 //	{
 //	}
 //
 // 
-//	void Collider2D::Initialize()
+//	void Collider3D::Initialize()
 //	{
 //		mTransform = GetOwner()->GetComponent<Transform>();
 //	}
 //
-//	void Collider2D::Update()
+//	void Collider3D::Update()
 //	{
 //	}
 //
-//	void Collider2D::FixedUpdate()
+//	void Collider3D::FixedUpdate()
 //	{
 //		if (!mbActive)
 //			return;
@@ -71,11 +71,11 @@
 //		renderer::debugMeshes.push_back(meshAttribute);
 //	}
 //
-//	void Collider2D::Render()
+//	void Collider3D::Render()
 //	{
 //	}
 //
-//	void Collider2D::OnCollisionEnter(Collider2D* collider)
+//	void Collider3D::OnCollisionEnter(Collider3D* collider)
 //	{
 //		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
 //		GameObject* otherObj = collider->GetOwner();
@@ -85,7 +85,7 @@
 //		}
 //	}
 //
-//	void Collider2D::OnCollisionStay(Collider2D* collider)
+//	void Collider3D::OnCollisionStay(Collider3D* collider)
 //	{
 //		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
 //		GameObject* otherObj = collider->GetOwner();
@@ -95,7 +95,7 @@
 //		}
 //	}
 //
-//	void Collider2D::OnCollisionExit(Collider2D* collider)
+//	void Collider3D::OnCollisionExit(Collider3D* collider)
 //	{
 //		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
 //		GameObject* otherObj = collider->GetOwner();
@@ -105,7 +105,7 @@
 //		}
 //	}
 //
-//	void Collider2D::OnTriggerEnter(Collider2D* collider)
+//	void Collider3D::OnTriggerEnter(Collider3D* collider)
 //	{
 //		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
 //		GameObject* otherObj = collider->GetOwner();
@@ -115,7 +115,7 @@
 //		}
 //	}
 //
-//	//void Collider2D::OnTriggerStay(Collider2D* collider)
+//	//void Collider3D::OnTriggerStay(Collider3D* collider)
 //	//{
 //	//	const std::vector<Script*>& scripts = GetOwner()->GetScripts();
 //	//	for (Script* script : scripts)
@@ -124,7 +124,7 @@
 //	//	}
 //	//}
 //
-//	void Collider2D::OnTriggerExit(Collider2D* collider)
+//	void Collider3D::OnTriggerExit(Collider3D* collider)
 //	{
 //		const std::vector<Script*>& scripts = GetOwner()->GetScripts();
 //		GameObject* otherObj = collider->GetOwner();

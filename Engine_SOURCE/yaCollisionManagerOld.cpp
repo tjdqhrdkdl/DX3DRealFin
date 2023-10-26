@@ -71,9 +71,9 @@
 //				{
 //					if (leftObj->GetState() != GameObject::Active)
 //						continue;
-//					if (leftObj->GetComponent<Collider2D>() == nullptr)
+//					if (leftObj->GetComponent<Collider3D>() == nullptr)
 //						continue;
-//					if (!leftObj->GetComponent<Collider2D>()->IsActive())
+//					if (!leftObj->GetComponent<Collider3D>()->IsActive())
 //						continue;
 //
 //					for (size_t k = i; k < rights.size(); k++)
@@ -82,14 +82,14 @@
 //
 //						if (rightObj->GetState() != GameObject::Active)
 //							continue;
-//						if (rightObj->GetComponent<Collider2D>() == nullptr)
+//						if (rightObj->GetComponent<Collider3D>() == nullptr)
 //							continue;
-//						if (!rightObj->GetComponent<Collider2D>()->IsActive())
+//						if (!rightObj->GetComponent<Collider3D>()->IsActive())
 //							continue;
 //						if (leftObj == rightObj)
 //							continue;
 //
-//						ColliderCollision(leftObj->GetComponent<Collider2D>(), rightObj->GetComponent<Collider2D>());
+//						ColliderCollision(leftObj->GetComponent<Collider3D>(), rightObj->GetComponent<Collider3D>());
 //					}
 //
 //					//if (leftObj == rightObj)
@@ -104,25 +104,25 @@
 //			{
 //				if (leftObj->GetState() != GameObject::Active)
 //					continue;
-//				if (leftObj->GetComponent<Collider2D>() == nullptr)
+//				if (leftObj->GetComponent<Collider3D>() == nullptr)
 //					continue;
-//				if (!leftObj->GetComponent<Collider2D>()->IsActive())
+//				if (!leftObj->GetComponent<Collider3D>()->IsActive())
 //					continue;
 //
 //				for (GameObject* rightObj : rights)
 //				{
 //					if (rightObj->GetState() != GameObject::Active)
 //						continue;
-//					if (rightObj->GetComponent<Collider2D>() == nullptr)
+//					if (rightObj->GetComponent<Collider3D>() == nullptr)
 //						continue;
-//					if (!rightObj->GetComponent<Collider2D>()->IsActive())
+//					if (!rightObj->GetComponent<Collider3D>()->IsActive())
 //						continue;
 //					if (leftObj == rightObj)
 //						continue;
-//					if (!rightObj->GetComponent<Collider2D>()->IsActive())
+//					if (!rightObj->GetComponent<Collider3D>()->IsActive())
 //						continue;
 //
-//					ColliderCollision(leftObj->GetComponent<Collider2D>(), rightObj->GetComponent<Collider2D>());
+//					ColliderCollision(leftObj->GetComponent<Collider3D>(), rightObj->GetComponent<Collider3D>());
 //				}
 //
 //				//if (reinterpret_cast<UINT>(left)== (UINT)right)
@@ -131,7 +131,7 @@
 //		}
 //	}
 //
-//	void CollisionManager::ColliderCollision(Collider2D* left, Collider2D* right)
+//	void CollisionManager::ColliderCollision(Collider3D* left, Collider3D* right)
 //	{
 //		// 두 충돌체 레이어로 구성된 ID 확인
 //		ColliderID colliderID;
@@ -199,7 +199,7 @@
 //		}
 //	}
 //
-//	bool CollisionManager::Intersect(Collider2D* left, Collider2D* right)
+//	bool CollisionManager::Intersect(Collider3D* left, Collider3D* right)
 //	{
 //		// Rect vs Rect 
 //		// 0 --- 1
@@ -485,7 +485,7 @@
 //			Transform* tr = obj->GetComponent<Transform>();
 //			if (obj->GetState() != GameObject::Active)
 //				continue;
-//			if (obj->GetComponent<Collider2D>() == nullptr)
+//			if (obj->GetComponent<Collider3D>() == nullptr)
 //				continue;
 //			if (obj == owner)
 //				continue;
@@ -505,7 +505,7 @@
 //	{
 //
 //		Transform* tr = colObj->GetComponent<Transform>();
-//		Collider2D* col = colObj->GetComponent<Collider2D>();
+//		Collider3D* col = colObj->GetComponent<Collider3D>();
 //		Matrix worldMatrix = tr->GetWorldMatrix();
 //		Vector3 scale = tr->GetWorldScale();
 //		Vector3 colScale = col->GetSize();
