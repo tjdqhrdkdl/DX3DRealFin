@@ -725,7 +725,6 @@ namespace ya
 						mPlayerAnim->Play(L"a050_120102");
 
 					mPlayer->GetState()->AddPosture(10.0f);
-
 				}
 
 				if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
@@ -778,23 +777,28 @@ namespace ya
 					if (theta > -45.0f && theta <= 45.0f)
 					{
 						mPlayerAnim->Play(L"a000_100102");
-						mHitDirection = -playerTr->Forward();
+						//mHitDirection = -playerTr->Forward();
 					}
 					else if (theta > 45.0f && theta <= 135.0f)
 					{
 						mPlayerAnim->Play(L"a000_100100");
-						mHitDirection = playerTr->Right();
+						//mHitDirection = playerTr->Right();
 					}
 					else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
 					{
 						mPlayerAnim->Play(L"a000_100103");
-						mHitDirection = playerTr->Forward();
+						//mHitDirection = playerTr->Forward();
 					}
 					else if (theta > -135.0f && theta <= -45.0f)
 					{
 						mPlayerAnim->Play(L"a000_100101");
-						mHitDirection = -playerTr->Right();
+						//mHitDirection = -playerTr->Right();
 					}
+
+					if(theta < 90.0f && theta >= -90.0f)
+						mHitDirection = -playerTr->Forward();
+					else
+						mHitDirection = playerTr->Forward();
 
 					// 피격 당했을때 밀려나는 로직
 					if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
@@ -877,10 +881,6 @@ namespace ya
 			{
 				//암살 인살
 			}
-
-			EraseDeathBlowTarget(monster);
-			mDeathBlowTarget = nullptr;
-			monster->DeathBlow();
 		}
 		else if (dynamic_cast<Musketeerman*>(monster) != nullptr)
 		{
@@ -901,7 +901,6 @@ namespace ya
 					mPlayerAnim->Play(L"a200_510000");
 				else
 					mPlayerAnim->Play(L"a201_510000");
-
 			}
 			else
 			{
@@ -909,9 +908,8 @@ namespace ya
 			}
 		}
 
-			EraseDeathBlowTarget(monster);
-			mDeathBlowTarget = nullptr;
-			monster->DeathBlow();
-		}
+		EraseDeathBlowTarget(monster);
+		mDeathBlowTarget = nullptr;
+		monster->DeathBlow();
 	}
 }
