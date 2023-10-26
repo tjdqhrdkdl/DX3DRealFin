@@ -239,7 +239,7 @@ namespace ya
 			m->Init(this);
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		object::Instantiate<Tenzen>(eLayerType::Monster, this);
+		//object::Instantiate<AshinaSoldier>(eLayerType::Monster, this);
 		object::Instantiate<Tenzen>(eLayerType::Monster, this);
 
 		Scene::Initialize();
