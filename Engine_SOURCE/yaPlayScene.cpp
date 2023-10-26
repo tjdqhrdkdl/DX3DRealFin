@@ -26,6 +26,8 @@
 #include "yaMapCollider.h"
 
 #include "yaNavMeshTool.h"
+#include "yaAudioListener.h"
+
 namespace ya
 {
 	PlayScene::PlayScene()
@@ -48,6 +50,8 @@ namespace ya
 		cameraComp->TurnLayerMask(eLayerType::UI, false);
 		CameraScript* camScript = cameraObj->AddComponent<CameraScript>();
 		mainCamera = cameraComp;
+
+		AudioListener* audioComp = cameraObj->AddComponent<AudioListener>();
 
 
 		Player* player = object::Instantiate<Player>(eLayerType::Player, this);

@@ -24,6 +24,9 @@
 #include "yaMusketeerman.h"
 #include "yaTenzen.h"
 
+#include "yaAudioClip.h"
+#include "yaResources.h"
+
 extern ya::Application application;
 
 namespace ya
@@ -124,6 +127,12 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Idle, false);
 			}));
 
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\c000004081.wav");
+			Resources::Insert<AudioClip>(L"c000004081", clip);
+		}
 	}
 
 	void PlayerAttackScript::Update()
@@ -161,6 +170,7 @@ namespace ya
 				}
 
 				mPlayer->SetStateFlag(ePlayerState::Attack, true);
+				Resources::Find<AudioClip>(L"c000004081")->Play();
 
 				if (mPlayer->IsStateFlag(ePlayerState::Jump))
 				{
@@ -685,6 +695,15 @@ namespace ya
 			GameObject* other = collider->GetOwner();
 			Transform* otherTr = other->GetComponent<Transform>();
 
+
+			// 플레이어의 방향과 몬스터간의 각도를 구한다.
+			float theta = playerTr->Forward().Dot(otherTr->Forward());
+			Vector3 cross = playerTr->Forward().Cross(otherTr->Forward());
+			theta = acos(theta);
+			theta *= 180.0f / XM_PI;
+			theta *= (cross.y / abs(cross.y));
+
+
 			if (!attackParam.unGuardable && mPlayer->IsStateFlag(ePlayerState::Block))
 			{
 				mPlayer->SetStateFlag(ePlayerState::Block, false);
@@ -734,13 +753,6 @@ namespace ya
 			else
 			{
 				mPlayer->SetStateFlag(ePlayerState::Hit, true); // 경직상태
-
-				// 플레이어의 방향과 몬스터간의 각도를 구한다.
-				float theta = playerTr->Forward().Dot(otherTr->Forward());
-				Vector3 cross = playerTr->Forward().Cross(otherTr->Forward());
-				theta = acos(theta);
-				theta *= 180.0f / XM_PI;
-				theta *= (cross.y / abs(cross.y));
 
 				if (attackParam.damage > 50.0f)
 				{
