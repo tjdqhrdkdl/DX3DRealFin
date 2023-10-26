@@ -26,6 +26,8 @@ namespace ya
 		, _otherOverlapping{ nullptr }
 		, _freezeRotationFlag{ FreezeRotationFlag::END }
 		, _enableDraw{ true }
+		, _mass(100.f)
+		, _restitution(0.f)
 		//, _positionBuffer()
 		//, _wireFrameBuffer()
 	{
@@ -68,8 +70,10 @@ namespace ya
 			PhysxWrapper::getInstance().changeGeometry(this, _shape, _type);
 		}
 
-
+		setMass(_mass);
+		setRestitution(_restitution);
 		enableGravity(_isGravityEnabled);
+		
 		//_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
 	}
 
@@ -89,8 +93,6 @@ namespace ya
 		_worldMatrix = _worldMatrix * objectScaleInvMatrix * objectWorldMatrix;
 
 		syncPhysics();
-
-
 
 		//Debug Render
 		DebugMesh meshAttribute = {};
@@ -346,12 +348,34 @@ namespace ya
 
 	void Collider3D::setMass(float mass)
 	{
-		_shape->getActor()->is<physx::PxRigidBody>()->setMass(mass);
+		_mass = mass;
+		if (_shape)
+		{
+			physx::PxRigidBody* rigidBody = _shape->getActor()->is<physx::PxRigidBody>();
+			if (rigidBody)
+			{
+				rigidBody->setMass(_mass);
+			}
+		}
 	}
 
 	float Collider3D::getMass(void) const
 	{
 		return _shape->getActor()->is<physx::PxRigidBody>()->getMass();
+	}
+
+	void Collider3D::setRestitution(float restitution)
+	{
+		_restitution = restitution;
+		if (_shape)
+		{
+			physx::PxMaterial* mtrl{};
+			_shape->getMaterials(&mtrl, 1u, 0u);
+			if (mtrl)
+			{
+				mtrl->setRestitution(_restitution);
+			}
+		}
 	}
 
 	void Collider3D::syncPhysics()

@@ -100,6 +100,9 @@ namespace ya
 		void  setMass(float mass);
 		float getMass(void) const;
 
+		void setRestitution(float restitution);
+		float getRestitution() const { return _restitution; }
+
 	private:
 		void syncPhysics();
 		void destroyShape() { _shape = nullptr; }
@@ -113,14 +116,10 @@ namespace ya
 		Vector3		 _offsetScale;
 		UINT32		 _collisionCount;
 		Matrix		 _worldMatrix;
+		float		 _mass;
+		float		 _restitution;
+		
 
-		//std::shared_ptr<Mesh>			_mesh;
-		//std::shared_ptr<Shader>			_shader;
-
-		//ConstantBuffer* _positionBuffer;
-		//renderer::TransformCB						_positionBufferData;
-
-		//ConstantBuffer* _wireFrameBuffer;
 		renderer::WireFrameCB						_wireFrameData;
 
 		physx::PxShape* _shape;
