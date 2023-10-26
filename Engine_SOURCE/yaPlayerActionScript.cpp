@@ -81,7 +81,7 @@ namespace ya
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(17.0f);
+			action->Velocity(13.0f);
 			player->SetStateFlag(ePlayerState::Walk, false);
 			}));
 
@@ -94,7 +94,7 @@ namespace ya
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(6.0f);
+			action->Velocity(4.0f);
 			}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
@@ -106,7 +106,7 @@ namespace ya
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Hang, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
-			action->Velocity(6.0f);
+			action->Velocity(5.0f);
 			}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Hang, [owner]() {
