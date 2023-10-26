@@ -58,7 +58,7 @@ namespace ya
 
 		void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
 		void enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
-		void enableGravity(bool enable, const Vector3& gravity) const;
+		void enableGravity(bool enable, Scene* scene, const Vector3& gravity) const;
 
 		void createActorCube(GameObject* gameObject, const Vector3& halfExtents, physx::PxShape** outShape, bool isStatic);
 		void createActorSphere(GameObject* gameObject, float radius, physx::PxShape** outShape, bool isStatic);

@@ -163,8 +163,14 @@ namespace ya
 			const Collider3D* collider = gameObject->GetComponent<Collider3D>();
 			if (collider->isTrigger())
 				continue;
+
+			//원래 위치 정보에서 크기정보 제거
 			const Matrix from = Matrix::CreateScale(collider->getWorldScale()).Invert() * collider->getWorldMatrix();
+
+			//피직스에서 받아온 트랜스폼 정보를 가져온다
 			const Matrix to = MathUtil::pxToMatrix(PxMat44{ worldTransform });
+
+			//차이를 구해준다
 			const Matrix diff = from.Invert() * to;
 
 			// 이동은 회전에 영향을 받으므로
@@ -269,10 +275,15 @@ namespace ya
 		_collisionMask[rightLayerIndex][leftLayerIndex] = enable;
 	}
 
-	void PhysxWrapper::enableGravity(bool enable, const Vector3& gravity) const
+	void PhysxWrapper::enableGravity(bool enable, Scene* scene, const Vector3& gravity) const
 	{
-		assert(_currentScene);
-		_currentScene->setGravity(MathUtil::vector3ToPx(gravity));
+		//assert(_currentScene);
+
+		auto iter = _scenes.find(scene);
+		if (iter != _scenes.end())
+		{
+			iter->second->setGravity(MathUtil::vector3ToPx(gravity));
+		}
 	}
 
 	void PhysxWrapper::changeGeometry(Collider3D* collider, physx::PxShape* shape, eColliderType type)

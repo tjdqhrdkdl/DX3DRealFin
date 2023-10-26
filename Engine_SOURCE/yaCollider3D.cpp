@@ -68,6 +68,8 @@ namespace ya
 			PhysxWrapper::getInstance().changeGeometry(this, _shape, _type);
 		}
 
+
+		enableGravity(_isGravityEnabled);
 		//_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
 	}
 
@@ -253,18 +255,20 @@ namespace ya
 
 	void Collider3D::enableGravity(bool enable)
 	{
-		assert(_shape);
 		_isGravityEnabled = enable;
 
-		physx::PxActor* actor = _shape->getActor();
+		if (_shape)
+		{
+			physx::PxActor* actor = _shape->getActor();
 
-		auto flags = actor->getActorFlags();
-		if (_isGravityEnabled)
-			flags &= ~physx::PxActorFlag::eDISABLE_GRAVITY;
-		else
-			flags |= physx::PxActorFlag::eDISABLE_GRAVITY;
+			auto flags = actor->getActorFlags();
+			if (_isGravityEnabled)
+				flags &= ~physx::PxActorFlag::eDISABLE_GRAVITY;
+			else
+				flags |= physx::PxActorFlag::eDISABLE_GRAVITY;
 
-		actor->setActorFlags(flags);
+			actor->setActorFlags(flags);
+		}
 	}
 
 	bool Collider3D::isOverlapping(GameObject* other, Vector3* outDistance)

@@ -38,10 +38,10 @@ namespace ya
 		PhysxWrapper::getInstance().enableCollision(leftLayerIndex, rightLayerIndex, enable);
 	}
 
-	void PhysicsManager::enableGravity(bool enable)
+	void PhysicsManager::enableGravity(bool enable, Scene* pScene, Vector3 gravity)
 	{
-		Vector3 gravity = (enable) ? Vector3{ 0.f, -9.8f, 0.f } : Vector3{ 0.f, 0.f, 0.f };
-		PhysxWrapper::getInstance().enableGravity(enable, gravity);
+		gravity = (enable) ? gravity : Vector3{ 0.f, 0.f, 0.f };
+		PhysxWrapper::getInstance().enableGravity(enable, pScene, gravity);
 	}
 
 	bool PhysicsManager::raycast(UINT32 layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit)

@@ -46,11 +46,10 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
+		PhysicsManager::enableGravity(true, this);
+
 		//CreateRealScene();
 		CreateTestScene();
-
-
-
 		Scene::Initialize();
 	}
 	
@@ -354,24 +353,27 @@ namespace ya
 			player->AddComponent<PhysXPlayerScript>();
 
 			Transform* tr = player->GetComponent<Transform>();
-			tr->SetLocalPosition(Vector3(-10.f, 10.f, -10.f));
+			tr->SetLocalPosition(Vector3(-10.f, 100.f, -10.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
 			coll3D->setOffsetScale(Vector3(30.f, 30.f, 30.f));
+			coll3D->setType(eColliderType::Box);
+			coll3D->enableGravity(true);
 		}
 
 		{
-			PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Monster, this);
+			PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Ground, this);
 			player->SetName(L"testObj2");
 			Transform* tr = player->GetComponent<Transform>();
 			tr->SetLocalScale(Vector3(30.f, 30.f, 30.f));
 			tr->SetLocalPosition(Vector3(10.f, 10.f, 10.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
-			coll3D->setOffsetScale(Vector3(30.f, 30.f, 30.f));
+			coll3D->setOffsetScale(Vector3(1000.f, 30.f, 1000.f));
+			coll3D->setType(eColliderType::Box, true);
 		}
 
-		PhysicsManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Monster, true);
+		PhysicsManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);
 
 	}
 }

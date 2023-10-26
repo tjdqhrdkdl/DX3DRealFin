@@ -127,6 +127,15 @@ namespace ya
 
 	void Transform::SetWorldPosition(const Vector3& _pos)
 	{
+		if (mParent)
+		{
+			Vector3 local = _pos - mParent->GetWorldPosition();
+			SetLocalPosition(local);
+		}
+		else
+		{
+			SetLocalPosition(_pos);
+		}
 	}
 
 	void Transform::SetWorldRotation(const Quaternion& _rot)
@@ -143,7 +152,6 @@ namespace ya
 		{
 			SetLocalRotationQuaternion(_rot);
 		}
-			
 	}
 
 }
