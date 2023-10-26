@@ -58,7 +58,7 @@ namespace ya
 
 	private:
 		class Transform* mTransform;
-		class Collider2D* mCollider;
+		class Collider3D* mCollider;
 		class ActionScript* mActionScript;
 		friend class WallCheckScript;
 

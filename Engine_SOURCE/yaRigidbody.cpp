@@ -52,13 +52,12 @@ namespace ya
 		assert(obj != nullptr);
 
 		mTransform = obj->GetComponent<Transform>();
-		mCollider = obj->GetComponent<Collider2D>();
+		mCollider = obj->GetComponent<Collider3D>();
 		mActionScript = obj->GetScript<ActionScript>();
 	}
 
 	void Rigidbody::FixedUpdate()
 	{
-		
 	}
 
 	void Rigidbody::Update()
@@ -199,125 +198,127 @@ namespace ya
 
 	void Rigidbody::CheckGround()
 	{
-		Vector3 position = mTransform->GetLocalPosition();
-		Vector3 objPos = mCollider->GetCenter();
-		Vector3 Scale = mTransform->GetLocalScale();
-		Vector3 objScale = mCollider->GetSize();
 
-		position += objPos;
-		objScale *= Scale;
 
-		// 지형체크용 레이의 시작점은 포지션의 맨아래에서 시작
-		Vector3 rayPosition = position;
-		rayPosition.y -= objScale.y / 2.f;
+		//Vector3 position = mTransform->GetLocalPosition();
+		//Vector3 objPos = mCollider->getWorldPosition();
+		//Vector3 Scale = mTransform->GetLocalScale();
+		//Vector3 objScale = mCollider->getOffsetScale();
 
-		// z의 크기 절반 만큼의 크기를 가진 forward 벡터와 위에서 설정한 위치 벡터를 더하여
-		// forward 방향을 가진 z크기의 절반 값을 가진 벡터를 구한다
-		Vector3 forward = mTransform->Forward();
-		forward = forward * objScale.z / 2.f;
-		Vector3 forwardPos = rayPosition + forward;
+		//position += objPos;
+		//objScale *= Scale;
 
-		// 순서대로 북서, 북동, 남서, 남동
-		//Vector3 nw = forwardPos;
-		//nw.x -= objScale.x / 2.f;
+		//// 지형체크용 레이의 시작점은 포지션의 맨아래에서 시작
+		//Vector3 rayPosition = position;
+		//rayPosition.y -= objScale.y / 2.f;
 
-		//Vector3 ne = forwardPos;
-		//ne.x += objScale.x / 2.f;
+		//// z의 크기 절반 만큼의 크기를 가진 forward 벡터와 위에서 설정한 위치 벡터를 더하여
+		//// forward 방향을 가진 z크기의 절반 값을 가진 벡터를 구한다
+		//Vector3 forward = mTransform->Forward();
+		//forward = forward * objScale.z / 2.f;
+		//Vector3 forwardPos = rayPosition + forward;
 
-		//Vector3 sw = forwardPos;
-		//sw.x -= objScale.x / 2.f;
-		//sw.z -= objScale.z;
+		//// 순서대로 북서, 북동, 남서, 남동
+		////Vector3 nw = forwardPos;
+		////nw.x -= objScale.x / 2.f;
 
-		//Vector3 se = forwardPos;
-		//se.x += objScale.x / 2.f;
-		//se.z -= objScale.z;
+		////Vector3 ne = forwardPos;
+		////ne.x += objScale.x / 2.f;
 
-		std::vector<eLayerType> layers = {};
-		layers.push_back(eLayerType::Ground);
+		////Vector3 sw = forwardPos;
+		////sw.x -= objScale.x / 2.f;
+		////sw.z -= objScale.z;
 
-		Vector3 direction = -(mTransform->Up());
+		////Vector3 se = forwardPos;
+		////se.x += objScale.x / 2.f;
+		////se.z -= objScale.z;
 
-		// 지형 체크용
-		//RayHit CheckHit[4] = {};
-		//CheckHit[0] = CollisionManager::RayCast(GetOwner(), nw, direction, layers);
-		//CheckHit[1] = CollisionManager::RayCast(GetOwner(), ne, direction, layers);
-		//CheckHit[2] = CollisionManager::RayCast(GetOwner(), sw, direction, layers);
-		//CheckHit[3] = CollisionManager::RayCast(GetOwner(), se, direction, layers);
+		//std::vector<eLayerType> layers = {};
+		//layers.push_back(eLayerType::Ground);
 
-		// 지형 보정용
-		RayHit CorrectionHit = CollisionManager::RayCast(GetOwner(), position, direction, layers);
+		//Vector3 direction = -(mTransform->Up());
 
-		bool bGroundFlag = false;
+		//// 지형 체크용
+		////RayHit CheckHit[4] = {};
+		////CheckHit[0] = CollisionManager::RayCast(GetOwner(), nw, direction, layers);
+		////CheckHit[1] = CollisionManager::RayCast(GetOwner(), ne, direction, layers);
+		////CheckHit[2] = CollisionManager::RayCast(GetOwner(), sw, direction, layers);
+		////CheckHit[3] = CollisionManager::RayCast(GetOwner(), se, direction, layers);
 
-		if (CorrectionHit.isHit)
-		{
-			// 땅에 붙었는지 체크하기 위한 플래그
-			Transform* hitTransform = CorrectionHit.hitObj->GetComponent<Transform>();
+		//// 지형 보정용
+		//RayHit CorrectionHit = CollisionManager::RayCast(GetOwner(), position, direction, layers);
 
-			mGroundNormal = hitTransform->Up();
+		//bool bGroundFlag = false;
 
-			Vector3 direction = mVelocity;
-			direction.Normalize();
+		//if (CorrectionHit.isHit)
+		//{
+		//	// 땅에 붙었는지 체크하기 위한 플래그
+		//	Transform* hitTransform = CorrectionHit.hitObj->GetComponent<Transform>();
 
-			float groundRadian = mGroundNormal.Dot(Vector3::Up);
-			groundRadian = acos(groundRadian);
+		//	mGroundNormal = hitTransform->Up();
 
-			float forwardRadian = mGroundNormal.Dot(direction);
-			forwardRadian = acos(forwardRadian);
+		//	Vector3 direction = mVelocity;
+		//	direction.Normalize();
 
-			mGroundSlopeAngle = groundRadian;
-			mForwardSlopeAngle = forwardRadian - 1.5708f;
+		//	float groundRadian = mGroundNormal.Dot(Vector3::Up);
+		//	groundRadian = acos(groundRadian);
 
-			// 밑바닥을 기준으로 구한 거리
-			float CorrectionLength = CorrectionHit.length - objScale.y / 2.f;
+		//	float forwardRadian = mGroundNormal.Dot(direction);
+		//	forwardRadian = acos(forwardRadian);
 
-			if (CorrectionLength < 0.001f)
-			{ // 바닥으로 부터 거리가 0.001f 미만일때
-				if (!mbGrounded)
-				{	// 착지하는지 체크
-					mbJumping = false;
+		//	mGroundSlopeAngle = groundRadian;
+		//	mForwardSlopeAngle = forwardRadian - 1.5708f;
 
-					if (mGroundEvent != nullptr)
-					{
-						mGroundEvent();
-						mJumpCount = 0;
-					}
-				}
+		//	// 밑바닥을 기준으로 구한 거리
+		//	float CorrectionLength = CorrectionHit.length - objScale.y / 2.f;
 
-				mbGrounded = true;
-				bGroundFlag |= true;
+		//	if (CorrectionLength < 0.001f)
+		//	{ // 바닥으로 부터 거리가 0.001f 미만일때
+		//		if (!mbGrounded)
+		//		{	// 착지하는지 체크
+		//			mbJumping = false;
 
-				// 물체의 y 크기의 절반과 가운데에서 쏜 레이의 길이를 뺐을때
-				// 수치가 0보다 크면 물체는 땅을 뚫었다고 판단.
-				float overPos = objScale.y / 2.f - CorrectionHit.length;
-				Vector3 correctionPos = mTransform->GetLocalPosition();
+		//			if (mGroundEvent != nullptr)
+		//			{
+		//				mGroundEvent();
+		//				mJumpCount = 0;
+		//			}
+		//		}
 
-				// 땅을 뚫을때
-				if (0.f < overPos)
-				{
-					correctionPos.y += overPos;
-					mTransform->SetLocalPosition(correctionPos);
-				}
-			}
-		}
+		//		mbGrounded = true;
+		//		bGroundFlag |= true;
 
-		if (!bGroundFlag)
-		{
-			if (mbGrounded)
-				if (mJumpEvent != nullptr)
-					mJumpEvent();
+		//		// 물체의 y 크기의 절반과 가운데에서 쏜 레이의 길이를 뺐을때
+		//		// 수치가 0보다 크면 물체는 땅을 뚫었다고 판단.
+		//		float overPos = objScale.y / 2.f - CorrectionHit.length;
+		//		Vector3 correctionPos = mTransform->GetLocalPosition();
 
-			mbGrounded = false;
-		}
+		//		// 땅을 뚫을때
+		//		if (0.f < overPos)
+		//		{
+		//			correctionPos.y += overPos;
+		//			mTransform->SetLocalPosition(correctionPos);
+		//		}
+		//	}
+		//}
 
-		mGroundCross = mGroundNormal.Cross(Vector3::Up);
+		//if (!bGroundFlag)
+		//{
+		//	if (mbGrounded)
+		//		if (mJumpEvent != nullptr)
+		//			mJumpEvent();
 
-		if (Vector3::Zero != mGroundCross)
-		{
-			Vector3 axis = mGroundCross;
+		//	mbGrounded = false;
+		//}
 
-			mRotateDirection = Matrix::CreateFromAxisAngle(axis, -mGroundSlopeAngle);
-		}
+		//mGroundCross = mGroundNormal.Cross(Vector3::Up);
+
+		//if (Vector3::Zero != mGroundCross)
+		//{
+		//	Vector3 axis = mGroundCross;
+
+		//	mRotateDirection = Matrix::CreateFromAxisAngle(axis, -mGroundSlopeAngle);
+		//}
 	}
 	bool Rigidbody::ForwardCheck(Vector3 movement)
 	{

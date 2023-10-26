@@ -46,10 +46,10 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
-		PhysicsManager::enableGravity(true, this);
+		CollisionManager::enableGravity(true, this);
 
-		//CreateRealScene();
-		CreateTestScene();
+		CreateRealScene();
+		//CreateTestScene();
 		Scene::Initialize();
 	}
 	
@@ -136,7 +136,7 @@ namespace ya
 
 			//wall->AddComponent<WallScript>();
 
-			//Collider2D* wallCollider = wall->AddComponent<Collider2D>();
+			//Collider3D* wallCollider = wall->AddComponent<Collider3D>();
 			//wallCollider->SetType(eColliderType::Box);
 			//wallCollider->SetSize(Vector3(1.0f, 1.0f, 1.0f));
 			//wall->AddComponent<WallScript>();
@@ -209,9 +209,9 @@ namespace ya
 			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			Collider3D* groundCollider = ground->AddComponent<Collider3D>();
+			groundCollider->setType(eColliderType::Box);
+			groundCollider->setOffsetScale(Vector3(1000.0f, 1.0f, 1000.0f));
 		}
 
 
@@ -225,7 +225,7 @@ namespace ya
 			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			Collider3D* groundCollider = ground->AddComponent<Collider3D>();
 			groundCollider->SetType(eColliderType::Box);
 			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 			ground->AddComponent<GroundScript>();
@@ -241,7 +241,7 @@ namespace ya
 			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			//Collider3D* groundCollider = ground->AddComponent<Collider3D>();
 			//groundCollider->SetType(eColliderType::Box);
 			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
@@ -270,7 +270,7 @@ namespace ya
 			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
 			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			//Collider3D* groundCollider = ground->AddComponent<Collider3D>();
 			//groundCollider->SetType(eColliderType::Box);
 			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
@@ -307,7 +307,7 @@ namespace ya
 			//MeshRenderer* groundRenderer = hookTarget->AddComponent<MeshRenderer>();
 			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			//Collider2D* groundCollider = hookTarget->AddComponent<Collider2D>();
+			//Collider3D* groundCollider = hookTarget->AddComponent<Collider3D>();
 			//groundCollider->SetType(eColliderType::Box);
 			//hookTarget->AddComponent<HookTargetScript>();
 		}
@@ -374,7 +374,7 @@ namespace ya
 			coll3D->setType(eColliderType::Box, true);
 		}
 
-		PhysicsManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);
+		CollisionManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);
 
 	}
 }

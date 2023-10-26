@@ -66,7 +66,7 @@ namespace ya
 					gameObjs = prevScene->GetDontDestroyGameObjects();
 				}
 
-				PhysicsManager::changePhysicScene(mActiveScene);
+				CollisionManager::changePhysicScene(mActiveScene);
 
 				for (GameObject* obj : gameObjs)
 				{

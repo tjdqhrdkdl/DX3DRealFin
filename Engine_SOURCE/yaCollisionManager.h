@@ -1,65 +1,34 @@
 #pragma once
 #include "CommonInclude.h"
-#include "yaCollider2D.h"
-
+#include "yaMath.h"
 
 namespace ya
 {
-	union ColliderID
-	{
-		struct
-		{
-			UINT32 left;
-			UINT32 right;
-		};
-		UINT64 id;
-	};
+	using namespace math;
+	//전방 선언
+	struct RaycastHit;
+	class Scene;
 
-	struct Ray
-	{
-		Vector3 position;
-		Vector3 direction;
-	};
-
-	struct RayHit
-	{
-		bool isHit;
-		GameObject* hitObj;
-		Vector3 contact;
-		float length;
-	};
-
-	struct DistAndObj
-	{
-		float dist;
-
-		GameObject* obj;
-	};
-
-	//	class Scene;
-	class CollisionManager
+	class CollisionManager final
 	{
 	public:
-		static void Initialize();
-		static void Update();
-		static void FixedUpdate();
-		static void Render();
+		static bool initialize(void);
+		static void update(float deltaTime);
 
-		static void CollisionLayerCheck(eLayerType left, eLayerType right, bool enable = true);
-		static void LayerCollision(class Scene* scene, eLayerType left, eLayerType right);
-		static void ColliderCollision(Collider2D* left, Collider2D* right);
-		static bool Intersect(Collider2D* left, Collider2D* right);
+		static void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
+		static void enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
+		static void enableGravity(bool enable, Scene* pScene, Vector3 gravity = Vector3(0.f, -9.8f, 0.f));
 
-		static RayHit RayCast(GameObject* owner, Vector3 direction, std::vector<eLayerType> layers);
-		static RayHit RayCast(GameObject* owner, Vector3 position, Vector3 direction, float length, std::vector<eLayerType> layers);
-		static RayHit RayCast(GameObject* owner,Vector3 position, Vector3 direction, std::vector<eLayerType> layers);
-		
-	private:
-		static DistAndObj LayerRayCollision(class Scene* scene, eLayerType objType, ya::Ray ray, GameObject* owner);
-		static float RayIntersect(ya::Ray ray, GameObject* colObj);
+		static bool raycast(UINT32 layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit);
+		static void drawRaycast(const Vector3& origin, const Vector3& direction, float maxDistance, const Vector3& color = Vector3{ 1.f, 0.f, 0.f });
+
+		static void createPhysicScene(Scene* scene);
+		static void changePhysicScene(Scene* scene);
+
+		static void enablePhysics(bool enable) { _enable = enable; }
+		static bool isPhysicsEnabled(void) { return _enable; }
 
 	private:
-		static std::bitset<(UINT)eLayerType::End> mLayerCollisionMatrix[(UINT)eLayerType::End];
-		static std::map<UINT64, bool> mCollisionMap;
+		inline static bool _enable = true;
 	};
-}
+} //namespace pa

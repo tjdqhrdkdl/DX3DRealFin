@@ -182,7 +182,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="MapObjects.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="PhysXDebugObj.h" />
-    <ClInclude Include="PhysXManager.h" />
+    <ClInclude Include="yaCollisionManager.h" />
     <ClInclude Include="PhysXWrapper.h" />
     <ClInclude Include="strKeys.h" />
     <ClInclude Include="TestCameraScript.h" />
@@ -212,7 +212,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaAudioSource.h" />
     <ClInclude Include="yaCollider3D.h" />
     <ClInclude Include="yaCollider2D.h" />
-    <ClInclude Include="yaCollisionManager.h" />
+    <ClInclude Include="yaCollisionManagerOld.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="yaApplication.h" />
     <ClInclude Include="yaBaseRenderer.h" />
@@ -297,7 +297,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="MapObjects.cpp" />
     <ClCompile Include="MathUtil.cpp" />
     <ClCompile Include="PhysXDebugObj.cpp" />
-    <ClCompile Include="PhysXManager.cpp" />
+    <ClCompile Include="yaCollisionManager.cpp" />
     <ClCompile Include="PhysXWrapper.cpp" />
     <ClCompile Include="TestCameraScript.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
@@ -325,7 +325,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaAudioSource.cpp" />
     <ClCompile Include="yaCollider3D.cpp" />
     <ClCompile Include="yaCollider2D.cpp" />
-    <ClCompile Include="yaCollisionManager.cpp" />
+    <ClCompile Include="yaCollisionManagerOld.cpp" />
     <ClCompile Include="yaApplication.cpp" />
     <ClCompile Include="yaBaseRenderer.cpp" />
     <ClCompile Include="yaCamera.cpp" />
