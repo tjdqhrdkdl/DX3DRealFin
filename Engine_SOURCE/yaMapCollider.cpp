@@ -5,6 +5,8 @@
 namespace ya
 {
 	MapCollider::MapCollider()
+		: mGroundCount(0)
+		, mWallCount(0)
 	{
 	}
 	MapCollider::~MapCollider()
@@ -90,36 +92,70 @@ namespace ya
 		AddGroundCollider(Vector3(140.0, -24.8, 15.0), Vector3(0.0, 40.0, 0.0), Vector3(6.0, 1.0, 7.0));
 		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
 
-		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
-		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
-		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
-		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
-		AddGroundCollider(Vector3(127.50, -24.8, 41.0), Vector3(0.0, 40.0, 0.0), Vector3(10.0, 1.0, 25.0));
+		AddGroundCollider(Vector3(141.7, -20.9, 21.8), Vector3(0.0, 40.0, 0.0), Vector3(1.5, 0.2, 7.0));
 		
-		//AddGroundCollider(Vector3(1, 1, 1));
-
 		// 14xxxx
-		AddWallCollider(Vector3(169.000000, -32.374001, 71.000000), Vector3(0.000000, -50.000000, 0.000000), Vector3(12.000000, 13.000000, 1.000000));
-		AddWallCollider(Vector3(159.000000, -34.500000, 62.500000), Vector3(0.000000, -33.000000, 0.000000), Vector3(17.000000, 6.000000, 1.000000));
-		AddWallCollider(Vector3(148.000000, -31.799999, 56.000000), Vector3(0.000000, -51.000000, 0.000000), Vector3(8.000000, 12.000000, 1.000000));
+		AddWallCollider(Vector3(169.0, -32.37401, 71.0), Vector3(0.0, -50.0, 0.0), Vector3(12.0, 13.0, 1.0));
+		AddWallCollider(Vector3(159.0, -34.50, 62.50), Vector3(0.0, -33.0, 0.0), Vector3(17.0, 6.0, 1.0));
+		AddWallCollider(Vector3(148.0, -31.799999, 56.0), Vector3(0.0, -51.0, 0.0), Vector3(8.0, 12.0, 1.0));
 
 		// 2xxxxx
-		AddWallCollider(Vector3(142.000000, -34.000000, 51.000000), Vector3(0.000000, -49.000000, 0.000000), Vector3(9.000000, 7.000000, 1.000000));
-		AddWallCollider(Vector3(150.500000, -33.000000, 45.000000), Vector3(1.000000, -50.000000, -8.000000), Vector3(6.000000, 7.000000, 1.000000));
-		AddWallCollider(Vector3(156.000000, -34.000000, 44.500000), Vector3(-8.000000, 39.000000, 0.000000), Vector3(10.000000, 10.000000, 1.000000));
-		AddWallCollider(Vector3(157.000000, -33.000000, 39.000000), Vector3(4.000000, -50.000000, 0.000000), Vector3(6.000000, 7.000000, 1.000000));
+		AddWallCollider(Vector3(142.0, -34.0, 51.0), Vector3(0.0, -49.0, 0.0), Vector3(9.0, 7.0, 1.0));
+		AddWallCollider(Vector3(150.50, -33.0, 45.0), Vector3(1.0, -50.0, -8.0), Vector3(6.0, 7.0, 1.0));
+		AddWallCollider(Vector3(156.0, -34.0, 44.50), Vector3(-8.0, 39.0, 0.0), Vector3(10.0, 10.0, 1.0));
+		AddWallCollider(Vector3(157.0, -33.0, 39.0), Vector3(4.0, -50.0, 0.0), Vector3(6.0, 7.0, 1.0));
 
-		AddWallCollider(Vector3(146.000000, -30.000000, 38.500000), Vector3(-10.000000, -49.000000, 0.000000), Vector3(9.000000, 11.000000, 1.000000));
-		AddWallCollider(Vector3(156.000000, -30.000000, 37.000000), Vector3(-13.000000, 40.000000, 0.000000), Vector3(16.000000, 12.000000, 1.000000));
-		AddWallCollider(Vector3(135.000000, -30.500000, 42.000000), Vector3(6.000000, -49.000000, 0.000000), Vector3(15.000000, 12.000000, 1.000000));
-		AddWallCollider(Vector3(137.300003, -29.000000, 30.500000), Vector3(-8.000000, 40.500000, 0.000000), Vector3(18.000000, 10.000000, 1.000000));
-		AddWallCollider(Vector3(142.000000, -24.000000, 22.000000), Vector3(0.000000, -50.000000, 0.000000), Vector3(7.000000, 6.000000, 0.800000));
-		//AddWallCollider(Vector3(1, 1, 1));
+		AddWallCollider(Vector3(146.0, -30.0, 38.50), Vector3(-10.0, -49.0, 0.0), Vector3(9.0, 11.0, 1.0));
+		AddWallCollider(Vector3(156.0, -30.0, 37.0), Vector3(-13.0, 40.0, 0.0), Vector3(16.0, 12.0, 1.0));
+		AddWallCollider(Vector3(135.0, -30.50, 42.0), Vector3(6.0, -49.0, 0.0), Vector3(15.0, 12.0, 1.0));
+		AddWallCollider(Vector3(137.303, -29.0, 30.50), Vector3(-8.0, 40.50, 0.0), Vector3(18.0, 10.0, 1.0));
+		AddWallCollider(Vector3(142.0, -24.0, 22.0), Vector3(0.0, -50.0, 0.0), Vector3(7.0, 6.0, 0.80));
 
 
 		//상수
 		mWalkerName = L"KSS";
+		AddWallCollider(Vector3(97.50, -22.0, -14.4), Vector3(0.0, -5.0, 0.0), Vector3(0.50, 7.0, 5.0));
+		AddWallCollider(Vector3(96.40, -22.0, -4.0), Vector3(0.0, -5.0, 0.0), Vector3(0.50, 7.0, 5.0));
+		AddWallCollider(Vector3(95.0, -20.0, -6.30), Vector3(0.0, -5.0, 0.0), Vector3(3.80, 10.0, 0.30));
+		AddWallCollider(Vector3(96.0, -20.0, -12.6), Vector3(0.0, -5.0, 0.0), Vector3(3.80, 10.0, 0.30));
+		AddWallCollider(Vector3(96.40, -22.0, -4.0), Vector3(0.0, -5.0, 0.0), Vector3(0.50, 7.0, 5.0));
+		AddWallCollider(Vector3(96.40, -22.0, -4.0), Vector3(0.0, -5.0, 0.0), Vector3(0.50, 7.0, 5.0));
+		AddWallCollider(Vector3(96.0, -22.0, 1.0), Vector3(0.0, -5.0, 0.0), Vector3(0.50, 4.0, 6.0));
+		AddWallCollider(Vector3(96.0, -22.0, 1.0), Vector3(0.0, -5.0, 0.0), Vector3(0.50, 4.0, 6.0)); //
+		AddWallCollider(Vector3(91.0, -22.90, 8.0), Vector3(10.0, -7.0, 0.0), Vector3(8.0, 10.0, 1));
+		AddWallCollider(Vector3(79.0, -22.90, 3.30), Vector3(7.0, -7.0, 0.0), Vector3(8.0, 10.0, 1));
+		AddWallCollider(Vector3(82.40, -23.40, 9.0), Vector3(0.0, -7.0, 10.0), Vector3(1, 10.0, 11.0));
+		AddWallCollider(Vector3(87.0, -23.0, 9.0), Vector3(0.0, -7.0, -4.0), Vector3(1.0, 10.0, 4.0));
+		AddWallCollider(Vector3(94.70, -22.0, 14.0), Vector3(0.0, -5.0, 10.0), Vector3(1, 8.0, 12.0));
+		AddWallCollider(Vector3(78.40, -16.50, 4.20), Vector3(0.0, -5.0, 0.0), Vector3(8.0, 3.0, 0.70));
+		AddWallCollider(Vector3(83.0, -17.0, 18.0), Vector3(0.0, -5.0, 0.0), Vector3(24.0, 4.0, 1));
+		AddWallCollider(Vector3(68.0, -16.0, 1.0), Vector3(0.0, -23.0, 0.0), Vector3(17.0, 16.0, 1));
+		AddWallCollider(Vector3(74.0, -15.0, 9.0), Vector3(0.0, -14.0, 0.0), Vector3(1, 16.0, 11.0));
+		AddWallCollider(Vector3(55.50, -18.0, -19.0), Vector3(0.0, -5.0, 10.0), Vector3(1, 14.0, 9.0));
+		AddWallCollider(Vector3(53.0, -10.0, -22.0), Vector3(-10.0, -5.0, 0.0), Vector3(17.0, 10.0, 1));
+		AddWallCollider(Vector3(43.0, -6.40, -24.0), Vector3(-10.0, -5.0, 0.0), Vector3(7.0, 10.0, 1));
+		AddWallCollider(Vector3(41.50, -9.40, -13.50), Vector3(0.0, -5.0, 0.0), Vector3(1, 1, 19.0));
+		AddWallCollider(Vector3(39.0, -6.60, -3.70), Vector3(10.0, -5.0, 0.0), Vector3(3.0, 10.0, 1));
+		AddWallCollider(Vector3(40.30, -6.60, -2.0), Vector3(0.0, -5.0, 10.0), Vector3(1, 10.0, 3.0));
 
+
+		AddGroundCollider(Vector3(97.90, -15.30, -9.10), Vector3(3.80, -5.0, -34.0), Vector3(2.20, 0.30, 10.60));
+		AddGroundCollider(Vector3(96.20, -15.30, -9.10), Vector3(-3.0, -5.0, 30.0), Vector3(1.80, 0.30, 10.60));
+		AddGroundCollider(Vector3(79.40, -15.0, 4.0), Vector3(0, -6.0, 0), Vector3(6.30, 0.30, 1.40));
+
+		AddGroundCollider(Vector3(84.0, -20.30, 6.0), Vector3(-26.0, -2.0, 2.0), Vector3(6.0, -0.50, 10.0));
+		AddGroundCollider(Vector3(90.60, -18.20, 13.20), Vector3(0, -6.0, 0), Vector3(8.0, 1.0, 10.0));
+		AddGroundCollider(Vector3(84.0, -18.20, 15.0), Vector3(0, -6.0, 0), Vector3(10.0, 1, 10.0));
+		AddGroundCollider(Vector3(77.70, -18.20, 11.0), Vector3(0, -6.0, 0), Vector3(10, 1, 10));
+		AddGroundCollider(Vector3(85.0, -15.30, 24.0), Vector3(0, -5.0, 2.0), Vector3(22.0, 1.0, 10.0));
+		AddGroundCollider(Vector3(72.0, -15.0, 24.0), Vector3(0, -30.0, 0), Vector3(8.0, 1.0, 10.0));
+
+		AddGroundCollider(Vector3(62.0, -15.0, -9.50), Vector3(0, -4.0, -22.0), Vector3(22.0, 1.0, 8.50));
+		AddGroundCollider(Vector3(49.70, -11.0, -12.50), Vector3(0, -5.0, 0), Vector3(11.0, 1.0, 24.0));
+		AddGroundCollider(Vector3(49.0, -11.0, 4.50), Vector3(0, -6.0, 0), Vector3(15.0, 1.0, 15.0));
+		AddGroundCollider(Vector3(58.0, -8.50, 6.0), Vector3(0, -20.0, 15.0), Vector3(18.0, 1.0, 10.0));
+		AddGroundCollider(Vector3(68.0, -6.50, 8.0), Vector3(-4.0, -20.0, 10.0), Vector3(10.0, 1.0, 10.0));
+		
 	}
 	void MapCollider::AddWallCollider(Vector3 transform, Vector3 rotation, Vector3 size)
 	{
