@@ -345,7 +345,7 @@ namespace ya
 	void MonsterUI::MonsterMeterCheck()
 	{
 
-		float hp = (float)PERCENTAGE / (float)mMonster->GetState()->GetHPMax();
+		float hp = (float)PERCENTAGE / (float)mMonster->GetState()->GetHPMax();	
 		float culhp = (float)PERCENTAGE - (hp * (float)mMonster->GetState()->GetHP());
 		float posture = (float)PERCENTAGE / (float)mMonster->GetState()->GetPostureMax();
 		float culposture = (float)PERCENTAGE - (posture * (float)mMonster->GetState()->GetPosture());

@@ -4,7 +4,7 @@
 
 namespace ya
 {
-    class SwordMan :
+    class AshinaSpearMan :
         public MonsterBase
     {
     public:
@@ -54,16 +54,18 @@ namespace ya
         void SetAnimationChangeTime(float time) { mMeshData->GetAnimator()->SetAnimationChangeTime(time); }
         void KatanaColliderInit();
 
+        //style은 0 , 1 , 2 가 있다.
+        void SetStyle(UINT style);
 
     private:
         std::shared_ptr<MeshData> mMeshData;
         GameObject* mKatanaCollider;
-        Transform* mKatanaObjectTr;
-        Transform* mKatanaHandleObjectTr;
         Transform* mTransform;
 
         Collider2D* mCollider;
         class ActionScript* mActionScript;
+
+
 
         std::wstring mAnimationName;
 
@@ -74,12 +76,22 @@ namespace ya
         Vector3 mMoveDir;
         bool mbAnimReset;
 
-        class SwordManSwordScript* mRSwordScript;
-        class SwordManSwordScript* mLSwordScript;
+        class SpearManSwordScript* mSwordScript;
 
+        std::vector<Transform*> mHat;
+        std::vector<Transform*> mStraw;
+        std::vector<Transform*> mAccessories;
+        std::vector<Transform*> mArmor;
+        std::vector<Transform*> mBaseSword;
+        std::vector<Transform*> mBaseSwordInScabbard;
+        std::vector<Transform*> mShortSwordInScabbard;
+
+        std::vector<Transform*>  mSpear;
+
+        UINT mStyle;
     public:
-        SwordMan();
-        ~SwordMan();
+        AshinaSpearMan();
+        ~AshinaSpearMan();
 
     };
 }

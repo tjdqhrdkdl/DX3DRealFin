@@ -21,7 +21,8 @@
 #include "yaApplication.h"
 
 #include "yaSwordMan.h"
-#include "yaMusketeerman.h"
+#include "yaAshinaSoldier.h"
+#include "yaAshinaSpearMan.h"
 #include "yaTenzen.h"
 
 extern ya::Application application;
@@ -868,7 +869,7 @@ namespace ya
 			mDeathBlowTarget = nullptr;
 			monster->DeathBlow();
 		}
-		else if (dynamic_cast<Musketeerman*>(monster) != nullptr)
+		else if (dynamic_cast<AshinaSoldier*>(monster) != nullptr)
 		{
 			if (monster->IsRecognize())
 			{
@@ -878,6 +879,23 @@ namespace ya
 			{
 				//암살 인살
 			}
+			EraseDeathBlowTarget(monster);
+			mDeathBlowTarget = nullptr;
+			monster->DeathBlow();
+		}
+		else if (dynamic_cast<AshinaSpearMan*>(monster) != nullptr)
+		{
+			if (monster->IsRecognize())
+			{
+				mPlayerAnim->Play(L"a200_510000");
+			}
+			else
+			{
+				//암살 인살
+			}
+			EraseDeathBlowTarget(monster);
+			mDeathBlowTarget = nullptr;
+			monster->DeathBlow();
 		}
 		else if (dynamic_cast<Tenzen*>(monster) != nullptr)
 		{

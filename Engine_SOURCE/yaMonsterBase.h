@@ -198,9 +198,11 @@ namespace ya
         MonsterUI*                  mMonsterUI;
         CameraScript*               mCamScript;
         Player*                     mPlayerObject;
+        int                      mBeforeState;
+        int                      mState;
 
     private:
-        State* mMonsterState;
+        State*           mMonsterState;
         enums::eSituation	mSituation;
 
 

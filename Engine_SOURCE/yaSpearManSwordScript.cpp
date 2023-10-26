@@ -1,18 +1,18 @@
-#include "yaSoldierSwordScript.h"
+#include "yaSpearManSwordScript.h"
 #include "yaPlayer.h"
-#include "yaAshinaSoldier.h"
+#include "yaAshinaSpearMan.h"
 namespace ya
 {
-	SoldierSwordScript::SoldierSwordScript()
+	SpearManSwordScript::SpearManSwordScript()
 	{
 	}
-	SoldierSwordScript::~SoldierSwordScript()
+	SpearManSwordScript::~SpearManSwordScript()
 	{
 	}
-	void SoldierSwordScript::Initialize()
+	void SpearManSwordScript::Initialize()
 	{
 	}
-	void SoldierSwordScript::OnCollisionEnter(Collider2D* collider)
+	void SpearManSwordScript::OnCollisionEnter(Collider2D* collider)
 	{
 		GameObject* colObj = collider->GetOwner();
 		eLayerType layer = colObj->GetLayerType();
@@ -38,14 +38,14 @@ namespace ya
 					{
 
 						GameObject* bigOwner = dynamic_cast<BoneCollider*>(GetOwner())->GetBoneColliderOwner();
-						AshinaSoldier* soldier = dynamic_cast<AshinaSoldier*>(bigOwner);
+						AshinaSpearMan* soldier = dynamic_cast<AshinaSpearMan*>(bigOwner);
 						//패링당함
 						if (pl->GetBlockTime() < 0.2f)
 						{
 							if (mbAttackLeft)
-								soldier->SetAnimationName(L"ParriedLeft");
+								soldier->SetAnimationName(L"Spear_ParriedLeft");
 							else
-								soldier->SetAnimationName(L"ParriedRight");
+								soldier->SetAnimationName(L"Spear_ParriedRight");
 
 							//체간 게이지 영향
 							soldier->SetPosture(soldier->GetPosture() + 7);
@@ -54,9 +54,9 @@ namespace ya
 						else
 						{
 							if (mbAttackLeft)
-								soldier->SetAnimationName(L"ParriedLeft");
+								soldier->SetAnimationName(L"Spear_ParriedLeft");
 							else
-								soldier->SetAnimationName(L"ParriedRight");
+								soldier->SetAnimationName(L"Spear_ParriedRight");
 						}
 						soldier->AddMonsterState(MonsterBase::eMonsterState::MonsterState_AttackBlocked);
 						soldier->SetAnimationChangeTime(0.05f);
@@ -79,10 +79,10 @@ namespace ya
 			}
 		}
 	}
-	void SoldierSwordScript::OnCollisionStay(Collider2D* collider)
+	void SpearManSwordScript::OnCollisionStay(Collider2D* collider)
 	{
 	}
-	void SoldierSwordScript::OnCollisionExit(Collider2D* collider)
+	void SpearManSwordScript::OnCollisionExit(Collider2D* collider)
 	{
 	}
 }

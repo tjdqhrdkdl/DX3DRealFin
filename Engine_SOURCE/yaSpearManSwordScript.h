@@ -3,12 +3,12 @@
 
 namespace ya
 {
-	class SoldierSwordScript : public Script
+	class SpearManSwordScript : public Script
 	{
 
 	public:
-		SoldierSwordScript();
-		~SoldierSwordScript();
+		SpearManSwordScript();
+		~SpearManSwordScript();
 
 		virtual void Initialize() override;
 		//virtual void Update() override;
