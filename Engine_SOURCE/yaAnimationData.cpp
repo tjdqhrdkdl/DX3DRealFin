@@ -270,8 +270,6 @@ namespace ya
 			}
 		}
 
-
-
 		return nullptr;
 
 	}

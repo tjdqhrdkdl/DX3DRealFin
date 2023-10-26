@@ -32,6 +32,7 @@ namespace ya
 		std::vector<graphics::StructedBuffer*> mBoneFrameDataVector; // 전체 본 프레임 정보 ( 크기, 이름, 회전) 프레임 갯수만큼
 		UINT mAnimationClipCount;
 		UINT mIFrameCount;
+
 	};
 }
 
