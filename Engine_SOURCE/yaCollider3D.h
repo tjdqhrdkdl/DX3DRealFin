@@ -54,7 +54,7 @@ namespace ya
 			_type = type;
 			_isStatic = isStatic;
 		}
-		eColliderType getCollider3DType(void) const { return _type; }
+		eColliderType GetCollider3DType(void) const { return _type; }
 
 		Matrix	getWorldMatrix(void) const { return _worldMatrix; }
 		Vector3 getWorldPosition(void) const { return _worldMatrix.Translation(); }

@@ -1,5 +1,5 @@
 #include "yaScene.h"
-#include "PhysXManager.h"
+#include "yaCollisionManager.h"
 
 namespace ya
 {

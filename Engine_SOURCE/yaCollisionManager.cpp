@@ -44,12 +44,16 @@ namespace ya
 		PhysxWrapper::getInstance().enableGravity(enable, pScene, gravity);
 	}
 
+
 	bool CollisionManager::raycast(UINT32 layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit)
 	{
 		Vector3 normalized{};
 		direction.Normalize(normalized);
 		return PhysxWrapper::getInstance().raycast(layerIndex, origin, normalized, maxDistance, outHit);
 	}
+
+
+
 
 	void CollisionManager::drawRaycast(const Vector3& origin, const Vector3& direction, float maxDistance, const Vector3& color)
 	{

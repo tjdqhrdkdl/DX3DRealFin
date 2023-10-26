@@ -257,7 +257,7 @@ namespace ya
 			actor->release();
 			_shape = nullptr;
 		}
-		SetType(getCollider3DType(), _isStatic);
+		SetType(GetCollider3DType(), _isStatic);
 	}
 
 	void Collider3D::enableGravity(bool enable)

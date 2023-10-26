@@ -324,7 +324,7 @@ namespace ya
 	{
 		Vector3 position = mTransform->GetLocalPosition();
 		Vector3 scale = mTransform->GetLocalScale();
-		Vector3 colScale = mCollider->GetSize();
+		Vector3 colScale = mCollider->getOffsetScale();
 		Vector3 velocity = movement * Time::DeltaTime();
 		Vector3 dir = movement;
 		dir.Normalize();
@@ -346,21 +346,27 @@ namespace ya
 
 		Vector3 rayDirection = dir;
 
-		std::vector<eLayerType> layers;
-		layers.push_back(eLayerType::Player);
-		layers.push_back(eLayerType::Monster);
+		CollisionManager::enableRaycast(GetOwner()->GetLayerType(), eLayerType::Player, true);
+		CollisionManager::enableRaycast(GetOwner()->GetLayerType(), eLayerType::Monster, true);
 
-		RayHit ForwardHit[3];
-		ForwardHit[0] = CollisionManager::RayCast(GetOwner(), top, rayDirection, layers);
-		ForwardHit[1] = CollisionManager::RayCast(GetOwner(), middle, rayDirection, layers);
-		ForwardHit[2] = CollisionManager::RayCast(GetOwner(), bottom, rayDirection, layers);
+		RaycastHit ForwardHit[3]{};
+		CollisionManager::raycast(eLayerType::Player, top, rayDirection, 10000.f, &ForwardHit[0]);
 
-		for (int i = 0; i < 3; ++i)
-		{
-			//if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
-			if(rayLength >= ForwardHit[i].length && ForwardHit[i].isHit)
-				return true;
-		}
+
+		//std::vector<eLayerType> layers;
+		//layers.push_back(eLayerType::Player);
+		//layers.push_back(eLayerType::Monster);
+		//RayHit ForwardHit[3];
+		//ForwardHit[0] = CollisionManager::RayCast(GetOwner(), top, rayDirection, layers);
+		//ForwardHit[1] = CollisionManager::RayCast(GetOwner(), middle, rayDirection, layers);
+		//ForwardHit[2] = CollisionManager::RayCast(GetOwner(), bottom, rayDirection, layers);
+
+		//for (int i = 0; i < 3; ++i)
+		//{
+		//	//if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
+		//	if(rayLength >= ForwardHit[i].length && ForwardHit[i].isHit)
+		//		return true;
+		//}
 
 		return false;
 	}

@@ -5,6 +5,7 @@
 #include "yaCollisionManager.h"
 #include "yaHangingObjectScript.h"
 #include "yaInput.h"
+#include "PhysXWrapper.h"
 
 ya::HangingScript::HangingScript()
 	:	mbHanging(false)
@@ -39,14 +40,21 @@ void ya::HangingScript::DoHanging(GameObject* _otherObj, const Vector3& _hitPoin
 	
 	Vector3 direction = objTransform->Forward();
 
-	std::vector<eLayerType> layers = {};
-	layers.push_back(eLayerType::HangingObject);
+	//std::vector<eLayerType> layers = {};
+	//layers.push_back(eLayerType::HangingObject);
 
-	RayHit Hit = CollisionManager::RayCast(obj, objPos, direction, layers);
+	//RayHit Hit = CollisionManager::RayCast(obj, objPos, direction, layers);
 
-	if (Hit.isHit)
+
+	RaycastHit hit{};
+	CollisionManager::enableRaycast((UINT32)GetOwner()->GetLayerType(), (UINT32)eLayerType::HangingObject, true);
+
+	CollisionManager::raycast(eLayerType::HangingObject, objPos, direction, 10000.f, &hit);
+
+
+	if (hit.gameObject)
 	{
-		float distance = Hit.length;
+		float distance = hit.hitDistance;
 
 		objPos.y = colPos.y;
 		objPos.z += distance;

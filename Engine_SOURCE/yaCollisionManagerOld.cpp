@@ -224,8 +224,8 @@
 //		Vector3 rightPos = Vector3(rightMat._41, rightMat._42, rightMat._43);
 //		rightPos += right->GetCenter();
 //
-//		if (left->GetColliderType() == eColliderType::Rect
-//			&& right->GetColliderType() == eColliderType::Rect
+//		if (left->GetCollider3DType() == eColliderType::Rect
+//			&& right->GetCollider3DType() == eColliderType::Rect
 //			)
 //		{	// 분리축 벡터 4개 구하기
 //			Vector3 Axis[4] = {};
@@ -274,8 +274,8 @@
 //			return true;
 //		}
 //
-//		else if (left->GetColliderType() == eColliderType::Box
-//			&& right->GetColliderType() == eColliderType::Box
+//		else if (left->GetCollider3DType() == eColliderType::Box
+//			&& right->GetCollider3DType() == eColliderType::Box
 //			)
 //		{
 //			Vector3 arrCubeLocalPos[24] =

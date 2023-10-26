@@ -3,6 +3,7 @@
 #include "yaTime.h"
 #include "yaInput.h"
 #include "yaCollisionManager.h"
+#include "PhysXWrapper.h"
 
 #include "yaObject.h"
 #include "yaRigidbody.h"
@@ -68,15 +69,15 @@ namespace ya
 		Collider3D* ownerCol = obj->GetComponent<Collider3D>();
 		if (ownerCol != nullptr)
 		{
-			checkCol->SetType(ownerCol->GetColliderType());
-			checkCol->SetCenter(ownerCol->GetCenter());
-			checkCol->SetSize(ownerCol->GetSize());
+			checkCol->SetType(ownerCol->GetCollider3DType());
+			checkCol->setOffsetPosition(ownerCol->getOffsetPosition());
+			checkCol->setOffsetScale(ownerCol->getOffsetScale());
 		}
 		else
 		{
 			checkCol->SetType(eColliderType::Box);
-			checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
-			checkCol->SetSize(Vector3(1.0, 3.0f, 1.0f));
+			checkCol->setOffsetPosition(Vector3(0.f, 1.2f, 0.f));
+			checkCol->setOffsetPosition(Vector3(1.0, 3.0f, 1.0f));
 		}
 	}
 
@@ -209,7 +210,7 @@ namespace ya
 	{
 		Vector3 position = mTransform->GetLocalPosition();
 		Vector3 scale = mTransform->GetLocalScale();
-		Vector3 colScale = mCollider->GetSize();
+		Vector3 colScale = mCollider->getOffsetScale();
 		Vector3 velocity = movement * Time::DeltaTime();
 		Vector3 dir = movement;
 		dir.Normalize();
@@ -229,17 +230,23 @@ namespace ya
 
 		Vector3 rayDirection = dir;
 
-		std::vector<eLayerType> layers;
-		layers.push_back(eLayerType::Monster);
+		//std::vector<eLayerType> layers;
+		//layers.push_back(eLayerType::Monster);
 
-		RayHit ForwardHit[3];
-		ForwardHit[0] = CollisionManager::RayCast(GetOwner(), top, rayDirection, layers);
-		ForwardHit[1] = CollisionManager::RayCast(GetOwner(), middle, rayDirection, layers);
-		ForwardHit[2] = CollisionManager::RayCast(GetOwner(), bottom, rayDirection, layers);
+		//GameObject* owner, Vector3 direction, std::vector<eLayerType> layers
+
+		RaycastHit ForwardHit[3]{};
+		CollisionManager::enableRaycast((UINT32)GetOwner()->GetLayerType(), (UINT32)eLayerType::Monster, true);
+		CollisionManager::raycast((UINT32)eLayerType::Monster, top, rayDirection, 10000.f, &ForwardHit[0]);
+		CollisionManager::raycast((UINT32)eLayerType::Monster, middle, rayDirection, 10000.f, &ForwardHit[1]);
+		CollisionManager::raycast((UINT32)eLayerType::Monster, bottom, rayDirection, 10000.f, &ForwardHit[2]);
+		//ForwardHit[0] = CollisionManager::raycast(GetOwner(), top, rayDirection, layers);
+		//ForwardHit[1] = CollisionManager::RayCast(GetOwner(), middle, rayDirection, layers);
+		//ForwardHit[2] = CollisionManager::RayCast(GetOwner(), bottom, rayDirection, layers);
 
 		for (int i = 0; i < 3; ++i)
 		{
-			if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
+			if (ForwardHit[i].gameObject && velocity.Length() <= ForwardHit[i].hitDistance)
 				return true;
 		}
 

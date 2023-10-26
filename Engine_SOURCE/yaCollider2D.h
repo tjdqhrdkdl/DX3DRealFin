@@ -33,7 +33,7 @@
 //		Vector3 GetPosition() { return mPosition; }
 //		Vector3 GetSize() { return mSize; }
 //		Vector3 GetCenter() { return mCenter; }
-//		eColliderType GetColliderType() { return mType; }
+//		eColliderType GetCollider3DType() { return mType; }
 //
 //		void Active(bool active) { mbActive = active; };
 //		bool IsActive() { return mbActive; }
