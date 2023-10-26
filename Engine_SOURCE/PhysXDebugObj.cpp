@@ -1,5 +1,7 @@
 #include "PhysXDebugObj.h"
 #include "PhysXPlayerScript.h"
+#include "PhysXManager.h"
+#include "PhysXWrapper.h"
 
 namespace ya
 {
@@ -21,6 +23,22 @@ namespace ya
 		
 
 		GameObject::Initialize();
+	}
+
+	void PhysXDebugObj::FixedUpdate()
+	{
+		GameObject::FixedUpdate();
+
+		if (GetName() == L"testObj")
+		{
+			Transform* tr = GetComponent<Transform>();
+
+			RaycastHit outhit{};
+			PhysicsManager::raycast((UINT32)eLayerType::Ground, tr->GetWorldPosition(), -tr->Up(), 1000.f, &outhit);
+
+			int k = 3;
+		}
+		
 	}
 
 }

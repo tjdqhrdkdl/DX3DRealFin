@@ -11,6 +11,7 @@ namespace ya
         virtual ~PhysXDebugObj();
 
         virtual void Initialize() override;
+        virtual void FixedUpdate() override;
 
     };
 }

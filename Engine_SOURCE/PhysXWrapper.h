@@ -56,7 +56,7 @@ namespace ya
 		void initialize(void);
 		void update(float deltaTime);
 
-		void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
+		//void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
 		void enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
 		void enableGravity(bool enable, Scene* scene, const Vector3& gravity) const;
 
@@ -80,9 +80,9 @@ namespace ya
 			physx::PxPairFlags& pairFlags,
 			const void* constantBlock, physx::PxU32 constantBlockSize);
 
-		void															  setUpdateInterval(UpdateInterval interval) { _currentInterval = interval; }
-		float															  getUpdateInterval(void) const { return _intervals[static_cast<UINT8>(_currentInterval)]; }
-		const std::array<float, static_cast<UINT8>(UpdateInterval::END)>& getIntervalList(void) const { return _intervals; }
+		//void															  setUpdateInterval(UpdateInterval interval) { _currentInterval = interval; }
+		//float															  getUpdateInterval(void) const { return _intervals[static_cast<UINT8>(_currentInterval)]; }
+		//const std::array<float, static_cast<UINT8>(UpdateInterval::END)>& getIntervalList(void) const { return _intervals; }
 
 		// PxSimulationEventCallback을(를) 통해 상속됨
 		void onConstraintBreak(physx::PxConstraintInfo* constraints, physx::PxU32 count) override;
@@ -101,10 +101,10 @@ namespace ya
 		physx::PxScene* _currentScene;
 		physx::PxMaterial* _material;
 		std::array<std::bitset<32>, 32> _collisionMask;
-		std::array<std::bitset<32>, 32> _raycastMask;
+		//std::array<std::bitset<32>, 32> _raycastMask;
 
-		std::array<float, static_cast<UINT8>(UpdateInterval::END)> _intervals;
-		UpdateInterval											   _currentInterval;
+		//std::array<float, static_cast<UINT8>(UpdateInterval::END)> _intervals;
+		//UpdateInterval											   _currentInterval;
 
 		std::unordered_map<Scene*, physx::PxScene*>  _scenes;
 		inline static constexpr float _kDefaultDensity = 10.f;

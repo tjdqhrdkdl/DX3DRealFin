@@ -60,14 +60,14 @@ namespace ya
 		_physics{ nullptr },
 		_dispatcher{ nullptr },
 		_currentScene{ nullptr },
-		_material{ nullptr },
-		_currentInterval{ UpdateInterval::Frame_60 }
+		_material{ nullptr }
+		//_currentInterval{ UpdateInterval::Frame_60 }
 	{
-		_intervals[static_cast<UINT8>(UpdateInterval::Frame_30)] = 1.f / 30.f;
-		_intervals[static_cast<UINT8>(UpdateInterval::Frame_60)] = 1.f / 60.f;
-		_intervals[static_cast<UINT8>(UpdateInterval::Frame_120)] = 1.f / 120.f;
-		_intervals[static_cast<UINT8>(UpdateInterval::Frame_144)] = 1.f / 144.f;
-		_intervals[static_cast<UINT8>(UpdateInterval::Frame_240)] = 1.f / 240.f;
+		//_intervals[static_cast<UINT8>(UpdateInterval::Frame_30)] = 1.f / 30.f;
+		//_intervals[static_cast<UINT8>(UpdateInterval::Frame_60)] = 1.f / 60.f;
+		//_intervals[static_cast<UINT8>(UpdateInterval::Frame_120)] = 1.f / 120.f;
+		//_intervals[static_cast<UINT8>(UpdateInterval::Frame_144)] = 1.f / 144.f;
+		//_intervals[static_cast<UINT8>(UpdateInterval::Frame_240)] = 1.f / 240.f;
 	}
 
 	PhysxWrapper::~PhysxWrapper(void)
@@ -263,11 +263,11 @@ namespace ya
 		}
 	}
 
-	void PhysxWrapper::enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
-	{
-		_raycastMask[leftLayerIndex][rightLayerIndex] = enable;
-		_raycastMask[rightLayerIndex][leftLayerIndex] = enable;
-	}
+	//void PhysxWrapper::enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
+	//{
+	//	_raycastMask[leftLayerIndex][rightLayerIndex] = enable;
+	//	_raycastMask[rightLayerIndex][leftLayerIndex] = enable;
+	//}
 
 	void PhysxWrapper::enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
 	{
@@ -302,13 +302,13 @@ namespace ya
 
 	bool PhysxWrapper::raycast(UINT32 layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit) const
 	{
-
 		std::bitset<32> layer{};
 		layer[layerIndex] = true;
 
 		const PxHitFlags  hitFlag = PxHitFlag::eDEFAULT;
 		PxQueryFilterData filter{};
-		filter.data.word0 = _raycastMask[layerIndex].to_ulong();
+		//filter.data.word0 = _raycastMask[layerIndex].to_ulong();
+		filter.data.word0 = layer.to_ulong();
 
 		PxRaycastBuffer hit{};
 		const bool		result = _currentScene->raycast(MathUtil::vector3ToPx(origin), MathUtil::vector3ToPx(direction), maxDistance, hit, hitFlag, filter);
@@ -536,10 +536,10 @@ namespace ya
 		filterData.word1 = _collisionMask[layerIndex].to_ulong(); // word1 = ID mask to filter pairs that trigger a contact callback
 		shape->setSimulationFilterData(filterData);
 
-		PxFilterData queryFilterData{};
-		queryFilterData.word0 = layer.to_ulong();					   // word0 = own ID
-		queryFilterData.word1 = _raycastMask[layerIndex].to_ulong(); // word1 = ID mask to filter pairs that trigger a contact callback
-		shape->setQueryFilterData(queryFilterData);
+		//PxFilterData queryFilterData{};
+		//queryFilterData.word0 = layer.to_ulong();					   // word0 = own ID
+		//queryFilterData.word1 = _raycastMask[layerIndex].to_ulong(); // word1 = ID mask to filter pairs that trigger a contact callback
+		//shape->setQueryFilterData(queryFilterData);
 	}
 
 #pragma region NOT IMPLEMENTED

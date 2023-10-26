@@ -15,7 +15,7 @@ namespace ya
 		static bool initialize(void);
 		static void update(float deltaTime);
 
-		static void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
+		//static void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
 		static void enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
 		static void enableGravity(bool enable, Scene* pScene, Vector3 gravity = Vector3(0.f, -9.8f, 0.f));
 
