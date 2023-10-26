@@ -386,6 +386,9 @@
     <ClCompile Include="yaSoldierSwordScript.cpp">
       <Filter>Contents\Monster\AshinaSoldier</Filter>
     </ClCompile>
+    <ClCompile Include="yaAnimationData.cpp">
+      <Filter>Engine\Resource\MeshData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -777,6 +780,9 @@
     </ClInclude>
     <ClInclude Include="yaSoldierSwordScript.h">
       <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="yaAnimationData.h">
+      <Filter>Engine\Resource\MeshData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
