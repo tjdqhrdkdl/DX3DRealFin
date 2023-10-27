@@ -144,7 +144,7 @@ namespace ya
 				Transform* plTr = mPlayer->GetComponent<Transform>();
 				mLight->GetOwner()->GetComponent<Transform>()->SetPosition(plTr->GetPosition() + plTr->Forward());
 
-				mLight->SetRadius(2);
+				mLight->SetRadius(3);
 			}
 
 			else
