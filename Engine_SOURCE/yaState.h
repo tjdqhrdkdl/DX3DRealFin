@@ -40,13 +40,6 @@ namespace ya
 
 		bool	IsDeathBlow() { return mbDeathBlow; }
 		void	SetDeathBlow(bool deathblow) { mbDeathBlow = deathblow; }
-		
-		float	GetDeathBlowCount() { return mDeathBlowCount; }
-		void	SetDeathBlowCount(float blowcount) { mDeathBlowCount = blowcount; }
-		void	AddDeathBlow(float deathblow) { mDeathBlowCount += deathblow; }
-		
-		float	GetMaxDeathBlowCount() { return mMaxDeathBlowCount; }
-		void	SetMaxDeathBlowCount(float maxblowcount) { mMaxDeathBlowCount = maxblowcount; }
 
 		bool	IsDeath() { return mbDeath; }
 		void	SetDeath(bool death) { mbDeath = death; }
@@ -76,12 +69,8 @@ namespace ya
 		float				mAttack;
 		float               mSpeed;
 
-		// 인살 게이지
+		// 인살 
 		bool				mbDeathBlow;			//인살 가능한 상태인지 확인
-		float               mDeathBlowCount;		//인살 게이지
-		float               mMaxDeathBlowCount;
-
-		bool				mbDeathBlowOnOff;
 
 		// 죽음
 		bool				mbDeath;

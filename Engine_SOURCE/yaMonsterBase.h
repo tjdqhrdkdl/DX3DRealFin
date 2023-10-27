@@ -31,6 +31,12 @@ namespace ya
     class MonsterBase : public GameObject
     {
     public:
+        struct OriginSetting
+        {
+            Vector3 position;
+            State state;
+        };
+
         enum SpecialAttack
         {
             None,
@@ -82,6 +88,7 @@ namespace ya
 
     public:
         virtual void DeathBlow();
+        virtual void Reset();
 
         bool IsMonsterState(eMonsterState eState) { return STATE_HAVE(eState); }
 
@@ -135,16 +142,13 @@ namespace ya
         
         Attack GetAttackParams() { return mAttackParams; }
 
-
-        virtual void OnCollisionEnter(Collider2D* collider) = 0 ;
+        virtual void OnCollisionEnter(Collider2D* collider) = 0;
         virtual void OnCollisionStay(Collider2D* collider) = 0;
         virtual void OnCollisionExit(Collider2D* collider) = 0;
-     protected: // MonsterUI
-         void CreateDeathBlowMark();
 
-        Vec3 GetDeathBlowMarkOffSet() { return mDeathBlowMarkOffSet; }
-        void SetDeathBlowMarkOffSet(Vec3 offset) { mDeathBlowMarkOffSet = offset; }
-        void SetMonsterHpBarOffSetOffSet(Vec3 offset) { mMonsterHpBarOffSet = offset; }
+    protected:
+        void SetOriginState(State* state) { mOriginSetting.state = *state; }
+        void SetOriginPosition(Vector3 position) { mOriginSetting.position = position; }
 
     protected:
         std::shared_ptr<MeshData>   mMeshData;
@@ -175,5 +179,6 @@ namespace ya
         float               mBeforePosture;
         float               mPostureRecoveryTimeChecker;
 
+        OriginSetting       mOriginSetting;
     };
 }

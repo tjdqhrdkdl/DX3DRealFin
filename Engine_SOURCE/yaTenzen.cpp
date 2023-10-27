@@ -35,6 +35,8 @@ namespace ya
 	}
 	void Tenzen::Initialize()
 	{
+		MonsterBase::Initialize();
+
 		//안쓰는 애들
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_000401.fbx", L"SitIdle");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_000402.fbx", L"SitToGetUp");
@@ -134,7 +136,7 @@ namespace ya
 
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
-		tr->SetPosition(Vector3(0, 0, 0));
+		//tr->SetPosition(Vector3(0, 0, 0));
 		tr->SetScale(Vector3(1, 1, 1));
 		mTransform = tr;
 
@@ -198,7 +200,6 @@ namespace ya
 		SetPlayerObject(dynamic_cast<Player*>(GetScene()->GetPlayer()));
 		
 		//몬스터 스테이트
-		CreateMonsterState();
 		SetSpeed(tenzenBaseSpeed);
 
 
@@ -206,7 +207,7 @@ namespace ya
 		AddComponent<NavMesh>();
 
 
-		MonsterBase::Initialize();
+		
 		ADD_STATE(MonsterState_Guard);
 		ADD_STATE(MonsterState_Idle);
 
@@ -225,7 +226,8 @@ namespace ya
 		SetResurrectionCount(2);
 		SetResurrectionCountMax(2);
 
-
+		SetOriginState(GetState());
+		SetOriginPosition(mTransform->GetPosition());
 	}
 	void Tenzen::Update()
 	{

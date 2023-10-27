@@ -21,12 +21,30 @@ namespace ya::object
 		return gameObj;
 	}
 
-	template <typename T>
+	/*template <typename T>
 	static T* Instantiate(enums::eLayerType type, Scene* scene)
 	{
 		T* gameObj = new T();
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
+		gameObj->SetScene(scene);
+		gameObj->SetLayerType(type);
+		gameObj->Initialize();
+
+		return gameObj;
+	}*/
+
+	template <typename T>
+	static T* Instantiate(enums::eLayerType type, Scene* scene, Vector3 position = Vector3::Zero, Vector3 rotation = Vector3::Zero)
+	{
+		T* gameObj = new T();
+		Layer& layer = scene->GetLayer(type);
+		layer.AddGameObject(gameObj);
+
+		Transform* tr = gameObj->GameObject::GetComponent<Transform>();
+		tr->SetPosition(position);
+		tr->SetRotation(rotation);
+
 		gameObj->SetScene(scene);
 		gameObj->SetLayerType(type);
 		gameObj->Initialize();

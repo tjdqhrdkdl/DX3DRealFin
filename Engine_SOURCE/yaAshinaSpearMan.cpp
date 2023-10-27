@@ -35,6 +35,7 @@ namespace ya
 	}
 	void AshinaSpearMan::Initialize()
 	{
+		MonsterBase::Initialize();
 		SetName(L"AshinaSpearManObject");
 
 		////fbx 로드
@@ -141,7 +142,7 @@ namespace ya
 		MeshObject* object = mMeshData->Instantiate(eLayerType::Monster, GetScene());
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
-		tr->SetPosition(Vector3(0, 0, 0));
+		//tr->SetPosition(Vector3(0, 0, 0));
 		tr->SetScale(Vector3(1, 1, 1));
 		mTransform = tr;
 
@@ -227,15 +228,12 @@ namespace ya
 		SetPlayerObject(dynamic_cast<Player*>(GetScene()->GetPlayer()));
 
 		//몬스터 스테이트
-		CreateMonsterState();
 		SetSpeed(AshinaSpearManBaseSpeed);
 
 
 		//네비 매쉬
 		AddComponent<NavMesh>();
 
-
-		MonsterBase::Initialize();
 		ADD_STATE(MonsterState_Guard);
 		ADD_STATE(MonsterState_Idle);
 
@@ -254,7 +252,8 @@ namespace ya
 		SetResurrectionCount(1);
 		SetResurrectionCountMax(1);
 
-
+		SetOriginState(GetState());
+		SetOriginPosition(mTransform->GetPosition());
 	}
 	void AshinaSpearMan::Update()
 	{
@@ -634,7 +633,7 @@ namespace ya
 		{
 			mAnimationName = L"Spear_GrogyDownParried";
 		}
-		}
+	}
 
 	void AshinaSpearMan::Move()
 	{

@@ -24,10 +24,12 @@ namespace ya
 
 	void MonsterBase::Initialize()
 	{
-		CreateMonsterState();
+		mMonsterState = new State();
+
 		mMonsterUI = object::Instantiate<MonsterUI>(eLayerType::UI, GetScene());
 		mMonsterUI->SetMonster(this);
 		mCamScript = mainCamera->GetOwner()->GetScript<CameraScript>();
+
 		GameObject::Initialize();
 	}
 
@@ -206,33 +208,26 @@ namespace ya
 		mMonsterState->SetDeathBlow(false);
 	}
 
-
-	void MonsterBase::CreateMonsterState()
+	/// Monster Reset
+	void MonsterBase::Reset()
 	{
-		if (nullptr == mMonsterState)
-		{
-			mMonsterState = new State();
+		// state 리셋
+		mMonsterState->SetHPMax(mOriginSetting.state.GetHPMax());
+		mMonsterState->SetHp(mOriginSetting.state.GetHP());
 
+		mMonsterState->SetSpeed(mOriginSetting.state.GetSpeed());
+		mMonsterState->SetDeathBlow(false);
 
-			mMonsterState->SetSituation(enums::eSituation::None);
-			mMonsterState->SetHPMax(20.0f);				//HP 총 량
-			mMonsterState->SetHp(20.0f);				//
+		mMonsterState->SetResurrectionCountMax(mOriginSetting.state.GetResurrectionCountMax());
+		mMonsterState->SetResurrectionCount(mOriginSetting.state.GetResurrectionCount());
 
+		// monsterState 리셋
+		mState = 0;
+		ADD_STATE(MonsterState_Idle);
+		mbRecognize = false;
+		mAlertnessCount = 0;
 
-
-			mMonsterState->SetSpeed(5.0f);				//기본 이동속도
-			mMonsterState->SetDeathBlowCount(0.f);		//현재 체간 상태
-			mMonsterState->SetMaxDeathBlowCount(10.f);	//총 체간
-			mMonsterState->SetDeathBlow(false);			//인살 가능한 상태
-
-			mMonsterState->SetResurrectionCountMax(0);
-			mMonsterState->SetResurrectionCount(0);
-		}
-	}
-
-	void MonsterBase::CreateDeathBlowMark()
-	{
-
+		// position 리셋
 		Transform* tr = GetComponent<Transform>();
 		tr->SetPosition(mOriginSetting.position);
 	}
