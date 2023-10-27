@@ -19,5 +19,6 @@ namespace ya
 
 	private:
 		float mLoadingTime;
+		GameObject* mLoader;
 	};
 }
