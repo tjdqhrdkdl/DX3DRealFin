@@ -10,6 +10,7 @@ namespace ya
         PhysXPlayerScript();
         virtual ~PhysXPlayerScript();
 
+        virtual void Start() override;
         virtual void Update() override;
 
         virtual void OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint) override;

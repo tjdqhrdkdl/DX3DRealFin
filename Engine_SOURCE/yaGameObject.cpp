@@ -64,8 +64,15 @@ namespace ya
 			if (comp == nullptr)
 				continue;
 
-
 			comp->Start();
+		}
+
+		for (Component* script : mScripts)
+		{
+			if (script == nullptr || false == script->IsActive())
+				continue;
+
+			script->Start();
 		}
 	}
 

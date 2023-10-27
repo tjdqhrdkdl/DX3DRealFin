@@ -125,7 +125,7 @@ namespace ya
 		{
 			mTimer[(UINT)eAttackState::AttackMove] -= Time::DeltaTime();
 			if(mTimer[(UINT)eAttackState::AttackMove] < 0.2f)
-				playerAction->Move(playerTr->Forward(), 300.0f);
+				playerAction->Move(-playerTr->Forward(), 300.f);
 		}
 
 		Vector3 vel = GetOwner()->GetComponent<Collider3D>()->GetVelocity();

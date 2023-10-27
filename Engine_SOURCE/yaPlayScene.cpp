@@ -48,8 +48,8 @@ namespace ya
 	{
 		CollisionManager::EnableGravity(true, this);
 
-		CreateRealScene();
-		//CreateTestScene();
+		//CreateRealScene();
+		CreateTestScene();
 		Scene::Initialize();
 	}
 	

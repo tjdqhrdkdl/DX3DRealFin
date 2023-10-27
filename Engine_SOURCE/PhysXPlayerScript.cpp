@@ -10,6 +10,11 @@ namespace ya
 	PhysXPlayerScript::~PhysXPlayerScript()
 	{
 	}
+	void PhysXPlayerScript::Start()
+	{
+		Collider3D* col = GetOwner()->GetComponent<Collider3D>();
+		col->AddForce(Vector3(100.f, 5000.f, 100.f));
+	}
 	void PhysXPlayerScript::Update()
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
@@ -44,6 +49,8 @@ namespace ya
 		{
 			tr->SetLocalPosition(pos);
 		}
+
+
 
 	}
 	void PhysXPlayerScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
