@@ -9,6 +9,12 @@ namespace ya
 	class MonsterBase;
 	class Player : public GameObject
 	{
+		struct OriginSetting
+		{
+			Vector3 position;
+			State state;
+		};
+
 	public:
 		Player();
 		virtual ~Player();
@@ -19,15 +25,23 @@ namespace ya
 		virtual void Render();
 
 	public:
+		State* GetState() { return mState; }
+
+		float GetBlockTime();
+
+		void SetDeathBlowTarget(MonsterBase* monster, float distance);
+		void EraseDeathBlowTarget(MonsterBase* monster);
+
+		void DangerUION();
+
+		void Reset();
+
+	public:
 		void SetCamera(GameObject* camera) { mCamera = camera; }
 		GameObject* GetCamera() { return mCamera; }
 
-		/*void SetState(ePlayerState state) { mState = state; }
-		ePlayerState GetState() { return mState; }*/
-		State* GetState() { return mState; }
-
-		void SetProsthetic(eProsthetics prosthetic) { mProsthetic = prosthetic; }
-		eProsthetics GetProsthetic() { return mProsthetic; }
+		//void SetProsthetic(eProsthetics prosthetic) { mProsthetic = prosthetic; }
+		//eProsthetics GetProsthetic() { return mProsthetic; }
 
 		void SetWeaponCollider(BoneCollider* collider) { mWeaponCollider = collider; }
 		BoneCollider* GetWeaponCollider() { return mWeaponCollider; }
@@ -42,24 +56,17 @@ namespace ya
 		std::map<ePlayerState, std::function<void()>>& GetStartStateEvent() { return mStartStateEvent; }
 		std::map<ePlayerState, std::function<void()>>& GetEndStateEvent() { return mEndStateEvent; }
 
-
+	private:
 		void CreatePlayerUI();
 
-		float GetBlockTime();
-
-		void SetDeathBlowTarget(MonsterBase* monster, float distance);
-		void EraseDeathBlowTarget(MonsterBase* monster);
-
-		void DangerUION();
 	private:
 		GameObject* mCamera;
 		class PlayerHpTexture* mPlayerHpBar;
 		class PlayerDangerUI* mPlayerDangerUI;
 
-
 		State* mState;
 		UINT mStateFlag;
-		eProsthetics mProsthetic;
+		//eProsthetics mProsthetic;
 		BoneCollider* mWeaponCollider;
 
 		bool mbStealth;	// 은신
@@ -67,7 +74,6 @@ namespace ya
 		std::map<ePlayerState, std::function<void()>> mStartStateEvent;
 		std::map<ePlayerState, std::function<void()>> mEndStateEvent;
 
-		MonsterBase* mDeathBlowTarget;
-		std::map<MonsterBase*, float> mDeathBlowTargets;
+		OriginSetting mOriginSetting;
 	};
 }

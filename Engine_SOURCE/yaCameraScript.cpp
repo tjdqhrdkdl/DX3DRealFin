@@ -289,7 +289,7 @@ namespace ya
 			mbLockOn = false, mLockOnTarget = nullptr;
 		if (mbLockOn)
 		{
-			if (dynamic_cast<MonsterBase*>(mLockOnTarget)->GetSituation() == eSituation::Death)
+			if (dynamic_cast<MonsterBase*>(mLockOnTarget)->IsMonsterState(MonsterBase::MonsterState_Dead))
 			{
 				mbLockOn = false;
 				mLockOnTarget = nullptr;
@@ -358,7 +358,7 @@ namespace ya
 			MonsterBase* monBase = dynamic_cast<MonsterBase*>(mon);
 			if (monBase == nullptr)
 				continue;
-			if (monBase->GetSituation() == eSituation::Death)
+			if (monBase->IsMonsterState(MonsterBase::MonsterState_Dead))
 				continue;
 			Transform* monTr = mon->GetComponent<Transform>();
 			Vector3 monPos = monTr->GetPosition();

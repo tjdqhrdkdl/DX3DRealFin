@@ -40,7 +40,6 @@ namespace ya
         void Guard();
         void OnHit();
         void Groggy();
-        void SettingSituation();
 
 
         void Move();

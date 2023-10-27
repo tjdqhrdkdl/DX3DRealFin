@@ -6,20 +6,22 @@
 
 namespace ya
 {
+	Musketeerman::Musketeerman()
+		: MonsterBase()
+	{
+		SetName(L"Musketeerman");
+	}
 
-
+	Musketeerman::~Musketeerman()
+	{
+	}
 	void Musketeerman::Initialize()
 	{
+		MonsterBase::Initialize();
 
-		GetComponent<Transform>()->SetPosition(Vector3(5.0f, 0.0f, 15.0f));
-		//GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
-		GetComponent<Transform>()->SetScale(Vector3(1.5f, 1.5f, 1.5f));
-
-		SetName(L"Musketeerman");
-
-		Collider2D* spearmancol = AddComponent <Collider2D>();
-		spearmancol->SetType(eColliderType::Box);
-		spearmancol->SetSize(Vector3(1.0, 2.2f, 1.0f));
+		Collider2D* collider = AddComponent <Collider2D>();
+		collider->SetType(eColliderType::Box);
+		collider->SetSize(Vector3(1.0, 2.2f, 1.0f));
 
 		AddComponent<MonsterScript>();
 		AddComponent<Rigidbody>();
@@ -28,48 +30,38 @@ namespace ya
 		SetPlayerObject(SceneManager::GetActiveScene()->GetPlayer());
 
 		Transform* tr = GetComponent<Transform>();
+		//CreateDeathBlowMark();
+		//SetMonsterHpBarOffSetOffSet(Vector3(0.0f, 3.0f, 0.0f));
+		//SetDeathBlowMarkOffSet(Vector3(0.0f, 0.5f, 0.0f));
 
+		//mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
+		//mMeshData = std::make_shared<MeshData>();
+		//mMeshData->Load(L"Monster\\Musketeerman\\MeshData\\c1700_Musketeerman.meshdata");
+		//mMeshData->AnimationLoad(L"Monster\\Musketeerman\\AnimationData\\MusketeermanAnimation_1.animationdata");
+		////mMeshData = MeshData::LoadFromFbx(L"Monster\\SwordMan\\Mesh\\c1700_SwordMan.fbx");
+		////mMeshData->LoadAnimationFromFbx(L"Monster\\SwordMan\\Animation\\a000_000401.fbx", L"a000_000000");
+		//mMeshData->Play(L"Musketeerman_Idle_Stand");
 
+		//Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
+		//meshobjtr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+		//meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
+		//meshobjtr->SetRotationOffset(Vector3(0.0f, 1.0f, 0.0f));
+		//meshobjtr->SetParent(GetComponent<Transform>());
 
-		CreateDeathBlowMark();
-		SetMonsterHpBarOffSetOffSet(Vector3(0.0f, 3.0f, 0.0f));
-		SetDeathBlowMarkOffSet(Vector3(0.0f, 0.5f, 0.0f));
-		mMeshData = std::make_shared<MeshData>();
+		//Animation_Event();
 
-		mMeshData->Load(L"Monster\\Musketeerman\\MeshData\\c1700_Musketeerman.meshdata");
-
-		mMeshData->AnimationLoad(L"Monster\\Musketeerman\\AnimationData\\MusketeermanAnimation_1.animationdata");
-
-		//mMeshData = MeshData::LoadFromFbx(L"Monster\\SwordMan\\Mesh\\c1700_SwordMan.fbx");
-
-
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\SwordMan\\Animation\\a000_000401.fbx", L"a000_000000");
-		mMeshObject = mMeshData->Instantiate(eLayerType::Monster);
-
-		Transform* meshobjtr = mMeshObject->GetComponent<Transform>();
-		meshobjtr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
-		meshobjtr->SetRotation(Vector3(180.f, 0.0f, 0.0f));
-		meshobjtr->SetRotationOffset(Vector3(0.0f, 1.0f, 0.0f));
-		meshobjtr->SetParent(GetComponent<Transform>());
-
-		Animation_Event();
-
-
-		mMeshData->Play(L"Musketeerman_Idle_Stand");
-
-		CreateMonsterState();
-		SetSituation(enums::eSituation::None, true);
-
+		//SetSituation(enums::eSituation::None, true);
 
 		mAttackRange = 5.0f;
 		mTime = 0.f;
 
-		MonsterBase::Initialize();
+		SetOriginState(GetState());
+		SetOriginPosition(GetComponent<Transform>()->GetPosition());
 	}
 
-	void Musketeerman::FixedUpdate()
+	void Musketeerman::Update()
 	{
-		Transform* tr = GetComponent<Transform>();
+		/*Transform* tr = GetComponent<Transform>();
 		Rigidbody* rigi = GetComponent<Rigidbody>();
 		Vec3 rot = tr->GetRotation();
 
@@ -78,14 +70,13 @@ namespace ya
 
 		Player* player = (Player*)GetPlayerObject();
 
-	
 
 		if (Input::GetKey(eKeyCode::NUM_1))
 		{
 			AddHp(Time::DeltaTime() * 3);
 		}
 		if (Input::GetKey(eKeyCode::NUM_2))
-		{ 
+		{
 			AddHp(-Time::DeltaTime() * 3);
 		}
 		if (Input::GetKeyDown(eKeyCode::NUM_3))
@@ -102,7 +93,7 @@ namespace ya
 			mMeshData->Play(L"Musketeerman_Boundary_Step1");
 		}
 		if (Input::GetKeyDown(eKeyCode::I))
-		{			
+		{
 			mMeshData->Play(L"Musketeerman_Attack");
 		}
 		if (Input::GetKeyDown(eKeyCode::O))
@@ -128,18 +119,18 @@ namespace ya
 			{
 				SetDeathBlow(false);
 			}
-			
+
 			if (IsPlayerFieldview(45.0f, 135.0f))
 			{
-				
+
 				if (NavigationPlayer(30.0f))
-				{				
+				{
 					OnceAniamtion(L"Musketeerman_Boundary_Step1");
 				}
 			}
 
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Idle:
 			break;
 		case ya::enums::eSituation::Boundary:
@@ -148,9 +139,9 @@ namespace ya
 			break;
 		case ya::enums::eSituation::Battle:
 		{
-			
-			if(NavigationPlayer(3.0f))			
-			{	
+
+			if (NavigationPlayer(3.0f))
+			{
 				SetSituation(enums::eSituation::Attack);
 				mbAlmostAttack = true;
 				TurnToPlayer();
@@ -158,8 +149,8 @@ namespace ya
 			else if (NavigationPlayer(5.5f))
 			{
 				TurnToPlayer();
-				SetSituation(enums::eSituation::Run);				
-			}		
+				SetSituation(enums::eSituation::Run);
+			}
 
 			else
 			{
@@ -167,9 +158,9 @@ namespace ya
 				mbAlmostAttack = false;
 				TurnToPlayer();
 			}
-			
+
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Run:
 		{
 			mTime += Time::DeltaTime();
@@ -181,7 +172,7 @@ namespace ya
 			rigi->AddForce((tr->Forward() * -1) * 100.f);
 
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Defense:
 			break;
 		case ya::enums::eSituation::Attack:
@@ -197,7 +188,7 @@ namespace ya
 			SetSituation(enums::eSituation::None);
 
 		}
-			break;
+		break;
 		case ya::enums::eSituation::Sit:
 			break;
 		case ya::enums::eSituation::Death:
@@ -206,102 +197,101 @@ namespace ya
 
 
 		}
-			break;
+		break;
 		case ya::enums::eSituation::End:
 			break;
 		default:
 			break;
-		}
+		}*/
 
 
+		GameObject::Update();
+	}
 
-
-
+	void Musketeerman::FixedUpdate()
+	{
 		GameObject::FixedUpdate();
 	}
 
 	void Musketeerman::Render()
 	{
-
 		MonsterBase::Render();
 	}
 
-	void Musketeerman::Attack_Almost()
-	{
-		Musketeerman_Almost* attack = object::Instantiate<Musketeerman_Almost>(eLayerType::MonsterProjectile);
+	//void Musketeerman::Attack_Almost()
+	//{
+	//	Musketeerman_Almost* attack = object::Instantiate<Musketeerman_Almost>(eLayerType::MonsterProjectile);
 
-		Transform* tr = GetComponent<Transform>();
-		Vec3 rot = tr->GetRotation();
+	//	Transform* tr = GetComponent<Transform>();
+	//	Vec3 rot = tr->GetRotation();
 
-		Transform* attacktr = attack->GetComponent<Transform>();
-
-
-		attacktr->SetPosition(tr->GetPosition() + tr->Forward() * mAttackRange);
-		attacktr->SetScale(Vec3(3.0f, 2.0f, 4.0f));
-		attacktr->SetRotation(rot);
-
-		Collider2D* attackcol = attack->AddComponent<Collider2D>();
-		attackcol->SetType(eColliderType::Box);
-		attackcol->SetSize(Vector3(3.0, 2.0f, 4.0f));
+	//	Transform* attacktr = attack->GetComponent<Transform>();
 
 
-	}
+	//	attacktr->SetPosition(tr->GetPosition() + tr->Forward() * mAttackRange);
+	//	attacktr->SetScale(Vec3(3.0f, 2.0f, 4.0f));
+	//	attacktr->SetRotation(rot);
 
-	void Musketeerman::Attack_Shooting()
-	{
-
-		Musketeerman_Shooting* attack = object::Instantiate<Musketeerman_Shooting>(eLayerType::MonsterProjectile);
-
-		Transform* tr = GetComponent<Transform>();
-		Vec3 rot = tr->GetRotation();
-
-		Transform* attacktr = attack->GetComponent<Transform>();
+	//	Collider2D* attackcol = attack->AddComponent<Collider2D>();
+	//	attackcol->SetType(eColliderType::Box);
+	//	attackcol->SetSize(Vector3(3.0, 2.0f, 4.0f));
 
 
-		attacktr->SetPosition(tr->GetPosition() + tr->Forward() * mAttackRange);
-		attacktr->SetScale(Vec3(1.0f, 1.0f, 1.0f));
-		attacktr->SetRotation(rot);
+	//}
 
-		Collider2D* attackcol = attack->AddComponent<Collider2D>();
-		attackcol->SetType(eColliderType::Box);
-		attackcol->SetSize(Vector3(1.0, 1.0f, 1.0f));
+	//void Musketeerman::Attack_Shooting()
+	//{
 
+	//	Musketeerman_Shooting* attack = object::Instantiate<Musketeerman_Shooting>(eLayerType::MonsterProjectile);
 
-		Rigidbody* rigi = attack->AddComponent<Rigidbody>();
-		//rigi->SetGround(true);
+	//	Transform* tr = GetComponent<Transform>();
+	//	Vec3 rot = tr->GetRotation();
 
-	}
-
-	void Musketeerman::Animation_Event()
-	{
-
-		mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Boundary_Step1")
-			= std::bind(&Musketeerman::Link_attack, this);
-		mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Attack")
-			= std::bind(&Musketeerman::Idle_Stand, this);
-		mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Defense")
-			= std::bind(&Musketeerman::Idle_Stand, this);
+	//	Transform* attacktr = attack->GetComponent<Transform>();
 
 
+	//	attacktr->SetPosition(tr->GetPosition() + tr->Forward() * mAttackRange);
+	//	attacktr->SetScale(Vec3(1.0f, 1.0f, 1.0f));
+	//	attacktr->SetRotation(rot);
 
-	}
-
-	void Musketeerman::Idle_Stand()
-	{
-		OnceAniamtion(L"Musketeerman_Boundary_Stand");
-		SetSituation(enums::eSituation::Idle, true);
-	}
-
-	void Musketeerman::Link_attack()
-	{
-		SetOnceAnimation(true);
-
-		if (mMeshData->GetPlayAnimationName() == L"Musketeerman_Boundary_Step1")
-		{
-			Idle_Stand();
-		}
+	//	Collider2D* attackcol = attack->AddComponent<Collider2D>();
+	//	attackcol->SetType(eColliderType::Box);
+	//	attackcol->SetSize(Vector3(1.0, 1.0f, 1.0f));
 
 
-	}
+	//	Rigidbody* rigi = attack->AddComponent<Rigidbody>();
+	//	//rigi->SetGround(true);
+
+	//}
+
+	//void Musketeerman::Animation_Event()
+	//{
+
+	//	mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Boundary_Step1")
+	//		= std::bind(&Musketeerman::Link_attack, this);
+	//	mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Attack")
+	//		= std::bind(&Musketeerman::Idle_Stand, this);
+	//	mMeshData->GetAnimationCompleteEvent(L"Musketeerman_Defense")
+	//		= std::bind(&Musketeerman::Idle_Stand, this);
+
+
+
+	//}
+
+	//void Musketeerman::Idle_Stand()
+	//{
+	//	OnceAniamtion(L"Musketeerman_Boundary_Stand");
+	//	SetSituation(enums::eSituation::Idle, true);
+	//}
+
+	//void Musketeerman::Link_attack()
+	//{
+	//	SetOnceAnimation(true);
+
+	//	if (mMeshData->GetPlayAnimationName() == L"Musketeerman_Boundary_Step1")
+	//	{
+	//		Idle_Stand();
+	//	}
+	//}
 
 }

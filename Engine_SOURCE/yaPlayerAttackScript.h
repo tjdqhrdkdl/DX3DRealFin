@@ -58,6 +58,7 @@ namespace ya
 
 		void SetDeathBlowTarget(MonsterBase* monster, float distance);
 		void EraseDeathBlowTarget(MonsterBase* monster);
+		void ClearDeathBlowTarget() { mDeathBlowTarget = nullptr; mDeathBlowTargets.clear(); }
 
 	private:
 		void DeathBlow(MonsterBase* monster);

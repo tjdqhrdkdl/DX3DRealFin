@@ -240,9 +240,9 @@ namespace ya
 			m->Init(this);
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		//object::Instantiate<Tenzen>(eLayerType::Monster, this)->GetComponent<Transform>()->SetPosition(Vector3(0,0,10))		;
-		//object::Instantiate<AshinaSoldier>(eLayerType::Monster, this);
-		object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this)->GetComponent<Transform>()->SetPosition(Vector3(-5, 0, 0));
+		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-10.0f, 0.0f, 10.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, -10.0f)));
 
 		Scene::Initialize();
 	}
@@ -252,6 +252,16 @@ namespace ya
 		if (Input::GetKeyDown(eKeyCode::N))
 		{
 			SceneManager::LoadScene(eSceneType::Loading);
+		}
+
+		if (Input::GetKeyDown(eKeyCode::M))
+		{
+			GetPlayer()->Reset();
+
+			for (MonsterBase* monster : mMonsters)
+			{
+				monster->Reset();
+			}
 		}
 
 		Scene::Update();

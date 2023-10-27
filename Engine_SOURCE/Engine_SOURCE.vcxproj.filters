@@ -196,7 +196,6 @@
     <ClCompile Include="yaMeshObject.cpp">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClCompile>
-    <ClCompile Include="yaSwordsman.cpp" />
     <ClCompile Include="yaStructedBuffer.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
@@ -607,7 +606,6 @@
     <ClInclude Include="yaMeshObject.h">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClInclude>
-    <ClInclude Include="yaSwordsman.h" />
     <ClInclude Include="yaGraphics.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
@@ -807,6 +805,9 @@
     </ClInclude>
     <ClInclude Include="yaPlayerDagerUIScript.h">
       <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroCommons.h">
+      <Filter>Contents\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1028,10 +1029,5 @@
     <None Include="yaMath.inl">
       <Filter>Engine\Common\Math</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="loadanimation.txt">
-      <Filter>Contents\Player</Filter>
-    </Text>
   </ItemGroup>
 </Project>
