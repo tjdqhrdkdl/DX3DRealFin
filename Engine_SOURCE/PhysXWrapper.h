@@ -53,19 +53,19 @@ namespace ya
 	public:
 		static PhysxWrapper& getInstance(void);
 		virtual ~PhysxWrapper(void);
-		void initialize(void);
-		void update(float deltaTime);
+		void Initialize(void);
+		void Update(float deltaTime);
 
-		void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
-		void enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
-		void enableGravity(bool enable, Scene* scene, const Vector3& gravity) const;
+		void EnableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
+		void EnableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
+		void EnableGravity(bool enable, Scene* scene, const Vector3& gravity) const;
 
 		void createActorCube(GameObject* gameObject, const Vector3& halfExtents, physx::PxShape** outShape, bool isStatic);
 		void createActorSphere(GameObject* gameObject, float radius, physx::PxShape** outShape, bool isStatic);
 		void createActorCapsule(GameObject* gameObject, float radius, float height, physx::PxShape** outShape, bool isStatic);
 		void changeGeometry(Collider3D* collider, physx::PxShape* shape, eColliderType type);
 
-		bool raycast(UINT32 layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit) const;
+		bool Raycast(UINT32 srcLayerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit) const;
 
 		void createScene(Scene* scene);
 		void changeScene(Scene* scene);

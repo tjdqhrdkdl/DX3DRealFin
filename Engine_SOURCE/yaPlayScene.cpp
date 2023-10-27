@@ -46,7 +46,7 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
-		CollisionManager::enableGravity(true, this);
+		CollisionManager::EnableGravity(true, this);
 
 		CreateRealScene();
 		//CreateTestScene();
@@ -275,17 +275,17 @@ namespace ya
 			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
 
-		CollisionManager::enableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::Player, true);
-		CollisionManager::enableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::Monster, true);
-		CollisionManager::enableCollision((UINT32)eLayerType::PlayerProjectile, (UINT32)eLayerType::Monster, true);
-		CollisionManager::enableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::MonsterProjectile, true);
-		CollisionManager::enableCollision((UINT32)eLayerType::PlayerProjectile, (UINT32)eLayerType::MonsterProjectile, true);
+		CollisionManager::EnableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::Player, true);
+		CollisionManager::EnableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::Monster, true);
+		CollisionManager::EnableCollision((UINT32)eLayerType::PlayerProjectile, (UINT32)eLayerType::Monster, true);
+		CollisionManager::EnableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::MonsterProjectile, true);
+		CollisionManager::EnableCollision((UINT32)eLayerType::PlayerProjectile, (UINT32)eLayerType::MonsterProjectile, true);
 
 		//CollisionManager::enalbeCollision(eLayerType::Ground, eLayerType::Player, true);
-		CollisionManager::enableCollision((UINT32)eLayerType::Ground, (UINT32)eLayerType::Monster, true);
+		CollisionManager::EnableCollision((UINT32)eLayerType::Ground, (UINT32)eLayerType::Monster, true);
 
 		//CollisionManager::enalbeCollision(eLayerType::Wall, eLayerType::Player, true);
-		CollisionManager::enableCollision((UINT32)eLayerType::Wall, (UINT32)eLayerType::WallCheckCollision, true);
+		CollisionManager::EnableCollision((UINT32)eLayerType::Wall, (UINT32)eLayerType::WallCheckCollision, true);
 		//CollisionManager::enalbeCollision(eLayerType::Logbridge, eLayerType::Player, true);
 
 		{
@@ -359,7 +359,7 @@ namespace ya
 			coll3D->setOffsetScale(Vector3(30.f, 30.f, 30.f));
 			coll3D->setMass(50000.f);
 			coll3D->SetType(eColliderType::Box);
-			coll3D->enableGravity(true);
+			coll3D->EnableGravity(true);
 		}
 
 		{
@@ -374,7 +374,7 @@ namespace ya
 			coll3D->SetType(eColliderType::Box, true);
 		}
 
-		CollisionManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);
+		CollisionManager::EnableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);
 
 	}
 }

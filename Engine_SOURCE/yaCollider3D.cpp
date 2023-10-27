@@ -77,7 +77,7 @@ namespace ya
 
 		setMass(_mass);
 		setRestitution(_restitution);
-		enableGravity(_isGravityEnabled);
+		EnableGravity(_isGravityEnabled);
 		
 		//_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
 	}
@@ -260,7 +260,7 @@ namespace ya
 		SetType(GetCollider3DType(), _isStatic);
 	}
 
-	void Collider3D::enableGravity(bool enable)
+	void Collider3D::EnableGravity(bool enable)
 	{
 		_isGravityEnabled = enable;
 

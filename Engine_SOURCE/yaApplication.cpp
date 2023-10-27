@@ -52,7 +52,7 @@ namespace ya
 		CollisionManager::Update();
 	}
 
-	// GPU update
+	// GPU Update
 	void Application::FixedUpdate()
 	{
 		CollisionManager::FixedUpdate();

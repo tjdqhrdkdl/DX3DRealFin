@@ -11,14 +11,14 @@
 //
 //	void CollisionManager::Initialize()
 //	{
-//		if (false == CollisionManager::initialize())
+//		if (false == CollisionManager::Initialize())
 //		{
 //			assert(false);
 //		}
 //	}
 //	void CollisionManager::Update()
 //	{
-//		CollisionManager::update(Time::DeltaTime());
+//		CollisionManager::Update(Time::DeltaTime());
 //
 //		Scene* scene = SceneManager::GetActiveScene();
 //		for (UINT row = 0; row < (UINT)eLayerType::End; row++)

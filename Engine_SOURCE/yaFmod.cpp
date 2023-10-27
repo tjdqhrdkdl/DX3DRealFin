@@ -18,7 +18,7 @@ namespace ya
 		mSystem->getCoreSystem(&mCoreSystem);
 		mCoreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0);
 		
-		mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, extraDriverData);
+		mSystem->Initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, extraDriverData);
 
 		//FMOD::Studio::Bank* masterBank = NULL;
 		//FMOD::Sound* sound1;
@@ -45,7 +45,7 @@ namespace ya
 		//FMOD_VECTOR listenerpos = { 0.0f, 0.0f, 0.0f };
 		//result = mCoreSystem->set3DListenerAttributes(0, &listenerpos, &vel2, &forward, &up);
 
-		//mCoreSystem->update();
+		//mCoreSystem->Update();
 	}
 
 	bool Fmod::CreateSound(const std::string& path,  FMOD::Sound** sound)

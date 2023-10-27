@@ -236,11 +236,11 @@ namespace ya
 		//GameObject* owner, Vector3 direction, std::vector<eLayerType> layers
 
 		RaycastHit ForwardHit[3]{};
-		CollisionManager::enableRaycast((UINT32)GetOwner()->GetLayerType(), (UINT32)eLayerType::Monster, true);
-		CollisionManager::raycast((UINT32)eLayerType::Monster, top, rayDirection, 10000.f, &ForwardHit[0]);
-		CollisionManager::raycast((UINT32)eLayerType::Monster, middle, rayDirection, 10000.f, &ForwardHit[1]);
-		CollisionManager::raycast((UINT32)eLayerType::Monster, bottom, rayDirection, 10000.f, &ForwardHit[2]);
-		//ForwardHit[0] = CollisionManager::raycast(GetOwner(), top, rayDirection, layers);
+		CollisionManager::EnableRaycast((UINT32)GetOwner()->GetLayerType(), (UINT32)eLayerType::Monster, true);
+		CollisionManager::Raycast((UINT32)eLayerType::Monster, top, rayDirection, 10000.f, &ForwardHit[0]);
+		CollisionManager::Raycast((UINT32)eLayerType::Monster, middle, rayDirection, 10000.f, &ForwardHit[1]);
+		CollisionManager::Raycast((UINT32)eLayerType::Monster, bottom, rayDirection, 10000.f, &ForwardHit[2]);
+		//ForwardHit[0] = CollisionManager::Raycast(GetOwner(), top, rayDirection, layers);
 		//ForwardHit[1] = CollisionManager::RayCast(GetOwner(), middle, rayDirection, layers);
 		//ForwardHit[2] = CollisionManager::RayCast(GetOwner(), bottom, rayDirection, layers);
 

@@ -346,11 +346,11 @@ namespace ya
 
 		Vector3 rayDirection = dir;
 
-		CollisionManager::enableRaycast(GetOwner()->GetLayerType(), eLayerType::Player, true);
-		CollisionManager::enableRaycast(GetOwner()->GetLayerType(), eLayerType::Monster, true);
+		CollisionManager::EnableRaycast(GetOwner()->GetLayerType(), eLayerType::Player, true);
+		CollisionManager::EnableRaycast(GetOwner()->GetLayerType(), eLayerType::Monster, true);
 
 		RaycastHit ForwardHit[3]{};
-		CollisionManager::raycast(eLayerType::Player, top, rayDirection, 10000.f, &ForwardHit[0]);
+		CollisionManager::Raycast(eLayerType::Player, top, rayDirection, 10000.f, &ForwardHit[0]);
 
 
 		//std::vector<eLayerType> layers;

@@ -109,7 +109,7 @@ namespace ya
 		return __instance;
 	}
 
-	void PhysxWrapper::initialize(void)
+	void PhysxWrapper::Initialize(void)
 	{
 		_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, _allocator, _errorCallback);
 
@@ -131,7 +131,7 @@ namespace ya
 
 	}
 
-	void PhysxWrapper::update(float deltaTime)
+	void PhysxWrapper::Update(float deltaTime)
 	{
 		if (_currentScene == nullptr)
 			return;
@@ -263,19 +263,19 @@ namespace ya
 		}
 	}
 
-	void PhysxWrapper::enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
+	void PhysxWrapper::EnableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
 	{
 		_raycastMask[leftLayerIndex][rightLayerIndex] = enable;
 		_raycastMask[rightLayerIndex][leftLayerIndex] = enable;
 	}
 
-	void PhysxWrapper::enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
+	void PhysxWrapper::EnableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
 	{
 		_collisionMask[leftLayerIndex][rightLayerIndex] = enable;
 		_collisionMask[rightLayerIndex][leftLayerIndex] = enable;
 	}
 
-	void PhysxWrapper::enableGravity(bool enable, Scene* scene, const Vector3& gravity) const
+	void PhysxWrapper::EnableGravity(bool enable, Scene* scene, const Vector3& gravity) const
 	{
 		//assert(_currentScene);
 
@@ -300,15 +300,15 @@ namespace ya
 		}
 	}
 
-	bool PhysxWrapper::raycast(UINT32 layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit) const
+	bool PhysxWrapper::Raycast(UINT32 srcLayerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit) const
 	{
 
 		std::bitset<32> layer{};
-		layer[layerIndex] = true;
+		layer[srcLayerIndex] = true;
 
 		const PxHitFlags  hitFlag = PxHitFlag::eDEFAULT;
 		PxQueryFilterData filter{};
-		filter.data.word0 = _raycastMask[layerIndex].to_ulong();
+		filter.data.word0 = _raycastMask[srcLayerIndex].to_ulong();
 
 		PxRaycastBuffer hit{};
 		const bool		result = _currentScene->raycast(MathUtil::vector3ToPx(origin), MathUtil::vector3ToPx(direction), maxDistance, hit, hitFlag, filter);
