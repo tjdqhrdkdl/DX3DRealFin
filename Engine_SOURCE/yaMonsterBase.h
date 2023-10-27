@@ -202,9 +202,7 @@ namespace ya
         int                      mState;
 
     private:
-        State*           mMonsterState;
-        enums::eSituation	mSituation;
-
+        State*              mMonsterState;
 
         float				mAlertnessCount;		//경보 레벨 (60이상이면 경계, 80이상이면 추격 100이상이면 공격)
 

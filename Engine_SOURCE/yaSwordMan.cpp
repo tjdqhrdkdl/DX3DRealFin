@@ -198,7 +198,6 @@ namespace ya
 
 			Move();
 			LookAtPlayer();
-			SettingSituation();
 		}
 
 		else
@@ -206,7 +205,6 @@ namespace ya
 			mCollider->Active(false);
 			mActionScript->SetCheckCollider(false);
 			mMonsterUI->UIOff();
-			SetSituation(eSituation::Death);
 		}
 		if (mAnimationName != L"")
 		{
@@ -560,22 +558,6 @@ namespace ya
 		if (STATE_HAVE(MonsterState_Groggy))
 		{
 			mAnimationName = L"GrogyDownParried";
-		}
-	}
-
-	void SwordMan::SettingSituation()
-	{
-		if (STATE_HAVE(MonsterState_Guard))
-		{
-			SetSituation(eSituation::Defense);
-		}
-		else if (STATE_HAVE(MonsterState_Groggy))
-		{
-			SetSituation(eSituation::Groggy);
-		}
-		else
-		{
-			SetSituation(eSituation::None);
 		}
 	}
 

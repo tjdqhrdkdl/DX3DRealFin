@@ -20,7 +20,7 @@ namespace ya
 	MonsterBase::MonsterBase()
 		: mPlayerObject(nullptr)
 		, mMonsterState(nullptr)
-		, mSituation(eSituation::None)
+		//, mSituation(eSituation::None)
 		/*, mPlayerPos(Vec3::Zero)
 		, mMonster2PlayerNormalize(Vec3::Zero)
 		, mPlayer2MonsterNormalize(Vec3::Zero)*/

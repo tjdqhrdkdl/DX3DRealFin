@@ -11,10 +11,6 @@ namespace ya
 		virtual ~State();
 
 	public:
-
-		enums::eSituation GetSituation() { return mSituation; }
-		void SetSituation(enums::eSituation situation, bool OnceAniamtion = false) { mSituation = situation; }
-
 		float	GetHP() { return mHp; }
 		void	SetHp(float hp) { mHp = hp; }
 		void	AddHp(float hp);
@@ -64,9 +60,6 @@ namespace ya
 		void	Resurrection();
 
 	private:
-
-		enums::eSituation	mSituation;				
-
 		// HP
 		float               mHp;
 		float               mHpMax;

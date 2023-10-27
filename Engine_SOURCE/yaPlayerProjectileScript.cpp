@@ -52,10 +52,9 @@ namespace ya
 			return;
 
 		Transform* monsterTr = monster->GetComponent<Transform>();
-		eSituation monsterState = monster->GetSituation();
 
 		// 몬스터가 죽은 경우 충돌 검사를 하지 않는다.
-		if (monsterState == eSituation::Death)
+		if (monster->IsMonsterState(MonsterBase::MonsterState_Dead))
 			return;
 
 		// 플레이어와 몬스터의 forward 비교. 몬스터가 플레이어쪽으로 90도 이내 일때만 방어 유효
@@ -66,7 +65,7 @@ namespace ya
 		Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
 		// 몬스터 패링
-		if (monsterState == eSituation::Defense && abs(theta.y) <= 45.0f)
+		if (monster->IsMonsterState(MonsterBase::MonsterState_Defense) && abs(theta.y) <= 45.0f)
 		{
 			PlayerAttackScript::eAttackState attackState = attack->GetAttackState();
 			if (attackState == PlayerAttackScript::eAttackState::Attack1)
