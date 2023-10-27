@@ -15,6 +15,7 @@
 #include "yaState.h"
 #include "yaPlayerHpTexture.h"
 #include "yaPlayerDangerUI.h"
+#include "yaParryEffect.h"
 
 namespace ya
 {
@@ -145,9 +146,11 @@ namespace ya
 	void Player::CreatePlayerUI()
 	{		
 		mPlayerHpBar = object::Instantiate<PlayerHpTexture>(eLayerType::UI, GetScene());
-		mPlayerHpBar->SetPlayer(this);		
+		mPlayerHpBar->SetPlayer(this);
 		mPlayerDangerUI = object::Instantiate<PlayerDangerUI>(eLayerType::UI, GetScene());
 		mPlayerDangerUI->SetPlayer(this);
+		mParryEffect = object::Instantiate<ParryEffect>(eLayerType::UI, GetScene());
+		mParryEffect->SetPlayer(this);
 	}
 
 	// block 상태가 얼마나 지속 되었는지 시간 return

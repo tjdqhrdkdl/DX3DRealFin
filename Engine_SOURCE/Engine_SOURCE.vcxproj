@@ -207,6 +207,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaNavMeshTool.h" />
     <ClInclude Include="yaMonsterUI.h" />
     <ClInclude Include="yaMonsterUIScript.h" />
+    <ClInclude Include="yaParryEffect.h" />
     <ClInclude Include="yaPlayerAttackScript.h" />
     <ClInclude Include="yaPlayerDagerUIScript.h" />
     <ClInclude Include="yaPlayerDangerUI.h" />
@@ -349,6 +350,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaNavMeshTool.cpp" />
     <ClCompile Include="yaMonsterUI.cpp" />
     <ClCompile Include="yaMonsterUIScript.cpp" />
+    <ClCompile Include="yaParryEffect.cpp" />
     <ClCompile Include="yaPlayerAttackScript.cpp" />
     <ClCompile Include="yaPlayerDagerUIScript.cpp" />
     <ClCompile Include="yaPlayerDangerUI.cpp" />

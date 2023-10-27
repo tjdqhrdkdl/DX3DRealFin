@@ -400,6 +400,9 @@
     <ClCompile Include="yaPlayerDagerUIScript.cpp">
       <Filter>Contents\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="yaParryEffect.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -808,6 +811,9 @@
     </ClInclude>
     <ClInclude Include="yaSekiroCommons.h">
       <Filter>Contents\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaParryEffect.h">
+      <Filter>Contents\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

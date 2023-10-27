@@ -165,6 +165,7 @@ namespace ya
 			lightComp->SetAmbient(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
 		}
 
+
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground2");
@@ -223,10 +224,10 @@ namespace ya
 		}
 
 		{
-			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
-			//Transform* objTransform = obj->GetComponent<Transform>();
-			//objTransform->SetPosition(-85.f, 35.f, 130.f);
-			//objTransform->SetRotation(-90.f, 0.f, 0.f);
+			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			Transform* objTransform = obj->GetComponent<Transform>();
+			objTransform->SetPosition(-85.f, 35.f, 130.f);
+			objTransform->SetRotation(-90.f, 0.f, 0.f);
 		}
 		{
 			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::None, this);
@@ -240,8 +241,8 @@ namespace ya
 			m->Init(this);
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
-		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-10.0f, 0.0f, 10.0f)));
+		//mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
+		//mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-10.0f, 0.0f, 10.0f)));
 		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, -10.0f)));
 
 		Scene::Initialize();

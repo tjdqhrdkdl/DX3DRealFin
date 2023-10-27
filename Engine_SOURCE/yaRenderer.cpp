@@ -507,6 +507,14 @@ namespace ya::renderer
 
 		Resources::Insert<Shader>(L"DangerUIShader", DangerUIShader);
 #pragma endregion
+#pragma region AlphaAnimation Shader
+		std::shared_ptr<Shader> AlphaAnimationShader = std::make_shared<Shader>();
+		AlphaAnimationShader->Create(eShaderStage::VS, L"AlphaAnimationVS.hlsl", "main");
+		AlphaAnimationShader->Create(eShaderStage::PS, L"AlphaAnimationPS.hlsl", "main");
+		AlphaAnimationShader->SetDSState(eDSType::None);
+
+		Resources::Insert<Shader>(L"AlphaAnimationShader", AlphaAnimationShader);
+#pragma endregion
 #pragma region GRID SHADER
 		std::shared_ptr<Shader> gridShader = std::make_shared<Shader>();
 		gridShader->Create(eShaderStage::VS, L"GridVS.hlsl", "main");
@@ -771,6 +779,12 @@ namespace ya::renderer
 			, dangerUIShader->GetVSBlobBufferPointer()
 			, dangerUIShader->GetVSBlobBufferSize()
 			, dangerUIShader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> AlphaAnimationShader = Resources::Find<Shader>(L"AlphaAnimationShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, AlphaAnimationShader->GetVSBlobBufferPointer()
+			, AlphaAnimationShader->GetVSBlobBufferSize()
+			, AlphaAnimationShader->GetInputLayoutAddressOf());
 
 		std::shared_ptr<Shader> basicShader = Resources::Find<Shader>(L"BasicShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
