@@ -11,6 +11,7 @@
 #include "MathUtil.h"
 #include "yaConstantBuffer.h"
 
+
 namespace ya
 {
 	UINT32 Collider3D::_idGenerator = 0u;
@@ -26,7 +27,7 @@ namespace ya
 		, _otherOverlapping{ nullptr }
 		, _freezeRotationFlag{ FreezeRotationFlag::END }
 		, _enableDraw{ true }
-		, _mass(0.6f)
+		, _mass(1000.f)
 		, _restitution(0.f)
 		, _syncScaleToTransform(true)
 		, _staticFriction(180.f)
@@ -351,8 +352,9 @@ namespace ya
 				physx::PxRigidBody* rigidActor = actor->is<physx::PxRigidBody>();
 				if (rigidActor)
 				{
-					Transform* transform = GetOwner()->GetComponent<Transform>();
-					physx::PxRigidBodyExt::addForceAtPos(*rigidActor, MathUtil::vector3ToPx(force), MathUtil::vector3ToPx(transform->GetWorldPosition()));
+					rigidActor->addForce(MathUtil::vector3ToPx(force), physx::PxForceMode::eACCELERATION);
+					//Transform* transform = GetOwner()->GetComponent<Transform>();
+					//physx::PxRigidBodyExt::addForceAtPos(*rigidActor, MathUtil::vector3ToPx(force), MathUtil::vector3ToPx(transform->GetWorldPosition()));
 				}
 			}
 		}
@@ -454,7 +456,7 @@ namespace ya
 			_shape->getMaterials(&mtrl, 1u, 0u);
 			if (mtrl)
 			{
-				mtrl->setStaticFriction(_dynamicFriction);
+				mtrl->setDynamicFriction(_dynamicFriction);
 			}
 		}
 	}
@@ -470,6 +472,39 @@ namespace ya
 				dynamicRigid->setMaxLinearVelocity(maxVelocity);
 			}
 		}
+	}
+
+	void Collider3D::SetKinematic(bool enable)
+	{
+		if (_shape)
+		{
+			physx::PxRigidBody* rigid = _shape->getActor()->is<physx::PxRigidBody>();
+			if (rigid)
+			{
+				rigid->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, enable);
+			}
+		}
+	}
+
+	void Collider3D::Test()
+	{
+		if (_shape)
+		{
+			physx::PxRigidDynamic* dynamicRigid = _shape->getActor()->is<physx::PxRigidDynamic>();
+
+			physx::PxVec3 vel = dynamicRigid->getLinearVelocity();
+				
+			physx::PxMaterial* mtrl{};
+			_shape->getMaterials(&mtrl, 1u, 0u);
+			if (mtrl)
+			{
+				float df = mtrl->getDynamicFriction();
+				float sf = mtrl->getStaticFriction();
+			}
+			
+			int a = 3;
+		}
+
 	}
 
 

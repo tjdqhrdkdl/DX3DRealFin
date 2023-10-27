@@ -41,7 +41,7 @@ namespace ya
 		col->SetType(eColliderType::Box);
 		//col->SetCenter(Vector3(0.f, 8.0f, 0.f));
 
-		col->SetCenter(Vector3(0.f, 0.5f, 0.f));
+		//col->SetCenter(Vector3(0.f, 0.5f, 0.f));
 		col->SetSize(Vector3(0.8f, 3.4f, 0.8f));
 
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();

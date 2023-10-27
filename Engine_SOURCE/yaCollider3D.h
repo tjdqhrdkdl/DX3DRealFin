@@ -116,6 +116,10 @@ namespace ya
 		void SetLimitVelocity(float maxVelocity);
 		float GetLimitVelocity() const { return _maxVelocity; }
 
+		void SetKinematic(bool enable);
+
+		void Test();
+
 	private:
 		void syncPhysics();
 		void destroyShape() { _shape = nullptr; }

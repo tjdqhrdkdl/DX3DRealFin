@@ -128,6 +128,8 @@ namespace ya
 				playerAction->Move(playerTr->Forward(), 300.0f);
 		}
 
+		Vector3 vel = GetOwner()->GetComponent<Collider3D>()->GetVelocity();
+
 		switch (mAttackState)
 		{
 		case ya::PlayerAttackScript::eAttackState::None:

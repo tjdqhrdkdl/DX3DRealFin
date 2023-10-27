@@ -111,7 +111,7 @@ namespace ya
 
 
 		Player* player = object::Instantiate<Player>(eLayerType::Player, this);
-		player->GetComponent<Transform>()->SetLocalPosition(Vector3(30.0f, 0.0f, -30.0f));
+		player->GetComponent<Transform>()->SetLocalPosition(Vector3(30.0f, 30.f, -30.0f));
 		player->GetComponent<Transform>()->SetLocalScale(Vector3(1.0f, 1.0f, 1.0f));
 
 
@@ -120,7 +120,7 @@ namespace ya
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 		mr->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);*/
 
-		BoundarySphere* boundarySphere = player->AddComponent<BoundarySphere>();
+		//BoundarySphere* boundarySphere = player->AddComponent<BoundarySphere>();
 
 		camScript->SetTarget(player);
 		player->SetCamera(cameraObj);
@@ -138,19 +138,19 @@ namespace ya
 		}
 
 		{
-			GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
-			wall->SetName(L"wall");
-			Transform* wallTr = wall->GetComponent<Transform>();
-			wallTr->SetLocalPosition(Vector3(93.0f, 15.0f, 10.0f));
-			wallTr->SetLocalScale(Vector3(50.0f, 50.0f, 1.0f));
-			wallTr->SetLocalRotation(Vector3(0.0f, 90.0f, 0.0f));
-			MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
-			wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//GameObject* wall = object::Instantiate<GameObject>(eLayerType::Wall, this);
+			//wall->SetName(L"wall");
+			//Transform* wallTr = wall->GetComponent<Transform>();
+			//wallTr->SetLocalPosition(Vector3(93.0f, 15.0f, 10.0f));
+			//wallTr->SetLocalScale(Vector3(50.0f, 50.0f, 1.0f));
+			//wallTr->SetLocalRotation(Vector3(0.0f, 90.0f, 0.0f));
+			//MeshRenderer* wallRenderer = wall->AddComponent<MeshRenderer>();
+			//wallRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//wallRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 
 
-			Collider3D* wallCollider = wall->AddComponent<Collider3D>();
-			wallCollider->SetType(eColliderType::Box);
+			//Collider3D* wallCollider = wall->AddComponent<Collider3D>();
+			//wallCollider->SetType(eColliderType::Box);
 
 
 			//wall->AddComponent<WallScript>();
