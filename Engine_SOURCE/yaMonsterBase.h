@@ -139,7 +139,7 @@ namespace ya
         
         void SetPlayer2MonsterNormalize(Vec3 normal) { mPlayer2MonsterNormalize = normal; }
         Vec3 GetPlayer2MonsterNormalize() { return mPlayer2MonsterNormalize; }
-        
+
         Attack GetAttackParams() { return mAttackParams; }
 
         virtual void OnCollisionEnter(Collider2D* collider) = 0;

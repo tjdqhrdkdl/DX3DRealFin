@@ -44,7 +44,6 @@ namespace ya
 
 			mMonster2PlayerNormalize = mPlayerPos - monsterPos;
 			mMonster2PlayerNormalize.Normalize();
-
 			
 			Transform* playerTr = mPlayerObject->GetComponent<Transform>();
 			Vector3 playerPos = playerTr->GetPosition();
@@ -68,6 +67,11 @@ namespace ya
 					SetDeathBlow(false);
 					mPlayerObject->EraseDeathBlowTarget(this);
 				}
+			}
+			else if (mbRecognize && !(STATE_HAVE(MonsterState_Groggy)))
+			{
+				SetDeathBlow(false);
+				mPlayerObject->EraseDeathBlowTarget(this);
 			}
 			else
 			{
@@ -185,8 +189,6 @@ namespace ya
 			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
 			//	marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
 			//}
-
-
 		}
 
 		GameObject::Update();
