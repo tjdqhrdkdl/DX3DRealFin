@@ -499,6 +499,14 @@ namespace ya::renderer
 
 		Resources::Insert<Shader>(L"MeterShader", meterShader);
 #pragma endregion
+#pragma region DangerUI SHADER
+		std::shared_ptr<Shader> DangerUIShader = std::make_shared<Shader>();
+		DangerUIShader->Create(eShaderStage::VS, L"DangerUIVS.hlsl", "main");
+		DangerUIShader->Create(eShaderStage::PS, L"DangerUIPS.hlsl", "main");
+		DangerUIShader->SetDSState(eDSType::None);
+
+		Resources::Insert<Shader>(L"DangerUIShader", DangerUIShader);
+#pragma endregion
 #pragma region GRID SHADER
 		std::shared_ptr<Shader> gridShader = std::make_shared<Shader>();
 		gridShader->Create(eShaderStage::VS, L"GridVS.hlsl", "main");
@@ -758,6 +766,12 @@ namespace ya::renderer
 			, meterShader->GetVSBlobBufferSize()
 			, meterShader->GetInputLayoutAddressOf());
 
+		std::shared_ptr<Shader> dangerUIShader = Resources::Find<Shader>(L"DangerUIShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, dangerUIShader->GetVSBlobBufferPointer()
+			, dangerUIShader->GetVSBlobBufferSize()
+			, dangerUIShader->GetInputLayoutAddressOf());
+
 		std::shared_ptr<Shader> basicShader = Resources::Find<Shader>(L"BasicShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
 			, basicShader->GetVSBlobBufferPointer()
@@ -981,6 +995,9 @@ namespace ya::renderer
 
 		constantBuffers[(UINT)eCBType::HpMeter] = new ConstantBuffer(eCBType::HpMeter);
 		constantBuffers[(UINT)eCBType::HpMeter]->Create(sizeof(MeterCB));
+
+		constantBuffers[(UINT)eCBType::Time] = new ConstantBuffer(eCBType::Time);
+		constantBuffers[(UINT)eCBType::Time]->Create(sizeof(TimeCB));
 		
 
 #pragma endregion
@@ -1074,13 +1091,20 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"UIMaterial", uiMaterial);
 		#pragma endregion
 
-		#pragma region METER
+#pragma region METER
 		std::shared_ptr<Shader> meterShader = Resources::Find<Shader>(L"MeterShader");
 		std::shared_ptr<Material> meterMaterial = std::make_shared<Material>();
 		meterMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		meterMaterial->SetShader(meterShader);
 		Resources::Insert<Material>(L"MeterMaterial", meterMaterial);
-		#pragma endregion
+#pragma endregion
+#pragma region DangerUI
+		std::shared_ptr<Shader> dangerUIShader = Resources::Find<Shader>(L"DangerUIShader");
+		std::shared_ptr<Material> dangerUIMaterial = std::make_shared<Material>();
+		dangerUIMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		dangerUIMaterial->SetShader(dangerUIShader);
+		Resources::Insert<Material>(L"DangerUIMaterial", dangerUIMaterial);
+#pragma endregion
 		#pragma region GRID
 		std::shared_ptr<Shader> gridShader = Resources::Find<Shader>(L"GridShader");
 		std::shared_ptr<Material> gridMaterial = std::make_shared<Material>();

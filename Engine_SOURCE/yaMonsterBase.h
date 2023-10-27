@@ -92,6 +92,9 @@ namespace ya
 
         bool IsMonsterState(eMonsterState eState) { return STATE_HAVE(eState); }
 
+    public:
+        void SetAttackUnGuardable(bool b);
+
     public: // State GetSet
         State*  GetState() { return mMonsterState; }
         void    SetState(State* state) { mMonsterState = state; }

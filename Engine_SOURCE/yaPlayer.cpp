@@ -14,6 +14,7 @@
 
 #include "yaState.h"
 #include "yaPlayerHpTexture.h"
+#include "yaPlayerDangerUI.h"
 
 namespace ya
 {
@@ -143,8 +144,10 @@ namespace ya
 
 	void Player::CreatePlayerUI()
 	{		
-		PlayerHpTexture* mPlayerHpBar = object::Instantiate<PlayerHpTexture>(eLayerType::UI, GetScene());
-		mPlayerHpBar->SetPlayer(this);
+		mPlayerHpBar = object::Instantiate<PlayerHpTexture>(eLayerType::UI, GetScene());
+		mPlayerHpBar->SetPlayer(this);		
+		mPlayerDangerUI = object::Instantiate<PlayerDangerUI>(eLayerType::UI, GetScene());
+		mPlayerDangerUI->SetPlayer(this);
 	}
 
 	// block 상태가 얼마나 지속 되었는지 시간 return
@@ -208,6 +211,11 @@ namespace ya
 			return;
 		else
 			attack->EraseDeathBlowTarget(monster);
+	}
+
+	void Player::DangerUION()
+	{
+		mPlayerDangerUI->UIOn();
 	}
 
 }

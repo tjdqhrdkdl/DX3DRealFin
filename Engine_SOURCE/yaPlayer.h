@@ -57,8 +57,17 @@ namespace ya
 	private:
 		void CreatePlayerUI();
 
+		float GetBlockTime();
+
+		void SetDeathBlowTarget(MonsterBase* monster, float distance);
+		void EraseDeathBlowTarget(MonsterBase* monster);
+
+		void DangerUION();
 	private:
 		GameObject* mCamera;
+		class PlayerHpTexture* mPlayerHpBar;
+		class PlayerDangerUI* mPlayerDangerUI;
+
 
 		State* mState;
 		UINT mStateFlag;

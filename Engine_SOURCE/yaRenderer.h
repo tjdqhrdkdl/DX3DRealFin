@@ -153,6 +153,11 @@ namespace ya::renderer
 		float   Nul_1;
 		float   Nul_2;
 	};
+	CBUFFER(TimeCB, CBSLOT_METER)
+	{
+		float   time;
+		BOOL	isMain;
+	};
 
 
 	extern Vertex vertexes[4];

@@ -148,7 +148,7 @@ namespace ya
 
 			resCountObjTr->SetScale(Vector3(25, 25, 50.f));
 			resCountObjTr->SetPosition(Vector3(-30, 12, 0));
-			resCountObjTr->SetParent(UITr);
+			resCountObjTr->SetParent(UITr); 
 
 			MeshRenderer* meshRenderer = mMonsterResurectionCount2->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
