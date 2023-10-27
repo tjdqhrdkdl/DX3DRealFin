@@ -56,7 +56,7 @@ namespace ya
 		void initialize(void);
 		void update(float deltaTime);
 
-		//void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
+		void enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
 		void enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
 		void enableGravity(bool enable, Scene* scene, const Vector3& gravity) const;
 
@@ -101,7 +101,7 @@ namespace ya
 		physx::PxScene* _currentScene;
 		physx::PxMaterial* _material;
 		std::array<std::bitset<32>, 32> _collisionMask;
-		//std::array<std::bitset<32>, 32> _raycastMask;
+		std::array<std::bitset<32>, 32> _raycastMask;
 
 		//std::array<float, static_cast<UINT8>(UpdateInterval::END)> _intervals;
 		//UpdateInterval											   _currentInterval;

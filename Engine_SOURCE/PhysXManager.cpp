@@ -28,10 +28,10 @@ namespace ya
 		PhysxWrapper::getInstance().update(deltaTime);
 	}
 
-	//void PhysicsManager::enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
-	//{
-	//	PhysxWrapper::getInstance().enableRaycast(leftLayerIndex, rightLayerIndex, enable);
-	//}
+	void PhysicsManager::enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
+	{
+		PhysxWrapper::getInstance().enableRaycast(leftLayerIndex, rightLayerIndex, enable);
+	}
 
 	void PhysicsManager::enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
 	{

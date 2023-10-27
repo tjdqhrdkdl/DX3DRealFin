@@ -263,11 +263,11 @@ namespace ya
 		}
 	}
 
-	//void PhysxWrapper::enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
-	//{
-	//	_raycastMask[leftLayerIndex][rightLayerIndex] = enable;
-	//	_raycastMask[rightLayerIndex][leftLayerIndex] = enable;
-	//}
+	void PhysxWrapper::enableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
+	{
+		_raycastMask[leftLayerIndex][rightLayerIndex] = enable;
+		_raycastMask[rightLayerIndex][leftLayerIndex] = enable;
+	}
 
 	void PhysxWrapper::enableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
 	{
@@ -338,7 +338,7 @@ namespace ya
 		//assert(iter == _scenes.end());
 
 		PxSceneDesc sceneDescription = PxSceneDesc{ _physics->getTolerancesScale() };
-		sceneDescription.gravity = PxVec3{ 0.f, -0.5f, 0.f };
+		sceneDescription.gravity = PxVec3{ 0.f, -9.8f, 0.f };
 		sceneDescription.cpuDispatcher = _dispatcher;
 		sceneDescription.filterShader = &PhysxWrapper::FilterShader;
 		sceneDescription.simulationEventCallback = this;
@@ -497,7 +497,8 @@ namespace ya
 		}
 	}
 
-	PxFilterFlags PhysxWrapper::FilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
+	PxFilterFlags PhysxWrapper::FilterShader(
+		physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
 		physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
 		physx::PxPairFlags& pairFlags,
 		const void* constantBlock, physx::PxU32 constantBlockSize)
@@ -505,6 +506,7 @@ namespace ya
 		// let triggers through
 		if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
 		{
+			//word0(자신 + 상대방 Mask와 비트 & 연산해서 있을 경우 trigger 반환
 			if ((filterData0.word0 & filterData1.word1) || (filterData1.word0 & filterData0.word1))
 				pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
 			else
@@ -519,6 +521,7 @@ namespace ya
 		{
 			pairFlags = PxPairFlag::eCONTACT_DEFAULT;
 			pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_CONTACT_POINTS;
+
 			return PxFilterFlag::eDEFAULT;
 		}
 
@@ -539,7 +542,8 @@ namespace ya
 		//RayCast 레이어를 등록
 		PxFilterData queryFilterData{};
 		queryFilterData.word0 = layer.to_ulong();					   // word0 = own ID
-		//queryFilterData.word1 = _raycastMask[layerIndex].to_ulong(); // word1 = ID mask to filter pairs that trigger a contact callback
+		queryFilterData.word1 = _raycastMask[layerIndex].to_ulong(); // word1 = ID mask to filter pairs that trigger a contact callback
+
 		shape->setQueryFilterData(queryFilterData);
 	}
 

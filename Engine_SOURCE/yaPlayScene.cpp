@@ -375,6 +375,7 @@ namespace ya
 		}
 
 		PhysicsManager::enableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);
+		PhysicsManager::enableRaycast((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);
 
 	}
 }
