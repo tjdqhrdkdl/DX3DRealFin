@@ -61,11 +61,11 @@ namespace ya::enums
 		Mesh,
 		Texture,
 		Material,
-		Animation,
 		Sound,
 		/*Font,*/
 		Prefab,
 		MeshData,
+		AnimationData,
 		GraphicShader,
 		ComputeShader,
 		AudioClip,
