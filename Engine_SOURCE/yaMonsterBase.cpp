@@ -211,13 +211,6 @@ namespace ya
 		mMonsterState->SetDeathBlow(false);
 	}
 
-	/// Monster Reset
-	void MonsterBase::Reset()
-	{
-		// state 리셋
-		mMonsterState->SetHPMax(mOriginSetting.state.GetHPMax());
-		mMonsterState->SetHp(mOriginSetting.state.GetHP());
-
 	void MonsterBase::SetAttackUnGuardable(bool b)
 	{
 		mAttackParams.unGuardable = b;
@@ -225,18 +218,12 @@ namespace ya
 			mPlayerObject->DangerUION();
 	}
 
-	void MonsterBase::CreateMonsterState()
+	/// Monster Reset
+	void MonsterBase::Reset()
 	{
-		if (nullptr == mMonsterState)
-		{
-			mMonsterState = new State();
-
-
-			mMonsterState->SetSituation(enums::eSituation::None);
-			mMonsterState->SetHPMax(20.0f);				//HP 총 량
-			mMonsterState->SetHp(20.0f);				//
-
-
+		// state 리셋
+		mMonsterState->SetHPMax(mOriginSetting.state.GetHPMax());
+		mMonsterState->SetHp(mOriginSetting.state.GetHP());
 
 		mMonsterState->SetSpeed(mOriginSetting.state.GetSpeed());
 		mMonsterState->SetDeathBlow(false);
