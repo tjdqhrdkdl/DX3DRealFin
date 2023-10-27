@@ -78,9 +78,6 @@ namespace ya
         Collider2D* mCollider;
         class ActionScript* mActionScript;
 
-        int mBeforeState;
-        int mState;
-
         std::wstring mAnimationName;
 
         float mAlertTime;

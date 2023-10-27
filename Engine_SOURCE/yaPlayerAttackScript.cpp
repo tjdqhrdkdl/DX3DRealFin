@@ -21,7 +21,8 @@
 #include "yaApplication.h"
 
 #include "yaSwordMan.h"
-#include "yaMusketeerman.h"
+#include "yaAshinaSoldier.h"
+#include "yaAshinaSpearMan.h"
 #include "yaTenzen.h"
 
 extern ya::Application application;
@@ -866,7 +867,7 @@ namespace ya
 		Vector3 quaterTheta = quaterToEuler * 180.0f / XM_PI;
 
 		playerTr->SetRotation(Vector3(0.0f, playerTr->GetRotation().y + quaterTheta.y, 0.0f));
-
+		playerTr->Update();
 
 		// 인살 가능한 몬스터가 있는 상태일때
 		// 몬스터 
@@ -882,7 +883,7 @@ namespace ya
 				//암살 인살
 			}
 		}
-		else if (dynamic_cast<Musketeerman*>(monster) != nullptr)
+		else if (dynamic_cast<AshinaSoldier*>(monster) != nullptr)
 		{
 			if (monster->IsRecognize())
 			{
@@ -892,6 +893,23 @@ namespace ya
 			{
 				//암살 인살
 			}
+			EraseDeathBlowTarget(monster);
+			mDeathBlowTarget = nullptr;
+			monster->DeathBlow();
+		}
+		else if (dynamic_cast<AshinaSpearMan*>(monster) != nullptr)
+		{
+			if (monster->IsRecognize())
+			{
+				mPlayerAnim->Play(L"a200_510000");
+			}
+			else
+			{
+				//암살 인살
+			}
+			EraseDeathBlowTarget(monster);
+			mDeathBlowTarget = nullptr;
+			monster->DeathBlow();
 		}
 		else if (dynamic_cast<Tenzen*>(monster) != nullptr)
 		{

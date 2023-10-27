@@ -10,6 +10,11 @@ extern ya::Application application;
 #include "yaPlayer.h"
 
 
+#define STATE_HAVE(STATE) (mState & STATE) == STATE
+#define ADD_STATE(STATE) mState |= STATE
+#define RM_STATE(STATE) mState &= ~STATE
+
+#define BEFORE_STATE_HAVE(STATE) (mBeforeState & STATE) == STATE
 namespace ya
 {
 	MonsterBase::MonsterBase()
@@ -64,7 +69,7 @@ namespace ya
 			float dist = playerPos.Distance(playerPos, pos);
 
 			// 인식 안됐을때 거리 이내일 경우 인살 가능 상태가 된다
-			if (!mbRecognize)
+			if (!mbRecognize && !(STATE_HAVE(MonsterState_OnHit)))
 			{
 				if(dist < 2.0f)
 				{

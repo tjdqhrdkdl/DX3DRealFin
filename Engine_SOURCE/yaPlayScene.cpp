@@ -20,6 +20,7 @@
 #include "yaSwordMan.h"
 #include "yaTenzen.h"
 #include "yaAshinaSoldier.h"
+#include "yaAshinaSpearMan.h"
 
 #include "MapObjects.h"
 #include "yaBoundarySphere.h"
@@ -161,7 +162,7 @@ namespace ya
 			lightComp->SetType(eLightType::Directional);
 			lightComp->SetDiffuse(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+			lightComp->SetAmbient(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
 		}
 
 		{
@@ -239,8 +240,9 @@ namespace ya
 			m->Init(this);
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
+		object::Instantiate<Tenzen>(eLayerType::Monster, this)->GetComponent<Transform>()->SetPosition(Vector3(0,0,10))		;
 		//object::Instantiate<AshinaSoldier>(eLayerType::Monster, this);
-		object::Instantiate<Tenzen>(eLayerType::Monster, this);
+		//object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this)->GetComponent<Transform>()->SetPosition(Vector3(-5, 0, 0));
 
 		Scene::Initialize();
 	}
