@@ -177,6 +177,7 @@ call CopyDLL.bat $(Configuration)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CSVEditor.h" />
+    <ClInclude Include="GroundCheckScript.h" />
     <ClInclude Include="PhysXPlayerScript.h" />
     <ClInclude Include="EnumFlags.h" />
     <ClInclude Include="MapObjects.h" />
@@ -293,6 +294,7 @@ call CopyDLL.bat $(Configuration)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CSVEditor.cpp" />
+    <ClCompile Include="GroundCheckScript.cpp" />
     <ClCompile Include="PhysXPlayerScript.cpp" />
     <ClCompile Include="MapObjects.cpp" />
     <ClCompile Include="MathUtil.cpp" />

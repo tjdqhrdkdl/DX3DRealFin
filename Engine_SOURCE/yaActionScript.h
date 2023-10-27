@@ -42,6 +42,7 @@ namespace ya
 		GameObject* mTarget;
 		GameObject* mCheck;
 
+
 		class Transform* mTransform;
 		class Rigidbody* mRigidbody;
 		class Collider3D* mCollider;

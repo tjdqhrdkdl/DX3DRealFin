@@ -51,6 +51,8 @@ namespace ya
 		GameObject* obj = GetOwner();
 		assert(obj != nullptr);
 
+
+
 		mTransform = obj->GetComponent<Transform>();
 		mCollider = obj->GetComponent<Collider3D>();
 		mActionScript = obj->GetScript<ActionScript>();

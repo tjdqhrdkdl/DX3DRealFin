@@ -274,7 +274,7 @@ namespace ya
 		//GameObject* owner, Vector3 position, Vector3 direction, float length, std::vector<eLayerType> layers
 
 		//Ray 거리가 적혀있지 않아서 일단 1000으로 설정했습니다.
-		CollisionManager::Raycast((UINT32)eLayerType::Ground, mDelayedTargetPos, direction, 1000.f, &hit);
+		CollisionManager::Raycast(GetOwner()->GetLayerType(), mDelayedTargetPos, direction, 1000.f, &hit);
 
 		if (hit.gameObject && hit.hitDistance < mDistFromTarget)
 		{
@@ -282,7 +282,7 @@ namespace ya
 		}
 		
 		//Ray 거리가 적혀있지 않아서 일단 1000으로 설정했습니다.
-		CollisionManager::Raycast((UINT32)eLayerType::Wall, mDelayedTargetPos, direction, 1000.f, &hit);
+		CollisionManager::Raycast(GetOwner()->GetLayerType(), mDelayedTargetPos, direction, 1000.f, &hit);
 		if (hit.gameObject && hit.hitDistance < mDistFromTarget)
 		{
 			mChildPos = direction * hit.hitDistance - direction;

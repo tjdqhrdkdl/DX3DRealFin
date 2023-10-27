@@ -316,6 +316,7 @@
     <ClCompile Include="TestCameraScript.cpp">
       <Filter>Contents\PhysXDebug</Filter>
     </ClCompile>
+    <ClCompile Include="GroundCheckScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -662,6 +663,7 @@
     <ClInclude Include="TestCameraScript.h">
       <Filter>Contents\PhysXDebug</Filter>
     </ClInclude>
+    <ClInclude Include="GroundCheckScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

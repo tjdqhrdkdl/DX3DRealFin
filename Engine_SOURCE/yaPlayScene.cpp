@@ -95,6 +95,8 @@ namespace ya
 		CollisionManager::EnableRaycast(eLayerType::Camera, eLayerType::Ground, true);
 		CollisionManager::EnableRaycast(eLayerType::Camera, eLayerType::Wall, true);
 
+		CollisionManager::EnableRaycast(eLayerType::Player, eLayerType::Monster, true);
+		//CollisionManager::EnableRaycast(GetOwner()->GetLayerType(), (UINT32)eLayerType::HangingObject, true);
 
 
 		// Main Camera Game Object

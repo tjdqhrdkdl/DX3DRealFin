@@ -25,7 +25,7 @@ namespace gui
 			return;
 
 		ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
-		ya::Collider2D* col = GetTarget()->GetComponent<ya::Collider2D>();
+		ya::Collider3D* col = GetTarget()->GetComponent<ya::Collider3D>();
 
 		mPosition = tr->GetLocalPosition();
 		mRotation = tr->GetLocalRotation();

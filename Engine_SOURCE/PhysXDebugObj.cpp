@@ -34,7 +34,7 @@ namespace ya
 			Transform* tr = GetComponent<Transform>();
 
 			RaycastHit outhit{};
-			CollisionManager::Raycast((UINT32)eLayerType::Ground, tr->GetWorldPosition(), tr->Forward(), 1000.f, &outhit);
+			CollisionManager::Raycast(eLayerType::Ground, tr->GetWorldPosition(), tr->Forward(), 1000.f, &outhit);
 
 			int k = 3;
 		}

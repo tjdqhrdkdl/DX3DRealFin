@@ -47,7 +47,7 @@ void ya::HangingScript::DoHanging(GameObject* _otherObj, const Vector3& _hitPoin
 
 
 	RaycastHit hit{};
-	CollisionManager::EnableRaycast((UINT32)GetOwner()->GetLayerType(), (UINT32)eLayerType::HangingObject, true);
+	
 
 	CollisionManager::Raycast(eLayerType::HangingObject, objPos, direction, 10000.f, &hit);
 
