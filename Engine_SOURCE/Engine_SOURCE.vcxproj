@@ -271,6 +271,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaPlayerActionScript.h" />
     <ClInclude Include="yaPlayerProjectileScript.h" />
     <ClInclude Include="StrConverter.h" />
+    <ClInclude Include="yaSekiroCommons.h" />
     <ClInclude Include="yaSoldierSwordScript.h" />
     <ClInclude Include="yaSpearManSwordScript.h" />
     <ClInclude Include="yaSwordManSwordScript.h" />
@@ -291,7 +292,6 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaSwordMan.h" />
     <ClInclude Include="yaSpriteRenderer.h" />
     <ClInclude Include="yaStructedBuffer.h" />
-    <ClInclude Include="yaSwordsman.h" />
     <ClInclude Include="yaTenzen.h" />
     <ClInclude Include="yaMonsterCollisionScript.h" />
     <ClInclude Include="yaTenzenSwordScript.h" />
@@ -426,7 +426,6 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaSwordMan.cpp" />
     <ClCompile Include="yaSpriteRenderer.cpp" />
     <ClCompile Include="yaStructedBuffer.cpp" />
-    <ClCompile Include="yaSwordsman.cpp" />
     <ClCompile Include="yaTenzen.cpp" />
     <ClCompile Include="yaMonsterCollisionScript.cpp" />
     <ClCompile Include="yaTenzenSwordScript.cpp" />
@@ -441,9 +440,6 @@ call CopyDLL.bat $(Configuration)</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="loadanimation.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
