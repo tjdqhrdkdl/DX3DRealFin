@@ -176,7 +176,7 @@ namespace ya
 		mCollider->SetCenter(Vector3(0.f, 0.f, 0.f));
 
 		//리지드 바디 , 액션 스크립트
-		AddComponent<Rigidbody>()->SetFriction(180);
+		AddComponent<Rigidbody>()->SetDynamicFriction(180.f);
 		AddComponent<TenzenCollisionScript>();
 		mActionScript = AddComponent<ActionScript>();
 

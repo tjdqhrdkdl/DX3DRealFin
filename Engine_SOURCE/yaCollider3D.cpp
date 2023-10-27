@@ -26,16 +26,13 @@ namespace ya
 		, _otherOverlapping{ nullptr }
 		, _freezeRotationFlag{ FreezeRotationFlag::END }
 		, _enableDraw{ true }
-		, _mass(100.f)
+		, _mass(0.6f)
 		, _restitution(0.f)
 		, _syncScaleToTransform(true)
-		//, _positionBuffer()
-		//, _wireFrameBuffer()
+		, _staticFriction(180.f)
+		, _dynamicFriction(180.f)
+		, _maxVelocity(40.f)
 	{
-		//_positionBuffer = renderer::constantBuffers[(UINT)eCBType::Transform];
-		//_wireFrameBuffer = renderer::constantBuffers[(UINT)eCBType::WireFrame];
-		//_mesh = Resources::Find<Mesh>(strKeys::mesh::CubeMesh);
-		//_shader = Resources::Find<Shader>(strKeys::shader::PhysXDebugShader);
 	}
 
 	Collider3D::~Collider3D()
@@ -75,9 +72,12 @@ namespace ya
 			PhysxWrapper::getInstance().changeGeometry(this, _shape, _type);
 		}
 
-		setMass(_mass);
-		setRestitution(_restitution);
+		SetMass(_mass);
+		SetRestitution(_restitution);
 		EnableGravity(_isGravityEnabled);
+		SetStaticFriction(_staticFriction);
+		SetDynamicFriction(_dynamicFriction);
+		SetLimitVelocity(_maxVelocity);
 		
 		//_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
 	}
@@ -341,18 +341,41 @@ namespace ya
 		return false;
 	}
 
-	void Collider3D::addForce(const Vector3& force)
+	void Collider3D::AddForce(const Vector3& force)
 	{
-		physx::PxActor* actor = _shape->getActor();
-		assert(actor);
-		physx::PxRigidBody* rigidActor = actor->is<physx::PxRigidBody>();
-		assert(rigidActor);
-
-		Transform* transform = GetOwner()->GetComponent<Transform>();
-		physx::PxRigidBodyExt::addForceAtPos(*rigidActor, MathUtil::vector3ToPx(force), MathUtil::vector3ToPx(transform->GetWorldPosition()));
+		if (_shape)
+		{
+			physx::PxActor* actor = _shape->getActor();
+			if (actor)
+			{
+				physx::PxRigidBody* rigidActor = actor->is<physx::PxRigidBody>();
+				if (rigidActor)
+				{
+					Transform* transform = GetOwner()->GetComponent<Transform>();
+					physx::PxRigidBodyExt::addForceAtPos(*rigidActor, MathUtil::vector3ToPx(force), MathUtil::vector3ToPx(transform->GetWorldPosition()));
+				}
+			}
+		}
 	}
 
-	void Collider3D::setMass(float mass)
+	void Collider3D::ClearForce()
+	{
+		if (_shape)
+		{
+			physx::PxActor* actor = _shape->getActor();
+			if (actor)
+			{
+				physx::PxRigidBody* rigidActor = actor->is<physx::PxRigidBody>();
+				if (rigidActor)
+				{
+					rigidActor->clearForce();
+				}
+			}
+		}
+	}
+
+
+	void Collider3D::SetMass(float mass)
 	{
 		_mass = mass;
 		if (_shape)
@@ -365,12 +388,7 @@ namespace ya
 		}
 	}
 
-	float Collider3D::getMass(void) const
-	{
-		return _shape->getActor()->is<physx::PxRigidBody>()->getMass();
-	}
-
-	void Collider3D::setRestitution(float restitution)
+	void Collider3D::SetRestitution(float restitution)
 	{
 		_restitution = restitution;
 		if (_shape)
@@ -383,6 +401,77 @@ namespace ya
 			}
 		}
 	}
+
+	void Collider3D::SetVelocity(const Vector3& _velocity)
+	{
+		if (_shape)
+		{
+			physx::PxRigidDynamic* dynamicRigid = _shape->getActor()->is<physx::PxRigidDynamic>();
+			if (dynamicRigid)
+			{
+				dynamicRigid->setLinearVelocity(MathUtil::vector3ToPx(_velocity));
+			}
+		}
+	}
+
+	Vector3 Collider3D::GetVelocity() const
+	{
+		Vector3 retVec{};
+
+		if (_shape)
+		{
+			physx::PxRigidDynamic* dynamicRigid = _shape->getActor()->is<physx::PxRigidDynamic>();
+			if (dynamicRigid)
+			{
+				retVec = MathUtil::pxToVector3(dynamicRigid->getLinearVelocity());
+			}
+		}
+
+		return retVec;
+	}
+
+	void Collider3D::SetStaticFriction(float staticFriction)
+	{
+		_staticFriction = staticFriction;
+		if (_shape)
+		{
+			physx::PxMaterial* mtrl{};
+			_shape->getMaterials(&mtrl, 1u, 0u);
+			if (mtrl)
+			{
+				mtrl->setStaticFriction(_staticFriction);
+			}
+		}
+	}
+
+
+	void Collider3D::SetDynamicFriction(float dynamicFriction)
+	{
+		_dynamicFriction = dynamicFriction;
+		if (_shape)
+		{
+			physx::PxMaterial* mtrl{};
+			_shape->getMaterials(&mtrl, 1u, 0u);
+			if (mtrl)
+			{
+				mtrl->setStaticFriction(_dynamicFriction);
+			}
+		}
+	}
+
+	void Collider3D::SetLimitVelocity(float maxVelocity)
+	{
+		_maxVelocity = maxVelocity;
+		if (_shape)
+		{
+			physx::PxRigidDynamic* dynamicRigid = _shape->getActor()->is<physx::PxRigidDynamic>();
+			if (dynamicRigid)
+			{
+				dynamicRigid->setMaxLinearVelocity(maxVelocity);
+			}
+		}
+	}
+
 
 	void Collider3D::syncPhysics()
 	{

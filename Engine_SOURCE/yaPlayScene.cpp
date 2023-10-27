@@ -365,7 +365,7 @@ namespace ya
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
 			coll3D->SetSize(Vector3(30.f, 30.f, 30.f));
-			coll3D->setMass(50000.f);
+			coll3D->SetMass(50000.f);
 			coll3D->SetType(eColliderType::Box);
 			coll3D->EnableGravity(true);
 		}

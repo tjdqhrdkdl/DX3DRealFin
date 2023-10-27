@@ -927,7 +927,7 @@ namespace ya
 				mPlayer->SetStateFlag(ePlayerState::Hang, false);
 				mPlayerAnim->Play(L"a000_217620");
 
-				mRigidbody->SetGrounded(false);
+				//mRigidbody->SetGrounded(false);
 			}
 		}
 	}

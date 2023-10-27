@@ -55,30 +55,30 @@ namespace ya
 		mRigidbody = obj->GetComponent<Rigidbody>();
 		mCollider = obj->GetComponent<Collider3D>();
 
-		WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::WallCheckCollision, obj->GetScene());
-		assert(checkObj != nullptr);
-		mCheck = checkObj;
-		checkObj->SetName(L"WallCheck");
-		checkObj->SetParentObj(obj);
+		//WallCheckObject* checkObj = object::Instantiate<WallCheckObject>(eLayerType::WallCheckCollision, obj->GetScene());
+		//assert(checkObj != nullptr);
+		//mCheck = checkObj;
+		//checkObj->SetName(L"WallCheck");
+		//checkObj->SetParentObj(obj);
 
-		Transform* checkTransform = mCheck->GetComponent<Transform>();
-		checkTransform->SetLocalScale(mTransform->GetLocalScale());
+		//Transform* checkTransform = mCheck->GetComponent<Transform>();
+		//checkTransform->SetLocalScale(mTransform->GetLocalScale());
 
-		Collider3D* checkCol = mCheck->AddComponent<Collider3D>();
+		//Collider3D* checkCol = mCheck->AddComponent<Collider3D>();
 
-		Collider3D* ownerCol = obj->GetComponent<Collider3D>();
-		if (ownerCol != nullptr)
-		{
-			checkCol->SetType(ownerCol->GetCollider3DType());
-			checkCol->SetCenter(ownerCol->GetCenter());
-			checkCol->SetSize(ownerCol->GetSize());
-		}
-		else
-		{
-			checkCol->SetType(eColliderType::Box);
-			checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
-			checkCol->SetCenter(Vector3(1.0, 3.0f, 1.0f));
-		}
+		//Collider3D* ownerCol = obj->GetComponent<Collider3D>();
+		//if (ownerCol != nullptr)
+		//{
+		//	checkCol->SetType(ownerCol->GetCollider3DType());
+		//	checkCol->SetCenter(ownerCol->GetCenter());
+		//	checkCol->SetSize(ownerCol->GetSize());
+		//}
+		//else
+		//{
+		//	checkCol->SetType(eColliderType::Box);
+		//	checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
+		//	checkCol->SetCenter(Vector3(1.0, 3.0f, 1.0f));
+		//}
 	}
 
 	void ActionScript::Update()
@@ -112,8 +112,8 @@ namespace ya
 	/// <param name="velocity">최대속도</param>
 	void ActionScript::Velocity(const float velocity)
 	{
-		Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
-		mRigidbody->SetLimitVelocity(Vector3(velocity, limitVelocity.y, velocity));
+		//Vector3 limitVelocity = mRigidbody->GetLimitVelocity();
+		mRigidbody->SetLimitVelocity(velocity);
 	}
 
 	/// <summary> owner rigidbody를 통한 이동 </summary>

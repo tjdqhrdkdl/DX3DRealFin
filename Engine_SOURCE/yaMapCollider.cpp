@@ -28,7 +28,7 @@ namespace ya
 	}
 	void MapCollider::AddWallCollider(Vector3 transform, Vector3 rotation, Vector3 size)
 	{
-		GameObject* obj = object::Instantiate<GameObject>(eLayerType::Wall);
+		GameObject* obj = object::Instantiate<GameObject>(eLayerType::Wall, SceneManager::GetScene(eSceneType::Play));
 		std::wstring num = std::to_wstring(mWallCount++);
 		obj->SetName(mWalkerName + L"_WallCollider_" + num);
 		Collider3D* col3D = obj->AddComponent<Collider3D>();
@@ -39,11 +39,13 @@ namespace ya
 		tr->SetLocalPosition(transform);
 		tr->SetLocalRotation(rotation);
 		tr->SetLocalScale(size);
-		obj->AddComponent<WallScript>();
+
+		col3D->SetSize(size);
+		//obj->AddComponent<WallScript>();
 	}
 	void MapCollider::AddGroundCollider(Vector3 transform, Vector3 rotation, Vector3 size)
 	{
-		GameObject* obj = object::Instantiate<GameObject>(eLayerType::Wall);
+		GameObject* obj = object::Instantiate<GameObject>(eLayerType::Wall, SceneManager::GetScene(eSceneType::Play));
 		std::wstring num = std::to_wstring(mGroundCount++);
 		obj->SetName(mWalkerName + L"_GroundCollider_" + num);
 		obj->AddComponent<Collider3D>()->SetType(eColliderType::Box, true);

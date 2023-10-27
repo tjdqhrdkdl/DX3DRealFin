@@ -92,16 +92,29 @@ namespace ya
 		void setFreezeRotation(FreezeRotationFlag flag, bool enable);
 		bool hasFlag(FreezeRotationFlag flag) const;
 
-		void addForce(const Vector3& force);
+		void AddForce(const Vector3& force);
+		void ClearForce();
 
 		void setEnableDebugDraw(bool enable) { _enableDraw = enable; }
 		bool isDrawDebug(void) const { return _enableDraw; }
 
-		void  setMass(float mass);
-		float getMass(void) const;
+		void  SetMass(float mass);
+		float GetMass(void) const { return _mass; };
 
-		void setRestitution(float restitution);
-		float getRestitution() const { return _restitution; }
+		void SetRestitution(float restitution);
+		float GetRestitution() const { return _restitution; }
+
+		void SetVelocity(const Vector3& _velocity);
+		Vector3 GetVelocity() const;
+
+		void SetStaticFriction(float staticFriction);
+		float GetStaticFriction() const { return _staticFriction; }
+
+		void SetDynamicFriction(float dynamicFriction);
+		float GetDynamicFriction() const { return _dynamicFriction; }
+
+		void SetLimitVelocity(float maxVelocity);
+		float GetLimitVelocity() const { return _maxVelocity; }
 
 	private:
 		void syncPhysics();
@@ -116,8 +129,12 @@ namespace ya
 		Vector3		 _offsetScale;
 		UINT32		 _collisionCount;
 		Matrix		 _worldMatrix;
+
 		float		 _mass;
 		float		 _restitution;
+		float		 _staticFriction;
+		float		 _dynamicFriction;
+		float		 _maxVelocity;
 		
 
 		renderer::WireFrameCB						_wireFrameData;
