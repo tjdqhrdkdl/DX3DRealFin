@@ -103,6 +103,7 @@ namespace ya
         float	GetAlertnessCount() { return mAlertnessCount; }
         void	SetAlertnessCount(float count) { mAlertnessCount = count; }
 
+        void SetAttackUnGuardable(bool b);
 
     public: // State GetSet
         void    CreateMonsterState();

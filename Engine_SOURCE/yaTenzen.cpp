@@ -294,7 +294,7 @@ namespace ya
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 				* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-					+ GetComponent<Transform>()->GetFinalScale().z / 2 + 0.5));
+					+ GetComponent<Transform>()->GetFinalScale().z / 2 + (float)0.5));
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);

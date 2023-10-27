@@ -395,6 +395,12 @@
     <ClCompile Include="yaSpearManSwordScript.cpp">
       <Filter>Contents\Monster\AshinaSoldier</Filter>
     </ClCompile>
+    <ClCompile Include="yaPlayerDangerUI.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerDagerUIScript.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -795,6 +801,12 @@
     </ClInclude>
     <ClInclude Include="yaSpearManSwordScript.h">
       <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerDangerUI.h">
+      <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerDagerUIScript.h">
+      <Filter>Contents\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

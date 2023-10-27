@@ -240,9 +240,9 @@ namespace ya
 			m->Init(this);
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		object::Instantiate<Tenzen>(eLayerType::Monster, this)->GetComponent<Transform>()->SetPosition(Vector3(0,0,10))		;
+		//object::Instantiate<Tenzen>(eLayerType::Monster, this)->GetComponent<Transform>()->SetPosition(Vector3(0,0,10))		;
 		//object::Instantiate<AshinaSoldier>(eLayerType::Monster, this);
-		//object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this)->GetComponent<Transform>()->SetPosition(Vector3(-5, 0, 0));
+		object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this)->GetComponent<Transform>()->SetPosition(Vector3(-5, 0, 0));
 
 		Scene::Initialize();
 	}

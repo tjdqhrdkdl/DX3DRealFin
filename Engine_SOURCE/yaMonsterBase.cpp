@@ -8,6 +8,7 @@ extern ya::Application application;
 
 
 #include "yaPlayer.h"
+#include "yaPlayerDangerUI.h"
 
 
 #define STATE_HAVE(STATE) (mState & STATE) == STATE
@@ -546,6 +547,13 @@ namespace ya
 		mMonsterState->SetDeathBlow(false);
 	}
 
+
+	void MonsterBase::SetAttackUnGuardable(bool b)
+	{
+		mAttackParams.unGuardable = b;
+		if (b)
+			mPlayerObject->DangerUION();
+	}
 
 	void MonsterBase::CreateMonsterState()
 	{
