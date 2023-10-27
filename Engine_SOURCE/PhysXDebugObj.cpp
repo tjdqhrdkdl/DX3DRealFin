@@ -1,5 +1,7 @@
 #include "PhysXDebugObj.h"
 #include "PhysXPlayerScript.h"
+#include "PhysXManager.h"
+#include "PhysXWrapper.h"
 
 namespace ya
 {
@@ -17,10 +19,26 @@ namespace ya
 		tr->SetLocalScale(Vector3(100.f));
 
 		Collider3D* col3d = AddComponent<Collider3D>();
-		col3d->SetType(eColliderType::Box);
+		col3d->setType(eColliderType::Box);
 		
 
 		GameObject::Initialize();
+	}
+
+	void PhysXDebugObj::FixedUpdate()
+	{
+		GameObject::FixedUpdate();
+
+		if (GetName() == L"testObj")
+		{
+			Transform* tr = GetComponent<Transform>();
+
+			RaycastHit outhit{};
+			PhysicsManager::raycast((UINT32)eLayerType::Ground, tr->GetWorldPosition(), tr->Forward(), 1000.f, &outhit);
+
+			int k = 3;
+		}
+		
 	}
 
 }

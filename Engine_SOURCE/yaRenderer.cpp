@@ -480,7 +480,7 @@ namespace ya::renderer
 		std::vector<UINT> indices = { 0, 1 };
 		lineMesh->CreateIndexBuffer(indices.data(), indices.size());
 		
-		Resources::Insert<Mesh>(L"LineMesh", mesh);
+		Resources::Insert<Mesh>(strKeys::mesh::LineMesh, lineMesh);
 #pragma endregion
 
 #pragma region Cylinder

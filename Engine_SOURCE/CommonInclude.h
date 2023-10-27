@@ -28,6 +28,8 @@ STRKEY gMapPath = L"..\\..\\Resources\\Map\\Mesh";
 #define arraysize(a) (sizeof(a) / sizeof(a[0]))
 #define NOTIFICATION_W(_wstr) MessageBoxW(nullptr, _wstr, L"알림", MB_OK)
 
+constexpr float gDegreeToRadFactor = 3.141592654f / 180.f;
+constexpr float gRadToDegreeFactor = 180.f / 3.141592654f;
 
 
 

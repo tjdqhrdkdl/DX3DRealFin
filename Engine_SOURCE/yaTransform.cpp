@@ -4,8 +4,7 @@
 
 namespace ya
 {
-	constexpr float gDegreeToRadFactor = XM_PI / 180.f;
-	constexpr float gRadToDegreeFactor = 180.f / XM_PI;
+
 
 
 	Transform::Transform()

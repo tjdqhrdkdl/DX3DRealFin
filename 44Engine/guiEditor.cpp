@@ -35,71 +35,61 @@ namespace gui
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		mDebugObjects.resize((UINT)eColliderType::End);
 
-		
+		std::shared_ptr<ya::Mesh> rectMesh = ya::Resources::Find<ya::Mesh>(L"DebugRectMesh");
 		std::shared_ptr<ya::Material> material = ya::Resources::Find<Material>(L"DebugMaterial");
 
-		{
-			std::shared_ptr<ya::Mesh> rectMesh = ya::Resources::Find<ya::Mesh>(L"DebugRectMesh");
-			mDebugObjects[(UINT)eColliderType::Rect] = new DebugObject();
-			ya::MeshRenderer* renderer
-				= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<ya::MeshRenderer>();
-			renderer->SetMesh(rectMesh);
-			renderer->SetMaterial(material, 0);
-		}
+		mDebugObjects[(UINT)eColliderType::Rect] = new DebugObject();
+		ya::MeshRenderer* renderer
+			= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<ya::MeshRenderer>();
+		renderer->SetMesh(rectMesh);
+		renderer->SetMaterial(material, 0);
 
-		{
-			std::shared_ptr<ya::Mesh> circleMesh = ya::Resources::Find<ya::Mesh>(L"CircleMesh");
+		std::shared_ptr<ya::Mesh> circleMesh = ya::Resources::Find<ya::Mesh>(L"CircleMesh");
 
-			mDebugObjects[(UINT)eColliderType::Circle] = new DebugObject();
-			ya::MeshRenderer* renderer
-				= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<ya::MeshRenderer>();
-			renderer->SetMesh(circleMesh);
-			renderer->SetMaterial(material, 0);
-		}
+		mDebugObjects[(UINT)eColliderType::Circle] = new DebugObject();
+		renderer
+			= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<ya::MeshRenderer>();
+		renderer->SetMesh(circleMesh);
+		renderer->SetMaterial(material, 0);
 
-		{
-			std::shared_ptr<ya::Mesh> cubeMesh = ya::Resources::Find<ya::Mesh>(L"CubeMesh");
+		std::shared_ptr<ya::Mesh> cubeMesh = ya::Resources::Find<ya::Mesh>(L"CubeMesh");
 
-			mDebugObjects[(UINT)eColliderType::Box] = new DebugObject();
-			ya::MeshRenderer* renderer
-				= mDebugObjects[(UINT)eColliderType::Box]->AddComponent<ya::MeshRenderer>();
-			renderer->SetMesh(cubeMesh);
+		mDebugObjects[(UINT)eColliderType::Box] = new DebugObject();
+		renderer
+			= mDebugObjects[(UINT)eColliderType::Box]->AddComponent<ya::MeshRenderer>();
+		renderer->SetMesh(cubeMesh);
 
-			renderer->SetMaterial(material, 0);
-		}
+		renderer->SetMaterial(material, 0);
 
-		{
-			std::shared_ptr<ya::Mesh> sphereMesh = ya::Resources::Find<ya::Mesh>(L"SphereMesh");
+		std::shared_ptr<ya::Mesh> sphereMesh = ya::Resources::Find<ya::Mesh>(L"SphereMesh");
 
-			mDebugObjects[(UINT)eColliderType::Sphere] = new DebugObject();
-			ya::MeshRenderer* renderer
-				= mDebugObjects[(UINT)eColliderType::Sphere]->AddComponent<ya::MeshRenderer>();
-			renderer->SetMesh(sphereMesh);
+		mDebugObjects[(UINT)eColliderType::Sphere] = new DebugObject();
+		renderer
+			= mDebugObjects[(UINT)eColliderType::Sphere]->AddComponent<ya::MeshRenderer>();
+		renderer->SetMesh(sphereMesh);
 
-			renderer->SetMaterial(material, 0);
-		}
+		renderer->SetMaterial(material, 0);
 
-		{
-			std::shared_ptr<ya::Mesh> cylinderMesh = ya::Resources::Find<ya::Mesh>(strKeys::mesh::CylinderMesh);
 
-			mDebugObjects[(UINT)eColliderType::Cylinder] = new DebugObject();
-			ya::MeshRenderer* renderer
-				= mDebugObjects[(UINT)eColliderType::Cylinder]->AddComponent<ya::MeshRenderer>();
-			renderer->SetMesh(cylinderMesh);
+		std::shared_ptr<ya::Mesh> cylinderMesh = ya::Resources::Find<ya::Mesh>(strKeys::mesh::CylinderMesh);
 
-			renderer->SetMaterial(material, 0);
-		}
+		mDebugObjects[(UINT)eColliderType::Cylinder] = new DebugObject();
+		renderer
+			= mDebugObjects[(UINT)eColliderType::Cylinder]->AddComponent<ya::MeshRenderer>();
+		renderer->SetMesh(cylinderMesh);
 
-		{
-			std::shared_ptr<ya::Mesh> lineMesh = ya::Resources::Find<ya::Mesh>(strKeys::mesh::LineMesh);
+		renderer->SetMaterial(material, 0);
 
-			mDebugObjects[(UINT)eColliderType::Line] = new DebugObject();
-			ya::MeshRenderer* renderer
-				= mDebugObjects[(UINT)eColliderType::Cylinder]->AddComponent<ya::MeshRenderer>();
-			renderer->SetMesh(lineMesh);
 
-			renderer->SetMaterial(material, 0);
-		}
+		std::shared_ptr<ya::Mesh> lineMesh = ya::Resources::Find<ya::Mesh>(strKeys::mesh::LineMesh);
+
+		mDebugObjects[(UINT)eColliderType::Line] = new DebugObject();
+		renderer
+			= mDebugObjects[(UINT)eColliderType::Line]->AddComponent<ya::MeshRenderer>();
+		renderer->SetMesh(lineMesh);
+
+		renderer->SetMaterial(material, 0);
+
 
 
 		ImGui_Initialize();
@@ -211,31 +201,16 @@ namespace gui
 		tr->SetLocalRotation(mesh.rotation);
 		tr->SetParent((ya::Transform*)mesh.parent);
 		tr->SetRotationOffset(mesh.rotationOffset);
-
-		switch (eColliderType)
-		{
-		case ya::enums::eColliderType::Rect:
+		if (mesh.type == eColliderType::Rect)
 			tr->SetLocalScale(mesh.scale);
-			break;
-		case ya::enums::eColliderType::Circle:
+		else if (mesh.type == eColliderType::Box)
+			tr->SetLocalScale(mesh.scale);
+		else if (mesh.type == eColliderType::Circle)
 			tr->SetLocalScale(Vector3(mesh.radius));
-			break;
-		case ya::enums::eColliderType::Box:
-			tr->SetLocalScale(mesh.scale);
-			break;
-		case ya::enums::eColliderType::Sphere:
+		else if (mesh.type == eColliderType::Sphere)
 			tr->SetLocalScale(Vector3(mesh.radius));
-			break;
-		case ya::enums::eColliderType::Cylinder:
-			break;
-		case ya::enums::eColliderType::Line:
+		else if (mesh.type == eColliderType::Line)
 			tr->SetLocalScale(mesh.scale);
-			break;
-		case ya::enums::eColliderType::End:
-			break;
-		default:
-			break;
-		}
 
 		ya::BaseRenderer* baseRender = debugObj->GetComponent<ya::BaseRenderer>();
 		ya::Camera* camera = ya::renderer::mainCamera;
