@@ -156,6 +156,8 @@ call CopyDLL.bat $(Configuration)</Command>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Engine_SOURCE\\DetourTileCache\\Include;$(SolutionDir)\Engine_SOURCE\\DetourCrowd\\Include;$(SolutionDir)\Engine_SOURCE\\DebugUtils\\Include;$(SolutionDir)\Engine_SOURCE\\Recast\\Include;$(SolutionDir)\Engine_SOURCE\\Detour\\Include;$(SolutionDir)\External\FBXLoader\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -168,6 +170,12 @@ call CopyDLL.bat $(Configuration)</Command>
       <Command>cd $(SolutionDir)
 call CopyDLL.bat $(Configuration)</Command>
     </PreBuildEvent>
+    <Lib>
+      <AdditionalDependencies>libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External\fbx\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CSVEditor.h" />
