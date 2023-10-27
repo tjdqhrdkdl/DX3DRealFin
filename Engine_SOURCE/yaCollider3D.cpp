@@ -122,6 +122,7 @@ namespace ya
 
 	void Collider3D::FixedUpdate()
 	{
+
 	}
 
 	void Collider3D::Render()

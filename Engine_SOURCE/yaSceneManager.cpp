@@ -35,17 +35,19 @@ namespace ya
 	{
 		if (mNextScene)
 		{
-			if (mNextScene->IsThreadLoad() && eLoadStatus::NotLoaded == mNextScene->GetLoadStatus())
+			if (eLoadStatus::NotLoaded == mNextScene->GetLoadStatus())
 			{
-				ThreadPool::EnqueueJob([](Scene* nextScene) {
-					nextScene->ThreadedInitialize();
-					}, mNextScene);
+				if (mNextScene->IsThreadLoad())
+				{
+					ThreadPool::EnqueueJob([](Scene* nextScene) {
+						nextScene->ThreadedInitialize();
+						}, mNextScene);
+				}
+				else
+				{
+					mNextScene->Initialize();
+				}
 			}
-			else
-			{
-				mNextScene->Initialize();
-			}
-
 
 			if (mNextScene->IsLoadComplete())
 			{
