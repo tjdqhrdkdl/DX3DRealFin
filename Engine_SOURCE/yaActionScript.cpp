@@ -70,14 +70,14 @@ namespace ya
 		if (ownerCol != nullptr)
 		{
 			checkCol->SetType(ownerCol->GetCollider3DType());
-			checkCol->setOffsetPosition(ownerCol->getOffsetPosition());
-			checkCol->setOffsetScale(ownerCol->getOffsetScale());
+			checkCol->SetCenter(ownerCol->GetCenter());
+			checkCol->SetSize(ownerCol->GetSize());
 		}
 		else
 		{
 			checkCol->SetType(eColliderType::Box);
-			checkCol->setOffsetPosition(Vector3(0.f, 1.2f, 0.f));
-			checkCol->setOffsetPosition(Vector3(1.0, 3.0f, 1.0f));
+			checkCol->SetCenter(Vector3(0.f, 1.2f, 0.f));
+			checkCol->SetCenter(Vector3(1.0, 3.0f, 1.0f));
 		}
 	}
 
@@ -210,7 +210,7 @@ namespace ya
 	{
 		Vector3 position = mTransform->GetLocalPosition();
 		Vector3 scale = mTransform->GetLocalScale();
-		Vector3 colScale = mCollider->getOffsetScale();
+		Vector3 colScale = mCollider->GetSize();
 		Vector3 velocity = movement * Time::DeltaTime();
 		Vector3 dir = movement;
 		dir.Normalize();

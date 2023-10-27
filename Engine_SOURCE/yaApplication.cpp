@@ -49,13 +49,12 @@ namespace ya
 		Time::Update();
 		Input::Update();
 		SceneManager::Update();
-		CollisionManager::Update();
+		CollisionManager::Update(Time::DeltaTime());
 	}
 
 	// GPU Update
 	void Application::FixedUpdate()
 	{
-		CollisionManager::FixedUpdate();
 		SceneManager::FixedUpdate();
 	}
 

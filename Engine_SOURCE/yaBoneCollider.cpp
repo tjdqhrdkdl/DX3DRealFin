@@ -29,7 +29,7 @@ namespace ya
                 if (mBeforeClipIdx != clip)
                 {
                     //콜라이더 센터 변경
-                    col->setOffsetPosition(mAnimationOffsets[clip]);
+                    col->SetCenter(mAnimationOffsets[clip]);
                     mBeforeClipIdx = clip;
                 }
                 int frame = animator->GetCurrentFrameIdx();
@@ -46,7 +46,7 @@ namespace ya
                     if (active)
                     {
                         //콜라이더 활성화된 구간
-                        col->Active(true);
+                        col->SetActive(true);
 
                         //본데이터 받아서 오브젝트 위치/회전 변경
                         Transform* tr = GetComponent<Transform>();
@@ -60,7 +60,7 @@ namespace ya
                     {
                         if (mHitObjects.size() > 0)
                             mHitObjects.clear();
-                        col->Active(false);
+                        col->SetActive(false);
                     }
 
                 }

@@ -60,11 +60,11 @@ namespace ya
 		Vector3 getWorldPosition(void) const { return _worldMatrix.Translation(); }
 		Vector3 getWorldScale(void) const { return _offsetScale; }
 
-		void	setOffsetPosition(Vector3 offset) { _offsetPosition = offset; }
-		Vector3 getOffsetPosition(void) const { return _offsetPosition; }
+		void	SetCenter(Vector3 offset) { _offsetPosition = offset; }
+		Vector3 GetCenter(void) const { return _offsetPosition; }
 
-		void	setOffsetScale(Vector3 offset);
-		Vector3 getOffsetScale(void) const { return _offsetScale; }
+		void	SetSize(Vector3 offset);
+		Vector3 GetSize(void) const { return _offsetScale; }
 
 
 		void OnCollisionEnter(Collider3D* other, const Vector3& collisionPosition);

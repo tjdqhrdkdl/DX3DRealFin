@@ -28,43 +28,46 @@ namespace ya
 		PhysxWrapper::getInstance().Update(deltaTime);
 	}
 
-	void CollisionManager::EnableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
-	{
-		PhysxWrapper::getInstance().EnableRaycast(leftLayerIndex, rightLayerIndex, enable);
-	}
-
-	void CollisionManager::EnableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable)
-	{
-		PhysxWrapper::getInstance().EnableCollision(leftLayerIndex, rightLayerIndex, enable);
-	}
-
-	void CollisionManager::EnableGravity(bool enable, Scene* pScene, Vector3 gravity)
-	{
-		gravity = (enable) ? gravity : Vector3{ 0.f, 0.f, 0.f };
-		PhysxWrapper::getInstance().EnableGravity(enable, pScene, gravity);
-	}
-
-
-	bool CollisionManager::Raycast(UINT32 srcLayerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit)
-	{
-		Vector3 normalized{};
-		direction.Normalize(normalized);
-		return PhysxWrapper::getInstance().Raycast(srcLayerIndex, origin, normalized, maxDistance, outHit);
-	}
-
-
-
 
 	void CollisionManager::drawRaycast(const Vector3& origin, const Vector3& direction, float maxDistance, const Vector3& color)
 	{
 		DebugMesh debugInfo{};
+		debugInfo.type = eColliderType::Line;
 		debugInfo.position = origin;
-		debugInfo.rotation = direction;
+
+		Vector3 normDir = direction;
+		direction.Normalize(normDir);
+
+		//각도를 구해준다
+		debugInfo.rotation.x = -std::atan2f(normDir.y, normDir.z);
+		debugInfo.rotation.y = std::asin(normDir.x);
+		debugInfo.rotation.z = 0.f;
+		debugInfo.rotation *= gRadToDegreeFactor;
+
+
+		//Vector3 rotationAxis = Vector3::UnitX.Cross(normDir);
+		//float rotationAngle = Vector3::UnitX.Dot(normDir);
+
+		//// Assuming rotationAxis is normalized
+		//debugInfo.rotation.x = std::atan2(rotationAxis.y, rotationAxis.z);
+		//debugInfo.rotation.y = std::atan2(-rotationAxis.x, std::sqrt(rotationAxis.y * rotationAxis.y + rotationAxis.z * rotationAxis.z));
+		//debugInfo.rotation.z = rotationAngle;
+
+
+
+		//debugInfo.rotation.x = std::acosf(normDir.Dot(Vector3::UnitX));
+		//debugInfo.rotation.y = std::acosf(normDir.Dot(Vector3::UnitY));
+		//debugInfo.rotation.z = std::acosf(normDir.Dot(Vector3::UnitZ));
+
+		//float rotX = std::atan2f(0.f, 0.f) - std::atan2f(direction.y, direction.z);
+		//float rotY = std::atan2f(0.f, 1.f) - std::atan2f(direction.z, direction.x);
+		//float rotZ = std::atan2f(1.f, 0.f) - std::atan2f(direction.x, direction.y);
+		//debugInfo.rotation = Vector3(rotX, rotY, rotZ);
+
 		debugInfo.scale = Vector3(maxDistance);
 		debugInfo.collisionCount = 1u;
 
 		renderer::debugMeshes.push_back(debugInfo);
-
 		//using namespace renderer;
 
 		//Vector3 forward{};

@@ -17,14 +17,10 @@ namespace ya
 		static bool Initialize(void);
 		static void Update(float deltaTime);
 
-		static void EnableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
-		static void EnableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
-		static void EnableGravity(bool enable, Scene* pScene, Vector3 gravity = Vector3(0.f, -9.8f, 0.f));
-		static bool Raycast(UINT32 srcLayerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit);
-
 		static inline void EnableRaycast(eLayerType leftLayerIndex, eLayerType rightLayerIndex, bool enable);
 		static inline void EnableCollision(eLayerType leftLayerIndex, eLayerType rightLayerIndex, bool enable);
-		static inline bool Raycast(eLayerType layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit);
+		static inline void EnableGravity(bool enable, Scene* pScene, Vector3 gravity = Vector3(0.f, -9.8f, 0.f));
+		static inline bool Raycast(eLayerType srcLayerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit);
 
 		static void drawRaycast(const Vector3& origin, const Vector3& direction, float maxDistance, const Vector3& color = Vector3{ 1.f, 0.f, 0.f });
 
@@ -39,19 +35,31 @@ namespace ya
 	};
 
 
-
 	inline void CollisionManager::EnableRaycast(eLayerType leftLayerIndex, eLayerType rightLayerIndex, bool enable)
 	{
-		EnableRaycast((UINT32)leftLayerIndex, (UINT32)rightLayerIndex, enable);
+		PhysxWrapper::getInstance().EnableRaycast((UINT32)leftLayerIndex, (UINT32)rightLayerIndex, enable);
 	}
 
 	inline void CollisionManager::EnableCollision(eLayerType leftLayerIndex, eLayerType rightLayerIndex, bool enable)
 	{
-		EnableCollision((UINT32)leftLayerIndex, (UINT32)rightLayerIndex, enable);
+		PhysxWrapper::getInstance().EnableCollision((UINT32)leftLayerIndex, (UINT32)rightLayerIndex, enable);
 	}
-	inline bool CollisionManager::Raycast(eLayerType layerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit)
+
+	inline void CollisionManager::EnableGravity(bool enable, Scene* pScene, Vector3 gravity)
 	{
-		return Raycast((UINT32)layerIndex, origin, direction, maxDistance, outHit);
+		gravity = (enable) ? gravity : Vector3{ 0.f, 0.f, 0.f };
+		PhysxWrapper::getInstance().EnableGravity(enable, pScene, gravity);
+	}
+
+
+	inline bool CollisionManager::Raycast(eLayerType srcLayerIndex, const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit* outHit)
+	{
+		Vector3 normalized{};
+		direction.Normalize(normalized);
+
+		drawRaycast(origin, direction, maxDistance);
+
+		return PhysxWrapper::getInstance().Raycast((UINT32)srcLayerIndex, origin, normalized, maxDistance, outHit);
 	}
 
 } //namespace pa

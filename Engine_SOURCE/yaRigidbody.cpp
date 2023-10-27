@@ -203,7 +203,7 @@ namespace ya
 		//Vector3 position = mTransform->GetLocalPosition();
 		//Vector3 objPos = mCollider->getWorldPosition();
 		//Vector3 Scale = mTransform->GetLocalScale();
-		//Vector3 objScale = mCollider->getOffsetScale();
+		//Vector3 objScale = mCollider->GetSize();
 
 		//position += objPos;
 		//objScale *= Scale;
@@ -324,7 +324,7 @@ namespace ya
 	{
 		Vector3 position = mTransform->GetLocalPosition();
 		Vector3 scale = mTransform->GetLocalScale();
-		Vector3 colScale = mCollider->getOffsetScale();
+		Vector3 colScale = mCollider->GetSize();
 		Vector3 velocity = movement * Time::DeltaTime();
 		Vector3 dir = movement;
 		dir.Normalize();

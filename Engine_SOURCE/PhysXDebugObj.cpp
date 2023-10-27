@@ -1,6 +1,6 @@
 #include "PhysXDebugObj.h"
 #include "PhysXPlayerScript.h"
-#include "PhysXManager.h"
+#include "yaCollisionManager.h"
 #include "PhysXWrapper.h"
 
 namespace ya
@@ -19,7 +19,7 @@ namespace ya
 		tr->SetLocalScale(Vector3(100.f));
 
 		Collider3D* col3d = AddComponent<Collider3D>();
-		col3d->setType(eColliderType::Box);
+		col3d->SetType(eColliderType::Box);
 		
 
 		GameObject::Initialize();
@@ -34,7 +34,7 @@ namespace ya
 			Transform* tr = GetComponent<Transform>();
 
 			RaycastHit outhit{};
-			PhysicsManager::raycast((UINT32)eLayerType::Ground, tr->GetWorldPosition(), tr->Forward(), 1000.f, &outhit);
+			CollisionManager::Raycast((UINT32)eLayerType::Ground, tr->GetWorldPosition(), tr->Forward(), 1000.f, &outhit);
 
 			int k = 3;
 		}

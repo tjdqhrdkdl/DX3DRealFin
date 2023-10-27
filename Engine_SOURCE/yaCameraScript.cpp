@@ -268,8 +268,7 @@ namespace ya
 		//layers.push_back(eLayerType::Ground);
 		//layers.push_back(eLayerType::Wall);
 
-		CollisionManager::EnableRaycast((UINT32)GetOwner()->GetLayerType(), (UINT32)eLayerType::Ground, true);
-		CollisionManager::EnableRaycast((UINT32)GetOwner()->GetLayerType(), (UINT32)eLayerType::Wall, true);
+
 
 		RaycastHit hit{};
 		//GameObject* owner, Vector3 position, Vector3 direction, float length, std::vector<eLayerType> layers

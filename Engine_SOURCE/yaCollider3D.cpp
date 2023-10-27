@@ -145,7 +145,7 @@ namespace ya
 
 
 
-	void Collider3D::setOffsetScale(Vector3 offset)
+	void Collider3D::SetSize(Vector3 offset)
 	{
 		_offsetScale = offset;
 		

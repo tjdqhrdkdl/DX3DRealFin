@@ -27,7 +27,7 @@
 #include "yaBoundarySphere.h"
 #include "yaMapCollider.h"
 
-//#include "PhysXManager.h"
+//#include "yaCollisionManager.h"
 
 #include "PhysXDebugObj.h"
 #include "TestCameraScript.h"
@@ -80,6 +80,23 @@ namespace ya
 
 	void PlayScene::CreateRealScene()
 	{
+		//CollisionManager::EnableCollision(eLayerType::Player, eLayerType::Player, true);
+		CollisionManager::EnableCollision(eLayerType::Player, eLayerType::Monster, true);
+		CollisionManager::EnableCollision(eLayerType::PlayerProjectile, eLayerType::Monster, true);
+		CollisionManager::EnableCollision(eLayerType::Player, eLayerType::MonsterProjectile, true);
+		CollisionManager::EnableCollision(eLayerType::PlayerProjectile, eLayerType::MonsterProjectile, true);
+
+		CollisionManager::EnableCollision(eLayerType::Ground, eLayerType::Player, true);
+		CollisionManager::EnableCollision(eLayerType::Ground, eLayerType::Monster, true);
+
+		CollisionManager::EnableCollision(eLayerType::Wall, eLayerType::Player, true);
+		CollisionManager::EnableCollision(eLayerType::Wall, eLayerType::WallCheckCollision, true);
+
+		CollisionManager::EnableRaycast(eLayerType::Camera, eLayerType::Ground, true);
+		CollisionManager::EnableRaycast(eLayerType::Camera, eLayerType::Wall, true);
+
+
+
 		// Main Camera Game Object
 		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera, this);
 		cameraObj->SetName(L"MainCamera");
@@ -211,7 +228,7 @@ namespace ya
 			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
 			Collider3D* groundCollider = ground->AddComponent<Collider3D>();
 			groundCollider->SetType(eColliderType::Box);
-			groundCollider->setOffsetScale(Vector3(1000.0f, 1.0f, 1000.0f));
+			groundCollider->SetSize(Vector3(1000.0f, 1.0f, 1000.0f));
 		}
 
 
@@ -275,18 +292,7 @@ namespace ya
 			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
 
-		CollisionManager::EnableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::Player, true);
-		CollisionManager::EnableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::Monster, true);
-		CollisionManager::EnableCollision((UINT32)eLayerType::PlayerProjectile, (UINT32)eLayerType::Monster, true);
-		CollisionManager::EnableCollision((UINT32)eLayerType::Player, (UINT32)eLayerType::MonsterProjectile, true);
-		CollisionManager::EnableCollision((UINT32)eLayerType::PlayerProjectile, (UINT32)eLayerType::MonsterProjectile, true);
 
-		//CollisionManager::enalbeCollision(eLayerType::Ground, eLayerType::Player, true);
-		CollisionManager::EnableCollision((UINT32)eLayerType::Ground, (UINT32)eLayerType::Monster, true);
-
-		//CollisionManager::enalbeCollision(eLayerType::Wall, eLayerType::Player, true);
-		CollisionManager::EnableCollision((UINT32)eLayerType::Wall, (UINT32)eLayerType::WallCheckCollision, true);
-		//CollisionManager::enalbeCollision(eLayerType::Logbridge, eLayerType::Player, true);
 
 		{
 
@@ -356,7 +362,7 @@ namespace ya
 			tr->SetLocalPosition(Vector3(-10.f, 100.f, -10.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
-			coll3D->setOffsetScale(Vector3(30.f, 30.f, 30.f));
+			coll3D->SetSize(Vector3(30.f, 30.f, 30.f));
 			coll3D->setMass(50000.f);
 			coll3D->SetType(eColliderType::Box);
 			coll3D->EnableGravity(true);
@@ -370,11 +376,13 @@ namespace ya
 			tr->SetLocalPosition(Vector3(10.f, 10.f, 10.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
-			coll3D->setOffsetScale(Vector3(1000.f, 30.f, 1000.f));
+			coll3D->SetSize(Vector3(1000.f, 30.f, 1000.f));
 			coll3D->SetType(eColliderType::Box, true);
 		}
 
-		CollisionManager::EnableCollision((UINT)eLayerType::Player, (UINT)eLayerType::Ground, true);
+		CollisionManager::EnableCollision(eLayerType::Player, eLayerType::Ground, true);
+
+
 
 	}
 }

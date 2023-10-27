@@ -44,8 +44,8 @@ void ya::LogBridgeScript::OnCollisionStay(GameObject* _otherObj, const Vector3& 
 	Vector3 direction = Vector3(0.f, -1.f, 0.f);
 	direction.Normalize();
 
-	std::vector<eLayerType> layers = {};
-	layers.push_back(eLayerType::Logbridge);
+	//std::vector<eLayerType> layers = {};
+	//layers.push_back(eLayerType::Logbridge);
 
 	Vector3 scale = colTransform->GetLocalScale();
 
@@ -61,16 +61,20 @@ void ya::LogBridgeScript::OnCollisionStay(GameObject* _otherObj, const Vector3& 
 	Vector3 back = pos + zPos;
 	Vector3 left = pos + xPos;
 
-	RayHit multiHit[4] = {};
+	RaycastHit multiHit[4] = {};
 
-	multiHit[0] = CollisionManager::RayCast(_otherObj, front, direction, layers);
-	multiHit[1] = CollisionManager::RayCast(_otherObj, right, direction, layers);
-	multiHit[2] = CollisionManager::RayCast(_otherObj, back, direction, layers);
-	multiHit[3]= CollisionManager::RayCast(_otherObj, left, direction, layers);
+	CollisionManager::Raycast(_otherObj->GetLayerType(), front, direction, 10000.f, &multiHit[0]);
+	CollisionManager::Raycast(_otherObj->GetLayerType(), front, direction, 10000.f, &multiHit[1]);
+	CollisionManager::Raycast(_otherObj->GetLayerType(), front, direction, 10000.f, &multiHit[2]);
+	CollisionManager::Raycast(_otherObj->GetLayerType(), front, direction, 10000.f, &multiHit[3]);
+	//multiHit[0] = CollisionManager::RayCast(_otherObj, front, direction, layers);
+	//multiHit[1] = CollisionManager::RayCast(_otherObj, right, direction, layers);
+	//multiHit[2] = CollisionManager::RayCast(_otherObj, back, direction, layers);
+	//multiHit[3]= CollisionManager::RayCast(_otherObj, left, direction, layers);
 
 	for (int i = 0; i < 4; ++i)
 	{
-		if (!multiHit[i].isHit)
+		if (!multiHit[i].gameObject)
 		{
 			//Vector3 frontDirection = Vector3(0.f, -0.5f, 1.f);
 			//frontDirection.Normalize();
@@ -79,9 +83,10 @@ void ya::LogBridgeScript::OnCollisionStay(GameObject* _otherObj, const Vector3& 
 			frontDirection += Vector3(0.f, -0.5f, 0.f);
 			frontDirection.Normalize();
 
-			RayHit distCheck = CollisionManager::RayCast(_otherObj, pos, frontDirection, layers);
+			RaycastHit distCheck{};
+			CollisionManager::Raycast(_otherObj->GetLayerType(), pos, frontDirection, 10000.f, &distCheck);
 
-			float distance = distCheck.length;//distCheck.contact.Length() - pos.Length();
+			float distance = distCheck.hitDistance;//distCheck.contact.Length() - pos.Length();
 			distance = abs(distance);
 
 			if (distance <= scale.z / 2.f)

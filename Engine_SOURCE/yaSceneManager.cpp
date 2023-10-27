@@ -5,7 +5,7 @@
 #include "ThreadPool.h"
 #include "yaRenderer.h"
 
-#include "PhysXManager.h"
+#include "yaCollisionManager.h"
 #include "yaTime.h"
 
 namespace ya
