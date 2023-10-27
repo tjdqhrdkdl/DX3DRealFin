@@ -2,6 +2,7 @@
 
 #include "yaInput.h"
 #include "yaTime.h"
+#include "yaResources.h"
 
 #include "yaPlayer.h"
 
@@ -10,6 +11,7 @@
 #include "yaCameraScript.h"
 #include "yaPlayerMeshScript.h"
 #include "yaBoneCollider.h"
+#include "yaAudioClip.h"
 
 namespace ya
 {
@@ -114,6 +116,13 @@ namespace ya
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity();
 			}));
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\foot-soil-w1.wav");
+			//clip->SetLoop(true);
+			Resources::Insert<AudioClip>(L"foot-soil-w1", clip);
+		}
 	}
 
 	void PlayerActionScript::Update()

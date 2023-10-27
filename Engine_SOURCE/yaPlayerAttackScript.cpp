@@ -133,6 +133,13 @@ namespace ya
 			clip->Load(L"..\\Resources\\Sound\\main\\c000004081.wav");
 			Resources::Insert<AudioClip>(L"c000004081", clip);
 		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\swing-katana.wav");
+			//clip->SetLoop(true);
+			Resources::Insert<AudioClip>(L"swing-katana", clip);
+		}
 	}
 
 	void PlayerAttackScript::Update()
@@ -170,7 +177,7 @@ namespace ya
 				}
 
 				mPlayer->SetStateFlag(ePlayerState::Attack, true);
-				Resources::Find<AudioClip>(L"c000004081")->Play();
+				Resources::Find<AudioClip>(L"swing-katana")->Play();
 
 				if (mPlayer->IsStateFlag(ePlayerState::Jump))
 				{
@@ -248,6 +255,7 @@ namespace ya
 					mAttackState = eAttackState::Attack2;
 					mPlayerAnim->Play(L"a050_305101");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -286,6 +294,7 @@ namespace ya
 					mAttackState = eAttackState::Attack3;
 					mPlayerAnim->Play(L"a050_300020");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -324,6 +333,7 @@ namespace ya
 					mAttackState = eAttackState::Attack4;
 					mPlayerAnim->Play(L"a050_300030");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -362,6 +372,7 @@ namespace ya
 					mAttackState = eAttackState::Attack5;
 					mPlayerAnim->Play(L"a050_300040");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -400,6 +411,7 @@ namespace ya
 					mAttackState = eAttackState::Attack1;
 					mPlayerAnim->Play(L"a050_300100");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
