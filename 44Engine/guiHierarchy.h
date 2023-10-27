@@ -16,11 +16,11 @@ namespace gui
 		virtual void LateUpdate() override;
 
 		void InitializeInspector(void* data);
-		void InitializeScene();
+		void InitializeScene(ya::enums::eSceneType _sceneType);
 		void AddGameObject(TreeWidget::Node* parent, ya::GameObject* gameObject);
 
 	private:
 		TreeWidget* mTreeWidget;
-		std::string mSceneName;
+		ya::Scene* mCurInspectingScene;
 	};
 }

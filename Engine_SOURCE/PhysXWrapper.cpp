@@ -536,10 +536,11 @@ namespace ya
 		filterData.word1 = _collisionMask[layerIndex].to_ulong(); // word1 = ID mask to filter pairs that trigger a contact callback
 		shape->setSimulationFilterData(filterData);
 
-		//PxFilterData queryFilterData{};
-		//queryFilterData.word0 = layer.to_ulong();					   // word0 = own ID
+		//RayCast 레이어를 등록
+		PxFilterData queryFilterData{};
+		queryFilterData.word0 = layer.to_ulong();					   // word0 = own ID
 		//queryFilterData.word1 = _raycastMask[layerIndex].to_ulong(); // word1 = ID mask to filter pairs that trigger a contact callback
-		//shape->setQueryFilterData(queryFilterData);
+		shape->setQueryFilterData(queryFilterData);
 	}
 
 #pragma region NOT IMPLEMENTED

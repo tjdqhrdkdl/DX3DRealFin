@@ -16,7 +16,7 @@ namespace gui
 {
 	Hierarchy::Hierarchy()
 		: mTreeWidget(nullptr)
-		, mSceneName()
+		, mCurInspectingScene(nullptr)
 	{
 		SetName("Hierarchy");
 		SetSize(ImVec2(1600 / 2, 900 / 2));
@@ -43,9 +43,9 @@ namespace gui
 
 	void Hierarchy::Update()
 	{
-		if (mSceneName.empty() && ya::SceneManager::GetActiveScene())
+		if (nullptr == mCurInspectingScene)
 		{
-			InitializeScene();
+			InitializeScene(eSceneType::Play);
 		}
 	}
 
@@ -61,24 +61,29 @@ namespace gui
 		Inspector* inspector = editor.GetWidget<Inspector>("Inspector");
 		inspector->SetTargetGameObject(ya::renderer::inspectorGameObject);
 		inspector->InitializeTargetGameObject();
-
-
 	}
 
-	void Hierarchy::InitializeScene()
+	void Hierarchy::InitializeScene(ya::enums::eSceneType _sceneType)
 	{
+		ya::Scene* scene = ya::SceneManager::GetScene(ya::enums::eSceneType::Play);
+
+		if (nullptr == scene || false == scene->IsLoadComplete())
+		{
+			//mCurInspectingScene = nullptr;
+			return;
+		}
+
+		mCurInspectingScene = scene;
 		mTreeWidget->Clear();
 
-		ya::Scene* scene = ya::SceneManager::GetActiveScene();
-
-		mSceneName  = StrConverter::ConvertUnicodeToANSI(scene->GetName());
+		//mSceneName  = StrConverter::ConvertUnicodeToANSI(scene->GetName());
 		//std::string sceneName(scene->GetName().begin(), scene->GetName().end());
 
-		TreeWidget::Node* root = mTreeWidget->AddNode(nullptr, mSceneName, 0, true);
+		TreeWidget::Node* root = mTreeWidget->AddNode(nullptr, mCurInspectingScene->GetNameChar(), 0, true);
 
 		for (size_t i = 0; i < (UINT)ya::enums::eLayerType::End; i++)
 		{
-			ya::Layer& layer = scene->GetLayer((ya::enums::eLayerType)i);
+			ya::Layer& layer = mCurInspectingScene->GetLayer((ya::enums::eLayerType)i);
 			const std::vector<ya::GameObject*>& gameObjs
 				= layer.GetGameObjects();
 
