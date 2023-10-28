@@ -71,10 +71,10 @@ namespace ya
             MonsterState_OnHitFront = 0x00001000,
             MonsterState_AttackBlocked = 0x00002000,
             MonsterState_SuperArmor = 0x00004000,
-            MonsterState_Groggy = 0x00004000,
-            MonsterState_DeathBlow = 0x00008000,
-            MonsterState_LookAt = 0x00010000,
-            MonsterState_Dead = 0x00020000,
+            MonsterState_Groggy = 0x00008000,
+            MonsterState_DeathBlow = 0x00010000,
+            MonsterState_LookAt = 0x00020000,
+            MonsterState_Dead = 0x00040000,
         };
 
     public:
