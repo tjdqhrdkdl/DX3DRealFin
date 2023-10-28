@@ -43,5 +43,7 @@ namespace ya::graphics
 		float mStartSpeed;
 		float mTime;
 		float mElapsedTime; //누적시간
+
+		bool mbParticleCreate;
 	};
 }

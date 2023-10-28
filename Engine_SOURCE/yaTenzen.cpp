@@ -639,30 +639,32 @@ namespace ya
 
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(100); GetComponent<Rigidbody>()->SetJumping(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 14) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
+
 		// 못막는 공격, 하단 베기
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 10) = [this]() { SetAttackUnGuardable(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 27) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 32) = [this]() { RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
+
 		// 못막는 공격, 찌르기. 전진
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 5) = [this]() { SetAttackUnGuardable(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 18) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed * 4); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 20) = [this]() { RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed);  RM_STATE(MonsterState_LookAt);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 52) = [this]() { mMoveDir = -mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed * 0.5f);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 60) = [this]() { RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed);  };
+
 		// 양옆으로 휘두르기, 2회 연속공격, 2회전진
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 12) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 40) = [this]() { ADD_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 46) = [this]() { RM_STATE(MonsterState_Move); };
+
 		// 콤보 공격 5베기
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);  };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); ADD_STATE(MonsterState_SuperArmor);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 7) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 12) = [this]() {RM_STATE(MonsterState_LookAt); };
 
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);  };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); ADD_STATE(MonsterState_SuperArmor); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 7) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 17) = [this]() {mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 20) = [this]() {RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); };
@@ -809,6 +811,9 @@ namespace ya
 		mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f);
 		mSwordScript->SetBlock(true);
 		mSwordScript->SetAttackLeft(true);
+		SetAttackUnGuardable(false);
+		mAttackParams.damage = 10;
+
 	}
 	void Tenzen::TraceEndEvent()
 	{
