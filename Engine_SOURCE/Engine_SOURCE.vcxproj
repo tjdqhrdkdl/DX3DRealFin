@@ -206,6 +206,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaAnimationData.h" />
     <ClInclude Include="yaAshinaSoldier.h" />
     <ClInclude Include="yaAshinaSpearMan.h" />
+    <ClInclude Include="yaBossUI.h" />
     <ClInclude Include="yaBoundarySphere.h" />
     <ClInclude Include="yaFrustum.h" />
     <ClInclude Include="yaHPMeterScript.h" />
@@ -349,6 +350,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaAnimationData.cpp" />
     <ClCompile Include="yaAshinaSoldier.cpp" />
     <ClCompile Include="yaAshinaSpearMan.cpp" />
+    <ClCompile Include="yaBossUI.cpp" />
     <ClCompile Include="yaBoundarySphere.cpp" />
     <ClCompile Include="yaFrustum.cpp" />
     <ClCompile Include="yaHPMeterScript.cpp" />

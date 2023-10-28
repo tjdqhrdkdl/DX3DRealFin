@@ -16,6 +16,7 @@
 #include "yaBoneAnimator.h"
 #include "yaMonsterUI.h"
 #include "yaCameraScript.h"
+#include "yaBossUI.h"
 
 #include <time.h>
 
@@ -159,6 +160,7 @@ namespace ya
         ActionScript*       mActionScript;
 
         Attack              mAttackParams;
+        BossUI*             mBossUI;
         MonsterUI*          mMonsterUI;
         CameraScript*       mCamScript;
         Player*             mPlayerObject;

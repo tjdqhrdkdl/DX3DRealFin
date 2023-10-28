@@ -400,6 +400,8 @@ namespace ya
 	{
 			if (STATE_HAVE(MonsterState_Recognize))
 			{
+				mBossUI->UIOn();
+				mMonsterUI->UIOff();
 				RM_STATE(MonsterState_Idle);
 				SetRecognize(true);
 				if (!(STATE_HAVE(MonsterState_DrawSword)))
@@ -446,7 +448,10 @@ namespace ya
 			}
 
 			else
+			{
 				SetRecognize(false);
+				mBossUI->UIOff();
+			}
 
 		
 	}
@@ -883,7 +888,7 @@ namespace ya
 					if (GetHP() == 0)
 						SetPosture(GetPostureMax());
 					else
-						SetPosture(GetPosture() + 50);
+						SetPosture(GetPosture() + 10);
 
 
 					if (!(STATE_HAVE(MonsterState_SuperArmor)))
