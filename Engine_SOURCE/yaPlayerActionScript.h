@@ -1,5 +1,6 @@
 #pragma once
 #include "yaActionScript.h"
+#include "yaAudioClip.h"
 
 namespace ya
 {
@@ -58,5 +59,7 @@ namespace ya
 		bool mbTurn;
 		float mTurnTimer;
 		float mTurnTimerMax;
+
+		std::vector<std::shared_ptr<AudioClip>> mAudioClips;
 	};
 }

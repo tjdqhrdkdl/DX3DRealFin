@@ -55,5 +55,8 @@ namespace ya
 		mChannel->set3DAttributes(&fmodPos, &fmodVel);
 	}
 
-	
+	void AudioClip::SetDelay(unsigned long long start, unsigned long long end, bool stopchannels)
+	{
+		mChannel->setDelay(start, end, stopchannels);
+	}
 }

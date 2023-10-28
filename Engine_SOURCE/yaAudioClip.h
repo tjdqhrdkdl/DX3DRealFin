@@ -24,6 +24,7 @@ namespace ya
 		void Stop();
 		void Set3DAttributes(const Vector3 pos, const Vector3 vel);
 		void SetLoop(bool loop) { mbLoop = loop; }
+		void SetDelay(unsigned long long start, unsigned long long end, bool stopchannels = true);
 
 	private:
 		FMOD::Sound* mSound;

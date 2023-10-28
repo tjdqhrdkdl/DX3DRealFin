@@ -120,8 +120,9 @@ namespace ya
 		{
 			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
 			clip->Load(L"..\\Resources\\Sound\\main\\foot-soil-w1.wav");
-			//clip->SetLoop(true);
+			clip->SetLoop(true);
 			Resources::Insert<AudioClip>(L"foot-soil-w1", clip);
+			mAudioClips.push_back(clip);
 		}
 	}
 
@@ -159,6 +160,12 @@ namespace ya
 
 	void PlayerActionScript::FixedUpdate()
 	{
+		for (std::shared_ptr<AudioClip> clip : mAudioClips)
+		{
+			clip->Set3DAttributes(mTransform->GetPosition(), mPlayer->GetComponent<Rigidbody>()->GetVelocity());
+		}
+		
+
 		ActionScript::FixedUpdate();
 	}
 
@@ -371,6 +378,8 @@ namespace ya
 
 				if (abs(faceTheta) > 30.0f)
 					mbTurn = true;
+
+				Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::A))
@@ -631,6 +640,7 @@ namespace ya
 
 		if (Input::GetKeyUp(eKeyCode::W))
 		{
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Stop();
 			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
 				mPlayerAnim->Play(L"a000_005300");
