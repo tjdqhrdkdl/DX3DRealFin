@@ -42,6 +42,15 @@ namespace ya
 			layer.Update();
 		}
 	}
+
+	void Scene::CollisionUpdate()
+	{
+		for (Layer& layer : mLayers)
+		{
+			layer.CollisionUpdate();
+		}
+	}
+
 	void Scene::FixedUpdate()
 	{
 		for (Layer& layer : mLayers)

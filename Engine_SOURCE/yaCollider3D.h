@@ -45,9 +45,11 @@ namespace ya
 
 		virtual void Initialize() override;
 		virtual void Start() override;
-		virtual void Update() override;
-		virtual void FixedUpdate() override;
+
+		virtual void CollisionUpdate() override;
+
 		virtual void Render() override;
+
 
 		void		 SetType(eColliderType type, bool isStatic = false)
 		{
@@ -121,7 +123,7 @@ namespace ya
 		void Test();
 
 	private:
-		void syncPhysics();
+		void SyncPhysXScene();
 		void destroyShape() { _shape = nullptr; }
 
 	private:

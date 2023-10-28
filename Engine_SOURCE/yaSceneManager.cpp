@@ -25,7 +25,6 @@ namespace ya
 		mScenes[(UINT)eSceneType::Play] = new PlayScene();
 		mScenes[(UINT)eSceneType::Play]->SetThreadLoad(true);
 		mScenes[(UINT)eSceneType::Play]->CreatePhysXScene();
-		CollisionManager::EnableGravity(true, mScenes[(UINT)eSceneType::Play], Vector3(0.f, -120.f, 0.f));
 		//mScenes[(UINT)eSceneType::Play]->GetCallBack() = std::bind(SceneManager::LoadScene, eSceneType::Play);
 
 		ChangeScene(eSceneType::Title);
@@ -89,6 +88,11 @@ namespace ya
 		}
 
 		mActiveScene->Update();
+	}
+
+	void SceneManager::CollisionUpdate()
+	{
+		mActiveScene->CollisionUpdate();
 	}
 
 	void SceneManager::FixedUpdate()

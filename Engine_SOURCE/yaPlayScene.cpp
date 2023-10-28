@@ -46,10 +46,10 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
-		CollisionManager::EnableGravity(true, this);
+		CollisionManager::EnableGravity(true, this, Vector3(0.f, -120.f, 0.f));
 
-		//CreateRealScene();
-		CreateTestScene();
+		CreateRealScene();
+		//CreateTestScene();
 		Scene::Initialize();
 	}
 	
@@ -225,11 +225,9 @@ namespace ya
 			groundTr->SetLocalPosition(Vector3(0.0f, -11.0f, 10.0f));
 			groundTr->SetLocalScale(Vector3(1000.0f, 4.0f, 1000.0f));
 			groundTr->SetLocalRotation(Vector3(0.0f, 0.0f, 0.0f));
-			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+
 			Collider3D* groundCollider = ground->AddComponent<Collider3D>();
-			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetType(eColliderType::Box, true);
 			groundCollider->SetSize(Vector3(1000.0f, 1.0f, 1000.0f));
 		}
 
@@ -364,21 +362,20 @@ namespace ya
 			tr->SetLocalPosition(Vector3(-10.f, 100.f, -10.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
-			coll3D->SetSize(Vector3(30.f, 30.f, 30.f));
+			//coll3D->SetSize(Vector3(30.f, 30.f, 30.f));
 			coll3D->SetMass(50000.f);
 			coll3D->SetType(eColliderType::Box);
-			coll3D->EnableGravity(true);
+			//coll3D->EnableGravity(true);
 		}
 
 		{
 			PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Ground, this);
-			player->SetName(L"testObj2");
+			player->SetName(L"Ground");
 			Transform* tr = player->GetComponent<Transform>();
-			tr->SetLocalScale(Vector3(30.f, 30.f, 30.f));
+			tr->SetLocalScale(Vector3(1000.f, 30.f, 1000.f));
 			tr->SetLocalPosition(Vector3(10.f, 10.f, 10.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
-			coll3D->SetSize(Vector3(1000.f, 30.f, 1000.f));
 			coll3D->SetType(eColliderType::Box, true);
 		}
 

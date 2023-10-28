@@ -54,7 +54,7 @@ namespace ya
 		static PhysxWrapper& getInstance(void);
 		virtual ~PhysxWrapper(void);
 		void Initialize(void);
-		void Update(float deltaTime);
+		void CollisionUpdate();
 
 		void EnableRaycast(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
 		void EnableCollision(UINT32 leftLayerIndex, UINT32 rightLayerIndex, bool enable);
@@ -74,7 +74,7 @@ namespace ya
 
 	private:
 		explicit PhysxWrapper(void);
-		void synceTransform(void) const;
+		void SyncGameScene(void) const;
 		void setupFiltering(physx::PxShape* shape, UINT32 layerIndex) const;
 
 		static physx::PxFilterFlags FilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,

@@ -7,6 +7,7 @@
 #include "yaMath.h"
 #include "MathUtil.h"
 #include "StrConverter.h"
+#include "yaTime.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "Physx/Library/Debug/PhysX_64.lib")
@@ -131,19 +132,20 @@ namespace ya
 
 	}
 
-	void PhysxWrapper::Update(float deltaTime)
+	void PhysxWrapper::CollisionUpdate()
 	{
 		if (_currentScene == nullptr)
 			return;
 
 		//_currentScene->simulate(_intervals[static_cast<UINT8>(_currentInterval)]);
-		_currentScene->simulate(deltaTime);
+		_currentScene->simulate(Time::DeltaTime());
 		_currentScene->fetchResults(true);
-		synceTransform();
+
+		SyncGameScene();
 	}
 
 
-	void PhysxWrapper::synceTransform(void) const
+	void PhysxWrapper::SyncGameScene(void) const
 	{
 		const PxU32 actorCount = _currentScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 		if (actorCount == 0)

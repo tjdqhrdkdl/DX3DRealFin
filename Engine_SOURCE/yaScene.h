@@ -25,7 +25,13 @@ namespace ya
 		virtual void Initialize();
 		void ThreadedInitialize();
 
+		//개발 로직에 따른(Script 등) 게임오브젝트 상태 변화
 		virtual void Update();
+
+		//충돌 처리
+		virtual void CollisionUpdate();
+
+		//Update와 CollisionUpdate에서 설정한 데이터를 최종 정리
 		virtual void FixedUpdate();
 		virtual void Render();
 

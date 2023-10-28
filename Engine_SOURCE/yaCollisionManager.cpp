@@ -20,12 +20,12 @@ namespace ya
 		return true;
 	}
 
-	void CollisionManager::Update(float deltaTime)
+	void CollisionManager::CollisionUpdate()
 	{
 		if (_enable == false)
 			return;
 
-		PhysxWrapper::getInstance().Update(deltaTime);
+		PhysxWrapper::getInstance().CollisionUpdate();
 	}
 
 

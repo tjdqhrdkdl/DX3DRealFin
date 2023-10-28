@@ -15,7 +15,7 @@ namespace ya
 	{
 	public:
 		static bool Initialize(void);
-		static void Update(float deltaTime);
+		static void CollisionUpdate();
 
 		static inline void EnableRaycast(eLayerType leftLayerIndex, eLayerType rightLayerIndex, bool enable);
 		static inline void EnableCollision(eLayerType leftLayerIndex, eLayerType rightLayerIndex, bool enable);

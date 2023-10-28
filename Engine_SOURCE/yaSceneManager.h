@@ -8,6 +8,7 @@ namespace ya
 	public:
 		static void Initialize();
 		static void Update();
+		static void CollisionUpdate();
 		static void FixedUpdate();
 		static void Render();
 		static void Destroy();

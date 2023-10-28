@@ -24,10 +24,11 @@ namespace ya
 		, _collisionCount{ 0 }
 		, _shape{ nullptr }
 		, _isTrigger{ false }
+		, _isGravityEnabled(true)
 		, _otherOverlapping{ nullptr }
 		, _freezeRotationFlag{ FreezeRotationFlag::END }
 		, _enableDraw{ true }
-		, _mass(1000.f)
+		, _mass(0.6f)
 		, _restitution(0.f)
 		, _syncScaleToTransform(true)
 		, _staticFriction(180.f)
@@ -56,7 +57,7 @@ namespace ya
 		if (_syncScaleToTransform)
 		{
 			Transform* tr = GetOwner()->GetComponent<Transform>();
-			_offsetScale = tr->GetWorldScale();
+			_offsetScale *= tr->GetWorldScale();
 		}
 		Vector3 realScale = _offsetScale * 0.5f;
 		
@@ -73,17 +74,37 @@ namespace ya
 			PhysxWrapper::getInstance().changeGeometry(this, _shape, _type);
 		}
 
+
+		EnableGravity(_isGravityEnabled);
 		SetMass(_mass);
 		SetRestitution(_restitution);
 		EnableGravity(_isGravityEnabled);
 		SetStaticFriction(_staticFriction);
 		SetDynamicFriction(_dynamicFriction);
 		SetLimitVelocity(_maxVelocity);
-		
-		//_mesh = (_type == eColliderType::Box) ? Resources::Find<Mesh>(strKeys::mesh::CubeMesh) : Resources::Find<Mesh>(strKeys::mesh::SphereMesh);
 	}
 
-	void Collider3D::Update()
+
+	void Collider3D::Render()
+	{
+		//_positionBufferData.world = _worldMatrix;
+
+		////const Camera& camera = *(renderer::cameras[(UINT)eSceneType::Play]);
+		//_positionBufferData.view = Camera::GetGpuViewMatrix();
+		//_positionBufferData.projection = Camera::GetGpuProjectionMatrix();
+		//_positionBuffer->SetData(&_positionBufferData);
+		//_positionBuffer->Bind(eShaderStage::ALL);
+
+		//_wireFrameData.collisionCount = _collisionCount;
+		//_wireFrameBuffer->SetData(&_wireFrameData);
+		//_wireFrameBuffer->Bind(eShaderStage::PS);
+
+		//_shader->Binds();
+		//_mesh->Render(0u);
+
+	}
+
+	void Collider3D::CollisionUpdate()
 	{
 		assert(_type != eColliderType::End);
 
@@ -98,7 +119,7 @@ namespace ya
 		//트랜스폼의 Scale은 반영하지 않는다
 		_worldMatrix = _worldMatrix * objectScaleInvMatrix * objectWorldMatrix;
 
-		syncPhysics();
+		SyncPhysXScene();
 
 		//Debug Render
 		DebugMesh meshAttribute = {};
@@ -119,30 +140,6 @@ namespace ya
 		meshAttribute.isTrigger = _isTrigger;
 
 		renderer::debugMeshes.push_back(meshAttribute);
-	}
-
-	void Collider3D::FixedUpdate()
-	{
-
-	}
-
-	void Collider3D::Render()
-	{
-		//_positionBufferData.world = _worldMatrix;
-
-		////const Camera& camera = *(renderer::cameras[(UINT)eSceneType::Play]);
-		//_positionBufferData.view = Camera::GetGpuViewMatrix();
-		//_positionBufferData.projection = Camera::GetGpuProjectionMatrix();
-		//_positionBuffer->SetData(&_positionBufferData);
-		//_positionBuffer->Bind(eShaderStage::ALL);
-
-		//_wireFrameData.collisionCount = _collisionCount;
-		//_wireFrameBuffer->SetData(&_wireFrameData);
-		//_wireFrameBuffer->Bind(eShaderStage::PS);
-
-		//_shader->Binds();
-		//_mesh->Render(0u);
-
 	}
 
 
@@ -508,7 +505,7 @@ namespace ya
 	}
 
 
-	void Collider3D::syncPhysics()
+	void Collider3D::SyncPhysXScene()
 	{
 		physx::PxActor* actor = _shape->getActor();
 		assert(actor);
