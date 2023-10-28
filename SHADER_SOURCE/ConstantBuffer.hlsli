@@ -57,7 +57,7 @@ cbuffer ParticleSystem : register(b5)
     
     float startLifeTime;
     float deltaTime;
-    float elapsedTime; //´©Àû½Ã°£
+    float elapsedTime; //ëˆ„ì ì‹œê°„
     int padding;
 }
 
@@ -100,3 +100,18 @@ cbuffer UniformDataCB : register(b9)
 //    float   meterendtime;
 //    float2  metersize;
 //}
+
+cbuffer ImageData : register(b12)
+{
+    uint colorType;
+    uint useRate;
+    uint useRange;
+    uint imagepadding;
+    
+    float4 imageColor;
+    float4 imageRange;
+    float2 imageRate;
+    
+    int useAlpha;
+    float imageAlpha;
+}

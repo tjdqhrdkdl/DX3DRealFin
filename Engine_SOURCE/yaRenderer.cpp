@@ -634,6 +634,15 @@ namespace ya::renderer
 		Resources::Insert<Shader>(L"SkyBoxShader", skyBoxShader);
 #pragma endregion
 
+#pragma region METER SHADER
+		std::shared_ptr<Shader> imageShader = std::make_shared<Shader>();
+		imageShader->Create(eShaderStage::VS, L"ImageVS.hlsl", "main");
+		imageShader->Create(eShaderStage::PS, L"ImagePS.hlsl", "main");
+		imageShader->SetDSState(eDSType::None);
+
+		Resources::Insert<Shader>(L"ImageShader", imageShader);
+#pragma endregion
+
 		//Compute
 		std::shared_ptr<BoneShader> computeShader = std::make_shared<BoneShader>();
 		computeShader->Create(L"BoneAnimationCS.hlsl", "CS_Animation3D");
@@ -807,6 +816,12 @@ namespace ya::renderer
 			, skyBoxShader->GetVSBlobBufferPointer()
 			, skyBoxShader->GetVSBlobBufferSize()
 			, skyBoxShader->GetInputLayoutAddressOf());
+
+		std::shared_ptr<Shader> imageShader = Resources::Find<Shader>(L"ImageShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
+			, imageShader->GetVSBlobBufferPointer()
+			, imageShader->GetVSBlobBufferSize()
+			, imageShader->GetInputLayoutAddressOf());
 
 		//std::shared_ptr<Shader> shadowShader = Resources::Find<Shader>(L"ShadowShader");
 		//GetDevice()->CreateInputLayout(arrLayoutDesc, 8
@@ -998,6 +1013,9 @@ namespace ya::renderer
 
 		constantBuffers[(UINT)eCBType::Time] = new ConstantBuffer(eCBType::Time);
 		constantBuffers[(UINT)eCBType::Time]->Create(sizeof(TimeCB));
+
+		constantBuffers[(UINT)eCBType::Image] = new ConstantBuffer(eCBType::Image);
+		constantBuffers[(UINT)eCBType::Image]->Create(sizeof(ImageCB));
 		
 
 #pragma endregion
@@ -1239,8 +1257,6 @@ namespace ya::renderer
 
 		Resources::Insert<Material>(L"ShadowMapMaterial", shadowMaterial);
 #pragma endregion
-
-		
 	}
 
 	void Initialize()

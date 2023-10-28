@@ -400,6 +400,7 @@
     <ClCompile Include="yaPlayerDagerUIScript.cpp">
       <Filter>Contents\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="yaFadeScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -596,9 +597,6 @@
     </ClInclude>
     <ClInclude Include="yaRenderer.h">
       <Filter>Engine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="yaPlayer.h">
-      <Filter>Contents\Player</Filter>
     </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents</Filter>
@@ -808,6 +806,10 @@
     </ClInclude>
     <ClInclude Include="yaSekiroCommons.h">
       <Filter>Contents\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaFadeScript.h" />
+    <ClInclude Include="yaPlayer.h">
+      <Filter>Contents\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
