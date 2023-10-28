@@ -27,6 +27,7 @@
 #include "yaMapCollider.h"
 
 #include "yaNavMeshTool.h"
+#include "yaParticleSystem.h"
 namespace ya
 {
 	PlayScene::PlayScene()
@@ -239,6 +240,14 @@ namespace ya
 			NavMeshTool* m = NavMeshTool::GetInst();
 			m->SetMapMeshTr(navTr);
 			m->Init(this);
+		}
+
+		{
+			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::Particle, this);
+			trObj->SetName(L"particle");
+			trObj->AddComponent<ParticleSystem>();
+			trObj->AddComponent<Collider2D>()->SetType(eColliderType::Box);
+
 		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
