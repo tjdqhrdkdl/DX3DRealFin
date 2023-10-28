@@ -65,9 +65,9 @@ namespace ya
 
 			if (i % 4 == 0)
 			{
-				particles[i].velocity = Vector4((rand() % 40 - 20)
-					, (rand() % 8)
-					, (rand() % 40 - 20), 0);
+				particles[i].velocity = Vector4((float)(rand() % 40 - 20)
+					, (float)(rand() % 8)
+					, (float)(rand() % 40 - 20), 0);
 			}
 			else
 			{
