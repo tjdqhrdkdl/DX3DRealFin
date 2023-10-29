@@ -70,8 +70,6 @@ namespace ya
 		void createScene(Scene* scene);
 		void changeScene(Scene* scene);
 
-		void Test();
-
 	private:
 		explicit PhysxWrapper(void);
 		void SyncGameScene(void) const;

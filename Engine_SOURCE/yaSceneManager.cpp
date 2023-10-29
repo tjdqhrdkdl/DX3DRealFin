@@ -93,6 +93,12 @@ namespace ya
 	void SceneManager::CollisionUpdate()
 	{
 		mActiveScene->CollisionUpdate();
+		
+	}
+
+	void SceneManager::CollisionLateUpdate()
+	{
+		mActiveScene->CollisionLateUpdate();
 	}
 
 	void SceneManager::FixedUpdate()

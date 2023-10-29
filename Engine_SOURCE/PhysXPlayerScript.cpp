@@ -1,6 +1,7 @@
 #include "PhysXPlayerScript.h"
 #include "yaInput.h"
 #include "yaGameObject.h"
+#include "yaTime.h"
 
 namespace ya
 {
@@ -21,7 +22,8 @@ namespace ya
 
 		Vector3 pos = tr->GetLocalPosition();
 
-		constexpr float speed = 1.f;
+		constexpr float presetSpeed = 100.f;
+		float speed = presetSpeed * Time::DeltaTime();
 
 		bool changed = false;
 		if (Input::GetKey(eKeyCode::UP))

@@ -97,9 +97,22 @@ namespace ya
 
 	void GameObject::CollisionUpdate()
 	{
+		if (mComponents[(UINT)eComponentType::Transform])
+		{
+			static_cast<Transform*>(mComponents[(UINT)eComponentType::Transform])->CollisionUpdate();
+		}
+
 		if (mComponents[(UINT)eComponentType::Collider])
 		{
 			static_cast<Collider*>(mComponents[(UINT)eComponentType::Collider])->CollisionUpdate();
+		}
+	}
+
+	void GameObject::CollisionLateUpdate()
+	{
+		if (mComponents[(UINT)eComponentType::Collider])
+		{
+			static_cast<Collider*>(mComponents[(UINT)eComponentType::Collider])->CollisionLateUpdate();
 		}
 	}
 

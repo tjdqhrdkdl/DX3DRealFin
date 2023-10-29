@@ -12,6 +12,7 @@ namespace ya
 		virtual void Initialize();
 		virtual void Update();
 		void CollisionUpdate();
+		void CollisionLateUpdate();
 		virtual void FixedUpdate();
 
 		virtual void Render();

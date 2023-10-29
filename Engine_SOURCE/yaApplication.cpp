@@ -51,6 +51,7 @@ namespace ya
 		SceneManager::Update();
 		SceneManager::CollisionUpdate();
 		CollisionManager::CollisionUpdate();
+		SceneManager::CollisionLateUpdate();
 	}
 
 	// GPU Update

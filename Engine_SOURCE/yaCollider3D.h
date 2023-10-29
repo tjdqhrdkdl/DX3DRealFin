@@ -47,6 +47,8 @@ namespace ya
 		virtual void Start() override;
 
 		virtual void CollisionUpdate() override;
+		virtual void CollisionLateUpdate() override;
+		
 
 		virtual void Render() override;
 
@@ -120,10 +122,10 @@ namespace ya
 
 		void SetKinematic(bool enable);
 
-		void Test();
 
 	private:
-		void SyncPhysXScene();
+		void SyncPhysX();
+		void FetchPhysX();
 		void destroyShape() { _shape = nullptr; }
 
 	private:
@@ -134,6 +136,8 @@ namespace ya
 		Vector3		 _offsetPosition;
 		Vector3		 _offsetScale;
 		UINT32		 _collisionCount;
+
+		Matrix		 _localMatrix;
 		Matrix		 _worldMatrix;
 
 		float		 _mass;

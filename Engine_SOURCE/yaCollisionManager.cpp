@@ -42,7 +42,7 @@ namespace ya
 		debugInfo.rotation.x = -std::atan2f(normDir.y, normDir.z);
 		debugInfo.rotation.y = std::asin(normDir.x);
 		debugInfo.rotation.z = 0.f;
-		debugInfo.rotation *= gRadToDegreeFactor;
+		debugInfo.rotation *= gRadianToDegreeFactor;
 
 
 		//Vector3 rotationAxis = Vector3::UnitX.Cross(normDir);

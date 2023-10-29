@@ -13,6 +13,7 @@ namespace ya
 		virtual void FixedUpdate() final {}
 
 		virtual void CollisionUpdate() = 0;
+		virtual void CollisionLateUpdate() = 0;
 	};
 }
 

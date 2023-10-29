@@ -29,7 +29,8 @@ namespace ya
 		virtual void Update();
 
 		//충돌 처리
-		virtual void CollisionUpdate();
+		void CollisionUpdate();
+		void CollisionLateUpdate();
 
 		//Update와 CollisionUpdate에서 설정한 데이터를 최종 정리
 		virtual void FixedUpdate();

@@ -108,18 +108,26 @@ namespace ya
 	{
 		assert(_type != eColliderType::End);
 
-		const Matrix translation = Matrix::CreateTranslation(_offsetPosition);
-		const Matrix scale = Matrix::CreateScale(_offsetScale);
-		_worldMatrix = scale * translation;
+		//이동은 크기에 영향을 받으므로 우선 크기 정보를 반영해서 Matrix를 만들어줘야 한다.
+		//나중에 
+		_localMatrix = Matrix::CreateScale(_offsetScale);
+		_localMatrix *= Matrix::CreateTranslation(_offsetPosition);
 
+		//트랜스폼의 크기 정보는 제거
 		const Vector3 objectScale = GetOwner()->GetComponent<Transform>()->GetWorldScale();
 		const Matrix objectScaleInvMatrix = Matrix::CreateScale(objectScale).Invert();
+
 		const Matrix  objectWorldMatrix = GetOwner()->GetComponent<Transform>()->GetWorldMatrix();
 		// 충돌체 상대행렬 * 오브젝트 월드 크기 역행렬 * 오브젝트 월드 행렬(크기 * 회전 * 이동)
 		//트랜스폼의 Scale은 반영하지 않는다
-		_worldMatrix = _worldMatrix * objectScaleInvMatrix * objectWorldMatrix;
+		_worldMatrix = _localMatrix * objectScaleInvMatrix * objectWorldMatrix;
 
-		SyncPhysXScene();
+		SyncPhysX();
+	}
+
+	void Collider3D::CollisionLateUpdate()
+	{
+		FetchPhysX();
 
 		//Debug Render
 		DebugMesh meshAttribute = {};
@@ -483,29 +491,9 @@ namespace ya
 		}
 	}
 
-	void Collider3D::Test()
-	{
-		if (_shape)
-		{
-			physx::PxRigidDynamic* dynamicRigid = _shape->getActor()->is<physx::PxRigidDynamic>();
-
-			physx::PxVec3 vel = dynamicRigid->getLinearVelocity();
-				
-			physx::PxMaterial* mtrl{};
-			_shape->getMaterials(&mtrl, 1u, 0u);
-			if (mtrl)
-			{
-				float df = mtrl->getDynamicFriction();
-				float sf = mtrl->getStaticFriction();
-			}
-			
-			int a = 3;
-		}
-
-	}
 
 
-	void Collider3D::SyncPhysXScene()
+	void Collider3D::SyncPhysX()
 	{
 		physx::PxActor* actor = _shape->getActor();
 		assert(actor);
@@ -528,6 +516,26 @@ namespace ya
 			//memcpy(&transform.q, &q, sizeof(Quaternion));
 			
 			rigidActor->setGlobalPose(transform);
+		}
+	}
+	void Collider3D::FetchPhysX()
+	{
+		physx::PxActor* actor = _shape->getActor();
+		assert(actor);
+		if (actor->is<physx::PxRigidActor>())
+		{
+			physx::PxRigidActor* rigidActor = static_cast<physx::PxRigidActor*>(actor);
+			if (rigidActor->is<physx::PxRigidStatic>())
+				return;
+
+			const physx::PxTransform worldTransform = rigidActor->getGlobalPose();
+
+			Matrix after = _localMatrix.Invert() * MathUtil::pxToMatrix(physx::PxMat44(worldTransform));
+			
+			Quaternion rotWorld = Quaternion::CreateFromRotationMatrix(after);
+			Vector3 posWorld = Vector3(after.m[3]);
+
+			GetOwner()->GetComponent<Transform>()->FetchPhysX(rotWorld, posWorld);
 		}
 	}
 } // namespace ya

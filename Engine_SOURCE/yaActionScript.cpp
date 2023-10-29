@@ -82,7 +82,7 @@ namespace ya
 	}
 
 
-#include "PhysXWrapper.h"
+
 	void ActionScript::Update()
 	{
 		assert(GetOwner() != nullptr);
@@ -93,8 +93,6 @@ namespace ya
 			mRigidbody->AddForce(Vector3(0.0f, mJumpForce, 0.0f));
 		}
 
-		mCollider->Test();
-		PhysxWrapper::getInstance().Test();
 	}
 
 	void ActionScript::FixedUpdate()

@@ -51,6 +51,14 @@ namespace ya
 		}
 	}
 
+	void Scene::CollisionLateUpdate()
+	{
+		for (Layer& layer : mLayers)
+		{
+			layer.CollisionLateUpdate();
+		}
+	}
+
 	void Scene::FixedUpdate()
 	{
 		for (Layer& layer : mLayers)

@@ -141,7 +141,7 @@ namespace ya
 		_currentScene->simulate(Time::DeltaTime());
 		_currentScene->fetchResults(true);
 
-		SyncGameScene();
+		//SyncGameScene();
 	}
 
 
@@ -559,15 +559,6 @@ namespace ya
 
 	void PhysxWrapper::onAdvance(const PxRigidBody* const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count)
 	{
-	}
-	void PhysxWrapper::Test()
-	{
-		auto iter = _scenes.begin();
-		physx::PxVec3 grvt = iter->second->getGravity();
-
-
-		int a = 3;
-
 	}
 #pragma endregion
 } // namespace pa 

@@ -80,6 +80,27 @@ namespace ya
 		}
 	}
 
+	void Layer::CollisionLateUpdate()
+	{
+		for (int i = 0; i < mGameObjects.size(); i++)
+		{
+			GameObject* obj = mGameObjects[i];
+
+
+			if (obj == nullptr)
+				continue;
+			if (obj->GetState() != GameObject::eState::Active)
+				continue;
+
+			if (false == obj->IsStart())
+			{
+				obj->Start();
+			}
+
+			obj->CollisionLateUpdate();
+		}
+	}
+
 	void Layer::FixedUpdate()
 	{
 

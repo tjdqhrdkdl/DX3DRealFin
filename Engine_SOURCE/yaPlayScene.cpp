@@ -48,8 +48,8 @@ namespace ya
 	{
 		CollisionManager::EnableGravity(true, this, Vector3(0.f, -120.f, 0.f));
 
-		CreateRealScene();
-		//CreateTestScene();
+		//CreateRealScene();
+		CreateTestScene();
 		Scene::Initialize();
 	}
 	

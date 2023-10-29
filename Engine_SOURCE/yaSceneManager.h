@@ -9,6 +9,7 @@ namespace ya
 		static void Initialize();
 		static void Update();
 		static void CollisionUpdate();
+		static void CollisionLateUpdate();
 		static void FixedUpdate();
 		static void Render();
 		static void Destroy();
