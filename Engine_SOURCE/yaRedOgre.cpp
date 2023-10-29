@@ -17,6 +17,7 @@ namespace ya
 		, mState(0)
 		, mBeforeState(0)
 	{
+		SetName(L"RedOgre");
 	}
 
 	ya::RedOgre::~RedOgre()
@@ -25,7 +26,8 @@ namespace ya
 
 	void ya::RedOgre::Initialize()
 	{
-		SetName(L"RedOgre");
+		MonsterBase::Initialize();
+
 		//GameObject* player = mMeshData->Instantiate(eLayerType::Monster);
 
 		//mMeshData = MeshData::LoadFromFbx(L"Monster\\RedOgre\\Mesh\\c5020.fbx");
@@ -97,7 +99,8 @@ namespace ya
 
 		mAnimationName = L"a100_003005";
 
-		MonsterBase::Initialize();
+		SetOriginState(GetState());
+		SetOriginPosition(GetComponent<Transform>()->GetPosition());
 	}
 
 	void ya::RedOgre::Update()

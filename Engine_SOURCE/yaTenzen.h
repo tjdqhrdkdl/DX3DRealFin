@@ -40,7 +40,6 @@ namespace ya
         void Guard();
         void OnHit();
         void Groggy();
-        void SettingSituation();
 
 
         void Move();
@@ -77,9 +76,6 @@ namespace ya
         
         Collider2D* mCollider;
         class ActionScript* mActionScript;
-
-        int mBeforeState;
-        int mState;
 
         std::wstring mAnimationName;
 

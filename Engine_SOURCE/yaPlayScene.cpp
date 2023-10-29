@@ -20,6 +20,7 @@
 #include "yaSwordMan.h"
 #include "yaTenzen.h"
 #include "yaAshinaSoldier.h"
+#include "yaAshinaSpearMan.h"
 
 #include "MapObjects.h"
 #include "yaBoundarySphere.h"
@@ -28,6 +29,7 @@
 #include "yaNavMeshTool.h"
 #include "yaAudioListener.h"
 
+#include "yaParticleSystem.h"
 namespace ya
 {
 	PlayScene::PlayScene()
@@ -165,8 +167,9 @@ namespace ya
 			lightComp->SetType(eLightType::Directional);
 			lightComp->SetDiffuse(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			lightComp->SetAmbient(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+			lightComp->SetAmbient(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
 		}
+
 
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
@@ -242,9 +245,18 @@ namespace ya
 			m->SetMapMeshTr(navTr);
 			m->Init(this);
 		}
+
+		{
+			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::Particle, this);
+			trObj->SetName(L"particle");
+			trObj->AddComponent<ParticleSystem>();
+			trObj->AddComponent<Collider2D>()->SetType(eColliderType::Box);
+
+		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		//object::Instantiate<AshinaSoldier>(eLayerType::Monster, this);
-		object::Instantiate<Tenzen>(eLayerType::Monster, this);
+		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
+		//mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-10.0f, 0.0f, 10.0f)));
+		//mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, -10.0f)));
 
 		Scene::Initialize();
 	}
@@ -254,6 +266,16 @@ namespace ya
 		if (Input::GetKeyDown(eKeyCode::N))
 		{
 			SceneManager::LoadScene(eSceneType::Loading);
+		}
+
+		if (Input::GetKeyDown(eKeyCode::M))
+		{
+			GetPlayer()->Reset();
+
+			for (MonsterBase* monster : mMonsters)
+			{
+				monster->Reset();
+			}
 		}
 
 		Scene::Update();

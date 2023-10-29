@@ -196,7 +196,6 @@
     <ClCompile Include="yaMeshObject.cpp">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClCompile>
-    <ClCompile Include="yaSwordsman.cpp" />
     <ClCompile Include="yaStructedBuffer.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
@@ -339,9 +338,6 @@
       <Filter>Contents\Map</Filter>
     </ClCompile>
     <ClCompile Include="yaMapCollider.cpp" />
-    <ClCompile Include="yaMonsterUI.cpp">
-      <Filter>Contents\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="yaHPMeterScript.cpp" />
     <ClCompile Include="PhysXWrapper.cpp">
       <Filter>Engine\Component\Collider\PhysX</Filter>
@@ -388,6 +384,27 @@
     </ClCompile>
     <ClCompile Include="yaAnimationData.cpp">
       <Filter>Engine\Resource\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="yaAshinaSpearMan.cpp">
+      <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSpearManSwordScript.cpp">
+      <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClCompile>
+    <ClCompile Include="yaParryEffect.cpp">
+      <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMonsterUI.cpp">
+      <Filter>Contents\Monster\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerDagerUIScript.cpp">
+      <Filter>Contents\Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerDangerUI.cpp">
+      <Filter>Contents\Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBossUI.cpp">
+      <Filter>Contents\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -595,7 +612,6 @@
     <ClInclude Include="yaMeshObject.h">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClInclude>
-    <ClInclude Include="yaSwordsman.h" />
     <ClInclude Include="yaGraphics.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
@@ -734,9 +750,6 @@
       <Filter>Contents\Map</Filter>
     </ClInclude>
     <ClInclude Include="yaMapCollider.h" />
-    <ClInclude Include="yaMonsterUI.h">
-      <Filter>Contents\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="yaHPMeterScript.h" />
     <ClInclude Include="PhysXWrapper.h">
       <Filter>Engine\Component\Collider\PhysX</Filter>
@@ -783,6 +796,30 @@
     </ClInclude>
     <ClInclude Include="yaAnimationData.h">
       <Filter>Engine\Resource\MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="yaAshinaSpearMan.h">
+      <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSpearManSwordScript.h">
+      <Filter>Contents\Monster\AshinaSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroCommons.h">
+      <Filter>Contents\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="yaParryEffect.h">
+      <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMonsterUI.h">
+      <Filter>Contents\Monster\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerDagerUIScript.h">
+      <Filter>Contents\Player\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerDangerUI.h">
+      <Filter>Contents\Player\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBossUI.h">
+      <Filter>Contents\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -999,15 +1036,13 @@
     <Filter Include="Contents\Monster\AshinaSoldier">
       <UniqueIdentifier>{60eb5981-72f1-4d65-bbeb-32cc16935806}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Monster\UI">
+      <UniqueIdentifier>{35917643-1204-4340-b056-e959ea3d5940}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">
       <Filter>Engine\Common\Math</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="loadanimation.txt">
-      <Filter>Contents\Player</Filter>
-    </Text>
   </ItemGroup>
 </Project>

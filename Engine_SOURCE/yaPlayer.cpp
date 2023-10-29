@@ -14,22 +14,27 @@
 
 #include "yaState.h"
 #include "yaPlayerHpTexture.h"
-
+#include "yaPlayerDangerUI.h"
+#include "yaParryEffect.h"
 
 namespace ya
 {
 	Player::Player()
 		: GameObject()
 		, mCamera(nullptr)
-		, mProsthetic(eProsthetics::None)
+		//, mProsthetic(eProsthetics::None)
 		, mWeaponCollider(nullptr)
 		, mStartStateEvent {}
 		, mEndStateEvent {}
+		, mbStealth(false)
+		, mStateFlag(0)
+		, mOriginSetting {}
 	{
 		SetName(L"Player");
 
 		Transform* tr = GetComponent<Transform>();
-		tr->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
+		Vector3 pos = Vector3(30.0f, 0.0f, -30.0f);
+		tr->SetPosition(pos);
 		//tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
@@ -52,6 +57,10 @@ namespace ya
 		mState->SetPosture(0);
 		mState->SetResurrectionCountMax(3);
 		mState->SetResurrectionCount(mState->GetResurrectionCountMax());
+
+		// 최초 정보 저장
+		mOriginSetting.position = pos;
+		mOriginSetting.state = *mState;
 	}
 
 	Player::~Player()
@@ -138,8 +147,13 @@ namespace ya
 	{		
 		mPlayerHpBar = object::Instantiate<PlayerHpTexture>(eLayerType::UI, GetScene());
 		mPlayerHpBar->SetPlayer(this);
+		mPlayerDangerUI = object::Instantiate<PlayerDangerUI>(eLayerType::UI, GetScene());
+		mPlayerDangerUI->SetPlayer(this);
+		mParryEffect = object::Instantiate<ParryEffect>(eLayerType::UI, GetScene());
+		mParryEffect->SetPlayer(this);
 	}
 
+	// block 상태가 얼마나 지속 되었는지 시간 return
 	float Player::GetBlockTime()
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
@@ -149,6 +163,37 @@ namespace ya
 			return attack->GetBlockTime();
 	}
 
+	void Player::Reset()
+	{
+		// state reset
+		mState->SetHPMax(mOriginSetting.state.GetHPMax());
+		mState->SetHp(mOriginSetting.state.GetHP());
+		mState->SetPostureMax(mOriginSetting.state.GetPostureMax());
+		mState->SetPosture(0);
+		mState->SetResurrectionCountMax(mOriginSetting.state.GetResurrectionCountMax());
+		mState->SetResurrectionCount(mOriginSetting.state.GetResurrectionCount());
+
+		// position reset
+		Transform* tr = GetComponent<Transform>();
+		tr->SetPosition(mOriginSetting.position);
+
+		// 인살 대상 reset
+		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
+		if (attack == nullptr)
+			return;
+		else
+			attack->ClearDeathBlowTarget();
+		
+		// state reset
+		mStateFlag = 0;
+		mbStealth = false;
+	}
+
+	/// <summary>
+	/// 인살 가능한 몬스터를 플레이어의 인살 가능 몬스터 목록에 저장한다.
+	/// </summary>
+	/// <param name="monster">몬스터 object</param>
+	/// <param name="distance">몬스터와의 거리</param>
 	void Player::SetDeathBlowTarget(MonsterBase* monster, float distance)
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
@@ -158,6 +203,10 @@ namespace ya
 			attack->SetDeathBlowTarget(monster, distance);
 	}
 
+	/// <summary>
+	/// 인살 불가능한 몬스터를 플레이어의 인살 가능 몬스터 목록에서 제거한다.
+	/// </summary>
+	/// <param name="monster"></param>
 	void Player::EraseDeathBlowTarget(MonsterBase* monster)
 	{
 		PlayerAttackScript* attack = GetScript<PlayerAttackScript>();
@@ -165,6 +214,11 @@ namespace ya
 			return;
 		else
 			attack->EraseDeathBlowTarget(monster);
+	}
+
+	void Player::DangerUION()
+	{
+		mPlayerDangerUI->UIOn();
 	}
 
 }

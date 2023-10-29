@@ -27,7 +27,6 @@ namespace ya
 	float tenzenBaseSpeed = 200;
 	Tenzen::Tenzen()
 		: MonsterBase()
-		, mState(0)
 		, mAlertTime(10)
 	{
 	}
@@ -36,6 +35,8 @@ namespace ya
 	}
 	void Tenzen::Initialize()
 	{
+		MonsterBase::Initialize();
+
 		//안쓰는 애들
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_000401.fbx", L"SitIdle");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\Boss_tenzen\\Animation\\a000_000402.fbx", L"SitToGetUp");
@@ -135,7 +136,7 @@ namespace ya
 
 		//오브젝트 트랜스폼
 		Transform* tr = GetComponent<Transform>();
-		tr->SetPosition(Vector3(0, 0, 0));
+		//tr->SetPosition(Vector3(0, 0, 0));
 		tr->SetScale(Vector3(1, 1, 1));
 		mTransform = tr;
 
@@ -199,7 +200,6 @@ namespace ya
 		SetPlayerObject(dynamic_cast<Player*>(GetScene()->GetPlayer()));
 		
 		//몬스터 스테이트
-		CreateMonsterState();
 		SetSpeed(tenzenBaseSpeed);
 
 
@@ -207,7 +207,7 @@ namespace ya
 		AddComponent<NavMesh>();
 
 
-		MonsterBase::Initialize();
+		
 		ADD_STATE(MonsterState_Guard);
 		ADD_STATE(MonsterState_Idle);
 
@@ -226,7 +226,8 @@ namespace ya
 		SetResurrectionCount(2);
 		SetResurrectionCountMax(2);
 
-
+		SetOriginState(GetState());
+		SetOriginPosition(mTransform->GetPosition());
 	}
 	void Tenzen::Update()
 	{
@@ -253,14 +254,12 @@ namespace ya
 
 			Move();
 			LookAtPlayer();
-			SettingSituation();
 		}
 
 		else
 		{
 			mCollider->Active(false);
 			mMonsterUI->UIOff();
-			SetSituation(eSituation::Death);
 		}
 		if (mAnimationName != L"")
 		{
@@ -295,7 +294,7 @@ namespace ya
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 				* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-					+ GetComponent<Transform>()->GetFinalScale().z / 2 + 1));
+					+ GetComponent<Transform>()->GetFinalScale().z / 2 + (float)0.5));
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);
@@ -401,6 +400,8 @@ namespace ya
 	{
 			if (STATE_HAVE(MonsterState_Recognize))
 			{
+				mBossUI->UIOn();
+				mMonsterUI->UIOff();
 				RM_STATE(MonsterState_Idle);
 				SetRecognize(true);
 				if (!(STATE_HAVE(MonsterState_DrawSword)))
@@ -447,7 +448,10 @@ namespace ya
 			}
 
 			else
+			{
 				SetRecognize(false);
+				mBossUI->UIOff();
+			}
 
 		
 	}
@@ -589,23 +593,6 @@ namespace ya
 		}
 	}
 
-	void Tenzen::SettingSituation()
-	{
-		if (STATE_HAVE(MonsterState_Guard))
-		{
-			SetSituation(eSituation::Defense);
-		}
-		else if (STATE_HAVE(MonsterState_Groggy))
-		{
-			SetSituation(eSituation::Groggy);
-		}
-		else
-		{
-			SetSituation(eSituation::None);
-		}
-	}
-
-
 	void Tenzen::Move()
 	{
 		if (STATE_HAVE(MonsterState_Move))
@@ -638,33 +625,46 @@ namespace ya
 		mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
 
 		// 칼을 우상단에서 우하단으로 크게 휘두르고 제자리로.
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 12) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);  SetSpeed(tenzenBaseSpeed * 4); mSwordScript->SetBlock(true); mSwordScript->SetAttackLeft(false); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 14) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); SetSpeed(tenzenBaseSpeed); };
 		// 칼을 좌하단에서 우상단으로. 한걸음 내딛으며.
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 12) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);};
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 18) = [this]() { RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
 		// 전진 점프 하며, 칼을 우상단에서 좌하단으로. 한걸음 내딛으며.
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(200); GetComponent<Rigidbody>()->SetJumping(true); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(100); GetComponent<Rigidbody>()->SetJumping(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 14) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
+
 		// 못막는 공격, 하단 베기
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 10) = [this]() { SetAttackUnGuardable(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 27) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 32) = [this]() { RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
+
 		// 못막는 공격, 찌르기. 전진
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 5) = [this]() { SetAttackUnGuardable(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 18) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed * 4); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 20) = [this]() { RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed);  RM_STATE(MonsterState_LookAt);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 52) = [this]() { mMoveDir = -mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed * 0.5f);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 60) = [this]() { RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed);  };
+
 		// 양옆으로 휘두르기, 2회 연속공격, 2회전진
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 12) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 40) = [this]() { ADD_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 46) = [this]() { RM_STATE(MonsterState_Move); };
+
 		// 콤보 공격 5베기
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);  };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); ADD_STATE(MonsterState_SuperArmor);  };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 7) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 12) = [this]() {RM_STATE(MonsterState_LookAt); };
 
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);  };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); ADD_STATE(MonsterState_SuperArmor); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 7) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 17) = [this]() {mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 20) = [this]() {RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); };
@@ -805,11 +805,15 @@ namespace ya
 	void Tenzen::AttackEndEvent()
 	{
 		RM_STATE(MonsterState_Attack);
+		RM_STATE(MonsterState_SuperArmor);
 		mBeforeState &= ~MonsterState_Attack;
 		ADD_STATE(MonsterState_LookAt);
 		mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f);
 		mSwordScript->SetBlock(true);
 		mSwordScript->SetAttackLeft(true);
+		SetAttackUnGuardable(false);
+		mAttackParams.damage = 10;
+
 	}
 	void Tenzen::TraceEndEvent()
 	{
@@ -901,7 +905,7 @@ namespace ya
 					if (GetHP() == 0)
 						SetPosture(GetPostureMax());
 					else
-						SetPosture(GetPosture() + 50);
+						SetPosture(GetPosture() + 10);
 
 
 					if (!(STATE_HAVE(MonsterState_SuperArmor)))

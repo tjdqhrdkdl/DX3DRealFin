@@ -1,4 +1,4 @@
-#include "yaAshinaSoldier.h"
+#include "yaAshinaSpearMan.h"
 #include "yaMeshData.h"
 
 //test
@@ -9,7 +9,7 @@
 #include "yaActionScript.h"
 #include "yaPlayer.h"
 #include "yaMonsterCollisionScript.h"
-#include "yaSoldierSwordScript.h"
+#include "yaSpearManSwordScript.h"
 
 #include "yaNavMesh.h"
 
@@ -22,80 +22,80 @@
 
 namespace ya
 {
-	float AshinaSoldierEyeSightAngleCos = 0.2f;
-	float AshinaSoldierWalkSpeed = 60;
-	float AshinaSoldierBaseSpeed = 70;
-	AshinaSoldier::AshinaSoldier()
+	float AshinaSpearManEyeSightAngleCos = 0.2f;
+	float AshinaSpearManWalkSpeed = 60;
+	float AshinaSpearManBaseSpeed = 70;
+	AshinaSpearMan::AshinaSpearMan()
 		: MonsterBase()
 		, mAlertTime(10)
 	{
 	}
-	AshinaSoldier::~AshinaSoldier()
+	AshinaSpearMan::~AshinaSpearMan()
 	{
 	}
-	void AshinaSoldier::Initialize()
+	void AshinaSpearMan::Initialize()
 	{
 		MonsterBase::Initialize();
-		SetName(L"AshinaSoldierObject");
+		SetName(L"AshinaSpearManObject");
 
 		////fbx 로드
-		//mMeshData = MeshData::LoadFromFbx(L"Monster\\AshinaSoldier\\Mesh\\c1010.fbx");
-		//
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_000000.fbx", L"Idle");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_000600.fbx", L"LookAround");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_001040.fbx", L"DrawSword");
+		//mMeshData = MeshData::LoadFromFbx(L"Monster\\AshinaSpearMan\\Mesh\\c1010.fbx");
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_000000.fbx", L"Idle");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_000600.fbx", L"LookAround");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_001040.fbx", L"DrawSword");
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_003000.fbx", L"SwordAttack_1"); // 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_003001.fbx", L"SwordAttack_2"); // 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_003003.fbx", L"SwordAttack_3"); // 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_003007.fbx", L"SwordAttack_4"); // 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_003008.fbx", L"SwordAttack_5"); // 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_003012.fbx", L"SwordAttack_6"); // 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_003013.fbx", L"SwordAttack_7"); // 
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_005000.fbx", L"WalkWithNoSword");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_405000.fbx", L"WalkFront");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_405001.fbx", L"WalkBack");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_405002.fbx", L"WalkLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_405003.fbx", L"WalkRight");
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_405010.fbx", L"Run");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_005211.fbx", L"RunBack");
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008010.fbx", L"HitFront");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008011.fbx", L"HitBack");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008012.fbx", L"HitLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008013.fbx", L"HitRight");
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008300.fbx", L"GrogyDownFront");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008301.fbx", L"GrogyDownBack");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008550.fbx", L"GrogyDownParried");
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008500.fbx", L"GuardLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008501.fbx", L"GuardRight");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008600.fbx", L"ParriedLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_008601.fbx", L"ParriedRight");
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_010000.fbx", L"Death");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_012000.fbx", L"DeathBlow2");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_012001.fbx", L"DeathBlow2_Death");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_012100.fbx", L"GroggyParried");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_012110.fbx", L"DeathBlow1");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_012111.fbx", L"DeathBlow1_Death");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_012200.fbx", L"DeathBlowAssasinated");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_012201.fbx", L"DeathBlowAssasinated_Death");
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_500000.fbx", L"Defense");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_501040.fbx", L"UnDefense");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_505000.fbx", L"DefenseMoveFront");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_505001.fbx", L"DefenseMoveBack");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_505002.fbx", L"DefenseMoveLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a000_505003.fbx", L"DefenseMoveRight");
+
+
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_000000.fbx", L"Spear_Idle");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_400600.fbx", L"Spear_LookAround");
 		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_003000.fbx", L"SwordAttack_1"); // 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_003001.fbx", L"SwordAttack_2"); // 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_003003.fbx", L"SwordAttack_3"); // 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_003007.fbx", L"SwordAttack_4"); // 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_003008.fbx", L"SwordAttack_5"); // 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_003012.fbx", L"SwordAttack_6"); // 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_003013.fbx", L"SwordAttack_7"); // 
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_005000.fbx", L"WalkWithNoSword");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_405000.fbx", L"WalkFront");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_405001.fbx", L"WalkBack");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_405002.fbx", L"WalkLeft");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_405003.fbx", L"WalkRight");
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_405010.fbx", L"Run");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_005211.fbx", L"RunBack");
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008010.fbx", L"HitFront"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008011.fbx", L"HitBack");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008012.fbx", L"HitLeft"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008013.fbx", L"HitRight"); 
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008300.fbx", L"GrogyDownFront"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008301.fbx", L"GrogyDownBack"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008550.fbx", L"GrogyDownParried");
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008500.fbx", L"GuardLeft"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008501.fbx", L"GuardRight"); 
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008600.fbx", L"ParriedLeft"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_008601.fbx", L"ParriedRight"); 
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_010000.fbx", L"Death"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_012000.fbx", L"DeathBlow2"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_012001.fbx", L"DeathBlow2_Death");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_012100.fbx", L"GroggyParried"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_012110.fbx", L"DeathBlow1"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_012111.fbx", L"DeathBlow1_Death"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_012200.fbx", L"DeathBlowAssasinated"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_012201.fbx", L"DeathBlowAssasinated_Death"); 
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_500000.fbx", L"Defense");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_501040.fbx", L"UnDefense");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_505000.fbx", L"DefenseMoveFront");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_505001.fbx", L"DefenseMoveBack");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_505002.fbx", L"DefenseMoveLeft");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a000_505003.fbx", L"DefenseMoveRight");
-		// 
-		// 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_000000.fbx", L"Spear_Idle");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_400600.fbx", L"Spear_LookAround");
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_003000.fbx", L"Spear_SwordAttack_1"); // 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_003001.fbx", L"Spear_SwordAttack_2"); // 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_003002.fbx", L"Spear_SwordAttack_3"); // 
@@ -110,27 +110,32 @@ namespace ya
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_003055.fbx", L"Spear_SwordAttack_12"); // 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_003056.fbx", L"Spear_SwordAttack_13"); // 
 		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_003100.fbx", L"Spear_SwordAttack_14"); // 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_005000.fbx", L"Spear_WalkWithNoSword");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_405000.fbx", L"Spear_WalkFront");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_405001.fbx", L"Spear_WalkBack");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_405002.fbx", L"Spear_WalkLeft");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_405003.fbx", L"Spear_WalkRight");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_405010.fbx", L"Spear_Run");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_008500.fbx", L"Spear_GuardLeft"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_008501.fbx", L"Spear_GuardRight"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_008550.fbx", L"Spear_GrogyDownParried"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_008600.fbx", L"Spear_ParriedLeft"); 
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_008601.fbx", L"Spear_ParriedRight"); 																					   
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_500000.fbx", L"Spear_Defense");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_501040.fbx", L"Spear_UnDefense");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_505000.fbx", L"Spear_DefenseMoveFront");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_505001.fbx", L"Spear_DefenseMoveBack");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_505002.fbx", L"Spear_DefenseMoveLeft");
-		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSoldier\\Animation\\a200_505003.fbx", L"Spear_DefenseMoveRight");
-		////
-		//mMeshData->AnimationSave(L"Monster\\AshinaSoldier\\AnimationData\\AshinaSoldier.animationdata");
 		// 
-		 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_005000.fbx", L"Spear_WalkWithNoSword");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_405000.fbx", L"Spear_WalkFront");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_405001.fbx", L"Spear_WalkBack");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_405002.fbx", L"Spear_WalkLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_405003.fbx", L"Spear_WalkRight");
+		// 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_405010.fbx", L"Spear_Run");
+		// 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_008500.fbx", L"Spear_GuardLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_008501.fbx", L"Spear_GuardRight");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_008550.fbx", L"Spear_GrogyDownParried");
+		// 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_008600.fbx", L"Spear_ParriedLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_008601.fbx", L"Spear_ParriedRight");
+		// 
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_500000.fbx", L"Spear_Defense");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_501040.fbx", L"Spear_UnDefense");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_505000.fbx", L"Spear_DefenseMoveFront");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_505001.fbx", L"Spear_DefenseMoveBack");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_505002.fbx", L"Spear_DefenseMoveLeft");
+		//mMeshData->LoadAnimationFromFbx(L"Monster\\AshinaSpearMan\\Animation\\a200_505003.fbx", L"Spear_DefenseMoveRight");
+
+		//mMeshData->AnimationSave(L"Monster\\AshinaSpearMan\\AnimationData\\AshinaSpearMan.animationdata");
+		//// 
+
 		mMeshData = std::make_shared<MeshData>();
 		mMeshData->Load(L"Monster\\AshinaSoldier\\MeshData\\c1010.meshdata");
 		mMeshData->AnimationLoad(L"Monster\\AshinaSoldier\\AnimationData\\AshinaSoldier.animationdata");
@@ -173,8 +178,8 @@ namespace ya
 
 		//동일 애니메이션 반복시 보간을 하지 않고 싶은 경우. (기본은 보간을 하도록 되어있음.)
 		BoneAnimator* animator = mMeshData->GetAnimator();
-		animator->SetAnimationSelfChange(L"Run", false);
-		animator->SetAnimationSelfChange(L"WalkFront", false);
+		animator->SetAnimationSelfChange(L"Spear_Run", false);
+		animator->SetAnimationSelfChange(L"Spear_WalkFront", false);
 		//애니메이션 끝부분 이상한 것 잘라내는 시간
 		animator->SetAnimationTailTime(0.1f);
 
@@ -184,7 +189,7 @@ namespace ya
 		for (size_t i = 0; i < materials.size(); i++)
 		{
 			if (materials[i][0]->GetName() == L"#22#.001")
-				mHat .push_back( childObjects[i]->GetComponent<Transform>());
+				mHat.push_back(childObjects[i]->GetComponent<Transform>());
 			if (materials[i][0]->GetName() == L"#23#")
 				mStraw.push_back(childObjects[i]->GetComponent<Transform>());
 			if (materials[i][0]->GetName() == L"#18#")
@@ -207,31 +212,27 @@ namespace ya
 				childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
 			if (materials[i][0]->GetName() == L"#07#")//stone
 				childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
+			if (materials[i][0]->GetName() == L"#30#")//Scabbard
+				childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
 		}
 		for (size_t i = 0; i < mSpear.size(); i++)
 		{
-			mSpear[i]->SetScale(Vector3::Zero);
+			mBaseSword[i]->SetScale(Vector3::Zero);
 		}
 		for (size_t i = 0; i < mBaseSwordInScabbard.size(); i++)
 		{
-			mBaseSwordInScabbard[i]->SetScale(Vector3::One);
-		}
-		for (size_t i = 0; i < mBaseSword.size(); i++)
-		{
-			mBaseSword[i]->SetScale(Vector3::Zero);
+			mBaseSwordInScabbard[i]->SetScale(Vector3::Zero);
 		}
 
 		//SetPlayerObject(dynamic_cast<Player*>(SceneManager::GetActiveScene()->GetPlayer()));
 		SetPlayerObject(dynamic_cast<Player*>(GetScene()->GetPlayer()));
 
 		//몬스터 스테이트
-		SetSpeed(AshinaSoldierBaseSpeed);
+		SetSpeed(AshinaSpearManBaseSpeed);
 
 
 		//네비 매쉬
 		AddComponent<NavMesh>();
-
-
 
 		ADD_STATE(MonsterState_Guard);
 		ADD_STATE(MonsterState_Idle);
@@ -254,7 +255,7 @@ namespace ya
 		SetOriginState(GetState());
 		SetOriginPosition(mTransform->GetPosition());
 	}
-	void AshinaSoldier::Update()
+	void AshinaSpearMan::Update()
 	{
 		if (Input::GetKeyDown(eKeyCode::N_1))
 			ADD_STATE(MonsterState_Alert);
@@ -307,15 +308,15 @@ namespace ya
 		MonsterBase::Update();
 		mBeforeState = mState;
 	}
-	void AshinaSoldier::FixedUpdate()
+	void AshinaSpearMan::FixedUpdate()
 	{
 		GameObject::FixedUpdate();
 	}
-	void AshinaSoldier::Render()
+	void AshinaSpearMan::Render()
 	{
 		MonsterBase::Render();
 	}
-	void AshinaSoldier::DeathBlow()
+	void AshinaSpearMan::DeathBlow()
 	{
 		//recognize 상태가 아니면 암살이다.
 		if (!(STATE_HAVE(MonsterState_Recognize)))
@@ -349,15 +350,15 @@ namespace ya
 		RM_STATE(MonsterState_Idle);
 		mCamScript->SetLockOnFree();
 	}
-	void AshinaSoldier::Idle()
+	void AshinaSpearMan::Idle()
 	{
 		if (STATE_HAVE(MonsterState_Idle))
 		{
-			mAnimationName = L"Idle";
+			mAnimationName = L"Spear_Idle";
 			RM_STATE(MonsterState_LookAt);
 		}
 	}
-	void AshinaSoldier::Alert()
+	void AshinaSpearMan::Alert()
 	{
 		if (mAnimationName != L"DeathBlow1" && mAnimationName != L"DeathBlow1_Death"
 			&& mAnimationName != L"DeathBlowAssasinated" && mAnimationName != L"DeathBlowAssasinated_Death")
@@ -376,7 +377,7 @@ namespace ya
 			{
 
 				float cosTheta = EyeSightCheck();
-				if (cosTheta > AshinaSoldierEyeSightAngleCos)
+				if (cosTheta > AshinaSpearManEyeSightAngleCos)
 				{
 					float dist = GetDistanceToPlayer();
 					float alert = GetAlertnessCount();
@@ -398,14 +399,14 @@ namespace ya
 			//플레이어 추적 실패 시 다시 Idle
 			else if (STATE_HAVE(MonsterState_Alert))
 			{
-				mAnimationName = L"WalkWithNoSword";
+				mAnimationName = L"Spear_WalkWithNoSword";
 				float cosTheta = EyeSightCheck();
 				Vector3 dir = mPlayerLastPosition - mTransform->GetPosition();
 				dir.y = 0;
 
 				if (dir.Length() < 5)
 				{
-					mAnimationName = L"LookAround";
+					mAnimationName = L"Spear_LookAround";
 					RM_STATE(MonsterState_Move);
 				}
 				else
@@ -414,7 +415,7 @@ namespace ya
 					mMoveDir = dir;
 					ADD_STATE(MonsterState_Move);
 					mActionScript->Velocity(10);
-					SetSpeed(AshinaSoldierWalkSpeed);
+					SetSpeed(AshinaSpearManWalkSpeed);
 				}
 
 
@@ -428,13 +429,13 @@ namespace ya
 				{
 					RM_STATE(MonsterState_Alert);
 					RM_STATE(MonsterState_Move);
-					SetSpeed(AshinaSoldierWalkSpeed);
+					SetSpeed(AshinaSpearManWalkSpeed);
 
 					ADD_STATE(MonsterState_Idle);
 					mAlertTimeChecker = 0;
 					SetAlertnessCount(0);
 				}
-				if (cosTheta > AshinaSoldierEyeSightAngleCos && dist < 20)
+				if (cosTheta > AshinaSpearManEyeSightAngleCos && dist < 20)
 				{
 					mActionScript->Velocity(18);
 					ADD_STATE(MonsterState_Recognize);
@@ -442,58 +443,51 @@ namespace ya
 			}
 		}
 	}
-	void AshinaSoldier::Recognize()
+	void AshinaSpearMan::Recognize()
 	{
 		if (STATE_HAVE(MonsterState_Recognize))
 		{
 			RM_STATE(MonsterState_Idle);
 			SetRecognize(true);
-			if (!(STATE_HAVE(MonsterState_DrawSword)) && !(STATE_HAVE(MonsterState_OnHit)))
-			{
-				mAnimationName = L"DrawSword";
-				ADD_STATE(MonsterState_LookAt);
-				RM_STATE(MonsterState_Move);
-			}
 
-			else if (STATE_HAVE(MonsterState_DrawSword))
-			{
+			
 
-				if (!(STATE_HAVE(MonsterState_Attack)) && !(STATE_HAVE(MonsterState_Defense))
-					&& !(STATE_HAVE(MonsterState_Trace)) && !(STATE_HAVE(MonsterState_GuardSuccess))
-					&& !(STATE_HAVE(MonsterState_OnHit)) && !(STATE_HAVE(MonsterState_AttackBlocked))
-					&& !(STATE_HAVE(MonsterState_Groggy)))
+			if (!(STATE_HAVE(MonsterState_Attack)) && !(STATE_HAVE(MonsterState_Defense))
+				&& !(STATE_HAVE(MonsterState_Trace)) && !(STATE_HAVE(MonsterState_GuardSuccess))
+				&& !(STATE_HAVE(MonsterState_OnHit)) && !(STATE_HAVE(MonsterState_AttackBlocked))
+				&& !(STATE_HAVE(MonsterState_Groggy)))
+			{
+				Vector3 pos = mTransform->GetPosition();
+				Vector3 playerPos = GetPlayerPos();
+
+				//플레이어 거리가 너무 멀어졌을 때
+				float traceDist = 8;
+				if (GetDistanceToPlayer() > traceDist)
 				{
-					Vector3 pos = mTransform->GetPosition();
-					Vector3 playerPos = GetPlayerPos();
+					ADD_STATE(MonsterState_Trace);
+				}
 
-					//플레이어 거리가 너무 멀어졌을 때
-					float traceDist = 8;
-					if (GetDistanceToPlayer() > traceDist)
-					{
-						ADD_STATE(MonsterState_Trace);
-					}
+				else if (fabsf(playerPos.y - pos.y) > 1)
+				{
+					ADD_STATE(MonsterState_Trace);
+				}
+				//플레이어 거리가 적당히 멀때 -> 근접형 공격 가능
 
-					else if (fabsf(playerPos.y - pos.y) > 1)
+				//플레이어 거리가 가까울 때 -> 백스텝 가능
+				else
+				{
+					int choice = rand() % 2;
+					switch (choice)
 					{
-						ADD_STATE(MonsterState_Trace);
-					}
-					//플레이어 거리가 적당히 멀때 -> 근접형 공격 가능
-
-					//플레이어 거리가 가까울 때 -> 백스텝 가능
-					else
-					{
-						int choice = rand() % 2;
-						switch (choice)
-						{
-						case 0:
-							ADD_STATE(MonsterState_Attack);
-							break;
-						}
+					case 0:
 						ADD_STATE(MonsterState_Attack);
-
+						break;
 					}
+					ADD_STATE(MonsterState_Attack);
 
 				}
+
+
 			}
 		}
 
@@ -502,7 +496,7 @@ namespace ya
 
 
 	}
-	void AshinaSoldier::Attack()
+	void AshinaSpearMan::Attack()
 	{
 		//어택 초이스
 		if (STATE_HAVE(MonsterState_Attack) && !(BEFORE_STATE_HAVE(MonsterState_Attack)))
@@ -510,43 +504,39 @@ namespace ya
 			//if (curName.substr(0, 11) == L"SwordAttack")
 			//	return;
 
-				int choice = rand() % 7;
-				switch (choice)
-				{
-				case 0:
-					mAnimationName = L"SwordAttack_1";
-					break;
-				case 1:
-					mAnimationName = L"SwordAttack_2";
-					break;
-				case 2:
-					mAnimationName = L"SwordAttack_3";
-					break;
-				case 3:
-					mAnimationName = L"SwordAttack_4";
-					break;
-				case 4:
-					mAnimationName = L"SwordAttack_5";
-					break;
-				case 5:
-					mAnimationName = L"SwordAttack_6";
-					break;
-				case 6:
-					mAnimationName = L"SwordAttack_7";
-					break;
-				}
+			int choice = rand() % 5;
+			switch (choice)
+			{
+			case 0:
+				mAnimationName = L"Spear_SwordAttack_1";
+				break;
+			case 1:
+				mAnimationName = L"Spear_SwordAttack_2";
+				break;
+			case 2:
+				mAnimationName = L"Spear_SwordAttack_3";
+				break;
+			case 3:
+				mAnimationName = L"Spear_SwordAttack_4";
+				break;
+			case 4:
+				mAnimationName = L"Spear_SwordAttack_5";
+				break;
+
+			}
+
 		}
 
 	}
-	void AshinaSoldier::Defense()
+	void AshinaSpearMan::Defense()
 	{
 
 	}
-	void AshinaSoldier::Trace()
+	void AshinaSpearMan::Trace()
 	{
 		if (STATE_HAVE(MonsterState_Trace))
 		{
-			mAnimationName = L"Run";
+			mAnimationName = L"Spear_Run";
 
 
 			//ADD_STATE(MonsterState_Move);
@@ -571,10 +561,10 @@ namespace ya
 		}
 	}
 
-	void AshinaSoldier::Guard()
+	void AshinaSpearMan::Guard()
 	{
 		BoneAnimator* animator = mMeshData->GetAnimator();
-		if (animator->GetPlayAnimationName().substr(0, 11) == L"SwordAttack")
+		if (animator->GetPlayAnimationName().substr(0, 20) == L"Spear_SwordAttack")
 		{
 			if (animator->GetCurrentFrameIdx() < 20)
 				ADD_STATE(MonsterState_Guard);
@@ -599,14 +589,14 @@ namespace ya
 		if (STATE_HAVE(MonsterState_GuardSuccess))
 		{
 			if (STATE_HAVE(MonsterState_GuardLeft))
-				mAnimationName = L"GuardLeft";
+				mAnimationName = L"Spear_GuardLeft";
 			else
-				mAnimationName = L"GuardRight";
+				mAnimationName = L"Spear_GuardRight";
 			RM_STATE(MonsterState_OnHit);
 		}
 	}
 
-	void AshinaSoldier::OnHit()
+	void AshinaSpearMan::OnHit()
 	{
 		if (STATE_HAVE(MonsterState_OnHit))
 		{
@@ -620,7 +610,7 @@ namespace ya
 		}
 	}
 
-	void AshinaSoldier::Groggy()
+	void AshinaSpearMan::Groggy()
 	{
 		if (!(STATE_HAVE(MonsterState_Groggy)) && GetPosture() >= 100
 			&& mAnimationName != L"DeathBlow1" && mAnimationName != L"DeathBlow1_Death"
@@ -641,11 +631,11 @@ namespace ya
 		}
 		if (STATE_HAVE(MonsterState_Groggy))
 		{
-			mAnimationName = L"GrogyDownParried";
+			mAnimationName = L"Spear_GrogyDownParried";
 		}
 	}
 
-	void AshinaSoldier::Move()
+	void AshinaSpearMan::Move()
 	{
 		if (STATE_HAVE(MonsterState_Move))
 		{
@@ -655,7 +645,7 @@ namespace ya
 		}
 	}
 
-	void AshinaSoldier::LookAtPlayer()
+	void AshinaSpearMan::LookAtPlayer()
 	{
 		if (STATE_HAVE(MonsterState_LookAt))
 		{
@@ -663,25 +653,12 @@ namespace ya
 		}
 	}
 
-	void AshinaSoldier::SetAnimationEvent()
+	void AshinaSpearMan::SetAnimationEvent()
 	{
 		//mSwordScript->SetAttackLeft(false);
 		//mSwordScript->SetAttackLeft(false);
 		//mActionScript->SetJumpTime(0.2f);
 		////애니메이션 이벤트 추가
-		mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&AshinaSoldier::DrawSwordEndEvent, this);
-
-
-		mMeshData->GetAnimationFrameEvent(L"DrawSword", 16) = [this]() {
-			for (size_t i = 0; i < mBaseSwordInScabbard.size(); i++)
-			{
-				mBaseSwordInScabbard[i]->SetScale(Vector3::Zero);
-			}
-			for (size_t i = 0; i < mBaseSword.size(); i++)
-			{
-				mBaseSword[i]->SetScale(Vector3::One);
-			}
-		};
 
 		// 
 		// 
@@ -691,86 +668,70 @@ namespace ya
 
 		//공격
 		//// 우좌 베기 3000
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 12) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSoldierBaseSpeed * (float)1.5); mSwordScript->SetBlock(true); mSwordScript->SetAttackLeft(false); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 18) = [this]() {  RM_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 23) = [this]() {  RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 5) = [this]() {SetAttackUnGuardable(true); };
+
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 12) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSpearManBaseSpeed * (float)1.3); mSwordScript->SetBlock(false); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 23) = [this]() {  RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
 
 		//// 좌우 베기 3001
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 1) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSoldierBaseSpeed * (float)1.5); mSwordScript->SetBlock(true); mSwordScript->SetAttackLeft(true); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 17) = [this]() { RM_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 19) = [this]() {  RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 15) = [this]() {SetAttackUnGuardable(true); };
+
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 20) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSpearManBaseSpeed * (float)2); mSwordScript->SetBlock(false);  };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 32) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt);  };
 
 
 		//// 전진 우좌 옆베기 3003
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 10) = [this]() { ADD_STATE(MonsterState_Move); SetSpeed(AshinaSoldierBaseSpeed * (float)1.5); mSwordScript->SetBlock(true); mSwordScript->SetAttackLeft(false); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 25) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 15) = [this]() {SetAttackUnGuardable(true); };
 
-		//// 좌우 내려베기 3007
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 4) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(AshinaSoldierBaseSpeed * (float)1.5); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 17) = [this]() { RM_STATE(MonsterState_Move);  };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 20) = [this]() { RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 30) = [this]() { ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * (float)1.5); mSwordScript->SetBlock(false); RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 60) = [this]() { RM_STATE(MonsterState_Move);};
+		
+		
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_4", 1) = [this]() {SetAttackUnGuardable(true); };
+
+
+
 
 		// 5연베기 3008
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 25) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(AshinaSoldierBaseSpeed * 2); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 34) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt);  };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 40) = [this]() { ADD_STATE(MonsterState_LookAt); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 50) = [this]() { ADD_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 57) = [this]() { RM_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 60) = [this]() { RM_STATE(MonsterState_LookAt); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 65) = [this]() { ADD_STATE(MonsterState_LookAt); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 77) = [this]() { RM_STATE(MonsterState_LookAt); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 87) = [this]() { ADD_STATE(MonsterState_Move); ADD_STATE(MonsterState_LookAt); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 97) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 15) = [this]() {SetAttackUnGuardable(true); };
 
-		////// 좌우 - 내려베기 3012
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 13) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(AshinaSoldierBaseSpeed * (float)1.5);};
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 23) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 37) = [this]() { ADD_STATE(MonsterState_LookAt);   };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 46) = [this]() { ADD_STATE(MonsterState_Move);   };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 54) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt);   };
-
-		//// 전진 찌르기 3013
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 8) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(AshinaSoldierBaseSpeed * (float)2); mSwordScript->SetBlock(false); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 26) = [this]() { RM_STATE(MonsterState_Move);  };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 32) = [this]() { RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 29) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * 2); mSwordScript->SetBlock(false); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 42) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt);  };
 
 
 
 
 
-		mMeshData->GetAnimationEndEvent(L"SwordAttack_1") = std::bind(&AshinaSoldier::AttackEndEvent, this);
-		mMeshData->GetAnimationEndEvent(L"SwordAttack_2") = std::bind(&AshinaSoldier::AttackEndEvent, this);
-		mMeshData->GetAnimationEndEvent(L"SwordAttack_3") = std::bind(&AshinaSoldier::AttackEndEvent, this);
-		mMeshData->GetAnimationEndEvent(L"SwordAttack_4") = std::bind(&AshinaSoldier::AttackEndEvent, this);
-		mMeshData->GetAnimationEndEvent(L"SwordAttack_5") = std::bind(&AshinaSoldier::AttackEndEvent, this);
-		mMeshData->GetAnimationEndEvent(L"SwordAttack_6") = std::bind(&AshinaSoldier::AttackEndEvent, this);
-		mMeshData->GetAnimationEndEvent(L"SwordAttack_7") = std::bind(&AshinaSoldier::AttackEndEvent, this);
 
-		mMeshData->GetAnimationStartEvent(L"SwordAttack_1") = std::bind(&AshinaSoldier::AttackStartEvent, this);
-		mMeshData->GetAnimationStartEvent(L"SwordAttack_2") = std::bind(&AshinaSoldier::AttackStartEvent, this);
-		mMeshData->GetAnimationStartEvent(L"SwordAttack_3") = std::bind(&AshinaSoldier::AttackStartEvent, this);
-		mMeshData->GetAnimationStartEvent(L"SwordAttack_4") = std::bind(&AshinaSoldier::AttackStartEvent, this);
-		mMeshData->GetAnimationStartEvent(L"SwordAttack_5") = std::bind(&AshinaSoldier::AttackStartEvent, this);
-		mMeshData->GetAnimationStartEvent(L"SwordAttack_6") = std::bind(&AshinaSoldier::AttackStartEvent, this);
-		mMeshData->GetAnimationStartEvent(L"SwordAttack_7") = std::bind(&AshinaSoldier::AttackStartEvent, this);
+		mMeshData->GetAnimationEndEvent(L"Spear_SwordAttack_1") = std::bind(&AshinaSpearMan::AttackEndEvent, this);
+		mMeshData->GetAnimationEndEvent(L"Spear_SwordAttack_2") = std::bind(&AshinaSpearMan::AttackEndEvent, this);
+		mMeshData->GetAnimationEndEvent(L"Spear_SwordAttack_3") = std::bind(&AshinaSpearMan::AttackEndEvent, this);
+		mMeshData->GetAnimationEndEvent(L"Spear_SwordAttack_4") = std::bind(&AshinaSpearMan::AttackEndEvent, this);
+		mMeshData->GetAnimationEndEvent(L"Spear_SwordAttack_5") = std::bind(&AshinaSpearMan::AttackEndEvent, this);
 
-		////mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&AshinaSoldier::DefenseEndEvent, this);
+		mMeshData->GetAnimationStartEvent(L"Spear_SwordAttack_1") = std::bind(&AshinaSpearMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"Spear_SwordAttack_2") = std::bind(&AshinaSpearMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"Spear_SwordAttack_3") = std::bind(&AshinaSpearMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"Spear_SwordAttack_4") = std::bind(&AshinaSpearMan::AttackStartEvent, this);
+		mMeshData->GetAnimationStartEvent(L"Spear_SwordAttack_5") = std::bind(&AshinaSpearMan::AttackStartEvent, this);
 
-		mMeshData->GetAnimationFrameEvent(L"GuardLeft", 17) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationFrameEvent(L"GuardRight", 17) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationEndEvent(L"GuardLeft") = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationEndEvent(L"GuardRight") = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationStartEvent(L"GuardLeft") = [this]() { ADD_STATE(MonsterState_GuardSuccess); };
-		mMeshData->GetAnimationStartEvent(L"GuardRight") = [this]() { ADD_STATE(MonsterState_GuardSuccess); };
+		////mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&AshinaSpearMan::DefenseEndEvent, this);
+
+		mMeshData->GetAnimationFrameEvent(L"Spear_GuardLeft", 17) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_GuardRight", 17) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationEndEvent(L"Spear_GuardLeft") = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationEndEvent(L"Spear_GuardRight") = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationStartEvent(L"Spear_GuardLeft") = [this]() { ADD_STATE(MonsterState_GuardSuccess); };
+		mMeshData->GetAnimationStartEvent(L"Spear_GuardRight") = [this]() { ADD_STATE(MonsterState_GuardSuccess); };
 
 
-		mMeshData->GetAnimationStartEvent(L"ParriedLeft") = [this]() { ADD_STATE(MonsterState_AttackBlocked); };
-		mMeshData->GetAnimationStartEvent(L"ParriedRight") = [this]() { ADD_STATE(MonsterState_AttackBlocked); };
-		mMeshData->GetAnimationFrameEvent(L"ParriedLeft", 20) = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationFrameEvent(L"ParriedRight", 20) = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationStartEvent(L"Spear_ParriedLeft") = [this]() { ADD_STATE(MonsterState_AttackBlocked); };
+		mMeshData->GetAnimationStartEvent(L"Spear_ParriedRight") = [this]() { ADD_STATE(MonsterState_AttackBlocked); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_ParriedLeft", 20) = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_ParriedRight", 20) = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 
-		mMeshData->GetAnimationEndEvent(L"ParriedLeft") = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationEndEvent(L"ParriedRight") = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationEndEvent(L"Spear_ParriedLeft") = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationEndEvent(L"Spear_ParriedRight") = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 
 
 
@@ -782,9 +743,9 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"HitBack") = [this]() { ADD_STATE(MonsterState_OnHit); };
 
 
-		mMeshData->GetAnimationEndEvent(L"GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); SetPosture(80); SetDeathBlow(false); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); };
-		mMeshData->GetAnimationStartEvent(L"GrogyDownParried") = [this]() { SetDeathBlow(true); RM_STATE(MonsterState_Guard); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) - (float)0.2 * mPlayerObject->GetComponent<Transform>()->Right()); mCamScript->SetCameraZoomDistance(1.5); };
-		mMeshData->GetAnimationFrameEvent(L"GrogyDownParried", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
+		mMeshData->GetAnimationEndEvent(L"Spear_GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); SetPosture(80); SetDeathBlow(false); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); };
+		mMeshData->GetAnimationStartEvent(L"Spear_GrogyDownParried") = [this]() { SetDeathBlow(true); RM_STATE(MonsterState_Guard); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) - (float)0.2 * mPlayerObject->GetComponent<Transform>()->Right()); mCamScript->SetCameraZoomDistance(1.5); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_GrogyDownParried", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
 
 		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Recognize); SetPosture(0); SetHp(GetMaxHP()); mMonsterUI->UIOn(); };
 		mMeshData->GetAnimationStartEvent(L"DeathBlow1") = [this]() { ADD_STATE(MonsterState_OnHit); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(1); };
@@ -811,7 +772,7 @@ namespace ya
 
 	}
 
-	float AshinaSoldier::EyeSightCheck()
+	float AshinaSpearMan::EyeSightCheck()
 	{
 		Vector3 pos = mTransform->GetPosition();
 
@@ -830,14 +791,14 @@ namespace ya
 		return dir.Dot(mTransform->Forward());
 	}
 
-	void AshinaSoldier::AttackStartEvent()
+	void AshinaSpearMan::AttackStartEvent()
 	{
 		ADD_STATE(MonsterState_Attack);
 		mBeforeState |= MonsterState_Attack;
 
 	}
 
-	float AshinaSoldier::GetDistanceToPlayer()
+	float AshinaSpearMan::GetDistanceToPlayer()
 	{
 		Vector3 pos = mTransform->GetPosition();
 		Transform* playerTr = GetPlayerObject()->GetComponent<Transform>();
@@ -853,7 +814,7 @@ namespace ya
 		return Vector3::Distance(scaledPos, scaledPlayerPos);
 	}
 
-	void AshinaSoldier::RotateForwardTo(Vector3 dir)
+	void AshinaSpearMan::RotateForwardTo(Vector3 dir)
 	{
 		Quaternion quater = Quaternion::FromToRotation(mTransform->Forward(), dir);
 		Vec3 theta = quater.ToEuler();
@@ -868,17 +829,17 @@ namespace ya
 		}
 	}
 
-	void AshinaSoldier::DrawSwordEndEvent()
+	void AshinaSpearMan::DrawSwordEndEvent()
 	{
 		ADD_STATE(MonsterState_DrawSword);
 
 		//ADD_STATE(MonsterState_Guard);
 	}
-	void AshinaSoldier::DefenseEndEvent()
+	void AshinaSpearMan::DefenseEndEvent()
 	{
 		RM_STATE(MonsterState_Defense);
 	}
-	void AshinaSoldier::AttackEndEvent()
+	void AshinaSpearMan::AttackEndEvent()
 	{
 		RM_STATE(MonsterState_Attack);
 		mBeforeState &= ~MonsterState_Attack;
@@ -891,12 +852,12 @@ namespace ya
 		mAttackParams.unGuardable = false;
 		mAttackParams.special = SpecialAttack::None;
 	}
-	void AshinaSoldier::TraceEndEvent()
+	void AshinaSpearMan::TraceEndEvent()
 	{
 		RM_STATE(MonsterState_Trace);
 	}
 
-	void AshinaSoldier::OnCollisionEnter(Collider2D* collider)
+	void AshinaSpearMan::OnCollisionEnter(Collider2D* collider)
 	{
 		GameObject* colObj = collider->GetOwner();
 		eLayerType layer = colObj->GetLayerType();
@@ -1018,44 +979,37 @@ namespace ya
 		}
 	}
 
-	void AshinaSoldier::OnCollisionStay(Collider2D* collider)
+	void AshinaSpearMan::OnCollisionStay(Collider2D* collider)
 	{
 	}
-	void AshinaSoldier::OnCollisionExit(Collider2D* collider)
+	void AshinaSpearMan::OnCollisionExit(Collider2D* collider)
 	{
 	}
-	void AshinaSoldier::AddMonsterState(eMonsterState state)
+	void AshinaSpearMan::AddMonsterState(eMonsterState state)
 	{
 		ADD_STATE(state);
 	}
-	void AshinaSoldier::KatanaColliderInit()
+	void AshinaSpearMan::KatanaColliderInit()
 	{
 		{
 
 
 			BoneCollider* Lkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile, GetScene());
-			Lkatana->SetMeshAndBone(mMeshData, L"Kodachi", this);
+			Lkatana->SetMeshAndBone(mMeshData, L"Spear", this);
 			Lkatana->SetBCOwner(this);
-			mSwordScript = Lkatana->AddComponent<SoldierSwordScript>();
-			
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_1", 20, 23);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_2", 14, 17);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_3", 29, 31);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_4", 17, 19);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_5", 34, 37);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_5", 46, 49);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_5", 58, 61);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_5", 73, 76);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_5", 98, 101);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_6", 21, 25);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_6", 54, 56);
-			Lkatana->SetColliderActiveFrame(L"SwordAttack_7", 23, 27);
-			
+			mSwordScript = Lkatana->AddComponent<SpearManSwordScript>();
+
+			Lkatana->SetColliderActiveFrame(L"Spear_SwordAttack_1", 23, 25);
+			Lkatana->SetColliderActiveFrame(L"Spear_SwordAttack_2", 30, 33);
+			Lkatana->SetColliderActiveFrame(L"Spear_SwordAttack_3", 32, 69);
+			Lkatana->SetColliderActiveFrame(L"Spear_SwordAttack_4", 16, 19);
+			Lkatana->SetColliderActiveFrame(L"Spear_SwordAttack_5", 37, 40);
+
 
 
 		}
 	}
-	void AshinaSoldier::SetStyle(UINT style)
+	void AshinaSpearMan::SetStyle(UINT style)
 	{
 		// 낭인 스타일
 		if (style == 0)

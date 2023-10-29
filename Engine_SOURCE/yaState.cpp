@@ -3,16 +3,20 @@
 namespace ya
 {
 	State::State()
+		: mHp(100.f)
+		, mHpMax(100.f)
+		, mPosture(0.f)
+		, mPostureMax(100.f)
+		, mResurrectionCount(1)
+		, mResurrectionCountMax(1)
+		, mAttack(0.f)
+		, mSpeed(0.f)
+		, mbDeathBlow(false)
+		, mbDeath(false)
+		, mStunEvent(nullptr)
+		, mDeathEvent(nullptr)
+		, mResurrectionEvent(nullptr)
 	{
-		mHp = 0.f;
-		mHpMax = 0.f;
-		mSpeed = 0.f;
-		mDeathBlowCount = 0.f;
-		mMaxDeathBlowCount = 0.f;
-		mbDeathBlow = 0.f;
-		//mbStartBlow = true;
-		mbDeathBlowOnOff = true;
-
 	}
 
 	State::~State()

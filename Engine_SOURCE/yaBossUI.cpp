@@ -1,4 +1,4 @@
-#include "yaMonsterUI.h"
+#include "yaBossUI.h"
 #include "yaObject.h"
 #include "yaMeshRenderer.h"
 #include "yaResources.h"
@@ -11,20 +11,18 @@
 
 namespace ya
 {
-	MonsterUI::MonsterUI()
-		:mRenderTime(2.5)
-		,mRenderTimeChecker(0)
-		, mbRender(false)
+	BossUI::BossUI()
+		:mbRender(false)
 	{
 	}
-	MonsterUI::~MonsterUI()
+	BossUI::~BossUI()
 	{
 	}
-	void MonsterUI::Initialize()
+	void BossUI::Initialize()
 	{
 		SetName(L"monUI");
 		Transform* UITr = GetComponent<Transform>();
-
+		UITr->SetPosition(Vector3(0, 400, 0));
 		{
 			mMonsterHpLayout = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 			mMonsterHpLayout->SetName(L"MonsterHpLayout");
@@ -32,12 +30,13 @@ namespace ya
 
 			Transform* hptr = mMonsterHpLayout->GetComponent<Transform>();
 			hptr->SetParent(UITr);
-			hptr->SetScale(Vector3(120.0f, 20.0f, 50.0f));
+			hptr->SetScale(Vector3(300.f, 30.f, 50.0f));
+			hptr->SetPosition(Vector3(-590.f, 0.0f, 50.0f));
 			MeshRenderer* meshRenderer = mMonsterHpLayout->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"HpLayoutMaterial");
 			meshRenderer->SetMaterial(mat, 0);
-			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"HPLayoutTexture")); 
+			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"HPLayoutTexture"));
 		}
 		{
 			mMonsterHpBar = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
@@ -45,7 +44,9 @@ namespace ya
 
 			Transform* hpbartr = mMonsterHpBar->GetComponent<Transform>();
 			hpbartr->SetParent(UITr);
-			hpbartr->SetScale(Vector3(100.0f, 5.0f, 50.0f));
+			hpbartr->SetScale(Vector3(265.f, 10.f, 50.0f));
+			hpbartr->SetPosition(Vector3(-591.0f, 0.0f, 50.0f));
+
 
 			MeshRenderer* meshRenderer = mMonsterHpBar->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -55,19 +56,14 @@ namespace ya
 			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"HPBarTexture"));
 		}
 		{
-			std::shared_ptr<Shader> postureLayoutShader = Resources::Find<Shader>(L"SpriteShader");
-			std::shared_ptr<Material> postureLayoutMaterial = std::make_shared<Material>();
-			postureLayoutMaterial->SetRenderingMode(eRenderingMode::Transparent);
-			postureLayoutMaterial->SetShader(postureLayoutShader);
-			Resources::Insert<Material>(L"PostureLayoutMaterial", postureLayoutMaterial);
 
 			mMonsterPostureLayout = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 			mMonsterPostureLayout->SetName(L"postureLayout");
 
 			Transform* postureLayouttr = mMonsterPostureLayout->GetComponent<Transform>();
 
-			postureLayouttr->SetScale(Vector3(100.0f, 5.0f, 50.0f));
-			postureLayouttr->SetPosition(Vector3(0, -10.0f, 0));
+			postureLayouttr->SetScale(Vector3(380.f, 20.f, 50.0f));
+			postureLayouttr->SetPosition(Vector3(-30, 20.0f, 0));
 			postureLayouttr->SetParent(UITr);
 
 			MeshRenderer* meshRenderer = mMonsterPostureLayout->AddComponent<MeshRenderer>();
@@ -85,8 +81,8 @@ namespace ya
 
 			Transform* postureBartr = mMonsterPostureBar1->GetComponent<Transform>();
 
-			postureBartr->SetScale(Vector3(50.f, 5.0f, 50.0f));
-			postureBartr->SetPosition(Vector3(25, -10.0f, 0));
+			postureBartr->SetScale(Vector3(180.f, 10.f, 50.0f));
+			postureBartr->SetPosition(Vector3(60, 20.0f, 0));
 
 			postureBartr->SetParent(UITr);
 
@@ -96,15 +92,16 @@ namespace ya
 
 			meshRenderer->SetMaterial(mat, 0);
 			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"PostureBar"));
-				 
+
 		}
 		{
 			mMonsterPostureBar2 = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
 			mMonsterPostureBar2->SetName(L"PostureBar2");
 
 			Transform* postureBartr = mMonsterPostureBar2->GetComponent<Transform>();
-			postureBartr->SetPosition(Vector3(-25.5, -10.0f, 0));
-			postureBartr->SetScale(Vector3(50.f, 5.0f, 50.0f));
+			postureBartr->SetPosition(Vector3(-120, 20.0f, 0));
+			postureBartr->SetScale(Vector3(180.f, 10.f, 50.0f));
+
 			postureBartr->SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 
 			postureBartr->SetParent(UITr);
@@ -129,8 +126,8 @@ namespace ya
 
 			Transform* resCountObjTr = mMonsterResurectionCount1->GetComponent<Transform>();
 
-			resCountObjTr->SetScale(Vector3(25, 25, 50.f));
-			resCountObjTr->SetPosition(Vector3(-45, 12, 0));
+			resCountObjTr->SetScale(Vector3(35, 35, 50.f));
+			resCountObjTr->SetPosition(Vector3(-710, 20, 0));
 			resCountObjTr->SetParent(UITr);
 
 			MeshRenderer* meshRenderer = mMonsterResurectionCount1->AddComponent<MeshRenderer>();
@@ -146,9 +143,9 @@ namespace ya
 
 			Transform* resCountObjTr = mMonsterResurectionCount2->GetComponent<Transform>();
 
-			resCountObjTr->SetScale(Vector3(25, 25, 50.f));
-			resCountObjTr->SetPosition(Vector3(-30, 12, 0));
-			resCountObjTr->SetParent(UITr); 
+			resCountObjTr->SetScale(Vector3(35, 35, 50.f));
+			resCountObjTr->SetPosition(Vector3(-685, 20, 0));
+			resCountObjTr->SetParent(UITr);
 
 			MeshRenderer* meshRenderer = mMonsterResurectionCount2->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -157,71 +154,16 @@ namespace ya
 			meshRenderer->SetMaterial(mat, 0);
 			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
 		}
-		{
-			mMonsterDeathBlow = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			mMonsterDeathBlow->SetName(L"DeathBlow");
-
-			Transform* resCountObjTr = mMonsterDeathBlow->GetComponent<Transform>();
-
-			resCountObjTr->SetScale(Vector3(90, 90, 50.f));
-
-			MeshRenderer* meshRenderer = mMonsterDeathBlow->AddComponent<MeshRenderer>();
-			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			std::shared_ptr<Material> mat = Resources::Find<Material>(L"ResurectionCountMaterial");
-
-			meshRenderer->SetMaterial(mat, 0);
-			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"DeathBlowTexture"));
-		}
-		{
-			std::shared_ptr<Shader> lockOnShader = Resources::Find<Shader>(L"SpriteShader");
-			std::shared_ptr<Material> lockOnMaterial = std::make_shared<Material>();
-			lockOnMaterial->SetRenderingMode(eRenderingMode::Transparent);
-			lockOnMaterial->SetShader(lockOnShader);
-			Resources::Insert<Material>(L"LockOnMaterial", lockOnMaterial);
-
-			mMonsterLockOn = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
-			mMonsterLockOn->SetName(L"LockOnMark");
-
-			Transform* tr = mMonsterLockOn->GetComponent<Transform>();
-
-			tr->SetScale(Vector3(20, 20, 50.f));
-
-			MeshRenderer* meshRenderer = mMonsterLockOn->AddComponent<MeshRenderer>();
-			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			std::shared_ptr<Material> mat = Resources::Find<Material>(L"LockOnMaterial");
-
-			meshRenderer->SetMaterial(mat, 0);
-			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"LockOnTexture"));
-		}
 		GameObject::Initialize();
 	}
-	void MonsterUI::Update()
+	void BossUI::Update()
 	{
 		if (mMonster)
 		{
 			if (mbRender)
 			{
-				//ui는 3초간 보여진다.
-				mRenderTimeChecker += Time::DeltaTime();
-				if (mRenderTimeChecker > mRenderTime)
-				{
-					mRenderTimeChecker = 0;
-					mbRender = false;
-				}
-				
 				//ui 전체 포지션 값
-				Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-				world._42 += 1.5;
-				Matrix fin = world * mainCamera->GetViewMatrix();
-				fin *= mainCamera->GetProjectionMatrix();
-				Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
-				ndc = ndc / ndc.w;
 
-				Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
-				UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-				GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
-				if (ndc.z > 1 or ndc.z < 0)
-					GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
 
 				//ui관련 상수버퍼 
 				MonsterMeterCheck();
@@ -279,73 +221,15 @@ namespace ya
 
 				mMonsterResurectionCount1->SetRender(false);
 				mMonsterResurectionCount2->SetRender(false);
-				mMonsterDeathBlow->SetRender(false);
-				mMonsterLockOn->SetRender(false);
 			}
 
-			{
-				if (mainCamera->GetOwner()->GetScript<CameraScript>()->GetLockOnTarget()
-					== mMonster)
-				{
-					Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-					world._42 += 0.25;
-					Matrix fin = world * mainCamera->GetViewMatrix();
-					fin *= mainCamera->GetProjectionMatrix();
-					Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
-					ndc = ndc / ndc.w;
-
-					Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
-					UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-					mMonsterLockOn->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
-					if (ndc.z > 1 or ndc.z < 0)
-						mMonsterLockOn->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
-					mMonsterLockOn->SetRender(true);
-
-					mbRender = true;
-					mRenderTimeChecker = 0;
-				}
-				else
-				{
-					mMonsterLockOn->SetRender(false);
-				}
-
-
-			}
-			{
-				if (mMonster->IsDeathBlow())
-				{
-					Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-					world._42 += -0.25;
-					Matrix fin = world * mainCamera->GetViewMatrix();
-					fin *= mainCamera->GetProjectionMatrix();
-					Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
-					ndc = ndc / ndc.w;
-
-					Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
-					UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-					mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
-					if (ndc.z > 1 or ndc.z < 0)
-						mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
-					mMonsterDeathBlow->SetRender(true);
-
-				}
-				else
-				{
-					mMonsterDeathBlow->SetRender(false);
-				}
-			}
 		}
 		GameObject::Update();
 	}
-	void MonsterUI::SetMonster(MonsterBase* mon)
-	{
-		mMonster = mon;
-		mMonster->AddComponent<MonsterUIScript>()->SetMonsterUI(this);
-	}
-	void MonsterUI::MonsterMeterCheck()
+	void BossUI::MonsterMeterCheck()
 	{
 
-		float hp = (float)PERCENTAGE / (float)mMonster->GetState()->GetHPMax();	
+		float hp = (float)PERCENTAGE / (float)mMonster->GetState()->GetHPMax();
 		float culhp = (float)PERCENTAGE - (hp * (float)mMonster->GetState()->GetHP());
 		float posture = (float)PERCENTAGE / (float)mMonster->GetState()->GetPostureMax();
 		float culposture = (float)PERCENTAGE - (posture * (float)mMonster->GetState()->GetPosture());

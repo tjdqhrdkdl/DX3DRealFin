@@ -21,7 +21,8 @@
 #include "yaApplication.h"
 
 #include "yaSwordMan.h"
-#include "yaMusketeerman.h"
+#include "yaAshinaSoldier.h"
+#include "yaAshinaSpearMan.h"
 #include "yaTenzen.h"
 
 #include "yaAudioClip.h"
@@ -37,7 +38,7 @@ namespace ya
 		, mPlayerAnim(nullptr)
 		, mAttackState(eAttackState::None)
 		, mTimer{ 0.0f }
-		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.15f, 1.0f,  2.0f }
+		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.15f, 1.0f,  3.0f }
 		, mbKeyInput(false)
 		, mHitDirection(Vector3::Zero)
 		, mDeathBlowTarget(nullptr)
@@ -763,7 +764,6 @@ namespace ya
 						mPlayerAnim->Play(L"a050_120102");
 
 					mPlayer->GetState()->AddPosture(10.0f);
-
 				}
 
 				if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
@@ -809,23 +809,28 @@ namespace ya
 					if (theta > -45.0f && theta <= 45.0f)
 					{
 						mPlayerAnim->Play(L"a000_100102");
-						mHitDirection = -playerTr->Forward();
+						//mHitDirection = -playerTr->Forward();
 					}
 					else if (theta > 45.0f && theta <= 135.0f)
 					{
 						mPlayerAnim->Play(L"a000_100100");
-						mHitDirection = playerTr->Right();
+						//mHitDirection = playerTr->Right();
 					}
 					else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
 					{
 						mPlayerAnim->Play(L"a000_100103");
-						mHitDirection = playerTr->Forward();
+						//mHitDirection = playerTr->Forward();
 					}
 					else if (theta > -135.0f && theta <= -45.0f)
 					{
 						mPlayerAnim->Play(L"a000_100101");
-						mHitDirection = -playerTr->Right();
+						//mHitDirection = -playerTr->Right();
 					}
+
+					if(theta < 90.0f && theta >= -90.0f)
+						mHitDirection = -playerTr->Forward();
+					else
+						mHitDirection = playerTr->Forward();
 
 					// 피격 당했을때 밀려나는 로직
 					if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
@@ -881,6 +886,20 @@ namespace ya
 	{
 		mPlayer->SetStateFlag(ePlayerState::DeathBlow, true);
 
+		// 플레이어가 몬스터를 보도록 회전한다.
+		Transform* playerTr = GetOwner()->GetComponent<Transform>();
+		Vector3 playerPos = playerTr->GetPosition();
+
+		Transform* monsterTr = monster->GetComponent<Transform>();
+		Vector3 monsterPos = monsterTr->GetPosition();
+
+		Quaternion quater = Quaternion::FromToRotation(playerTr->Forward(), Vector3(monsterPos.x - playerPos.x, 0.0f, monsterPos.z - playerPos.z));
+		Vector3 quaterToEuler = quater.ToEuler();
+		Vector3 quaterTheta = quaterToEuler * 180.0f / XM_PI;
+
+		playerTr->SetRotation(Vector3(0.0f, playerTr->GetRotation().y + quaterTheta.y, 0.0f));
+		playerTr->Update();
+
 		// 인살 가능한 몬스터가 있는 상태일때
 		// 몬스터 
 
@@ -894,12 +913,8 @@ namespace ya
 			{
 				//암살 인살
 			}
-
-			EraseDeathBlowTarget(monster);
-			mDeathBlowTarget = nullptr;
-			monster->DeathBlow();
 		}
-		else if (dynamic_cast<Musketeerman*>(monster) != nullptr)
+		else if (dynamic_cast<AshinaSoldier*>(monster) != nullptr)
 		{
 			if (monster->IsRecognize())
 			{
@@ -909,6 +924,23 @@ namespace ya
 			{
 				//암살 인살
 			}
+			EraseDeathBlowTarget(monster);
+			mDeathBlowTarget = nullptr;
+			monster->DeathBlow();
+		}
+		else if (dynamic_cast<AshinaSpearMan*>(monster) != nullptr)
+		{
+			if (monster->IsRecognize())
+			{
+				mPlayerAnim->Play(L"a200_510000");
+			}
+			else
+			{
+				//암살 인살
+			}
+			EraseDeathBlowTarget(monster);
+			mDeathBlowTarget = nullptr;
+			monster->DeathBlow();
 		}
 		else if (dynamic_cast<Tenzen*>(monster) != nullptr)
 		{
@@ -918,12 +950,12 @@ namespace ya
 					mPlayerAnim->Play(L"a200_510000");
 				else
 					mPlayerAnim->Play(L"a201_510000");
-
 			}
 			else
 			{
 				mPlayerAnim->Play(L"a200_510000");
 			}
+		}
 
 			Resources::Find<AudioClip>(L"kill-successx2")->Play();
 

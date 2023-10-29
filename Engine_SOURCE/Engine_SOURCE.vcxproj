@@ -156,6 +156,8 @@ call CopyDLL.bat $(Configuration)</Command>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Engine_SOURCE\\DetourTileCache\\Include;$(SolutionDir)\Engine_SOURCE\\DetourCrowd\\Include;$(SolutionDir)\Engine_SOURCE\\DebugUtils\\Include;$(SolutionDir)\Engine_SOURCE\\Recast\\Include;$(SolutionDir)\Engine_SOURCE\\Detour\\Include;$(SolutionDir)\External\FBXLoader\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -168,6 +170,12 @@ call CopyDLL.bat $(Configuration)</Command>
       <Command>cd $(SolutionDir)
 call CopyDLL.bat $(Configuration)</Command>
     </PreBuildEvent>
+    <Lib>
+      <AdditionalDependencies>libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External\fbx\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CSVEditor.h" />
@@ -197,6 +205,8 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="Utils.h" />
     <ClInclude Include="yaAnimationData.h" />
     <ClInclude Include="yaAshinaSoldier.h" />
+    <ClInclude Include="yaAshinaSpearMan.h" />
+    <ClInclude Include="yaBossUI.h" />
     <ClInclude Include="yaBoundarySphere.h" />
     <ClInclude Include="yaFrustum.h" />
     <ClInclude Include="yaHPMeterScript.h" />
@@ -206,7 +216,10 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaNavMeshTool.h" />
     <ClInclude Include="yaMonsterUI.h" />
     <ClInclude Include="yaMonsterUIScript.h" />
+    <ClInclude Include="yaParryEffect.h" />
     <ClInclude Include="yaPlayerAttackScript.h" />
+    <ClInclude Include="yaPlayerDagerUIScript.h" />
+    <ClInclude Include="yaPlayerDangerUI.h" />
     <ClInclude Include="yaPlayerHpTexture.h" />
     <ClInclude Include="yaPlayerMeshScript.h" />
     <ClInclude Include="yaBoneAnimator.h" />
@@ -270,7 +283,9 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaPlayerActionScript.h" />
     <ClInclude Include="yaPlayerProjectileScript.h" />
     <ClInclude Include="StrConverter.h" />
+    <ClInclude Include="yaSekiroCommons.h" />
     <ClInclude Include="yaSoldierSwordScript.h" />
+    <ClInclude Include="yaSpearManSwordScript.h" />
     <ClInclude Include="yaSwordManSwordScript.h" />
     <ClInclude Include="yaTitleScene.h" />
     <ClInclude Include="yaPrefab.h" />
@@ -289,7 +304,6 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaSwordMan.h" />
     <ClInclude Include="yaSpriteRenderer.h" />
     <ClInclude Include="yaStructedBuffer.h" />
-    <ClInclude Include="yaSwordsman.h" />
     <ClInclude Include="yaTenzen.h" />
     <ClInclude Include="yaMonsterCollisionScript.h" />
     <ClInclude Include="yaTenzenSwordScript.h" />
@@ -335,6 +349,8 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="yaAnimationData.cpp" />
     <ClCompile Include="yaAshinaSoldier.cpp" />
+    <ClCompile Include="yaAshinaSpearMan.cpp" />
+    <ClCompile Include="yaBossUI.cpp" />
     <ClCompile Include="yaBoundarySphere.cpp" />
     <ClCompile Include="yaFrustum.cpp" />
     <ClCompile Include="yaHPMeterScript.cpp" />
@@ -344,7 +360,10 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaNavMeshTool.cpp" />
     <ClCompile Include="yaMonsterUI.cpp" />
     <ClCompile Include="yaMonsterUIScript.cpp" />
+    <ClCompile Include="yaParryEffect.cpp" />
     <ClCompile Include="yaPlayerAttackScript.cpp" />
+    <ClCompile Include="yaPlayerDagerUIScript.cpp" />
+    <ClCompile Include="yaPlayerDangerUI.cpp" />
     <ClCompile Include="yaPlayerHpTexture.cpp" />
     <ClCompile Include="yaPlayerMeshScript.cpp" />
     <ClCompile Include="yaBoneAnimator.cpp" />
@@ -405,6 +424,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaPlayerProjectileScript.cpp" />
     <ClCompile Include="StrConverter.cpp" />
     <ClCompile Include="yaSoldierSwordScript.cpp" />
+    <ClCompile Include="yaSpearManSwordScript.cpp" />
     <ClCompile Include="yaSwordManSwordScript.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />
     <ClCompile Include="yaPrefab.cpp" />
@@ -422,7 +442,6 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaSwordMan.cpp" />
     <ClCompile Include="yaSpriteRenderer.cpp" />
     <ClCompile Include="yaStructedBuffer.cpp" />
-    <ClCompile Include="yaSwordsman.cpp" />
     <ClCompile Include="yaTenzen.cpp" />
     <ClCompile Include="yaMonsterCollisionScript.cpp" />
     <ClCompile Include="yaTenzenSwordScript.cpp" />
@@ -437,9 +456,6 @@ call CopyDLL.bat $(Configuration)</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="loadanimation.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

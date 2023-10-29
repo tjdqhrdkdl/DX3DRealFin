@@ -23,6 +23,7 @@
 #define CBSLOT_LIGHTMATRIX	    8
 #define CBSLOT_UNIFORM_DATA		9
 #define CBSLOT_METER			10
+#define CBSLOT_TIME			    11
 
 using namespace ya::math;
 namespace ya::graphics
@@ -146,6 +147,7 @@ namespace ya::graphics
 		LightMatrix,
 		UniformData,
 		HpMeter,
+		Time,
 		End,
 	};
 
@@ -229,6 +231,7 @@ namespace ya::graphics
 	{
 		Vector4 position;
 		Vector4 direction;
+		Vector4 velocity;
 
 		float lifeTime;
 		float time;
