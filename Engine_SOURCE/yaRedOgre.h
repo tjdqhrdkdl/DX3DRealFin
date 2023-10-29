@@ -17,12 +17,8 @@ namespace ya
         virtual void Render() override;
 
     private:
-        std::shared_ptr<MeshData> mMeshData;
         GameObject* mLHandCollider;
         GameObject* mRHandCollider;
-
-        Collider2D* mCollider;
-        class ActionScript* mActionScript;
 
         int mState;
         int mBeforeState;

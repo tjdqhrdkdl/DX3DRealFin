@@ -71,9 +71,7 @@ namespace ya
         GameObject* mKatanaCollider;
         Transform* mKatanaObjectTr;
         Transform* mKatanaHandleObjectTr;
-        Transform* mTransform;
         
-        Collider2D* mCollider;
 
         std::wstring mAnimationName;
 
