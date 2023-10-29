@@ -27,6 +27,7 @@
 #include "yaMapCollider.h"
 
 #include "yaNavMeshTool.h"
+#include "yaParticleSystem.h"
 namespace ya
 {
 	PlayScene::PlayScene()
@@ -165,6 +166,7 @@ namespace ya
 			lightComp->SetAmbient(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
 		}
 
+
 		{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
 			ground->SetName(L"Ground2");
@@ -239,10 +241,18 @@ namespace ya
 			m->SetMapMeshTr(navTr);
 			m->Init(this);
 		}
+
+		{
+			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::Particle, this);
+			trObj->SetName(L"particle");
+			trObj->AddComponent<ParticleSystem>();
+			trObj->AddComponent<Collider2D>()->SetType(eColliderType::Box);
+
+		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
-		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-10.0f, 0.0f, 10.0f)));
-		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, -10.0f)));
+		//mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-10.0f, 0.0f, 10.0f)));
+		//mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, -10.0f)));
 
 		Scene::Initialize();
 	}

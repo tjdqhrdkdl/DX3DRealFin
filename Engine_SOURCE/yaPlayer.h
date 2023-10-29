@@ -63,6 +63,7 @@ namespace ya
 		GameObject* mCamera;
 		class PlayerHpTexture* mPlayerHpBar;
 		class PlayerDangerUI* mPlayerDangerUI;
+		class ParryEffect* mParryEffect;
 
 		State* mState;
 		UINT mStateFlag;

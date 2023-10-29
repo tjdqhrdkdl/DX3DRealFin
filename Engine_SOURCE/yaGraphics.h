@@ -231,6 +231,7 @@ namespace ya::graphics
 	{
 		Vector4 position;
 		Vector4 direction;
+		Vector4 velocity;
 
 		float lifeTime;
 		float time;
