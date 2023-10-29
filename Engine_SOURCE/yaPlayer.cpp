@@ -44,6 +44,13 @@ namespace ya
 		//col->SetCenter(Vector3(0.f, 0.5f, 0.f));
 		col->SetSize(Vector3(0.8f, 3.4f, 0.8f));
 
+
+		EnumFlags< FreezeRotationFlag> flags{};
+		flags |= FreezeRotationFlag::ROTATION_X;
+		flags |= FreezeRotationFlag::ROTATION_Z;
+		
+		col->setFreezeRotation(flags);
+
 		Rigidbody* playerRigidbody = AddComponent<Rigidbody>();
 
 		mState = new State();

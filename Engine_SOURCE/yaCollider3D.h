@@ -93,7 +93,7 @@ namespace ya
 
 		UINT32 getId(void) const { return _id; }
 
-		void setFreezeRotation(FreezeRotationFlag flag, bool enable);
+		void setFreezeRotation(EnumFlags<FreezeRotationFlag> flag);
 		bool hasFlag(FreezeRotationFlag flag) const;
 
 		void AddForce(const Vector3& force);
@@ -161,7 +161,7 @@ namespace ya
 		 
 		GameObject* _otherOverlapping;
 
-		EnumFlags<FreezeRotationFlag, UINT16> _freezeRotationFlag;
+		EnumFlags<FreezeRotationFlag> _freezeRotationFlag;
 
 		bool _enableDraw;
 	};

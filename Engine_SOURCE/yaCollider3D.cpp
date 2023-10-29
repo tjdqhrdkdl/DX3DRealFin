@@ -83,6 +83,7 @@ namespace ya
 		SetStaticFriction(_staticFriction);
 		SetDynamicFriction(_dynamicFriction);
 		SetLimitVelocity(_maxVelocity);
+		setFreezeRotation(_freezeRotationFlag.Get());
 
 		if (_isStatic)
 		{
@@ -284,40 +285,36 @@ namespace ya
 		return isPenetrating;
 	}
 
-	void Collider3D::setFreezeRotation(FreezeRotationFlag flag, bool enable)
+	void Collider3D::setFreezeRotation(EnumFlags<FreezeRotationFlag> flag)
 	{
-		physx::PxActor* actor = _shape->getActor();
-		assert(actor);
+		_freezeRotationFlag = flag;
 
-		physx::PxRigidDynamic* rigidActor = actor->is<physx::PxRigidDynamic>();
-		if (rigidActor == nullptr)
-			return;
-
-		EnumFlags<FreezeRotationFlag, UINT16> enumFlag{ flag };
-
-		if (enable)
+		if (_shape)
 		{
-			_freezeRotationFlag |= enumFlag;
-			if (enumFlag & FreezeRotationFlag::ROTATION_X)
-				rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
-			if (enumFlag & FreezeRotationFlag::ROTATION_Y)
-				rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
-			if (enumFlag & FreezeRotationFlag::ROTATION_Z)
-				rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
-		}
-		else
-		{
-			_freezeRotationFlag &= ~enumFlag;
-			if (enumFlag & FreezeRotationFlag::ROTATION_X)
-				rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-			if (enumFlag & FreezeRotationFlag::ROTATION_Y)
-				rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-			if (enumFlag & FreezeRotationFlag::ROTATION_Z)
-				rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
+			physx::PxActor* actor = _shape->getActor();
+			assert(actor);
+
+			physx::PxRigidDynamic* rigidActor = actor->is<physx::PxRigidDynamic>();
+			if (rigidActor == nullptr)
+				return;
+
+			physx::PxRigidDynamicLockFlags pxFlag{};
+
+			if (_freezeRotationFlag & FreezeRotationFlag::ROTATION_X)
+				pxFlag |= physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X;
+			if (_freezeRotationFlag & FreezeRotationFlag::ROTATION_Y)
+				pxFlag |= physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y;
+			if (_freezeRotationFlag & FreezeRotationFlag::ROTATION_Z)
+				pxFlag |= physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z;
+
+
+			rigidActor->setRigidDynamicLockFlags(pxFlag);
+
+			rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_X, true);
+			rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, true);
 		}
 
-		rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_X, true);
-		rigidActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, true);
+
 	}
 
 	bool Collider3D::hasFlag(FreezeRotationFlag flag) const

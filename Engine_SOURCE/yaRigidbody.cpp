@@ -243,6 +243,7 @@ namespace ya
 
 	//	bool bGroundFlag = false;
 
+
 	//	if (CorrectionHit.isHit)
 	//	{
 	//		// 땅에 붙었는지 체크하기 위한 플래그

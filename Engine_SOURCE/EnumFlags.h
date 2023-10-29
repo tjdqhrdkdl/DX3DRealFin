@@ -46,6 +46,7 @@ namespace ya
 		void				raise(T e);
 		bool				isSet(T e) const;
 		EnumFlags<T, Size>& setAll(T e);
+		T					Get() const { return static_cast<T>(_bits); }
 
 	public:
 		friend EnumFlags<T, Size> operator&(T a, EnumFlags<T, Size>& b)
