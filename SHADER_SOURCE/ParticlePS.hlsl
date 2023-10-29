@@ -14,10 +14,10 @@ struct VSOut
 float4 main(GSOutput In) : SV_TARGET
 {
     float4 outColor = (float4) 0.0f;
+    outColor = startColor;
     
-    outColor = albedoTexture.Sample(anisotropicSampler, In.UV);
+    outColor.a = albedoTexture.Sample(anisotropicSampler, In.UV);
     
-    outColor *= startColor;
     
     if (outColor.a <= 0.0f)
         discard;

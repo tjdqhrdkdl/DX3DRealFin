@@ -7,23 +7,25 @@
 #include "yaGameObject.h"
 #include "yaTexture.h"
 #include "yaTime.h"
+#include "yaInput.h"
+
 
 namespace ya
 {
 	ParticleSystem::ParticleSystem()
 		: BaseRenderer(eComponentType::ParticleSystem)
-		, mMaxParticles(100)
-		, mStartSize(Vector4(50.0f, 50.0f, 1.0f, 1.0f))
-		, mStartColor(Vector4(1.0f, 0.2f, 0.2f, 1.0f))
-		, mStartLifeTime(3.0f)
+		, mMaxParticles(500)
+		, mStartSize(Vector4(.5f, .5f, 0.1f, 1.0f))
+		, mStartColor(Vector4(1.0f, 0.4f, 0.f, 1.0f))
+		, mStartLifeTime(1.0f)
 		, mFrequency(1.0f)
 		, mTime(0.0f)
 		, mCBData{}
 		, mSimulationSpace(eSimulationSpace::World)
 		, mRadius(500.0f)
-		, mStartSpeed(200.0f)
+		, mStartSpeed(10.0f)
 		, mElapsedTime(0.0f)
-
+		
 	{
 
 	}
@@ -46,22 +48,33 @@ namespace ya
 
 		// Material 세팅
 		std::shared_ptr<Material> material = Resources::Find<Material>(L"ParticleMaterial");
+		material->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"SparkParticle"));
 		SetMaterial(material, 0);
+		
 
-		std::shared_ptr<Texture> tex = Resources::Find<Texture>(L"CartoonSmoke");
-		material->SetTexture(eTextureSlot::Albedo, tex);
+		Particle particles[500] = {};
 
-		Particle particles[100] = {};
 		Vector4 startPos = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 		for (size_t i = 0; i < mMaxParticles; i++)
 		{
-			particles[i].position = Vector4(0.0f, 0.0f, 20.0f, 1.0f);
+			particles[i].position = Vector4(0.0f, 0.0f, 0.f, 1.0f);
 			particles[i].active = 0;
-			particles[i].direction =
-				Vector4(cosf( (float)i * (XM_2PI / (float)mMaxParticles) )
-					, sin( (float)i * (XM_2PI / (float)mMaxParticles)), 0.0f, 1.0f );
+			float randomAngle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * XM_2PI;
 
 			particles[i].speed = 100.0f;
+
+			if (i % 4 == 0)
+			{
+				particles[i].velocity = Vector4((float)(rand() % 40 - 20)
+					, (float)(rand() % 8)
+					, (float)(rand() % 40 - 20), 0);
+			}
+			else
+			{
+				particles[i].velocity = particles[i - 1].velocity;
+			}
+			particles[i].direction = particles[i].velocity;
+
 		}
 
 		mBuffer = new StructedBuffer();
@@ -73,6 +86,8 @@ namespace ya
 
 	void ParticleSystem::Update()
 	{
+		if (Input::GetKeyDown(eKeyCode::K))
+			mbParticleCreate = true;
 	}
 
 	void ParticleSystem::FixedUpdate()
@@ -81,13 +96,15 @@ namespace ya
 		float aliveTime = 1.0f / mFrequency;
 		//누적시간
 		mTime += Time::DeltaTime();
-		if (aliveTime < mTime)
+
+		if (mbParticleCreate)
 		{
+			mbParticleCreate = false;
 			float f = (mTime / aliveTime);
 			UINT iAliveCount = (UINT)f;
 			mTime = f - std::floor(f);
 
-			ParticleShared shared = { 5, };
+			ParticleShared shared = { 100, };
 			mSharedBuffer->SetData(&shared, 1);
 		}
 		else
@@ -108,7 +125,7 @@ namespace ya
 		mCBData.startLifeTime = mStartLifeTime;
 		mCBData.deltaTime = Time::DeltaTime();
 		mCBData.elapsedTime += Time::DeltaTime();
-
+		//gravity , force , velocity , friction
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::ParticleSystem];
 		cb->SetData(&mCBData);
 		cb->Bind(eShaderStage::ALL);

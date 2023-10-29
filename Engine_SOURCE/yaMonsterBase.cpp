@@ -47,6 +47,8 @@ namespace ya
 
 		mMonsterUI = object::Instantiate<MonsterUI>(eLayerType::UI, GetScene());
 		mMonsterUI->SetMonster(this);
+		mBossUI = object::Instantiate<BossUI>(eLayerType::UI, GetScene());
+		mBossUI->SetMonster(this);
 		mCamScript = mainCamera->GetOwner()->GetScript<CameraScript>();
 
 		GameObject::Initialize();

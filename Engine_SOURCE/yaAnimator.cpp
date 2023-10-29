@@ -62,7 +62,7 @@ namespace ya
 
 	bool Animator::Create(const std::wstring& name, std::shared_ptr<Texture> atlas
 						, Vector2 leftTop, Vector2 size, Vector2 offset
-						, UINT spriteLegth, float duration)
+						, UINT spriteXLegth, UINT spriteYLegth, float duration)
 	{
 		if (atlas == nullptr)
 			return false;
@@ -73,13 +73,13 @@ namespace ya
 
 		animation = new Animation();
 		animation->Create(name, atlas, leftTop
-						 , size, offset
-						 , spriteLegth, duration);
+						 , size, offset,
+						spriteXLegth, spriteYLegth, duration);
 
 		mAnimations.insert(std::make_pair(name, animation));
 
 		Events* events = new Events();
-		events->mEvents.resize(spriteLegth);
+		events->mEvents.resize(spriteXLegth * spriteYLegth);
 		mEvents.insert(std::make_pair(name, events));
 
 		return true;
