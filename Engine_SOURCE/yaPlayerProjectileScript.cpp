@@ -6,6 +6,9 @@
 #include "yaBoneCollider.h"
 #include "yaMonsterBase.h"
 
+#include "yaResources.h"
+#include "yaAudioClip.h"
+
 namespace ya
 {
 	PlayerProjectileScript::PlayerProjectileScript()
@@ -21,6 +24,64 @@ namespace ya
 
 	void PlayerProjectileScript::Initialize()
 	{
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\enemy_damage1.wav");
+			Resources::Insert<AudioClip>(L"enemy_damage1", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\enemy_damage2.wav");
+			Resources::Insert<AudioClip>(L"enemy_damage2", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\enemy_damage3.wav");
+			Resources::Insert<AudioClip>(L"enemy_damage3", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\enemy_damage4.wav");
+			Resources::Insert<AudioClip>(L"enemy_damage4", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\enemy_damage5.wav");
+			Resources::Insert<AudioClip>(L"enemy_damage5", clip);
+		}
+		
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\sword-x-sword1.wav");
+			Resources::Insert<AudioClip>(L"sword-x-sword1", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\sword-x-sword2.wav");
+			Resources::Insert<AudioClip>(L"sword-x-sword2", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\sword-x-sword3.wav");
+			Resources::Insert<AudioClip>(L"sword-x-sword3", clip);
+		}
+		
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\c000006601.wav");
+			Resources::Insert<AudioClip>(L"c000006601_1", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\c000006601b.wav");
+			Resources::Insert<AudioClip>(L"c000006601_2", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\c000006601c.wav");
+			Resources::Insert<AudioClip>(L"c000006601_3", clip);
+		}
+
 	}
 
 	void PlayerProjectileScript::Update()
@@ -64,10 +125,11 @@ namespace ya
 		Vector3 quaterToEuler = quater.ToEuler();
 		Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
+		PlayerAttackScript::eAttackState attackState = attack->GetAttackState();
+
 		// 몬스터 패링
 		if (monster->IsMonsterState(MonsterBase::MonsterState_Defense) && abs(theta.y) <= 45.0f)
 		{
-			PlayerAttackScript::eAttackState attackState = attack->GetAttackState();
 			if (attackState == PlayerAttackScript::eAttackState::Attack1)
 			{
 				mPlayerAnim->Play(L"a050_130100");
@@ -89,13 +151,32 @@ namespace ya
 				mPlayerAnim->Play(L"a050_130200");
 			}
 
+			//Resources::Find<AudioClip>(L"sword-x-sword" + std::to_wstring(RandomNumber(1, 3)))->Play();
+			Resources::Find<AudioClip>(L"c000006601_" + std::to_wstring(RandomNumber(1, 3)))->Play();
 			return;
 		}
-
-		// 인살 가능 상태일때
-		if (0)
+		else
 		{
-			mPlayerAnim->Play(L"a050_130200");
+			if (attackState == PlayerAttackScript::eAttackState::Attack1)
+			{
+				Resources::Find<AudioClip>(L"enemy_damage1")->Play();
+			}
+			else if (attackState == PlayerAttackScript::eAttackState::Attack2)
+			{
+				Resources::Find<AudioClip>(L"enemy_damage2")->Play();
+			}
+			else if (attackState == PlayerAttackScript::eAttackState::Attack3)
+			{
+				Resources::Find<AudioClip>(L"enemy_damage3")->Play();
+			}
+			else if (attackState == PlayerAttackScript::eAttackState::Attack4)
+			{
+				Resources::Find<AudioClip>(L"enemy_damage4")->Play();
+			}
+			else if (attackState == PlayerAttackScript::eAttackState::Attack5)
+			{
+				Resources::Find<AudioClip>(L"enemy_damage5")->Play();
+			}
 		}
 	}
 	void PlayerProjectileScript::OnCollisionStay(Collider2D* collider)

@@ -72,6 +72,7 @@ namespace ya
 
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			playerAnim->Play(L"a000_100300");
+			Resources::Find<AudioClip>(L"voice-m-dead")->Play();
 		};
 
 		mPlayer->GetState()->GetRessurctionEvent() = [this, owner]() {
@@ -123,6 +124,12 @@ namespace ya
 			clip->SetLoop(true);
 			Resources::Insert<AudioClip>(L"foot-soil-w1", clip);
 			mAudioClips.push_back(clip);
+		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-dead.wav");
+			Resources::Insert<AudioClip>(L"voice-m-dead", clip);
 		}
 	}
 

@@ -146,7 +146,40 @@ namespace ya
 			Resources::Insert<AudioClip>(L"kill3", clip);
 		}
 
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\damage_SE.wav");
+			Resources::Insert<AudioClip>(L"damage_SE1", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\damage_SE2.wav");
+			Resources::Insert<AudioClip>(L"damage_SE2", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\damage_SE3.wav");
+			Resources::Insert<AudioClip>(L"damage_SE3", clip);
+		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-damage-m-1.wav");
+			Resources::Insert<AudioClip>(L"voice-m-damage-m-1", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-damage-m-2.wav");
+			Resources::Insert<AudioClip>(L"voice-m-damage-m-2", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-damage-m-3.wav");
+			Resources::Insert<AudioClip>(L"voice-m-damage-m-3", clip);
+		}
+
 		std::wstring weapon = WEAPON;
+		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a200_510000_" + weapon, 20) = []() { Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play(); };
 		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a200_510000_" + weapon, 50) = []() { Resources::Find<AudioClip>(L"kill3")->Play(); };
 	}
 
@@ -766,6 +799,9 @@ namespace ya
 					mPlayer->GetState()->AddPosture(10.0f);
 				}
 
+				//Resources::Find<AudioClip>(L"sword-x-sword" + std::to_wstring(RandomNumber(1, 3)))->Play();
+				Resources::Find<AudioClip>(L"c000006601_" + std::to_wstring(RandomNumber(1, 3)))->Play();
+
 				if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
 					mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
 			}
@@ -802,6 +838,8 @@ namespace ya
 						mTimer[(UINT)eAttackState::HitMove] = 0.3f;
 
 					mPlayer->GetState()->AddHp(-50.0f);
+					Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play();
+					Resources::Find<AudioClip>(L"voice-m-damage-m-" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				}
 				else
 				{
@@ -837,6 +875,8 @@ namespace ya
 						mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
 
 					mPlayer->GetState()->AddHp(-30.0f);
+					Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play();
+					Resources::Find<AudioClip>(L"voice-m-damage-m-" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				}
 			}
 		}
@@ -956,12 +996,10 @@ namespace ya
 				mPlayerAnim->Play(L"a200_510000");
 			}
 		}
+		Resources::Find<AudioClip>(L"kill-successx2")->Play();
 
-			Resources::Find<AudioClip>(L"kill-successx2")->Play();
-
-			EraseDeathBlowTarget(monster);
-			mDeathBlowTarget = nullptr;
-			monster->DeathBlow();
-		}
+		EraseDeathBlowTarget(monster);
+		mDeathBlowTarget = nullptr;
+		monster->DeathBlow();
 	}
 }
