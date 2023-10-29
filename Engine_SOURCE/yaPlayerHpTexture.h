@@ -3,6 +3,7 @@
 
 namespace ya
 {
+    class Player;
     class PlayerHpTexture : public GameObject
     {
     public:
@@ -10,24 +11,23 @@ namespace ya
         virtual ~PlayerHpTexture();
 
     public:
-
         virtual void Initialize() override;
         virtual void Update() override;
+        virtual void FixedUpdate() override;
+        virtual void Render() override;
 
-        void SetPlayer(class Player* player) { mPlayer = player; }
-
-        void PlayerMeterCheak();
-        
-        void PlayerResurrection_True();
-        void PlayerResurrection_False();
+        void SetPlayer(Player* player);
 
     private:
+        Player* mPlayer;
 
-        class Player* mPlayer;
-        GameObject* mPlayerHpLayout;
-        GameObject* mPlayerHpBar;
-        GameObject* mPlayerResurrection;
-        GameObject* mPlayerpostureLayout;
+        GameObject* mHpLayout;
+        GameObject* mHpBar;
+
+        std::vector<GameObject*> mResurrections;
+        GameObject* mResurrectionFalse;
+
+        GameObject* mPostureLayout;
         //GameObject* mPlayerpostureBar;
 
     };

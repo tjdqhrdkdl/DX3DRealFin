@@ -53,7 +53,7 @@ namespace ya
 
 	void State::AddResurrectionCount(int count)
 	{
-		if (mResurrectionCount >= mResurrectionCountMax)
+		if (mResurrectionCount > mResurrectionCountMax)
 			mResurrectionCount = mResurrectionCountMax;
 		else
 			mResurrectionCount += count;
