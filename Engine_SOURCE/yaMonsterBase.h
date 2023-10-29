@@ -155,13 +155,15 @@ namespace ya
 
     protected:
         std::shared_ptr<MeshData>   mMeshData;
-        //MeshObject*         mMeshObject;
         ActionScript*       mActionScript;
 
-        Attack              mAttackParams;
+        Transform*          mTransform;
+        Collider2D*         mCollider;
+
         MonsterUI*          mMonsterUI;
         CameraScript*       mCamScript;
         Player*             mPlayerObject;
+        Attack              mAttackParams;
 
         int                 mBeforeState;
         int                 mState;

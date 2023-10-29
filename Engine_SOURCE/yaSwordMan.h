@@ -55,14 +55,9 @@ namespace ya
 
 
     private:
-        std::shared_ptr<MeshData> mMeshData;
         GameObject* mKatanaCollider;
         Transform* mKatanaObjectTr;
         Transform* mKatanaHandleObjectTr;
-        Transform* mTransform;
-
-        Collider2D* mCollider;
-        class ActionScript* mActionScript;
 
         std::wstring mAnimationName;
 
