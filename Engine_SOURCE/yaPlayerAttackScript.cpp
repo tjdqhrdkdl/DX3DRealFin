@@ -127,19 +127,26 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Idle, false);
 			}));
 
-
-		{
-			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
-			clip->Load(L"..\\Resources\\Sound\\main\\c000004081.wav");
-			Resources::Insert<AudioClip>(L"c000004081", clip);
-		}
-
 		{
 			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
 			clip->Load(L"..\\Resources\\Sound\\main\\swing-katana.wav");
-			//clip->SetLoop(true);
 			Resources::Insert<AudioClip>(L"swing-katana", clip);
 		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\kill-successx2.wav");
+			Resources::Insert<AudioClip>(L"kill-successx2", clip);
+		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\kill3.wav");
+			Resources::Insert<AudioClip>(L"kill3", clip);
+		}
+
+		std::wstring weapon = WEAPON;
+		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a200_510000_" + weapon, 50) = []() { Resources::Find<AudioClip>(L"kill3")->Play(); };
 	}
 
 	void PlayerAttackScript::Update()
@@ -917,6 +924,8 @@ namespace ya
 			{
 				mPlayerAnim->Play(L"a200_510000");
 			}
+
+			Resources::Find<AudioClip>(L"kill-successx2")->Play();
 
 			EraseDeathBlowTarget(monster);
 			mDeathBlowTarget = nullptr;
