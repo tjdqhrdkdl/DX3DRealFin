@@ -256,12 +256,7 @@ namespace ya
 
 		if (Input::GetKeyDown(eKeyCode::M))
 		{
-			GetPlayer()->Reset();
-
-			for (MonsterBase* monster : mMonsters)
-			{
-				monster->Reset();
-			}
+			Reset();
 		}
 
 		Scene::Update();
@@ -279,5 +274,15 @@ namespace ya
 	}
 	void PlayScene::OnExit()
 	{
+	}
+
+	void PlayScene::Reset()
+	{
+		GetPlayer()->Reset();
+
+		for (MonsterBase* monster : mMonsters)
+		{
+			monster->Reset();
+		}
 	}
 }

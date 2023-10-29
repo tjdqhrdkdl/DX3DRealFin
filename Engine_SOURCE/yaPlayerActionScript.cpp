@@ -11,6 +11,11 @@
 #include "yaPlayerMeshScript.h"
 #include "yaBoneCollider.h"
 
+#include "yaSceneManager.h"
+#include "yaScene.h"
+#include "yaPlayScene.h"
+#include "yaLoadingScene.h"
+
 namespace ya
 {
 	PlayerActionScript::PlayerActionScript()
@@ -996,12 +1001,35 @@ namespace ya
 
 	void PlayerActionScript::Death()
 	{
-		if (Input::GetKeyDown(eKeyCode::SPACE))
+		if (Input::GetKeyDown(eKeyCode::LBTN))
 		{
 			if (mPlayer->GetState()->GetResurrectionCount() > 0)
 			{
 				mPlayer->GetState()->Resurrection();
 				mPlayer->SetStateFlag(ePlayerState::Death, false);
+			}
+			else
+			{
+				PlayScene* playScene = dynamic_cast<PlayScene*>(SceneManager::GetScene(eSceneType::Play));
+				playScene->Reset();
+
+				LoadingScene* loadingScene = dynamic_cast<LoadingScene*>(SceneManager::GetScene(eSceneType::Loading));
+				loadingScene->SetLoading();
+
+				SceneManager::LoadScene(eSceneType::Loading);
+			}
+		}
+		else if (Input::GetKeyDown(eKeyCode::RBTN))
+		{
+			if (mPlayer->GetState()->GetResurrectionCount() == 0)
+			{
+				PlayScene* scene = dynamic_cast<PlayScene*>(SceneManager::GetScene(eSceneType::Play));
+				scene->Reset();
+
+				LoadingScene* loadingScene = dynamic_cast<LoadingScene*>(SceneManager::GetScene(eSceneType::Loading));
+				loadingScene->SetLoading();
+
+				SceneManager::LoadScene(eSceneType::Title);
 			}
 		}
 	}
