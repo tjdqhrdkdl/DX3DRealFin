@@ -237,6 +237,7 @@ namespace ya::graphics
 		float time;
 		float speed;
 		UINT active;
+		BOOL bJump;
 	};
 
 	struct ParticleShared

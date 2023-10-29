@@ -1,6 +1,7 @@
 #include "yaTenzenSwordScript.h"
 #include "yaPlayer.h"
 #include "yaTenzen.h"
+#include "yaParticleSystem.h"
 namespace ya
 {
 	TenzenSwordScript::TenzenSwordScript()
@@ -18,9 +19,15 @@ namespace ya
 		eLayerType layer = colObj->GetLayerType();
 		if (layer == eLayerType::Player)
 		{
+			Player* pl = dynamic_cast<Player*>(colObj);
+			GameObject* particleObj = pl->GetParticleObject();
+			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
+			particleObj->GetComponent<Transform>()->SetPosition(GetOwner()->GetComponent<Transform>()->GetWorldPositioin());
+			particleSys->ParticleOn();
+			particleSys->SetParticleNum(100);
 			if (mbBlock)
 			{
-				Player* pl = dynamic_cast<Player*>(colObj);
+				
 				if (pl->IsStateFlag(ePlayerState::Block))
 				{
 
@@ -47,6 +54,7 @@ namespace ya
 							else
 								tenzen->SetAnimationName(L"ParriedRight");
 
+							tenzen->ParryEffectOn();
 							//체간 게이지 영향
 							tenzen->SetPosture(tenzen->GetPosture() + 7);
 						}
