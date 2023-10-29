@@ -35,6 +35,16 @@ namespace ya
             mDeltaTime = fps30;
         }
 
+#pragma region DEBUG
+        //if (mDeltaTime < 1.f)
+        //{
+        //    DWORD wait = (DWORD)((1.f - mDeltaTime) * 1000.f);
+        //    Sleep(wait);
+        //    mDeltaTime = fps30;
+        //}
+#pragma endregion DEBUG
+        
+
         mPrevFrequency.QuadPart = mCurFrequency.QuadPart;
     }
 

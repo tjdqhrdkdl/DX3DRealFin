@@ -27,9 +27,9 @@ namespace gui
 		ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
 		ya::Collider3D* col = GetTarget()->GetComponent<ya::Collider3D>();
 
-		mPosition = tr->GetLocalPosition();
-		mRotation = tr->GetLocalRotation();
-		mScale = tr->GetLocalScale();
+		mPosition = tr->GetWorldPosition();
+		mRotation = tr->GetWorldRotation();
+		mScale = tr->GetWorldScale();
 		mRotationOffset = tr->GetRotationOffset();
 
 		mForward = tr->Forward();
@@ -83,14 +83,14 @@ namespace gui
 			ya::Transform* tr = GetTarget()->GetComponent<ya::Transform>();
 			//ya::Collider2D* col = GetTarget()->GetComponent<ya::Collider2D>();
 
-			tr->SetLocalPosition(mPosition);
-			tr->SetLocalRotation(mRotation);
-			tr->SetLocalScale(mScale);
-			tr->SetRotationOffset(mRotationOffset);
+			//tr->SetLocalPosition(mPosition);
+			//tr->SetLocalRotation(mRotation);
+			//tr->SetLocalScale(mScale);
+			//tr->SetRotationOffset(mRotationOffset);
 
-			tr->SetForward(mForward);
-			tr->SetRight(mRight);
-			tr->SetUp(mUp);
+			//tr->SetForward(mForward);
+			//tr->SetRight(mRight);
+			//tr->SetUp(mUp);
 
 			//if (col)
 			{

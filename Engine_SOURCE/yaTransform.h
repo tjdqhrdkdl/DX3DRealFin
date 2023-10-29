@@ -24,7 +24,7 @@ namespace ya
 
 		void SetConstantBuffer();
 
-		void SetParent(Transform* parent) { mParent = parent; NeedMyUpdate(); }
+		void SetParent(Transform* parent) { assert(mParent != this); mParent = parent; NeedMyUpdate(); }
 		Transform* GetParent() { return mParent; }
 
 		//================================== Local ====================================

@@ -122,6 +122,9 @@ namespace ya
 
 		void SetKinematic(bool enable);
 
+		//Start 호출 되기 전에만 동작함.
+		void SetSyncScaleToTransfom(bool enable) { _syncScaleToTransform = enable; }
+
 
 	private:
 		void SyncPhysX();

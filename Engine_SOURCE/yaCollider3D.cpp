@@ -473,6 +473,11 @@ namespace ya
 
 	void Collider3D::SyncPhysX()
 	{
+		if (GetOwner()->GetName() == L"childObj")
+		{
+			int a = 3;
+		}
+
 		physx::PxActor* actor = _shape->getActor();
 		assert(actor);
 		physx::PxRigidActor* rigidActor = actor->is<physx::PxRigidActor>();
@@ -506,6 +511,11 @@ namespace ya
 
 			Vector3 diffPos = diff.Translation();
 
+			if (GetOwner()->GetName() == L"childObj")
+			{
+				int a = 3;
+			}
+
 			GetOwner()->GetComponent<Transform>()->FetchPhysX(diffQuat, diffPos);
 		}
 
@@ -530,8 +540,12 @@ namespace ya
 	}
 	void Collider3D::UpdateMatrix()
 	{
+		if (GetOwner()->GetName() == L"childObj")
+		{
+			int a = 3;
+		}
+
 		//이동은 크기에 영향을 받으므로 우선 크기 정보를 반영해서 Matrix를 만들어줘야 한다.
-		//나중에 
 		_localMatrix = Matrix::CreateScale(_offsetScale);
 		_localMatrix *= Matrix::CreateTranslation(_offsetPosition);
 

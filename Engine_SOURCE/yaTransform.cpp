@@ -1,6 +1,7 @@
 #include "yaTransform.h"
 #include "yaRenderer.h"
 #include "yaCamera.h"
+#include "yaGameObject.h"
 
 namespace ya
 {
@@ -41,6 +42,11 @@ namespace ya
 
 	void Transform::CollisionUpdate()
 	{
+		if (GetOwner()->GetName() == L"childObj")
+		{
+			int a = 3;
+		}
+
 		if (true == mbNeedMyUpdate)
 		{
 			//자신의 트랜스폼 업데이트를 진행할 경우 - 두개 다 업데이트 해줘야함.
@@ -82,6 +88,11 @@ namespace ya
 
 	void Transform::FetchPhysX(const Quaternion& diffQuat, const Vector3& diffPos)
 	{
+		if (GetOwner()->GetName() == L"childObj")
+		{
+			int a = 3;
+		}
+
 		mQuatWorld *= diffQuat;
 		Vector3 posWorld = mMatWorld.Translation() + diffPos;
 
@@ -143,7 +154,7 @@ namespace ya
 	{
 		if (mParent)
 		{
-			Vector3 local = worldPos - mParent->GetWorldPosition();
+			Vector3 local = Vector3::Transform(worldPos, mParent->GetWorldMatrix().Invert());
 			SetLocalPosition(local);
 		}
 		else
@@ -181,13 +192,18 @@ namespace ya
 		//3. 이동행렬
 		mMatWorld *= Matrix::CreateTranslation(mPosLocal);
 
+		if (GetOwner()->GetName() == L"childObj")
+		{
+			int a = 3;
+		}
+
 		//부모 트랜스폼이 갱신되었는지 확인하고, 갱신되었을 경우 자신의 행렬도 갱신
 		if (mParent)
 		{
 			mMatWorld *= mParent->GetWorldMatrix();
 			Vector3 posWorld{};
 			mMatWorld.Decompose(mScaleWorld, mQuatWorld, posWorld);
-			mRotWorld = mQuatWorld.ToEulerXYZOrder();
+			mRotWorld = mQuatWorld.ToEulerXYZOrder() * gRadianToDegreeFactor;
 		}
 		else
 		{

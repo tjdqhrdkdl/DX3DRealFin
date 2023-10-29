@@ -53,7 +53,6 @@ namespace ya
 		}
 
 
-
 	}
 	void PhysXPlayerScript::OnCollisionEnter(GameObject* _otherObj, const Vector3& _hitPoint)
 	{
