@@ -15,7 +15,7 @@ namespace ya
 		virtual void Update() override {};
 
 		void CollisionUpdate();
-		void FetchPhysX(const Quaternion& quatWorld, const Vector3& posWorld);
+		void FetchPhysX(const Quaternion& diffQuat, const Vector3& diffPos);
 
 		virtual void FixedUpdate() override;
 		virtual void PrevRender() override;
@@ -36,8 +36,14 @@ namespace ya
 		
 		void SetLocalPosition(const Vector3& position) { mPosLocal = position; NeedMyUpdate(); };
 		void SetLocalPosition(float _x, float _y, float _z) { mPosLocal.x = _x; mPosLocal.y = _y; mPosLocal.z = _z; NeedMyUpdate();}
+
+
 		void SetLocalRotation(const Vector3& degree) { mRotLocal = degree; NeedMyUpdate(); };
 		void SetLocalRotation(float _x, float _y, float _z) { mRotLocal.x = _x; mRotLocal.y = _y; mRotLocal.z = _z; NeedMyUpdate(); };
+
+		void SetLocalRotationRadian(const Vector3& radian) { mRotLocal = radian * gRadianToDegreeFactor; NeedMyUpdate(); }
+		void SetLocalRotationRadian(float _x, float _y, float _z) { mRotLocal.x = _x; mRotLocal.y = _y; mRotLocal.z = _z; mRotLocal *= gRadianToDegreeFactor; NeedMyUpdate(); }
+
 		inline void SetLocalRotationQuaternion(const Quaternion& _rot);
 
 
@@ -153,7 +159,7 @@ namespace ya
 	inline void Transform::SetLocalRotationQuaternion(const Quaternion& _rot)
 	{
 		mQuatLocal = _rot;
-		mRotLocal = mQuatLocal.ToEulerXYZOrder();
+		mRotLocal = mQuatLocal.ToEulerXYZOrder() * gRadianToDegreeFactor;
 		NeedMyUpdate();
 	}
 }

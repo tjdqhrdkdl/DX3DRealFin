@@ -488,7 +488,7 @@ namespace ya
 	void Spearman::Attack_sting()
 	{
 
-		Spearman_Sting* attack = object::Instantiate<Spearman_Sting>(eLayerType::Monster);
+		Spearman_Sting* attack = object::Instantiate<Spearman_Sting>(eLayerType::Monster, eSceneType::Play);
 
 		Transform* tr = GetComponent<Transform>();
 		Vec3 rot = tr->GetLocalRotation();
@@ -692,12 +692,12 @@ namespace ya
 
 #pragma region	Attack_1
 
-		BoneCollider* Rkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+		BoneCollider* Rkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile, eSceneType::Play);
 		Rkatana->SetMeshAndBone(mMeshData, L"R_Katana");
 		Rkatana->SetAnimOffSet(L"SwordMan_1Default_Attack1", Vector3(0.0f, 0.4f, 0.0f));
 		Rkatana->SetColliderActiveFrame(L"SwordMan_1Default_Attack1", 20, 23);
 		Rkatana->SetBCOwner(this);
-		BoneCollider* Lkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+		BoneCollider* Lkatana = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile, eSceneType::Play);
 		Lkatana->SetMeshAndBone(mMeshData, L"L_Katana");
 		Lkatana->SetAnimOffSet(L"SwordMan_1Default_Attack1", Vector3(0.0f, 0.4f, 0.0f));
 		Lkatana->SetColliderActiveFrame(L"SwordMan_1Default_Attack1", 36, 38);

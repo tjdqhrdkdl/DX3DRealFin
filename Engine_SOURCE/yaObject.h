@@ -8,23 +8,10 @@
 namespace ya::object
 {
 	template <typename T>
-	static T* Instantiate(enums::eLayerType type)
-	{
-		T* gameObj = new T();
-		Scene* scene = SceneManager::GetActiveScene();
-		Layer& layer = scene->GetLayer(type);
-		layer.AddGameObject(gameObj);
-		gameObj->SetScene(scene);
-		gameObj->SetLayerType(type);
-		gameObj->Initialize();
-
-		return gameObj;
-	}
-
-	template <typename T>
 	static T* Instantiate(enums::eLayerType type, Scene* scene)
 	{
 		T* gameObj = new T();
+
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
 		gameObj->SetScene(scene);
@@ -35,41 +22,44 @@ namespace ya::object
 	}
 
 	template <typename T>
-	static T* Instantiate(enums::eLayerType type, Transform* parent)
+	static T* Instantiate(enums::eLayerType type, Scene* scene, Transform* parent)
 	{
 		T* gameObj = new T();
-		Scene* scene = SceneManager::GetActiveScene();
+
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
 
 		Transform* tr = gameObj->GameObject::GetComponent<Transform>();
 		tr->SetParent(parent);
+		gameObj->SetScene(scene);
 		gameObj->SetLayerType(type);
+		gameObj->SetScene(scene);
 
 		return gameObj;
 	}
 
 	template <typename T>
-	static T* Instantiate(enums::eLayerType type, Vector3 position, Vector3 rotation)
+	static T* Instantiate(enums::eLayerType type, Scene* scene, Vector3 position, Vector3 rotation)
 	{
 		T* gameObj = new T();
-		Scene* scene = SceneManager::GetActiveScene();
+
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
 
 		Transform* tr = gameObj->GameObject::GetComponent<Transform>();
 		tr->SetLocalPosition(position);
 		tr->SetLocalRotation(rotation);
+		gameObj->SetScene(scene);
 		gameObj->SetLayerType(type);
 
 		return gameObj;
 	}
 
 	template <typename T>
-	static T* Instantiate(enums::eLayerType type, Vector3 position, Vector3 rotation, Transform* parent)
+	static T* Instantiate(enums::eLayerType type, Scene* scene, Vector3 position, Vector3 rotation, Transform* parent)
 	{
 		T* gameObj = new T();
-		Scene* scene = SceneManager::GetActiveScene();
+
 		Layer& layer = scene->GetLayer(type);
 		layer.AddGameObject(gameObj);
 
@@ -77,10 +67,43 @@ namespace ya::object
 		tr->SetLocalPosition(position);
 		tr->SetLocalRotation(rotation);
 		tr->SetParent(parent);
+		gameObj->SetScene(scene);
 		gameObj->SetLayerType(type);
 
 		return gameObj;
 	}
+
+
+	template <typename T>
+	static T* Instantiate(enums::eLayerType type, enums::eSceneType sceneType)
+	{
+		Scene* scene = SceneManager::GetScene(sceneType);
+		return Instantiate<T>(type, scene);
+	}
+
+	template <typename T>
+	static T* Instantiate(enums::eLayerType type, enums::eSceneType sceneType, Transform* parent)
+	{
+		Scene* scene = SceneManager::GetScene(sceneType);
+		return Instantiate<T>(type, scene, parent);
+	}
+
+	template <typename T>
+	static T* Instantiate(enums::eLayerType type, enums::eSceneType sceneType, Vector3 position, Vector3 rotation)
+	{
+		Scene* scene = SceneManager::GetScene(sceneType);
+		return Instantiate<T>(type, scene, position, rotation);
+	}
+
+	template <typename T>
+	static T* Instantiate(enums::eLayerType type, enums::eSceneType sceneType, Vector3 position, Vector3 rotation, Transform* parent)
+	{
+		Scene* scene = SceneManager::GetScene(sceneType);
+		return Instantiate<T>(type, scene, position, rotation, parent);
+	}
+
+
+
 
 	static void Destroy(GameObject* gameObject)
 	{

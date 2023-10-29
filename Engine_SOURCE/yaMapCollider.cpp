@@ -45,7 +45,7 @@ namespace ya
 	}
 	void MapCollider::AddGroundCollider(Vector3 transform, Vector3 rotation, Vector3 size)
 	{
-		GameObject* obj = object::Instantiate<GameObject>(eLayerType::Wall, SceneManager::GetScene(eSceneType::Play));
+		GameObject* obj = object::Instantiate<GameObject>(eLayerType::Wall, eSceneType::Play);
 		std::wstring num = std::to_wstring(mGroundCount++);
 		obj->SetName(mWalkerName + L"_GroundCollider_" + num);
 		obj->AddComponent<Collider3D>()->SetType(eColliderType::Box, true);

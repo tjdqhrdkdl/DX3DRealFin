@@ -127,6 +127,7 @@ namespace ya
 		void SyncPhysX();
 		void FetchPhysX();
 		void destroyShape() { _shape = nullptr; }
+		void UpdateMatrix();
 
 	private:
 		static UINT32 _idGenerator;

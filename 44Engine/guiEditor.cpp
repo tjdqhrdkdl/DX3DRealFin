@@ -215,7 +215,7 @@ namespace gui
 		ya::BaseRenderer* baseRender = debugObj->GetComponent<ya::BaseRenderer>();
 		ya::Camera* camera = ya::renderer::mainCamera;
 
-		tr->FixedUpdate();
+		tr->CollisionUpdate();
 
 		ya::Camera::SetGpuViewMatrix(ya::renderer::mainCamera->GetViewMatrix());
 		ya::Camera::SetGpuProjectionMatrix(ya::renderer::mainCamera->GetProjectionMatrix());

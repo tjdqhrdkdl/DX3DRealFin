@@ -52,7 +52,7 @@ namespace ya
 		//mLocalMatrix = Matrix::CreateScale(mLocalScale);
 
 		//// 회전 변환 행렬
-		//Vector3 radian = (mLocalRotationOffset + mLocalRotation) * gDegreeToRadFactor;
+		//Vector3 radian = (mLocalRotationOffset + mLocalRotation) *;
 		//mLocalRotationQuaternion = Quaternion::CreateFromPitchYawRoll(radian);
 		//mLocalMatrix *= Matrix::CreateFromQuaternion(mLocalRotationQuaternion);
 
@@ -80,15 +80,16 @@ namespace ya
 
 	}
 
-	void Transform::FetchPhysX(const Quaternion& quatWorld, const Vector3& posWorld)
+	void Transform::FetchPhysX(const Quaternion& diffQuat, const Vector3& diffPos)
 	{
-		SetWorldRotation(quatWorld);
-		mQuatWorld = quatWorld;
+		mQuatWorld *= diffQuat;
+		Vector3 posWorld = mMatWorld.Translation() + diffPos;
 
+		SetWorldRotation(mQuatWorld);
 		SetWorldPosition(posWorld);
 
 		mMatWorld = Matrix::CreateScale(mScaleWorld);
-		mMatWorld *= Matrix::CreateFromQuaternion(quatWorld);
+		mMatWorld *= Matrix::CreateFromQuaternion(mQuatWorld);
 		mMatWorld *= Matrix::CreateTranslation(posWorld);
 
 
@@ -192,6 +193,7 @@ namespace ya
 		{
 			mScaleWorld = mScaleLocal;
 			mRotWorld = mRotLocal;
+			mQuatWorld = mQuatLocal;
 		}
 
 

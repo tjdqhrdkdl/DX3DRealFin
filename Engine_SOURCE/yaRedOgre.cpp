@@ -77,7 +77,7 @@ namespace ya
 
 		//무기 콜라이더 추가
 		//Initialize
-		BoneCollider* LHand = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile);
+		BoneCollider* LHand = object::Instantiate<BoneCollider>(eLayerType::MonsterProjectile, eSceneType::Play);
 		LHand->SetMeshAndBone(mMeshData, L"L_Hand");
 
 		//LHand->SetAnimOffSet(L"a100_003005", Vector3(1, 0.5, 1));

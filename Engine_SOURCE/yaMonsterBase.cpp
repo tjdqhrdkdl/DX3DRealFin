@@ -516,7 +516,7 @@ namespace ya
 	{
 
 		Transform* tr = GetComponent<Transform>();
-		mDeathBlowMark = object::Instantiate<GameObject>(eLayerType::MonsterProjectile);
+		mDeathBlowMark = object::Instantiate<GameObject>(eLayerType::MonsterProjectile, eSceneType::Play);
 		mDeathBlowMark->SetName(L"DeathBlowMark");
 
 		Transform* marktr = mDeathBlowMark->GetComponent<Transform>();

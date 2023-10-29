@@ -228,7 +228,7 @@ namespace ya
 
 	void Musketeerman::Attack_Almost()
 	{
-		Musketeerman_Almost* attack = object::Instantiate<Musketeerman_Almost>(eLayerType::MonsterProjectile);
+		Musketeerman_Almost* attack = object::Instantiate<Musketeerman_Almost>(eLayerType::MonsterProjectile, eSceneType::Play);
 
 		Transform* tr = GetComponent<Transform>();
 		Vec3 rot = tr->GetLocalRotation();
@@ -250,7 +250,7 @@ namespace ya
 	void Musketeerman::Attack_Shooting()
 	{
 
-		Musketeerman_Shooting* attack = object::Instantiate<Musketeerman_Shooting>(eLayerType::MonsterProjectile);
+		Musketeerman_Shooting* attack = object::Instantiate<Musketeerman_Shooting>(eLayerType::MonsterProjectile, eSceneType::Play);
 
 		Transform* tr = GetComponent<Transform>();
 		Vec3 rot = tr->GetLocalRotation();

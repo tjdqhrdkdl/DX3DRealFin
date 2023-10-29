@@ -359,13 +359,14 @@ namespace ya
 			player->AddComponent<PhysXPlayerScript>();
 
 			Transform* tr = player->GetComponent<Transform>();
-			tr->SetLocalPosition(Vector3(-10.f, 100.f, -10.f));
+			tr->SetLocalPosition(Vector3(100.f, 500.f, 0.f));
+			tr->SetLocalRotation(Vector3(0.f, 0.f, 45.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
 			//coll3D->SetSize(Vector3(30.f, 30.f, 30.f));
-			coll3D->SetMass(50000.f);
+			coll3D->SetMass(0.6f);
 			coll3D->SetType(eColliderType::Box);
-			//coll3D->EnableGravity(true);
+			coll3D->EnableGravity(true);
 		}
 
 		{
@@ -374,6 +375,7 @@ namespace ya
 			Transform* tr = player->GetComponent<Transform>();
 			tr->SetLocalScale(Vector3(1000.f, 30.f, 1000.f));
 			tr->SetLocalPosition(Vector3(10.f, 10.f, 10.f));
+			tr->SetLocalRotation(Vector3(0.f, 0.f, 45.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
 			coll3D->SetType(eColliderType::Box, true);

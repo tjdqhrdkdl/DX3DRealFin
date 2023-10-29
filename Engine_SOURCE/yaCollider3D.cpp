@@ -34,6 +34,7 @@ namespace ya
 		, _staticFriction(180.f)
 		, _dynamicFriction(180.f)
 		, _maxVelocity(40.f)
+		, _isStatic(false)
 	{
 	}
 
@@ -82,6 +83,12 @@ namespace ya
 		SetStaticFriction(_staticFriction);
 		SetDynamicFriction(_dynamicFriction);
 		SetLimitVelocity(_maxVelocity);
+
+		if (_isStatic)
+		{
+			UpdateMatrix();
+			SyncPhysX();
+		}
 	}
 
 
@@ -108,46 +115,17 @@ namespace ya
 	{
 		assert(_type != eColliderType::End);
 
-		//이동은 크기에 영향을 받으므로 우선 크기 정보를 반영해서 Matrix를 만들어줘야 한다.
-		//나중에 
-		_localMatrix = Matrix::CreateScale(_offsetScale);
-		_localMatrix *= Matrix::CreateTranslation(_offsetPosition);
-
-		//트랜스폼의 크기 정보는 제거
-		const Vector3 objectScale = GetOwner()->GetComponent<Transform>()->GetWorldScale();
-		const Matrix objectScaleInvMatrix = Matrix::CreateScale(objectScale).Invert();
-
-		const Matrix  objectWorldMatrix = GetOwner()->GetComponent<Transform>()->GetWorldMatrix();
-		// 충돌체 상대행렬 * 오브젝트 월드 크기 역행렬 * 오브젝트 월드 행렬(크기 * 회전 * 이동)
-		//트랜스폼의 Scale은 반영하지 않는다
-		_worldMatrix = _localMatrix * objectScaleInvMatrix * objectWorldMatrix;
-
-		SyncPhysX();
+		//static일 경우 scale 설정은 최초 한번만
+		if (false == _isStatic)
+		{
+			UpdateMatrix();
+			SyncPhysX();
+		}
 	}
 
 	void Collider3D::CollisionLateUpdate()
 	{
 		FetchPhysX();
-
-		//Debug Render
-		DebugMesh meshAttribute = {};
-
-		meshAttribute.type = _type;
-
-		Transform* tr = GetOwner()->GetComponent<Transform>();
-		meshAttribute.scale = _offsetScale;
-
-		meshAttribute.position = Vector3(_worldMatrix.m[3]);
-		//meshAttribute.position += _offsetPosition;
-
-		meshAttribute.rotation = tr->GetWorldRotation();
-
-		meshAttribute.parent = nullptr;
-
-		meshAttribute.collisionCount = _collisionCount;
-		meshAttribute.isTrigger = _isTrigger;
-
-		renderer::debugMeshes.push_back(meshAttribute);
 	}
 
 
@@ -497,45 +475,73 @@ namespace ya
 	{
 		physx::PxActor* actor = _shape->getActor();
 		assert(actor);
-		if (actor->is<physx::PxRigidActor>())
-		{
-			physx::PxRigidActor* rigidActor = static_cast<physx::PxRigidActor*>(actor);
-			if (rigidActor->is<physx::PxRigidStatic>())
-				return;
+		physx::PxRigidActor* rigidActor = actor->is<physx::PxRigidActor>();
+		assert(rigidActor);
 
-			//Matrix		   withoutScale = Matrix::CreateScale(getWorldScale()).Invert() * _worldMatrix;
-			//physx::PxMat44 matrix{};
-			//std::memcpy(&matrix, &withoutScale, sizeof(Matrix));
+		physx::PxTransformT<float> transform{};
+		memcpy(&transform.p, _worldMatrix.m[3], sizeof(float) * 3);
 
-
-			physx::PxTransformT<float> transform{};
-			memcpy(&transform.p, _worldMatrix.m[3], sizeof(float) * 3);
-
-			Quaternion q = GetOwner()->GetComponent<Transform>()->GetWorldRotationQuaternion();
-			transform.q = MathUtil::quaternionToPx(q);
-			//memcpy(&transform.q, &q, sizeof(Quaternion));
+		Quaternion q = GetOwner()->GetComponent<Transform>()->GetWorldRotationQuaternion();
+		transform.q = MathUtil::quaternionToPx(q);
 			
-			rigidActor->setGlobalPose(transform);
-		}
+		rigidActor->setGlobalPose(transform);
 	}
 	void Collider3D::FetchPhysX()
 	{
 		physx::PxActor* actor = _shape->getActor();
 		assert(actor);
-		if (actor->is<physx::PxRigidActor>())
+
+		physx::PxRigidActor* rigidActor = actor->is<physx::PxRigidActor>();
+		assert(rigidActor);
+
+		physx::PxTransform worldTransform = rigidActor->getGlobalPose();
+
+		if (false == _isStatic)
 		{
-			physx::PxRigidActor* rigidActor = static_cast<physx::PxRigidActor*>(actor);
-			if (rigidActor->is<physx::PxRigidStatic>())
-				return;
+			Matrix before = Matrix::CreateScale(_offsetScale).Invert() * _worldMatrix;
+			Matrix after = MathUtil::pxToMatrix(physx::PxMat44(worldTransform));
+			Matrix diff = before.Invert() * after;
 
-			const physx::PxTransform worldTransform = rigidActor->getGlobalPose();
+			Quaternion diffQuat = Quaternion::CreateFromRotationMatrix(diff);
 
-			Matrix after = _localMatrix.Invert() * MathUtil::pxToMatrix(physx::PxMat44(worldTransform));
-			
-			Quaternion rotWorld = Quaternion::CreateFromRotationMatrix(after);
-			Vector3 posWorld = Vector3(after.m[3]);
+			Vector3 diffPos = diff.Translation();
 
-			GetOwner()->GetComponent<Transform>()->FetchPhysX(rotWorld, posWorld);
+			GetOwner()->GetComponent<Transform>()->FetchPhysX(diffQuat, diffPos);
 		}
+
+		//Debug Render
+		DebugMesh meshAttribute = {};
+
+		meshAttribute.type = _type;
+
+		meshAttribute.scale = _offsetScale;
+
+		meshAttribute.position = MathUtil::pxToVector3(worldTransform.p);
+		//meshAttribute.position += _offsetPosition;
+
+		meshAttribute.rotation = MathUtil::pxToQuaternion(worldTransform.q).ToEulerXYZOrder() * gRadianToDegreeFactor;
+			
+		meshAttribute.parent = nullptr;
+
+		meshAttribute.collisionCount = _collisionCount;
+		meshAttribute.isTrigger = _isTrigger;
+
+		renderer::debugMeshes.push_back(meshAttribute);
+	}
+	void Collider3D::UpdateMatrix()
+	{
+		//이동은 크기에 영향을 받으므로 우선 크기 정보를 반영해서 Matrix를 만들어줘야 한다.
+		//나중에 
+		_localMatrix = Matrix::CreateScale(_offsetScale);
+		_localMatrix *= Matrix::CreateTranslation(_offsetPosition);
+
+		//트랜스폼의 크기 정보는 제거
+		const Vector3 objectScale = GetOwner()->GetComponent<Transform>()->GetWorldScale();
+		const Matrix objectScaleInvMatrix = Matrix::CreateScale(objectScale).Invert();
+
+		const Matrix  objectWorldMatrix = GetOwner()->GetComponent<Transform>()->GetWorldMatrix();
+		// 충돌체 상대행렬 * 오브젝트 월드 크기 역행렬 * 오브젝트 월드 행렬(크기 * 회전 * 이동)
+		//트랜스폼의 Scale은 반영하지 않는다
+		_worldMatrix = _localMatrix * objectScaleInvMatrix * objectWorldMatrix;
 	}
 } // namespace ya
