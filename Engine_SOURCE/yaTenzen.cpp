@@ -12,7 +12,7 @@
 #include "yaTenzenSwordScript.h"
 
 #include "yaNavMesh.h"
-
+#include "yaAudioClip.h"
 
 #define STATE_HAVE(STATE) (mState & STATE) == STATE
 #define ADD_STATE(STATE) mState |= STATE
@@ -130,7 +130,8 @@ namespace ya
 		if(mKatanaObjectTr)
 			mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
 		
-		
+		Resources::Load<AudioClip>(L"perilous_attack", L"..\\Resources\\Sound\\Monster\\perilous_attack.mp3");
+		Resources::Load<AudioClip>(L"recognize_sound", L"..\\Resources\\Sound\\Monster\\recognize_sound.mp3");
 		
 
 
@@ -640,7 +641,7 @@ namespace ya
 		// 전진 점프 하며, 칼을 우상단에서 좌하단으로. 한걸음 내딛으며.
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
 
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(100); GetComponent<Rigidbody>()->SetJumping(true); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(120); GetComponent<Rigidbody>()->SetJumping(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 14) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
 
 		// 못막는 공격, 하단 베기
