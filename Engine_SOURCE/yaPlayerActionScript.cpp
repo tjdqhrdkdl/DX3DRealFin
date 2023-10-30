@@ -99,6 +99,17 @@ namespace ya
 			Resources::Find<AudioClip>(L"voice-m-dead")->Play();
 		};
 
+		mPlayer->GetState()->GetStunEvent() = [this, owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			player->SetStateFlag(ePlayerState::Groggy, true);
+
+			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+			playerAnim->Play(L"a000_110000");
+
+			player->SetControl(false, 1.8f);
+			mGroggyTimer = 1.8f;
+		};
+
 		mPlayer->GetState()->GetRessurctionEvent() = [this, owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
@@ -195,6 +206,12 @@ namespace ya
 		if (mPlayer->IsStateFlag(ePlayerState::Death))
 		{
 			Death();
+			return;
+		}
+
+		if (mPlayer->IsStateFlag(ePlayerState::Groggy))
+		{
+			Groggy();
 			return;
 		}
 
@@ -1109,6 +1126,19 @@ namespace ya
 
 				AdjustState();
 			}
+		}
+	}
+
+	void PlayerActionScript::Groggy()
+	{
+		if (mGroggyTimer > 0.0f)
+		{
+			mGroggyTimer -= Time::DeltaTime();
+		}
+		else
+		{
+			mPlayer->SetStateFlag(ePlayerState::Groggy, false);
+			mPlayer->GetState()->SetPosture(0.0f);
 		}
 	}
 

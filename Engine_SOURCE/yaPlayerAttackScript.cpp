@@ -813,58 +813,47 @@ namespace ya
 
 				if (attackParam.damage > 50.0f)
 				{
-					// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
-					if (theta > -45.0f && theta <= 45.0f)
+					if (!mPlayer->IsStateFlag(ePlayerState::Groggy))
 					{
-						mPlayerAnim->Play(L"a000_100202");
+						// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+						if (theta > -45.0f && theta <= 45.0f)
+							mPlayerAnim->Play(L"a000_100202");
+						else if (theta > 45.0f && theta <= 135.0f)
+							mPlayerAnim->Play(L"a000_100200");
+						else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
+							mPlayerAnim->Play(L"a000_100203");
+						else if (theta > -135.0f && theta <= -45.0f)
+							mPlayerAnim->Play(L"a000_100201");
+					}
+
+					if (theta < 90.0f && theta >= -90.0f)
 						mHitDirection = -playerTr->Forward();
-					}
-					else if (theta > 45.0f && theta <= 135.0f)
-					{
-						mPlayerAnim->Play(L"a000_100200");
-						mHitDirection = playerTr->Right();
-					}
-					else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
-					{
-						mPlayerAnim->Play(L"a000_100203");
+					else
 						mHitDirection = playerTr->Forward();
-					}
-					else if (theta > -135.0f && theta <= -45.0f)
-					{
-						mPlayerAnim->Play(L"a000_100201");
-						mHitDirection = -playerTr->Right();
-					}
 
 					// 피격 당했을때 밀려나는 로직
 					if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
 						mTimer[(UINT)eAttackState::HitMove] = 0.3f;
 
 					mPlayer->GetState()->AddHp(-50.0f);
+					mPlayer->GetState()->AddPosture(50.0f);
+
 					Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play();
 					Resources::Find<AudioClip>(L"voice-m-damage-m-" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				}
 				else
 				{
 					// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
-					if (theta > -45.0f && theta <= 45.0f)
+					if (!mPlayer->IsStateFlag(ePlayerState::Groggy))
 					{
-						mPlayerAnim->Play(L"a000_100102");
-						//mHitDirection = -playerTr->Forward();
-					}
-					else if (theta > 45.0f && theta <= 135.0f)
-					{
-						mPlayerAnim->Play(L"a000_100100");
-						//mHitDirection = playerTr->Right();
-					}
-					else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
-					{
-						mPlayerAnim->Play(L"a000_100103");
-						//mHitDirection = playerTr->Forward();
-					}
-					else if (theta > -135.0f && theta <= -45.0f)
-					{
-						mPlayerAnim->Play(L"a000_100101");
-						//mHitDirection = -playerTr->Right();
+						if (theta > -45.0f && theta <= 45.0f)
+							mPlayerAnim->Play(L"a000_100102");
+						else if (theta > 45.0f && theta <= 135.0f)
+							mPlayerAnim->Play(L"a000_100100");
+						else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
+							mPlayerAnim->Play(L"a000_100103");
+						else if (theta > -135.0f && theta <= -45.0f)
+							mPlayerAnim->Play(L"a000_100101");
 					}
 
 					if(theta < 90.0f && theta >= -90.0f)
@@ -877,6 +866,8 @@ namespace ya
 						mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
 
 					mPlayer->GetState()->AddHp(-30.0f);
+					mPlayer->GetState()->AddPosture(30.0f);
+
 					Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play();
 					Resources::Find<AudioClip>(L"voice-m-damage-m-" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				}

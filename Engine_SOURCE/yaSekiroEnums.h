@@ -16,9 +16,10 @@ namespace ya::enums
 		Attack		= 1 << 8,		// 공격
 		Block		= 1 << 9,		// 방어
 		Hit			= 1 << 10,		// 피격
-		DeathBlow	= 1 << 11,
-		Death		= 1 << 12,
-		Invincible	= 1 << 13,		// 무적상태
+		Groggy		= 1 << 11,		// 피격
+		DeathBlow	= 1 << 12,
+		Death		= 1 << 13,
+		Invincible	= 1 << 14,		// 무적상태
 	};				
 
 	enum class eProsthetics

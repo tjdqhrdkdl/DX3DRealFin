@@ -39,7 +39,6 @@ namespace ya
             std::shared_ptr<MeshData> weapon = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300.fbx");
             mMeshDataMap.insert(std::make_pair(WEAPON, weapon));
 
-
             std::shared_ptr<MeshData> waeponCase = MeshData::LoadFromFbx(L"Player\\Mesh\\WP_A_0300_1_b.fbx");
             mMeshDataMap.insert(std::make_pair(WEAPONCASE, waeponCase));
 
@@ -159,6 +158,12 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a000_100300_" + name) = [meshData, name]() { meshData->Play(L"a000_100310_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_100301_" + name) = [meshData, name]() { meshData->Play(L"a000_100311_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a000_100320_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
+
+                //그로기
+                meshData->GetAnimationCompleteEvent(L"a000_110000_" + name) = [meshData, name]() { meshData->Play(L"a000_110030_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_110001_" + name) = [meshData, name]() { meshData->Play(L"a000_110031_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_110030_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a000_110031_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
 
                 // 점프
                 meshData->GetAnimationCompleteEvent(L"a000_200000_" + name) = [meshData, name]() { meshData->Play(L"a000_201030_" + name); };
@@ -305,33 +310,26 @@ namespace ya
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_021303.fbx", L"a000_021303_" + name);
                 //meshData->AnimationSave(L"Player\\AnimationData\\a000_0xxxxx_" + name + L".animationdata");
 
-
+                
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100100.fbx", L"a000_100100_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100101.fbx", L"a000_100101_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100102.fbx", L"a000_100102_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100103.fbx", L"a000_100103_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100200.fbx", L"a000_100200_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100200.fbx", L"a000_100200_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100201.fbx", L"a000_100201_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100201.fbx", L"a000_100201_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100202.fbx", L"a000_100202_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100202.fbx", L"a000_100202_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100203.fbx", L"a000_100203_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100203.fbx", L"a000_100203_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100300.fbx", L"a000_100300_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100300.fbx", L"a000_100300_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100301.fbx", L"a000_100301_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100301.fbx", L"a000_100301_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100310.fbx", L"a000_100310_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100310.fbx", L"a000_100310_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100311.fbx", L"a000_100311_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100311.fbx", L"a000_100311_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100320.fbx", L"a000_100320_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100320.fbx", L"a000_100320_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100320.fbx", L"a000_100320_" + name);
                 //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100321.fbx", L"a000_100321_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100321.fbx", L"a000_100321_" + name);
-                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_100321.fbx", L"a000_100321_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_110000.fbx", L"a000_110000_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_110001.fbx", L"a000_110001_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_110030.fbx", L"a000_110030_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a000_110031.fbx", L"a000_110031_" + name);
+                //
                 //meshData->AnimationSave(L"Player\\AnimationData\\a000_1xxxxx_" + name + L".animationdata");
 
 
@@ -441,15 +439,15 @@ namespace ya
                 meshData->AnimationSave(L"Player\\AnimationData\\a050_xxxxxx_" + name + L".animationdata");*/
 
 
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510200.fbx", L"a200_510200_" + name);
-                /*meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510210.fbx", L"a200_510210_" + name);
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510220.fbx", L"a200_510220_" + name);
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510230.fbx", L"a200_510230_" + name);
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510600.fbx", L"a200_510600_" + name);
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510700.fbx", L"a200_510700_" + name);*/
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510000.fbx", L"a200_510000_" + name);
-                meshData->LoadAnimationFromFbx(L"Player\\Animation\\a201_510000.fbx", L"a201_510000_" + name);
-                meshData->AnimationSave(L"Player\\AnimationData\\a2xx_xxxxxx_" + name + L".animationdata");
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510200.fbx", L"a200_510200_" + name);
+                ///*meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510210.fbx", L"a200_510210_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510220.fbx", L"a200_510220_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510230.fbx", L"a200_510230_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510600.fbx", L"a200_510600_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510700.fbx", L"a200_510700_" + name);*/
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a200_510000.fbx", L"a200_510000_" + name);
+                //meshData->LoadAnimationFromFbx(L"Player\\Animation\\a201_510000.fbx", L"a201_510000_" + name);
+                //meshData->AnimationSave(L"Player\\AnimationData\\a2xx_xxxxxx_" + name + L".animationdata");
 
 #pragma endregion
            
