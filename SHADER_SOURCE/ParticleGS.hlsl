@@ -24,7 +24,7 @@ void main( point VSOut input[1], inout TriangleStream<GSOutput> output)
     if (0 == particleBuffer[input[0].iInstance].active)
         return;
 	
-    float3 vWorldPos = input[0].Pos.xyz + particleBuffer[input[0].iInstance].position.xyz;
+    float3 vWorldPos = particleBuffer[input[0].iInstance].position.xyz;
     
     if (simulationSpace == 0)
     {

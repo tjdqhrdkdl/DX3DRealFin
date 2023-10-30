@@ -22,8 +22,10 @@ namespace ya
 			Player* pl = dynamic_cast<Player*>(colObj);
 			GameObject* particleObj = pl->GetParticleObject();
 			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
+
 			particleObj->GetComponent<Transform>()->SetPosition(GetOwner()->GetComponent<Transform>()->GetWorldPositioin());
 			particleSys->ParticleOn();
+			particleSys->FixedUpdate();
 			particleSys->SetParticleNum(100);
 			if (mbBlock)
 			{
