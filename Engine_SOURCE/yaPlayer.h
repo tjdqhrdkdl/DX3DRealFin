@@ -86,5 +86,10 @@ namespace ya
 		std::map<ePlayerState, std::function<void()>> mEndStateEvent;
 
 		OriginSetting mOriginSetting;
+
+		// 체간 자연 회복
+		bool                mbPostureRecovery;
+		float               mBeforePosture;
+		float               mPostureRecoveryTimeChecker;
 	};
 }

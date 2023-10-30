@@ -31,6 +31,9 @@ namespace ya
 		, mControlTimer(0.0f)
 		, mStateFlag(0)
 		, mOriginSetting {}
+		, mbPostureRecovery(false)
+		, mBeforePosture(0.f)
+		, mPostureRecoveryTimeChecker(0.f)
 	{
 		SetName(L"Player");
 
@@ -107,6 +110,35 @@ namespace ya
 				mControlTimer -= Time::DeltaTime();
 			else
 				mbControl = true;
+		}
+
+		//체간 자연 회복
+		{
+			float posture = GetState()->GetPosture();
+			if (mBeforePosture < posture)
+			{
+				mbPostureRecovery = false;
+			}
+
+			if (mbPostureRecovery == false)
+			{
+				mPostureRecoveryTimeChecker += Time::DeltaTime();
+				if (mPostureRecoveryTimeChecker > 10.f)
+				{
+					mPostureRecoveryTimeChecker = 0.f;
+					mbPostureRecovery = true;
+				}
+			}
+			else
+			{
+				float newPosture = posture - Time::DeltaTime() * 8.f;
+				if (newPosture < 0.f)
+					newPosture = 0.f;
+
+				GetState()->SetPosture(newPosture);
+			}
+
+			mBeforePosture = posture;
 		}
 
 		GameObject::Update();
