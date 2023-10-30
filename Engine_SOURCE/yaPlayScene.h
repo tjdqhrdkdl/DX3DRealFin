@@ -18,6 +18,9 @@ namespace ya
 		virtual void OnEnter() override;
 		virtual void OnExit() override;
 
+	public:
+		void Reset();
+
 	private:
 		std::vector<MonsterBase*> mMonsters;
 

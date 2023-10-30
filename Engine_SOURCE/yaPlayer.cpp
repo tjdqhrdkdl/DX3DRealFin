@@ -13,7 +13,7 @@
 #include "yaObject.h"
 
 #include "yaState.h"
-#include "yaPlayerHpTexture.h"
+#include "yaPlayerScreenUI.h"
 #include "yaPlayerDangerUI.h"
 #include "yaParryEffect.h"
 #include "yaParticleSystem.h"
@@ -27,7 +27,8 @@ namespace ya
 		, mWeaponCollider(nullptr)
 		, mStartStateEvent {}
 		, mEndStateEvent {}
-		, mbStealth(false)
+		, mbControl(true)
+		, mControlTimer(0.0f)
 		, mStateFlag(0)
 		, mOriginSetting {}
 	{
@@ -56,7 +57,7 @@ namespace ya
 		mState->SetHp(mState->GetHPMax());
 		mState->SetPostureMax(100.0f);
 		mState->SetPosture(0);
-		mState->SetResurrectionCountMax(3);
+		mState->SetResurrectionCountMax(1);
 		mState->SetResurrectionCount(mState->GetResurrectionCountMax());
 
 		// 최초 정보 저장
@@ -100,6 +101,14 @@ namespace ya
 
 	void Player::Update()
 	{
+		if (!mbControl)
+		{
+			if (mControlTimer > 0.0f)
+				mControlTimer -= Time::DeltaTime();
+			else
+				mbControl = true;
+		}
+
 		GameObject::Update();
 	}
 
@@ -144,10 +153,20 @@ namespace ya
 		}
 	}
 
+	void Player::OnDeathUI(bool on)
+	{
+		mPlayerScreenUI->OnDeathUI(on);
+	}
+
+	void Player::OnGameOverUI(bool on)
+	{
+		mPlayerScreenUI->OnGameOverUI(on);
+	}
+
 	void Player::CreatePlayerUI()
 	{		
-		mPlayerHpBar = object::Instantiate<PlayerHpTexture>(eLayerType::UI, GetScene());
-		mPlayerHpBar->SetPlayer(this);
+		mPlayerScreenUI = object::Instantiate<PlayerScreenUI>(eLayerType::UI, GetScene());
+		mPlayerScreenUI->SetPlayer(this);		
 		mPlayerDangerUI = object::Instantiate<PlayerDangerUI>(eLayerType::UI, GetScene());
 		mPlayerDangerUI->SetPlayer(this);
 		mParryEffect = object::Instantiate<ParryEffect>(eLayerType::UI, GetScene());
@@ -193,7 +212,10 @@ namespace ya
 		
 		// state reset
 		mStateFlag = 0;
-		mbStealth = false;
+
+		// UI reset
+		mPlayerScreenUI->OnDeathUI(false);
+		mPlayerScreenUI->OnGameOverUI(false);
 	}
 
 	/// <summary>

@@ -24,6 +24,7 @@
 #define CBSLOT_UNIFORM_DATA		9
 #define CBSLOT_METER			10
 #define CBSLOT_TIME			    11
+#define CBSLOT_IMAGE			12
 
 using namespace ya::math;
 namespace ya::graphics
@@ -148,6 +149,7 @@ namespace ya::graphics
 		UniformData,
 		HpMeter,
 		Time,
+		Image,
 		End,
 	};
 

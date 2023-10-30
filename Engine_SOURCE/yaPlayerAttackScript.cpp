@@ -187,7 +187,7 @@ namespace ya
 
 	void PlayerAttackScript::Update()
 	{
-		if (mPlayer->IsStateFlag(ePlayerState::Hook) || mPlayer->IsStateFlag(ePlayerState::Death))
+		if (mPlayer->IsStateFlag(ePlayerState::Hook) || mPlayer->IsStateFlag(ePlayerState::Death) || !mPlayer->IsControl())
 			return;
 
 		Transform* playerTr = mPlayer->GetComponent<Transform>();
@@ -731,7 +731,7 @@ namespace ya
 	void PlayerAttackScript::OnCollisionEnter(Collider2D* collider)
 	{
 		// 인살중이거나 죽었을 때는 피격받지 않는다
-		if (mPlayer->IsStateFlag(ePlayerState::DeathBlow) || mPlayer->IsStateFlag(ePlayerState::Death))
+		if (mPlayer->IsStateFlag(ePlayerState::DeathBlow) || mPlayer->IsStateFlag(ePlayerState::Death) || mPlayer->IsStateFlag(ePlayerState::Invincible))
 			return;
 
 		GameObject* obj = collider->GetOwner();

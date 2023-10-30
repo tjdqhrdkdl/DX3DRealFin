@@ -27,6 +27,7 @@ namespace ya
 
 	public:
 		void AdjustState();
+		void Invincible(float time = 2.0f);
 		void SetBGMVolume(float v) { mBGMVolume = v; }
 		
 	private:
@@ -60,6 +61,8 @@ namespace ya
 		bool mbTurn;
 		float mTurnTimer;
 		float mTurnTimerMax;
+
+		float mInvincibleTimer;
 
 		std::vector<std::shared_ptr<AudioClip>> mAudioClips;
 

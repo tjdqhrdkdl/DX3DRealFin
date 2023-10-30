@@ -367,7 +367,7 @@
     <ClCompile Include="yaActionScript.cpp">
       <Filter>Contents\GameObject\Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerHpTexture.cpp">
+    <ClCompile Include="yaPlayerScreenUI.cpp">
       <Filter>Contents\Player\UI</Filter>
     </ClCompile>
     <ClCompile Include="yaMonsterCollisionScript.cpp">
@@ -397,14 +397,15 @@
     <ClCompile Include="yaMonsterUI.cpp">
       <Filter>Contents\Monster\UI</Filter>
     </ClCompile>
+    <ClCompile Include="yaImageScript.cpp" />
     <ClCompile Include="yaPlayerDagerUIScript.cpp">
-      <Filter>Contents\Player\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="yaPlayerDangerUI.cpp">
       <Filter>Contents\Player\UI</Filter>
     </ClCompile>
     <ClCompile Include="yaBossUI.cpp">
       <Filter>Contents\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerDangerUI.cpp">
+      <Filter>Contents\Player\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -603,9 +604,6 @@
     <ClInclude Include="yaRenderer.h">
       <Filter>Engine\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayer.h">
-      <Filter>Contents\Player</Filter>
-    </ClInclude>
     <ClInclude Include="yaSekiroEnums.h">
       <Filter>Contents</Filter>
     </ClInclude>
@@ -779,7 +777,7 @@
     <ClInclude Include="yaActionScript.h">
       <Filter>Contents\GameObject\Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayerHpTexture.h">
+    <ClInclude Include="yaPlayerScreenUI.h">
       <Filter>Contents\Player\UI</Filter>
     </ClInclude>
     <ClInclude Include="yaSwordManSwordScript.h">
@@ -806,12 +804,19 @@
     <ClInclude Include="yaSekiroCommons.h">
       <Filter>Contents\Common</Filter>
     </ClInclude>
+    <ClInclude Include="yaPlayer.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSekiroCommons.h">
+      <Filter>Contents\Common</Filter>
+    </ClInclude>
     <ClInclude Include="yaParryEffect.h">
       <Filter>Contents\Monster</Filter>
     </ClInclude>
     <ClInclude Include="yaMonsterUI.h">
       <Filter>Contents\Monster\UI</Filter>
     </ClInclude>
+    <ClInclude Include="yaImageScript.h" />
     <ClInclude Include="yaPlayerDagerUIScript.h">
       <Filter>Contents\Player\UI</Filter>
     </ClInclude>
@@ -820,6 +825,9 @@
     </ClInclude>
     <ClInclude Include="yaBossUI.h">
       <Filter>Contents\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerDangerUI.h">
+      <Filter>Contents\Player\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

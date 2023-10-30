@@ -13,6 +13,11 @@
 #include "yaBoneCollider.h"
 #include "yaAudioClip.h"
 
+#include "yaSceneManager.h"
+#include "yaScene.h"
+#include "yaPlayScene.h"
+#include "yaLoadingScene.h"
+
 namespace ya
 {
 	PlayerActionScript::PlayerActionScript()
@@ -31,6 +36,7 @@ namespace ya
 		, mTurnTimerMax(0.4f)
 		, mFrontTheta(5.0f)
 		, mDashTimerMax(0.2f)
+		, mInvincibleTimer(true)
 		, mBGMVolume(5)
 	{
 	}
@@ -73,6 +79,23 @@ namespace ya
 
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			playerAnim->Play(L"a000_100300");
+
+			player->OnDeathUI(true);
+			player->SetControl(false, 3.0f);
+
+			Resources::Find<AudioClip>(L"voice-m-dead")->Play();
+		};
+
+		mPlayer->GetState()->GetGameOverEvent() = [this, owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			player->SetStateFlag(ePlayerState::Death, true);
+
+			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+			playerAnim->Play(L"a000_100300");
+
+			player->OnGameOverUI(true);
+			player->SetControl(false, 5.0f);
+
 			Resources::Find<AudioClip>(L"voice-m-dead")->Play();
 		};
 
@@ -80,6 +103,9 @@ namespace ya
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			playerAnim->Play(L"a000_100320");
+			Invincible(2.5f);
+
+			player->OnDeathUI(false);
 		};
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
@@ -163,10 +189,26 @@ namespace ya
 
 	void PlayerActionScript::Update()
 	{
+		if (!mPlayer->IsControl())
+			return;
+
 		if (mPlayer->IsStateFlag(ePlayerState::Death))
 		{
 			Death();
 			return;
+		}
+
+		if (mPlayer->IsStateFlag(ePlayerState::Invincible))
+		{
+			if (mInvincibleTimer > 0.0f)
+			{
+				mInvincibleTimer -= Time::DeltaTime();
+			}
+			else
+			{
+				mPlayer->SetStateFlag(ePlayerState::Invincible, false);
+				mInvincibleTimer = 2.0f;
+			}
 		}
 
 		if (mPlayer->IsStateFlag(ePlayerState::DeathBlow))
@@ -187,7 +229,13 @@ namespace ya
 					Hang();
 				}
 			}
+
 			Hit();
+		}
+
+		if (Input::GetKeyDown(eKeyCode::I))
+		{
+			mPlayer->SetStateFlag(ePlayerState::Invincible, !mPlayer->IsStateFlag(ePlayerState::Invincible));
 		}
 
 		ActionScript::Update();
@@ -308,6 +356,11 @@ namespace ya
 					mPlayerAnim->Play(L"a000_000000");
 			}
 		}
+	}
+
+	void PlayerActionScript::Invincible(float time)
+	{
+		mPlayer->SetStateFlag(ePlayerState::Invincible, true); mInvincibleTimer = time;
 	}
 
 	void PlayerActionScript::Idle()
@@ -1061,12 +1114,45 @@ namespace ya
 
 	void PlayerActionScript::Death()
 	{
-		if (Input::GetKeyDown(eKeyCode::SPACE))
+		if (Input::GetKeyDown(eKeyCode::LBTN))
 		{
 			if (mPlayer->GetState()->GetResurrectionCount() > 0)
-			{
+			{	// 회생한다
 				mPlayer->GetState()->Resurrection();
 				mPlayer->SetStateFlag(ePlayerState::Death, false);
+			}
+			else
+			{ // 회생할 수 없으므로 게임 리셋
+				PlayScene* playScene = dynamic_cast<PlayScene*>(SceneManager::GetScene(eSceneType::Play));
+				playScene->Reset();
+
+				LoadingScene* loadingScene = dynamic_cast<LoadingScene*>(SceneManager::GetScene(eSceneType::Loading));
+				loadingScene->SetLoading(2.f);
+
+				SceneManager::LoadScene(eSceneType::Loading);
+			}
+		}
+		else if (Input::GetKeyDown(eKeyCode::RBTN))
+		{
+			if (mPlayer->GetState()->GetResurrectionCount() > 0)
+			{ // 회생하지 않고 포기한다(게임 리셋)
+				PlayScene* playScene = dynamic_cast<PlayScene*>(SceneManager::GetScene(eSceneType::Play));
+				playScene->Reset();
+
+				LoadingScene* loadingScene = dynamic_cast<LoadingScene*>(SceneManager::GetScene(eSceneType::Loading));
+				loadingScene->SetLoading(2.f);
+
+				SceneManager::LoadScene(eSceneType::Loading);
+			}
+			else
+			{
+				PlayScene* scene = dynamic_cast<PlayScene*>(SceneManager::GetScene(eSceneType::Play));
+				scene->Reset();
+
+				LoadingScene* loadingScene = dynamic_cast<LoadingScene*>(SceneManager::GetScene(eSceneType::Loading));
+				loadingScene->SetLoading();
+
+				SceneManager::LoadScene(eSceneType::Title);
 			}
 		}
 	}

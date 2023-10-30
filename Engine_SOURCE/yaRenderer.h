@@ -159,6 +159,17 @@ namespace ya::renderer
 		BOOL	isMain;
 	};
 
+	CBUFFER(ImageCB, CBSLOT_IMAGE)
+	{
+		UINT imageAlphaType;
+		float imageAlpha;
+		UINT colorType;
+		UINT useRange;
+
+		Vector4 imageColor;
+		Vector4 imageRange;
+	};
+
 
 	extern Vertex vertexes[4];
 	extern Camera* mainCamera;

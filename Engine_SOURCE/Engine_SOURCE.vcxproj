@@ -210,6 +210,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaBoundarySphere.h" />
     <ClInclude Include="yaFrustum.h" />
     <ClInclude Include="yaHPMeterScript.h" />
+    <ClInclude Include="yaImageScript.h" />
     <ClInclude Include="yaLoadingScene.h" />
     <ClInclude Include="yaMapCollider.h" />
     <ClInclude Include="yaNavMesh.h" />
@@ -220,7 +221,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="yaPlayerAttackScript.h" />
     <ClInclude Include="yaPlayerDagerUIScript.h" />
     <ClInclude Include="yaPlayerDangerUI.h" />
-    <ClInclude Include="yaPlayerHpTexture.h" />
+    <ClInclude Include="yaPlayerScreenUI.h" />
     <ClInclude Include="yaPlayerMeshScript.h" />
     <ClInclude Include="yaBoneAnimator.h" />
     <ClInclude Include="yaBoneShader.h" />
@@ -354,6 +355,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaBoundarySphere.cpp" />
     <ClCompile Include="yaFrustum.cpp" />
     <ClCompile Include="yaHPMeterScript.cpp" />
+    <ClCompile Include="yaImageScript.cpp" />
     <ClCompile Include="yaLoadingScene.cpp" />
     <ClCompile Include="yaMapCollider.cpp" />
     <ClCompile Include="yaNavMesh.cpp" />
@@ -364,7 +366,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="yaPlayerAttackScript.cpp" />
     <ClCompile Include="yaPlayerDagerUIScript.cpp" />
     <ClCompile Include="yaPlayerDangerUI.cpp" />
-    <ClCompile Include="yaPlayerHpTexture.cpp" />
+    <ClCompile Include="yaPlayerScreenUI.cpp" />
     <ClCompile Include="yaPlayerMeshScript.cpp" />
     <ClCompile Include="yaBoneAnimator.cpp" />
     <ClCompile Include="yaBoneShader.cpp" />

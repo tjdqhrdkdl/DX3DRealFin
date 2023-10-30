@@ -17,6 +17,9 @@ namespace ya
 		virtual void OnEnter() override;
 		virtual void OnExit() override;
 
+	public:
+		void SetLoading(float loadingTime = 1.0f) { mLoadingTime = loadingTime; }
+
 	private:
 		float mLoadingTime;
 		GameObject* mLoader;

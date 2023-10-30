@@ -135,6 +135,9 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)DangerUIPS.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)ImagePS.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)AlphaAnimationVS.hlsl">
       <Filter>VS</Filter>
     </FxCompile>

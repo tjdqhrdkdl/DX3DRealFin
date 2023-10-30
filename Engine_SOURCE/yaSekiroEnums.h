@@ -18,6 +18,7 @@ namespace ya::enums
 		Hit			= 1 << 10,		// 피격
 		DeathBlow	= 1 << 11,
 		Death		= 1 << 12,
+		Invincible	= 1 << 13,		// 무적상태
 	};				
 
 	enum class eProsthetics
