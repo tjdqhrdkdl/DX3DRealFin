@@ -806,6 +806,7 @@
     </ClInclude>
     <ClInclude Include="yaPlayer.h">
       <Filter>Contents\Player</Filter>
+    </ClInclude>
     <ClInclude Include="yaSekiroCommons.h">
       <Filter>Contents\Common</Filter>
     </ClInclude>

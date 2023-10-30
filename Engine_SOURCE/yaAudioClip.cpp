@@ -17,8 +17,8 @@ namespace ya
 
 	AudioClip::~AudioClip()
 	{
-		mSound->release();
-		mSound = nullptr;
+		//mSound->release();
+		//mSound = nullptr;
 	}
 
 	HRESULT AudioClip::Load(const std::wstring& path, FILE* file)
