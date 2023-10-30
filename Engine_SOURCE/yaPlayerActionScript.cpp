@@ -121,17 +121,27 @@ namespace ya
 			player->OnDeathUI(false);
 		};
 
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Walk, [owner]() {
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
+		}));
+
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Walk, [owner]() {
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Stop();
+		}));
+
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity(13.0f);
 			player->SetStateFlag(ePlayerState::Walk, false);
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
 			}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity();
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Stop();
 			}));
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
@@ -158,6 +168,11 @@ namespace ya
 			action->Velocity();
 			}));
 
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\body-lobe-1.wav");
+			Resources::Insert<AudioClip>(L"body-lobe-1", clip);
+		}
 		{
 			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
 			clip->Load(L"..\\Resources\\Sound\\main\\foot-soil-w1.wav");
