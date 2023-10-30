@@ -30,7 +30,6 @@ namespace ya
 
 			AttackMove,
 			HitMove,
-			FallDown,
 			DeathBlow,
 			
 			End,

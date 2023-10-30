@@ -38,7 +38,7 @@ namespace ya
 		, mPlayerAnim(nullptr)
 		, mAttackState(eAttackState::None)
 		, mTimer{ 0.0f }
-		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.15f, 1.0f,  3.0f }
+		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.2f, 3.0f }
 		, mbKeyInput(false)
 		, mHitDirection(Vector3::Zero)
 		, mDeathBlowTarget(nullptr)
@@ -89,29 +89,32 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Sprint, false);
 			player->SetStateFlag(ePlayerState::Block, false);
 			player->SetStateFlag(ePlayerState::Wall, false);
-			}));
+		}));
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Attack, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Idle, true);
 
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->AdjustState();
-			}));
+		}));
 
-		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Block, [this, owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Sprint, false);
 			player->SetStateFlag(ePlayerState::Attack, false);
 
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity(8.0f);
-			}));
+		}));
 
-		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [owner]() {
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Block, [this, owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity();
-			}));
+			action->AdjustState();
+
+			mTimer[(UINT)eAttackState::Block] = 0.0f;
+		}));
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::DeathBlow, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
@@ -121,12 +124,12 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Sprint, false);
 			player->SetStateFlag(ePlayerState::Attack, false);
 			player->SetStateFlag(ePlayerState::Block, false);
-			}));
+		}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::DeathBlow, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			player->SetStateFlag(ePlayerState::Idle, false);
-			}));
+		}));
 
 		{
 			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
@@ -187,7 +190,7 @@ namespace ya
 
 	void PlayerAttackScript::Update()
 	{
-		if (mPlayer->IsStateFlag(ePlayerState::Hook) || mPlayer->IsStateFlag(ePlayerState::Death) || !mPlayer->IsControl())
+		if (mPlayer->IsStateFlag(ePlayerState::Hook) || mPlayer->IsStateFlag(ePlayerState::Death) || mPlayer->IsStateFlag(ePlayerState::Groggy) || !mPlayer->IsControl())
 			return;
 
 		Transform* playerTr = mPlayer->GetComponent<Transform>();
@@ -481,18 +484,15 @@ namespace ya
 		{
 			mTimer[(UINT)eAttackState::Block] += Time::DeltaTime();
 
-			if (Input::GetKeyUp(eKeyCode::RBTN))
+			if (mTimer[(UINT)eAttackState::Block] > 0.3f)
 			{
-				mAttackState = eAttackState::None;
-				mPlayer->SetStateFlag(ePlayerState::Block, false);
+				if (!Input::GetKey(eKeyCode::RBTN))
+				{
+					mAttackState = eAttackState::None;
+					mPlayer->SetStateFlag(ePlayerState::Block, false);
 
-				GameObject* camera = mPlayer->GetCamera();
-				CameraScript* cameraScript = camera->GetScript<CameraScript>();
-				bool bLockOn = cameraScript->IsLockOn();
-
-				playerAction->AdjustState();
-
-				mTimer[(UINT)eAttackState::Block] = 0.0f;
+					playerAction->AdjustState();
+				}
 			}
 		}
 		break;
@@ -689,7 +689,7 @@ namespace ya
 				mTimer[(UINT)eAttackState::HangAttack1] -= Time::DeltaTime();
 			}
 
-			if (Input::GetKeyDown(eKeyCode::LBTN))
+			if (Input::GetKeyDown(eKeyCode::LBTN)) 
 			{
 				mbKeyInput = true;
 			}
@@ -697,6 +697,8 @@ namespace ya
 		break;
 		case ya::PlayerAttackScript::eAttackState::HitMove:
 		{
+			if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
+				mAttackState = eAttackState::None;
 		}
 		case ya::PlayerAttackScript::eAttackState::DeathBlow:
 		{
@@ -759,9 +761,10 @@ namespace ya
 			theta *= (cross.y / abs(cross.y));
 
 
-			if (!attackParam.unGuardable && mPlayer->IsStateFlag(ePlayerState::Block))
+			if (mPlayer->IsStateFlag(ePlayerState::Block) && (!attackParam.unGuardable || (mPlayer->GetBlockTime() < 1.0f)))
 			{
 				mPlayer->SetStateFlag(ePlayerState::Block, false);
+				mAttackState = eAttackState::None;
 
 				// 플레이어의 방향과 collider간의 각도를 구한다.
 				Quaternion quater = Quaternion::FromToRotation(playerDir, Vector3(colliderPos.x - playerPos.x, playerPos.y, colliderPos.z - playerPos.z));
@@ -804,79 +807,73 @@ namespace ya
 				//Resources::Find<AudioClip>(L"sword-x-sword" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				Resources::Find<AudioClip>(L"c000006601_" + std::to_wstring(RandomNumber(1, 3)))->Play();
 
-				if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
-					mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
+				mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
 			}
 			else
 			{
 				mPlayer->SetStateFlag(ePlayerState::Hit, true); // 경직상태
+				mAttackState = eAttackState::HitMove;
 
 				if (attackParam.damage > 50.0f)
 				{
-					// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
-					if (theta > -45.0f && theta <= 45.0f)
+					if (!mPlayer->IsStateFlag(ePlayerState::Groggy))
 					{
-						mPlayerAnim->Play(L"a000_100202");
-						mHitDirection = -playerTr->Forward();
-					}
-					else if (theta > 45.0f && theta <= 135.0f)
-					{
-						mPlayerAnim->Play(L"a000_100200");
-						mHitDirection = playerTr->Right();
-					}
-					else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
-					{
-						mPlayerAnim->Play(L"a000_100203");
-						mHitDirection = playerTr->Forward();
-					}
-					else if (theta > -135.0f && theta <= -45.0f)
-					{
-						mPlayerAnim->Play(L"a000_100201");
-						mHitDirection = -playerTr->Right();
-					}
+						// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
+						if (theta > -45.0f && theta <= 45.0f)
+							mPlayerAnim->Play(L"a000_100202");
+						else if (theta > 45.0f && theta <= 135.0f)
+							mPlayerAnim->Play(L"a000_100200");
+						else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
+							mPlayerAnim->Play(L"a000_100203");
+						else if (theta > -135.0f && theta <= -45.0f)
+							mPlayerAnim->Play(L"a000_100201");
 
-					// 피격 당했을때 밀려나는 로직
-					if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
-						mTimer[(UINT)eAttackState::HitMove] = 0.3f;
 
+						if (theta < 90.0f && theta >= -90.0f)
+							mHitDirection = -playerTr->Forward();
+						else
+							mHitDirection = playerTr->Forward();
+
+						// 피격 당했을때 밀려나는 로직
+						if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
+							mTimer[(UINT)eAttackState::HitMove] = 0.4f;
+
+						mPlayer->GetState()->AddPosture(50.0f);
+					}
+					
 					mPlayer->GetState()->AddHp(-50.0f);
+
 					Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play();
 					Resources::Find<AudioClip>(L"voice-m-damage-m-" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				}
 				else
 				{
 					// 충돌 각도에 따라 피격 방향(애니메이션) 달라짐
-					if (theta > -45.0f && theta <= 45.0f)
+					if (!mPlayer->IsStateFlag(ePlayerState::Groggy))
 					{
-						mPlayerAnim->Play(L"a000_100102");
-						//mHitDirection = -playerTr->Forward();
-					}
-					else if (theta > 45.0f && theta <= 135.0f)
-					{
-						mPlayerAnim->Play(L"a000_100100");
-						//mHitDirection = playerTr->Right();
-					}
-					else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
-					{
-						mPlayerAnim->Play(L"a000_100103");
-						//mHitDirection = playerTr->Forward();
-					}
-					else if (theta > -135.0f && theta <= -45.0f)
-					{
-						mPlayerAnim->Play(L"a000_100101");
-						//mHitDirection = -playerTr->Right();
-					}
+						if (theta > -45.0f && theta <= 45.0f)
+							mPlayerAnim->Play(L"a000_100102");
+						else if (theta > 45.0f && theta <= 135.0f)
+							mPlayerAnim->Play(L"a000_100100");
+						else if (theta > 135.0f && theta <= 180.0f || theta > -180.0f && theta <= -135.0f)
+							mPlayerAnim->Play(L"a000_100103");
+						else if (theta > -135.0f && theta <= -45.0f)
+							mPlayerAnim->Play(L"a000_100101");
+					
+						if(theta < 90.0f && theta >= -90.0f)
+							mHitDirection = -playerTr->Forward();
+						else
+							mHitDirection = playerTr->Forward();
 
-					if(theta < 90.0f && theta >= -90.0f)
-						mHitDirection = -playerTr->Forward();
-					else
-						mHitDirection = playerTr->Forward();
+						// 피격 당했을때 밀려나는 로직
+						if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
+							mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
 
-					// 피격 당했을때 밀려나는 로직
-					if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
-						mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
+						mPlayer->GetState()->AddPosture(30.0f);
+					}
 
 					mPlayer->GetState()->AddHp(-30.0f);
+
 					Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play();
 					Resources::Find<AudioClip>(L"voice-m-damage-m-" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				}
@@ -1001,6 +998,7 @@ namespace ya
 				mPlayerAnim->Play(L"a201_510000");
 			}
 		}
+
 		Resources::Find<AudioClip>(L"kill-successx2")->Play();
 
 		EraseDeathBlowTarget(monster);

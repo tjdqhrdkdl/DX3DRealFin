@@ -38,6 +38,7 @@ namespace ya
 		void Hang();
 		void Crouch();
 		void Hit();
+		void Groggy();
 		void Death();
 
 	private:
@@ -62,6 +63,7 @@ namespace ya
 		float mTurnTimer;
 		float mTurnTimerMax;
 
+		float mGroggyTimer;
 		float mInvincibleTimer;
 
 		std::vector<std::shared_ptr<AudioClip>> mAudioClips;

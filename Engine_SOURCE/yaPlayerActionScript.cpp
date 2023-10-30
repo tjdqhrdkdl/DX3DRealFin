@@ -27,15 +27,17 @@ namespace ya
 		, mbRotate(false)
 		, mLastDir(eDirection::Forward)
 		, mbDash(false)
-		, mDashSpeed(150.0f)
+		, mDashSpeed(200.0f)
 		, mDashTimer(0.0f)
+		, mDashTimerMax(0.4f)
 		, mDashDirection(eDirection::Forward)
 		, mHitTimer(1.0f)
+		, mHitTimerMax(1.0f)
 		, mbTurn(false)
 		, mTurnTimer(0.0f)
 		, mTurnTimerMax(0.4f)
+		, mGroggyTimer(0.0f)
 		, mFrontTheta(5.0f)
-		, mDashTimerMax(0.2f)
 		, mInvincibleTimer(true)
 		, mBGMVolume(5)
 	{
@@ -99,6 +101,17 @@ namespace ya
 			Resources::Find<AudioClip>(L"voice-m-dead")->Play();
 		};
 
+		mPlayer->GetState()->GetStunEvent() = [this, owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			player->SetStateFlag(ePlayerState::Groggy, true);
+
+			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+			playerAnim->Play(L"a000_110000");
+
+			player->SetControl(false, 1.8f);
+			mGroggyTimer = 1.8f;
+		};
+
 		mPlayer->GetState()->GetRessurctionEvent() = [this, owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
@@ -108,17 +121,27 @@ namespace ya
 			player->OnDeathUI(false);
 		};
 
+		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Walk, [owner]() {
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
+		}));
+
+		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Walk, [owner]() {
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Stop();
+		}));
+
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity(13.0f);
 			player->SetStateFlag(ePlayerState::Walk, false);
-			}));
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
+		}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity();
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Stop();
 			}));
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Crouch, [owner]() {
@@ -145,6 +168,11 @@ namespace ya
 			action->Velocity();
 			}));
 
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\body-lobe-1.wav");
+			Resources::Insert<AudioClip>(L"body-lobe-1", clip);
+		}
 		{
 			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
 			clip->Load(L"..\\Resources\\Sound\\main\\foot-soil-w1.wav");
@@ -195,6 +223,12 @@ namespace ya
 		if (mPlayer->IsStateFlag(ePlayerState::Death))
 		{
 			Death();
+			return;
+		}
+
+		if (mPlayer->IsStateFlag(ePlayerState::Groggy))
+		{
+			Groggy();
 			return;
 		}
 
@@ -337,23 +371,11 @@ namespace ya
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
-				mPlayerAnim->Play(L"a000_000500");
+				mPlayerAnim->Play(L"a050_002000");
 			}
 			else
 			{
-				if (bLockOn)
-				{
-					if (Input::GetKey(eKeyCode::W))
-						mPlayerAnim->Play(L"a000_000500");
-					else if (Input::GetKey(eKeyCode::S))
-						mPlayerAnim->Play(L"a000_000501");
-					else if (Input::GetKey(eKeyCode::D))
-						mPlayerAnim->Play(L"a000_000502");
-					else if (Input::GetKey(eKeyCode::A))
-						mPlayerAnim->Play(L"a000_000503");
-				}
-				else
-					mPlayerAnim->Play(L"a000_000000");
+				mPlayerAnim->Play(L"a000_000000");
 			}
 		}
 	}
@@ -477,8 +499,6 @@ namespace ya
 
 				if (abs(faceTheta) > 30.0f)
 					mbTurn = true;
-
-				Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::A))
@@ -739,14 +759,9 @@ namespace ya
 
 		if (Input::GetKeyUp(eKeyCode::W))
 		{
-			Resources::Find<AudioClip>(L"foot-soil-w1")->Stop();
 			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
 				mPlayerAnim->Play(L"a000_005300");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				//mPlayerAnim->Play(L"a050_002000");
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
 			{
@@ -769,10 +784,6 @@ namespace ya
 					mPlayerAnim->Play(L"a000_005302");
 				else
 					mPlayerAnim->Play(L"a000_005300");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				//mPlayerAnim->Play(L"a050_002000");
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
 			{
@@ -802,10 +813,6 @@ namespace ya
 				else
 					mPlayerAnim->Play(L"a000_005300");
 			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				//mPlayerAnim->Play(L"a050_002000");
-			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
 			{
 				if (bLockOn)
@@ -833,10 +840,6 @@ namespace ya
 					mPlayerAnim->Play(L"a000_005303");
 				else
 					mPlayerAnim->Play(L"a000_005300");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				//mPlayerAnim->Play(L"a050_002000");
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
 			{
@@ -881,29 +884,25 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Walk, false);
 
-			if (mPlayer->IsStateFlag(ePlayerState::Hang))
-			{
-				mPlayerAnim->Play(L"a000_020000");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				mPlayerAnim->Play(L"a050_002000");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
-			{
-				mPlayerAnim->Play(L"a000_005000");
-			}
-			else
-			{
-				/*if (bLockOn)
-				{
-					mPlayerAnim->Play(L"a000_000501");
-				}
-				else
-				{
-					mPlayerAnim->Play(L"a000_000000");
-				}*/
-			}
+			//if (mPlayer->IsStateFlag(ePlayerState::Hang))
+			//{
+			//	mPlayerAnim->Play(L"a000_020000");
+			//}
+			//else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
+			//{
+			//	mPlayerAnim->Play(L"a000_005000");
+			//}
+			//else
+			//{
+			//	/*if (bLockOn)
+			//	{
+			//		mPlayerAnim->Play(L"a000_000501");
+			//	}
+			//	else
+			//	{
+			//		mPlayerAnim->Play(L"a000_000000");
+			//	}*/
+			//}
 		}
 	}
 
@@ -1109,6 +1108,19 @@ namespace ya
 
 				AdjustState();
 			}
+		}
+	}
+
+	void PlayerActionScript::Groggy()
+	{
+		if (mGroggyTimer > 0.0f)
+		{
+			mGroggyTimer -= Time::DeltaTime();
+		}
+		else
+		{
+			mPlayer->GetState()->SetPosture(0.0f);
+			mPlayer->SetStateFlag(ePlayerState::Groggy, false);
 		}
 	}
 
