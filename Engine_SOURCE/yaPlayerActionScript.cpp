@@ -135,7 +135,7 @@ namespace ya
 			action->Velocity(13.0f);
 			player->SetStateFlag(ePlayerState::Walk, false);
 			Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
-			}));
+		}));
 
 		mPlayer->GetEndStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
@@ -371,23 +371,11 @@ namespace ya
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Block))
 			{
-				mPlayerAnim->Play(L"a000_000500");
+				mPlayerAnim->Play(L"a050_002000");
 			}
 			else
 			{
-				if (bLockOn)
-				{
-					if (Input::GetKey(eKeyCode::W))
-						mPlayerAnim->Play(L"a000_000500");
-					else if (Input::GetKey(eKeyCode::S))
-						mPlayerAnim->Play(L"a000_000501");
-					else if (Input::GetKey(eKeyCode::D))
-						mPlayerAnim->Play(L"a000_000502");
-					else if (Input::GetKey(eKeyCode::A))
-						mPlayerAnim->Play(L"a000_000503");
-				}
-				else
-					mPlayerAnim->Play(L"a000_000000");
+				mPlayerAnim->Play(L"a000_000000");
 			}
 		}
 	}
@@ -511,8 +499,6 @@ namespace ya
 
 				if (abs(faceTheta) > 30.0f)
 					mbTurn = true;
-
-				Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::A))
@@ -773,14 +759,9 @@ namespace ya
 
 		if (Input::GetKeyUp(eKeyCode::W))
 		{
-			Resources::Find<AudioClip>(L"foot-soil-w1")->Stop();
 			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
 				mPlayerAnim->Play(L"a000_005300");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				//mPlayerAnim->Play(L"a050_002000");
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
 			{
@@ -803,10 +784,6 @@ namespace ya
 					mPlayerAnim->Play(L"a000_005302");
 				else
 					mPlayerAnim->Play(L"a000_005300");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				//mPlayerAnim->Play(L"a050_002000");
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
 			{
@@ -836,10 +813,6 @@ namespace ya
 				else
 					mPlayerAnim->Play(L"a000_005300");
 			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				//mPlayerAnim->Play(L"a050_002000");
-			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
 			{
 				if (bLockOn)
@@ -867,10 +840,6 @@ namespace ya
 					mPlayerAnim->Play(L"a000_005303");
 				else
 					mPlayerAnim->Play(L"a000_005300");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				//mPlayerAnim->Play(L"a050_002000");
 			}
 			else if (mPlayer->IsStateFlag(ePlayerState::Sprint))
 			{
@@ -915,29 +884,25 @@ namespace ya
 		{
 			mPlayer->SetStateFlag(ePlayerState::Walk, false);
 
-			if (mPlayer->IsStateFlag(ePlayerState::Hang))
-			{
-				mPlayerAnim->Play(L"a000_020000");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Block))
-			{
-				mPlayerAnim->Play(L"a050_002000");
-			}
-			else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
-			{
-				mPlayerAnim->Play(L"a000_005000");
-			}
-			else
-			{
-				/*if (bLockOn)
-				{
-					mPlayerAnim->Play(L"a000_000501");
-				}
-				else
-				{
-					mPlayerAnim->Play(L"a000_000000");
-				}*/
-			}
+			//if (mPlayer->IsStateFlag(ePlayerState::Hang))
+			//{
+			//	mPlayerAnim->Play(L"a000_020000");
+			//}
+			//else if (mPlayer->IsStateFlag(ePlayerState::Crouch))
+			//{
+			//	mPlayerAnim->Play(L"a000_005000");
+			//}
+			//else
+			//{
+			//	/*if (bLockOn)
+			//	{
+			//		mPlayerAnim->Play(L"a000_000501");
+			//	}
+			//	else
+			//	{
+			//		mPlayerAnim->Play(L"a000_000000");
+			//	}*/
+			//}
 		}
 	}
 
@@ -1154,8 +1119,8 @@ namespace ya
 		}
 		else
 		{
-			mPlayer->SetStateFlag(ePlayerState::Groggy, false);
 			mPlayer->GetState()->SetPosture(0.0f);
+			mPlayer->SetStateFlag(ePlayerState::Groggy, false);
 		}
 	}
 

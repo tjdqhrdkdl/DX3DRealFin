@@ -183,6 +183,11 @@ namespace ya
                 meshData->GetAnimationCompleteEvent(L"a050_002011_" + name) = [meshData, name]() { meshData->Play(L"a050_002201_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a050_002012_" + name) = [meshData, name]() { meshData->Play(L"a050_002202_" + name); };
                 meshData->GetAnimationCompleteEvent(L"a050_002013_" + name) = [meshData, name]() { meshData->Play(L"a050_002203_" + name); };
+
+                meshData->GetAnimationCompleteEvent(L"a050_002200_" + name) = [meshData, name]() { meshData->Play(L"a050_002000_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a050_002201_" + name) = [meshData, name]() { meshData->Play(L"a050_002000_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a050_002202_" + name) = [meshData, name]() { meshData->Play(L"a050_002000_" + name); };
+                meshData->GetAnimationCompleteEvent(L"a050_002203_" + name) = [meshData, name]() { meshData->Play(L"a050_002000_" + name); };
                 
                 // 패링
                 meshData->GetAnimationCompleteEvent(L"a050_120100_" + name) = [meshData, name]() { meshData->Play(L"a000_000000_" + name); };
