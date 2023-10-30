@@ -309,8 +309,8 @@ namespace ya
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 			* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-				+ GetComponent<Transform>()->GetFinalScale().z / 2 + 0.5)
-			- mPlayerObject->GetComponent<Transform>()->Right() * 0.8);
+				+ GetComponent<Transform>()->GetFinalScale().z / 2 +(float) 0.5)
+			- mPlayerObject->GetComponent<Transform>()->Right() * (float)0.8);
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);
@@ -339,7 +339,8 @@ namespace ya
 	}
 	void Tenzen::Alert()
 	{
-		if (mAnimationName != L"DeathBlow1" && mAnimationName != L"DeathBlow1_Death")
+		if (mAnimationName != L"DeathBlow1" && mAnimationName != L"DeathBlow1_Death"
+			&& !mPlayerObject->IsStateFlag(ePlayerState::Death))
 		{
 			if (STATE_HAVE(MonsterState_Recognize))
 			{
@@ -374,6 +375,13 @@ namespace ya
 							else if (dist < 12)
 								SetAlertnessCount(alert + 10 * Time::DeltaTime());
 						}
+						else
+						{
+							alert -= 10 * Time::DeltaTime();
+							if (alert < 0)
+								alert = 0;
+							SetAlertnessCount(alert);
+						}
 					}
 					else
 					{
@@ -384,6 +392,14 @@ namespace ya
 						else if (dist < 18)
 							SetAlertnessCount(alert + 20 * Time::DeltaTime());
 					}
+				}
+
+				else
+				{
+					float alert = GetAlertnessCount() - 10 * Time::DeltaTime();
+					if (alert  < 0)
+						alert = 0;
+					SetAlertnessCount(alert);
 				}
 				if (GetAlertnessCount() > 100)
 				{
@@ -446,72 +462,82 @@ namespace ya
 	}
 	void Tenzen::Recognize()
 	{
-			if (STATE_HAVE(MonsterState_Recognize))
+		if (mPlayerObject->IsStateFlag(ePlayerState::Death))
+		{
+			SetRecognize(false);
+			mState = 0;
+			ADD_STATE(MonsterState_Idle);
+			mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+			mKatanaHandleObjectTr->SetScale(Vector3(1, 1, 1));
+			return;
+		}
+
+		if (STATE_HAVE(MonsterState_Recognize))
+		{
+			std::shared_ptr<AudioClip> bgmTenzen = Resources::Find<AudioClip>(L"bgm-boss");
+			if (!bgmTenzen->isPlaying())
 			{
-				std::shared_ptr<AudioClip> bgmTenzen = Resources::Find<AudioClip>(L"bgm-boss");
-				if (!bgmTenzen->isPlaying())
-				{
-					bgmTenzen->Play();
-					Resources::Find<AudioClip>(L"bgm-usual")->Stop();
-				}
-				mBossUI->UIOn();
-				mMonsterUI->UIOff();
-				RM_STATE(MonsterState_Idle);
-				SetRecognize(true);
-				if (!(STATE_HAVE(MonsterState_DrawSword)))
-				{
-					mAnimationName = L"DrawSword";
-					ADD_STATE(MonsterState_LookAt);
-					RM_STATE(MonsterState_Move);
-				}
+				bgmTenzen->Play();
+				Resources::Find<AudioClip>(L"bgm-usual")->Stop();
+			}
+			mBossUI->UIOn();
+			mMonsterUI->UIOff();
+			RM_STATE(MonsterState_Idle);
+			SetRecognize(true);
+			if (!(STATE_HAVE(MonsterState_DrawSword)))
+			{
+				mAnimationName = L"DrawSword";
+				ADD_STATE(MonsterState_LookAt);
+				RM_STATE(MonsterState_Move);
+			}
 
-				else if (STATE_HAVE(MonsterState_DrawSword))
+			else if (STATE_HAVE(MonsterState_DrawSword))
+			{
+				if (!(STATE_HAVE(MonsterState_Attack)) && !(STATE_HAVE(MonsterState_Defense))
+					&& !(STATE_HAVE(MonsterState_Trace)) && !(STATE_HAVE(MonsterState_GuardSuccess))
+					&& !(STATE_HAVE(MonsterState_OnHit)) && !(STATE_HAVE(MonsterState_AttackBlocked))
+					&& !(STATE_HAVE(MonsterState_Groggy)))
 				{
-					if (!(STATE_HAVE(MonsterState_Attack)) && !(STATE_HAVE(MonsterState_Defense))
-						&& !(STATE_HAVE(MonsterState_Trace)) && !(STATE_HAVE(MonsterState_GuardSuccess))
-						&& !(STATE_HAVE(MonsterState_OnHit)) && !(STATE_HAVE(MonsterState_AttackBlocked))
-						&& !(STATE_HAVE(MonsterState_Groggy)))
+					Vector3 pos = mTransform->GetPosition();
+					Vector3 playerPos = GetPlayerPos();
+
+					//플레이어 거리가 너무 멀어졌을 때
+					float traceDist = 10;
+					if (Vector3::Distance(pos, playerPos) > traceDist)
 					{
-						Vector3 pos = mTransform->GetPosition();
-						Vector3 playerPos = GetPlayerPos();
+						ADD_STATE(MonsterState_Trace);
+					}
 
-						//플레이어 거리가 너무 멀어졌을 때
-						float traceDist = 10;
-						if (Vector3::Distance(pos, playerPos) > traceDist)
+					//플레이어 거리가 적당히 멀때 -> 근접형 공격 가능
+
+					//플레이어 거리가 가까울 때 -> 백스텝 가능
+					else
+					{
+						int choice = rand() % 2;
+						switch (choice)
 						{
-							ADD_STATE(MonsterState_Trace);
-						}
-
-						//플레이어 거리가 적당히 멀때 -> 근접형 공격 가능
-
-						//플레이어 거리가 가까울 때 -> 백스텝 가능
-						else
-						{
-							int choice = rand() % 2;
-							switch (choice)
-							{
-							case 0:
-								ADD_STATE(MonsterState_Attack);
-								break;
-							}
+						case 0:
 							ADD_STATE(MonsterState_Attack);
-
+							break;
 						}
+						ADD_STATE(MonsterState_Attack);
+
 					}
 				}
 			}
+		}
 
-			else
+		else
+		{
+			std::shared_ptr<AudioClip> bgmTenzen = Resources::Find<AudioClip>(L"bgm-boss");
+			if (bgmTenzen->isPlaying())
 			{
-				std::shared_ptr<AudioClip> bgmTenzen = Resources::Find<AudioClip>(L"bgm-boss");
-				if (bgmTenzen->isPlaying())
-				{
-					bgmTenzen->Stop();
-					Resources::Find<AudioClip>(L"bgm-usual")->Play();
-				}
-				SetRecognize(false);
-				mBossUI->UIOff();
+				bgmTenzen->Stop();
+				Resources::Find<AudioClip>(L"bgm-usual")->Play();
 			}
+			SetRecognize(false);
+			mBossUI->UIOff();
+		}
 
 		
 	}
@@ -818,8 +844,8 @@ namespace ya
 
 
 
-		mMeshData->GetAnimationFrameEvent(L"Hit1", 7) = [this]() {  RM_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"Hit2", 7) = [this]() {  RM_STATE(MonsterState_Move); };
+		mMeshData->GetAnimationFrameEvent(L"Hit1", 5) = [this]() {  RM_STATE(MonsterState_Move); };
+		mMeshData->GetAnimationFrameEvent(L"Hit2", 5) = [this]() {  RM_STATE(MonsterState_Move); };
 
 		mMeshData->GetAnimationFrameEvent(L"Hit1", 18) = [this]() { RM_STATE(MonsterState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationFrameEvent(L"Hit2", 18) = [this]() { RM_STATE(MonsterState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
@@ -835,14 +861,14 @@ namespace ya
 		mMeshData->GetAnimationFrameEvent(L"GrogyDownFront", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
 
 		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Recognize); SetPosture(0); SetHp(GetMaxHP()); mMonsterUI->UIOn(); };
-		mMeshData->GetAnimationStartEvent(L"DeathBlow1") = [this]() { ADD_STATE(MonsterState_OnHit); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(1.5); };
+		mMeshData->GetAnimationStartEvent(L"DeathBlow1") = [this]() { ADD_STATE(MonsterState_OnHit); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + mPlayerObject->GetComponent<Transform>()->Right() * 1.7f); mCamScript->SetCameraZoomDistance(1.5); };
 		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 55) = [this]() { if (GetResurrectionCount() <= 0) {mMeshData->GetAnimator()->SetAnimationChangeTime(0.01f); mAnimationName = L"DeathBlow1_Death"; } };
-		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 58) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(1); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 58) = [this]() { mCamScript->SetDestinationDir(mPlayerObject->GetComponent<Transform>()->Right() * 3.0f); mCamScript->SetCameraZoomDistance(1); };
 		mMeshData->GetAnimationFrameEvent(L"DeathBlow1", 95) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())+Vector3(0,0.5,0)); mCamScript->SetCameraZoomDistance(3.5); };
 
 		mMeshData->GetAnimationEndEvent(L"DeathBlow1_Death") = [this]() { mMeshData->GetAnimator()->SetStop(true); mState = 0; ADD_STATE(MonsterState_Dead); };
 		mMeshData->GetAnimationStartEvent(L"DeathBlow1_Death") = [this]() {ADD_STATE(MonsterState_OnHit); SetHp(0); };
-		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 3) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward())); mCamScript->SetCameraZoomDistance(1); };
+		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 3) = [this]() { mCamScript->SetDestinationDir( mPlayerObject->GetComponent<Transform>()->Right() * 3.0f); mCamScript->SetCameraZoomDistance(1); };
 		mMeshData->GetAnimationFrameEvent(L"DeathBlow1_Death", 40) = [this]() { mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); };
 
 	}

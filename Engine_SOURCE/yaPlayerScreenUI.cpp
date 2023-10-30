@@ -179,6 +179,7 @@ namespace ya
 
 		{ // SB_KeyTop_RBTN
 			mKeyRBTN = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mKeyRBTN->SetName(L"UI key RBTN");
 			//ImageScript* rbtnImageScript = mKeyRBTN->AddComponent<ImageScript>();
 			//rbtnImageScript->SetAlpha(0.0f);
 			//rbtnImageScript->SetAlphaType(ImageScript::eAlphaType::Transparent);
@@ -200,6 +201,7 @@ namespace ya
 		}
 		{ // SB_KeyTop_LBTN
 			mKeyLBTN = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mKeyLBTN->SetName(L"UI key LBTN");
 			//ImageScript* lbtnImageScript = mKeyLBTN->AddComponent<ImageScript>();
 			//lbtnImageScript->SetAlpha(0.0f);
 			//lbtnImageScript->SetAlphaType(ImageScript::eAlphaType::Transparent);
@@ -374,6 +376,7 @@ namespace ya
 
 		{ // death text
 			mDeathText = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mDeathText->SetName(L"UI Death Text");
 			ImageScript* deathTextimageScript = mDeathText->AddComponent<ImageScript>();
 			deathTextimageScript->SetAlpha(0.0f);
 			//deathTextimageScript->SetAlphaType(ImageScript::eAlphaType::Opacity);

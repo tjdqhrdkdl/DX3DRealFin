@@ -172,6 +172,7 @@ namespace ya
 
         int                 mBeforeState;
         int                 mState;
+        bool                mbAssaination;
 
     private:
         State*              mMonsterState;

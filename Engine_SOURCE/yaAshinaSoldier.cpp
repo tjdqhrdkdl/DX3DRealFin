@@ -373,7 +373,8 @@ namespace ya
 	void AshinaSoldier::Alert()
 	{
 		if (mAnimationName != L"DeathBlow1" && mAnimationName != L"DeathBlow1_Death"
-			&& mAnimationName != L"DeathBlowAssasinated" && mAnimationName != L"DeathBlowAssasinated_Death")
+			&& mAnimationName != L"DeathBlowAssasinated" && mAnimationName != L"DeathBlowAssasinated_Death"
+			&& !mPlayerObject->IsStateFlag(ePlayerState::Death))
 		{
 			if (STATE_HAVE(MonsterState_Recognize))
 			{
@@ -408,6 +409,13 @@ namespace ya
 							else if (dist < 12)
 								SetAlertnessCount(alert + 10 * Time::DeltaTime());
 						}
+						else
+						{
+							alert -= 10 * Time::DeltaTime();
+							if (alert < 0)
+								alert = 0;
+							SetAlertnessCount(alert);
+						}
 					}
 					else
 					{
@@ -418,6 +426,13 @@ namespace ya
 						else if (dist < 18)
 							SetAlertnessCount(alert + 20 * Time::DeltaTime());
 					}
+				}
+				else
+				{
+					float alert = GetAlertnessCount() - 10 * Time::DeltaTime();
+					if (alert < 0)
+						alert = 0;
+					SetAlertnessCount(alert);
 				}
 				if (GetAlertnessCount() > 100)
 				{
@@ -479,6 +494,21 @@ namespace ya
 	}
 	void AshinaSoldier::Recognize()
 	{
+		if (mPlayerObject->IsStateFlag(ePlayerState::Death))
+		{
+			SetRecognize(false);
+			mState = 0;
+			ADD_STATE(MonsterState_Idle);
+			for (size_t i = 0; i < mBaseSwordInScabbard.size(); i++)
+			{
+				mBaseSwordInScabbard[i]->SetScale(Vector3::One);
+			}
+			for (size_t i = 0; i < mBaseSword.size(); i++)
+			{
+				mBaseSword[i]->SetScale(Vector3::Zero);
+			}
+			return;
+		}
 		if (STATE_HAVE(MonsterState_Recognize))
 		{
 			RM_STATE(MonsterState_Idle);
@@ -832,8 +862,8 @@ namespace ya
 
 
 
-		mMeshData->GetAnimationFrameEvent(L"HitFront", 7) = [this]() {  RM_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"HitBack", 7) = [this]() {  RM_STATE(MonsterState_Move); };
+		mMeshData->GetAnimationFrameEvent(L"HitFront", 5) = [this]() {  RM_STATE(MonsterState_Move); };
+		mMeshData->GetAnimationFrameEvent(L"HitBack", 5) = [this]() {  RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"HitFront", 18) = [this]() { RM_STATE(MonsterState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationFrameEvent(L"HitBack", 18) = [this]() { RM_STATE(MonsterState_OnHit); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"HitFront") = [this]() { RM_STATE(MonsterState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };

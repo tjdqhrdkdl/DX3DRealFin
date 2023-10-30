@@ -30,6 +30,7 @@ namespace ya
 		, mbPostureRecovery(false)
 		, mBeforePosture(0.f)
 		, mPostureRecoveryTimeChecker(0.f)
+		, mbAssaination(true)
 	{
 	}
 
@@ -77,7 +78,7 @@ namespace ya
 			float dist = playerPos.Distance(playerPos, pos);
 
 			// 인식 안됐을때 거리 이내일 경우 인살 가능 상태가 된다
-			if (!mbRecognize && !(STATE_HAVE(MonsterState_OnHit)))
+			if (!mbRecognize && !(STATE_HAVE(MonsterState_OnHit)) && mbAssaination)
 			{
 				if(dist < 2.0f)
 				{
@@ -152,65 +153,9 @@ namespace ya
 				mBeforePosture = GetPosture(); 
 			}
 
+			if (mbRecognize)
+				mbAssaination = false;
 
-			//if (IsDeathBlow())
-			//{
-			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-			//	//Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
-			//	Transform* camtr = mainCamera->GetOwner()->GetComponent<Transform>();
-			//	Vector3 rot = TurnToPointDir(camtr->GetPosition());
-			//	
-			//	marktr->SetRotation(Vec3(0.0f, rot.y, 0.0f));
-			//	//marktr->SetRotation(rot);
-			//	marktr->SetPosition(monsterPos + mDeathBlowMarkOffSet);
-      //
-			//}
-			//else
-			//{
-			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-			//	marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
-			//}
-
-			
-
-			////DeathBlowRecovery
-			//if (IsDeathBlowOnOff())
-			//{
-			//	SetDeathBlowCount(-(Time::DeltaTime() / 2));
-			//}
-			//else
-			//{
-			//	mTime += Time::DeltaTime();
-			//	if (mTime >= 3.0f)
-			//	{
-			//		SetDeathBlowonoff(true);
-			//		mTime = 0.f;
-			//	}
-			//}
-
-			////체간 게이지 차서 그로기 걸렸을때는 3초
-			//if (GetSituation() == enums::eSituation::Groggy)
-			//{
-			//	mTime += Time::DeltaTime();
-			//	if (mTime >= mRecoveryTime)
-			//	{
-			//		SetSituation(enums::eSituation::None);
-			//		SetDeathBlow(false);
-			//		mTime = 0.f;
-			//	}
-			//}
-
-			//if (IsDeathBlow())
-			//{
-			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-			//	Vector3 pos = Convert3DTo2DScreenPos(GetComponent<Transform>());
-			//	marktr->SetPosition(pos + mDeathBlowMarkOffSet);
-			//}
-			//else
-			//{
-			//	Transform* marktr = mDeathBlowMark->GetComponent<Transform>();
-			//	marktr->SetPosition(Vector3(1000.0f, 1000.0f, 0.0f));
-			//}
 		}
 
 		GameObject::Update();
@@ -253,6 +198,7 @@ namespace ya
 
 		mMonsterState->SetSpeed(mOriginSetting.state.GetSpeed());
 		mMonsterState->SetDeathBlow(false);
+		mMonsterState->SetPosture(mOriginSetting.state.GetPosture());
 
 		mMonsterState->SetResurrectionCountMax(mOriginSetting.state.GetResurrectionCountMax());
 		mMonsterState->SetResurrectionCount(mOriginSetting.state.GetResurrectionCount());

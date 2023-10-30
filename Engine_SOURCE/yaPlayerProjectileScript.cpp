@@ -131,7 +131,7 @@ namespace ya
 
 		PlayerAttackScript::eAttackState attackState = attack->GetAttackState();
 
-		if(false == dynamic_cast<BoneCollider*>(GetOwner())->CheckHitObjects(monster));
+		if(false == dynamic_cast<BoneCollider*>(GetOwner())->CheckHitObjects(monster))
 		{
 			GameObject* particleObj = mPlayer->GetParticleObject();
 			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
