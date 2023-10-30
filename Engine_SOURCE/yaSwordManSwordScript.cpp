@@ -1,6 +1,7 @@
 #include "yaSwordManSwordScript.h"
 #include "yaPlayer.h"
 #include "yaSwordMan.h"
+#include "yaParticleSystem.h"
 namespace ya
 {
 	SwordManSwordScript::SwordManSwordScript()
@@ -18,8 +19,13 @@ namespace ya
 		eLayerType layer = colObj->GetLayerType();
 		if (layer == eLayerType::Player)
 		{
+			Player* pl = dynamic_cast<Player*>(colObj);
+			GameObject* particleObj = pl->GetParticleObject();
+			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
+			particleObj->GetComponent<Transform>()->SetPosition(GetOwner()->GetComponent<Transform>()->GetWorldPositioin());
+			particleSys->ParticleOn();
+			particleSys->SetParticleNum(100);
 			
-				Player* pl = dynamic_cast<Player*>(colObj);
 				if (pl->IsStateFlag(ePlayerState::Block))
 				{
 					GameObject* bigOwner = dynamic_cast<BoneCollider*>(GetOwner())->GetBoneColliderOwner();

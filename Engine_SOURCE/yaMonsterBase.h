@@ -91,6 +91,9 @@ namespace ya
         virtual void DeathBlow();
         virtual void Reset();
 
+        void ParryEffectOn();
+        GameObject* GetParticleObject();
+
         bool IsMonsterState(eMonsterState eState) { return STATE_HAVE(eState); }
 
     public:

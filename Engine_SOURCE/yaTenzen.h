@@ -72,6 +72,7 @@ namespace ya
         Transform* mKatanaObjectTr;
         Transform* mKatanaHandleObjectTr;
         
+
         std::wstring mAnimationName;
 
         float mAlertTime;

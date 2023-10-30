@@ -14,8 +14,8 @@ namespace ya
 {
 	ParticleSystem::ParticleSystem()
 		: BaseRenderer(eComponentType::ParticleSystem)
-		, mMaxParticles(500)
-		, mStartSize(Vector4(.5f, .5f, 0.1f, 1.0f))
+		, mMaxParticles(1020)
+		, mStartSize(Vector4(.1f, .1f, 0.1f, 1.0f))
 		, mStartColor(Vector4(1.0f, 0.4f, 0.f, 1.0f))
 		, mStartLifeTime(1.0f)
 		, mFrequency(1.0f)
@@ -25,7 +25,7 @@ namespace ya
 		, mRadius(500.0f)
 		, mStartSpeed(10.0f)
 		, mElapsedTime(0.0f)
-		
+		, mNumParticle(32)
 	{
 
 	}
@@ -52,7 +52,7 @@ namespace ya
 		SetMaterial(material, 0);
 		
 
-		Particle particles[500] = {};
+		Particle particles[1020] = {};
 
 		Vector4 startPos = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 		for (size_t i = 0; i < mMaxParticles; i++)
@@ -63,18 +63,20 @@ namespace ya
 
 			particles[i].speed = 100.0f;
 
-			if (i % 4 == 0)
+			if (i % 3 == 0)
 			{
-				particles[i].velocity = Vector4((float)(rand() % 40 - 20)
-					, (float)(rand() % 8)
-					, (float)(rand() % 40 - 20), 0);
+				particles[i].velocity = Vector4((float)(((float)rand() / (float)RAND_MAX) * 20 - 20)
+					, (float)((float)(rand() / (float)RAND_MAX) * 8)
+					, (float)((float)(rand() / (float)RAND_MAX) * 40 - 20), 0);
 			}
 			else
 			{
 				particles[i].velocity = particles[i - 1].velocity;
 			}
 			particles[i].direction = particles[i].velocity;
-
+			particles[i].lifeTime = 0.5f;
+			particles[i].bJump = false;
+			
 		}
 
 		mBuffer = new StructedBuffer();

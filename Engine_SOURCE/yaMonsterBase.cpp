@@ -264,5 +264,15 @@ namespace ya
 		// position 리셋
 		Transform* tr = GetComponent<Transform>();
 		tr->SetPosition(mOriginSetting.position);
+
+		mMeshData->GetAnimator()->SetStop(false);
+	}
+	void MonsterBase::ParryEffectOn()
+	{
+		 mPlayerObject->ParryEffectOn(); 
+	}
+	GameObject* MonsterBase::GetParticleObject()
+	{
+		return mPlayerObject->GetParticleObject();
 	}
 }

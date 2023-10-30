@@ -9,6 +9,7 @@ struct Particle
     float time;
     float speed;
     uint active;
+    bool bJump;
 };
 
 struct ParticleShared

@@ -14,35 +14,37 @@ void main( uint3 DTid : SV_DispatchThreadID )
     
     if (ParticleBuffer[DTid.x].active == 0)
     {
-        while (0 < ParticleSharedBuffer[0].gActiveCount)
+        if (ParticleBuffer[DTid.x].bJump == false)
         {
-            int originValue = ParticleSharedBuffer[0].gActiveCount;
-            int exchange = originValue - 1;
+            while (0 < ParticleSharedBuffer[0].gActiveCount)
+            {
+                int originValue = ParticleSharedBuffer[0].gActiveCount;
+                int exchange = originValue - 1;
             
             // 스레드 동기화
             // dest값을 exchange값으로 바꾸는 동안
             // 다른스레드는 멈춘다.
             //InterlockedExchange(ParticleSharedBuffer[0].gActiveCount, exchange, exchange);
-            InterlockedCompareExchange(ParticleSharedBuffer[0].gActiveCount
+                InterlockedCompareExchange(ParticleSharedBuffer[0].gActiveCount
                                         , originValue, exchange, exchange);
             
-            if (originValue == exchange)
-            {
-                ParticleBuffer[DTid.x].active = 1;
-                break;
+                if (originValue == exchange)
+                {
+                    ParticleBuffer[DTid.x].active = 1;
+                    break;
+                }
             }
-        }
-        
-        if (ParticleBuffer[DTid.x].active)
-        {
+       
+            if (ParticleBuffer[DTid.x].active)
+            {
                 // 랜덤값으로 위치와 방향을 설정해준다.
                 // 샘플링을 시도할 UV 계산해준다.
-            float4 Random = (float4) 0.0f;
-            float2 UV = float2((float) DTid.x / maxParticles, 0.5f);
-            UV.x += elapsedTime;
-            UV.y += sin((UV.x + elapsedTime) * 3.14592f + 2.0f * 10.0f) * 0.5f;
+                float4 Random = (float4) 0.0f;
+                float2 UV = float2((float) DTid.x / maxParticles, 0.5f);
+                UV.x += elapsedTime;
+                UV.y += sin((UV.x + elapsedTime) * 3.14592f + 2.0f * 10.0f) * 0.5f;
                 
-            Random = float4
+                Random = float4
                 (
                     GaussianBlur(UV + float2(0.0f, 0.0f)).x
                     , GaussianBlur(UV + float2(0.1f, 0.0f)).x
@@ -51,24 +53,27 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 );
 
             //// radius 원형 범위로 스폰
-            float fTheta = Random.xy * 3.141592f * 2.0f;
-            ParticleBuffer[DTid.x].position.xy = float2 ( 0 , 0  );
-            ParticleBuffer[DTid.x].position.z = 0.0f;
+                float fTheta = Random.xy * 3.141592f * 2.0f;
+                ParticleBuffer[DTid.x].position.xy = float2(0, 0);
+                ParticleBuffer[DTid.x].position.z = 0.0f;
             
             
-            if (simulationSpace) // 1 world , 0 local
-            {
-                ParticleBuffer[DTid.x].position.xyz += worldPosition.xyz;
-            }
+                if (simulationSpace) // 1 world , 0 local
+                {
+                    ParticleBuffer[DTid.x].position.xyz += worldPosition.xyz;
+                }
             
-            ParticleBuffer[DTid.x].velocity = ParticleBuffer[DTid.x].direction;
+                ParticleBuffer[DTid.x].velocity = ParticleBuffer[DTid.x].direction;
             
             ////파티클 속력
-            ParticleBuffer[DTid.x].time = 0.0f;
-            ParticleBuffer[DTid.x].speed = startSpeed;
-            ParticleBuffer[DTid.x].lifeTime = startLifeTime;
+                ParticleBuffer[DTid.x].time = 0.0f;
+                ParticleBuffer[DTid.x].speed = startSpeed;
             
+            }
         }
+        else
+            ParticleBuffer[DTid.x].bJump = false;
+
     }
     else // active == 1
     {

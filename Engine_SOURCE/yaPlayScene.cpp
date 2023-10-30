@@ -106,18 +106,18 @@ namespace ya
 
 
 		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
-			ground->SetName(L"Ground");
-			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(0.0f, -11.0f, 10.0f));
-			groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
-			groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			//GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
+			//ground->SetName(L"Ground");
+			//Transform* groundTr = ground->GetComponent<Transform>();
+			//groundTr->SetPosition(Vector3(0.0f, -11.0f, 10.0f));
+			//groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
+			//groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			//groundCollider->SetType(eColliderType::Box);
+			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
 
 
@@ -138,18 +138,18 @@ namespace ya
 		}*/
 
 		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
-			ground->SetName(L"Ground2");
-			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
-			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
-			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
-			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			//GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
+			//ground->SetName(L"Ground2");
+			//Transform* groundTr = ground->GetComponent<Transform>();
+			//groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
+			//groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
+			//groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
+			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			//groundCollider->SetType(eColliderType::Box);
+			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
 
 		{
@@ -168,18 +168,18 @@ namespace ya
 
 
 		{
-			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
-			ground->SetName(L"Ground2");
-			Transform* groundTr = ground->GetComponent<Transform>();
-			groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
-			groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
-			groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
-			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			groundCollider->SetType(eColliderType::Box);
-			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			//GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
+			//ground->SetName(L"Ground2");
+			//Transform* groundTr = ground->GetComponent<Transform>();
+			//groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
+			//groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
+			//groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
+			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			//groundCollider->SetType(eColliderType::Box);
+			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
@@ -225,10 +225,10 @@ namespace ya
 		}
 
 		{
-			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
-			//Transform* objTransform = obj->GetComponent<Transform>();
-			//objTransform->SetPosition(-85.f, 35.f, 130.f);
-			//objTransform->SetRotation(-90.f, 0.f, 0.f);
+			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			Transform* objTransform = obj->GetComponent<Transform>();
+			objTransform->SetPosition(-85.f, 35.f, 130.f);
+			objTransform->SetRotation(-90.f, 0.f, 0.f);
 		}
 		{
 			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::None, this);
@@ -242,13 +242,7 @@ namespace ya
 			m->Init(this);
 		}
 
-		{
-			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::Particle, this);
-			trObj->SetName(L"particle");
-			trObj->AddComponent<ParticleSystem>();
-			trObj->AddComponent<Collider2D>()->SetType(eColliderType::Box);
 
-		}
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
 		//mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-10.0f, 0.0f, 10.0f)));

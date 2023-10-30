@@ -16,6 +16,7 @@
 #include "yaPlayerHpTexture.h"
 #include "yaPlayerDangerUI.h"
 #include "yaParryEffect.h"
+#include "yaParticleSystem.h"
 
 namespace ya
 {
@@ -151,6 +152,12 @@ namespace ya
 		mPlayerDangerUI->SetPlayer(this);
 		mParryEffect = object::Instantiate<ParryEffect>(eLayerType::UI, GetScene());
 		mParryEffect->SetPlayer(this);
+		{
+			mParticleObject= object::Instantiate<GameObject>(eLayerType::Particle, GetScene());
+			mParticleObject->SetName(L"particle");
+			mParticleObject->AddComponent<ParticleSystem>();
+			
+		}
 	}
 
 	// block 상태가 얼마나 지속 되었는지 시간 return
@@ -219,6 +226,17 @@ namespace ya
 	void Player::DangerUION()
 	{
 		mPlayerDangerUI->UIOn();
+	}
+
+	void Player::ParryEffectOn()
+	{
+		mParryEffect->UIOn();
+		ParticleSystem* particleSys = mParticleObject->GetComponent<ParticleSystem>();
+		particleSys->ParticleOn();
+		particleSys->SetParticleNum(100);
+
+		Transform* tr = mParticleObject->GetComponent<Transform>();
+		tr->SetPosition(GetComponent<Transform>()->GetPosition() + GetComponent<Transform>()->Forward());
 	}
 
 }
