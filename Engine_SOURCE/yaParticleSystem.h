@@ -23,6 +23,8 @@ namespace ya::graphics
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
+		void ParticleOn() { mbParticleCreate = true; }
+		void SetParticleNum(UINT num) { mNumParticle = num; }
 	private:
 		class StructedBuffer* mBuffer;
 		class StructedBuffer* mSharedBuffer;
@@ -43,5 +45,10 @@ namespace ya::graphics
 		float mStartSpeed;
 		float mTime;
 		float mElapsedTime; //누적시간
+
+		bool mbParticleCreate;
+
+		UINT mNumParticle;
+
 	};
 }

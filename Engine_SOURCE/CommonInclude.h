@@ -18,8 +18,8 @@ namespace std
 STRKEY gResPath = L"..\\Resources";
 STRKEY gMapPath = L"Map\\Mesh";
 #else
-STRKEY gResPath = L"..\\..\\Resources"
-STRKEY gMapPath = L"..\\..\\Resources\\Map\\Mesh";
+STRKEY gResPath = L"..\\Resources";
+STRKEY gMapPath = L"Map\\Mesh";
 #endif
 
 #define arraysize(a) (sizeof(a) / sizeof(a[0]))

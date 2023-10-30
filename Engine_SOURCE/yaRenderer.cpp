@@ -507,6 +507,14 @@ namespace ya::renderer
 
 		Resources::Insert<Shader>(L"DangerUIShader", DangerUIShader);
 #pragma endregion
+#pragma region AlphaAnimation Shader
+		std::shared_ptr<Shader> AlphaAnimationShader = std::make_shared<Shader>();
+		AlphaAnimationShader->Create(eShaderStage::VS, L"AlphaAnimationVS.hlsl", "main");
+		AlphaAnimationShader->Create(eShaderStage::PS, L"AlphaAnimationPS.hlsl", "main");
+		AlphaAnimationShader->SetDSState(eDSType::None);
+
+		Resources::Insert<Shader>(L"AlphaAnimationShader", AlphaAnimationShader);
+#pragma endregion
 #pragma region GRID SHADER
 		std::shared_ptr<Shader> gridShader = std::make_shared<Shader>();
 		gridShader->Create(eShaderStage::VS, L"GridVS.hlsl", "main");
@@ -781,6 +789,12 @@ namespace ya::renderer
 			, dangerUIShader->GetVSBlobBufferSize()
 			, dangerUIShader->GetInputLayoutAddressOf());
 
+		std::shared_ptr<Shader> AlphaAnimationShader = Resources::Find<Shader>(L"AlphaAnimationShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, AlphaAnimationShader->GetVSBlobBufferPointer()
+			, AlphaAnimationShader->GetVSBlobBufferSize()
+			, AlphaAnimationShader->GetInputLayoutAddressOf());
+
 		std::shared_ptr<Shader> basicShader = Resources::Find<Shader>(L"BasicShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 8
 			, basicShader->GetVSBlobBufferPointer()
@@ -1035,6 +1049,7 @@ namespace ya::renderer
 		Resources::Load<Texture>(L"DefaultSprite", L"Light.png");
 		
 		Resources::Load<Texture>(L"CartoonSmoke", L"particle\\CartoonSmoke.png");
+		Resources::Load<Texture>(L"SparkParticle", L"Effect\\Texture\\Spark.png");
 		Resources::Load<Texture>(L"noise_01", L"noise\\noise_01.png");
 		Resources::Load<Texture>(L"noise_02", L"noise\\noise_02.png");
 		Resources::Load<Texture>(L"noise_03", L"noise\\noise_03.jpg");

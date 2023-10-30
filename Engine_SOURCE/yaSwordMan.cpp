@@ -567,7 +567,7 @@ namespace ya
 	{
 		if (STATE_HAVE(MonsterState_Move))
 		{
-			mMoveDir = mTransform->Forward();
+			
 
 			mActionScript->Move(mMoveDir, GetSpeed());
 		}

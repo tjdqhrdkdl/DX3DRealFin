@@ -34,6 +34,8 @@ namespace ya
 		void EraseDeathBlowTarget(MonsterBase* monster);
 
 		void DangerUION();
+		void ParryEffectOn();
+		GameObject* GetParticleObject() { return mParticleObject; }
 
 		void Reset();
 
@@ -68,6 +70,8 @@ namespace ya
 		GameObject* mCamera;
 		class PlayerScreenUI* mPlayerScreenUI;
 		class PlayerDangerUI* mPlayerDangerUI;
+		class ParryEffect* mParryEffect;
+		GameObject* mParticleObject;
 
 		State* mState;
 		UINT mStateFlag;

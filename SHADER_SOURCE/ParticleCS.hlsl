@@ -3,10 +3,10 @@
 RWStructuredBuffer<Particle> ParticleBuffer : register(u0);
 RWStructuredBuffer<ParticleShared> ParticleSharedBuffer : register(u1);
 
-//°¢°¢ÀÇ ½º·¹µå°¡ µ¿±âÈ­ÇÒ µ¥ÀÌÅÍ°¡ ÇÊ¿äÇÏ´Ù
+//ê°ê°ì˜ ìŠ¤ë ˆë“œê°€ ë™ê¸°í™”í•  ë°ì´í„°ê°€ í•„ìš”í•˜ë‹¤
 
-//1024°³°¡ ÃÖ´ë ½º·¹µå °³¼ö
-[numthreads(128, 1, 1)]
+//1024ê°œê°€ ìµœëŒ€ ìŠ¤ë ˆë“œ ê°œìˆ˜
+[numthreads(1024, 1, 1)]
 void main( uint3 DTid : SV_DispatchThreadID )
 {
     if ( maxParticles <= DTid.x )
@@ -14,35 +14,37 @@ void main( uint3 DTid : SV_DispatchThreadID )
     
     if (ParticleBuffer[DTid.x].active == 0)
     {
-        while (0 < ParticleSharedBuffer[0].gActiveCount)
+        if (ParticleBuffer[DTid.x].bJump == false)
         {
-            int originValue = ParticleSharedBuffer[0].gActiveCount;
-            int exchange = originValue - 1;
+            while (0 < ParticleSharedBuffer[0].gActiveCount)
+            {
+                int originValue = ParticleSharedBuffer[0].gActiveCount;
+                int exchange = originValue - 1;
             
-            // ½º·¹µå µ¿±âÈ­
-            // dest°ªÀ» exchange°ªÀ¸·Î ¹Ù²Ù´Â µ¿¾È
-            // ´Ù¸¥½º·¹µå´Â ¸ØÃá´Ù.
+            // ìŠ¤ë ˆë“œ ë™ê¸°í™”
+            // destê°’ì„ exchangeê°’ìœ¼ë¡œ ë°”ê¾¸ëŠ” ë™ì•ˆ
+            // ë‹¤ë¥¸ìŠ¤ë ˆë“œëŠ” ë©ˆì¶˜ë‹¤.
             //InterlockedExchange(ParticleSharedBuffer[0].gActiveCount, exchange, exchange);
-            InterlockedCompareExchange(ParticleSharedBuffer[0].gActiveCount
+                InterlockedCompareExchange(ParticleSharedBuffer[0].gActiveCount
                                         , originValue, exchange, exchange);
             
-            if (originValue == exchange)
-            {
-                ParticleBuffer[DTid.x].active = 1;
-                break;
+                if (originValue == exchange)
+                {
+                    ParticleBuffer[DTid.x].active = 1;
+                    break;
+                }
             }
-        }
-        
-        if (ParticleBuffer[DTid.x].active)
-        {
-                // ·£´ı°ªÀ¸·Î À§Ä¡¿Í ¹æÇâÀ» ¼³Á¤ÇØÁØ´Ù.
-                // »ùÇÃ¸µÀ» ½ÃµµÇÒ UV °è»êÇØÁØ´Ù.
-            float4 Random = (float4) 0.0f;
-            float2 UV = float2((float) DTid.x / maxParticles, 0.5f);
-            UV.x += elapsedTime;
-            UV.y += sin((UV.x + elapsedTime) * 3.14592f + 2.0f * 10.0f) * 0.5f;
+       
+            if (ParticleBuffer[DTid.x].active)
+            {
+                // ëœë¤ê°’ìœ¼ë¡œ ìœ„ì¹˜ì™€ ë°©í–¥ì„ ì„¤ì •í•´ì¤€ë‹¤.
+                // ìƒ˜í”Œë§ì„ ì‹œë„í•  UV ê³„ì‚°í•´ì¤€ë‹¤.
+                float4 Random = (float4) 0.0f;
+                float2 UV = float2((float) DTid.x / maxParticles, 0.5f);
+                UV.x += elapsedTime;
+                UV.y += sin((UV.x + elapsedTime) * 3.14592f + 2.0f * 10.0f) * 0.5f;
                 
-            Random = float4
+                Random = float4
                 (
                     GaussianBlur(UV + float2(0.0f, 0.0f)).x
                     , GaussianBlur(UV + float2(0.1f, 0.0f)).x
@@ -50,37 +52,75 @@ void main( uint3 DTid : SV_DispatchThreadID )
                     , GaussianBlur(UV + float2(0.2f, 0.0f)).x
                 );
 
-            //// radius ¿øÇü ¹üÀ§·Î ½ºÆù
-            float fTheta = Random.xy * 3.141592f * 2.0f;
-            ParticleBuffer[DTid.x].position.xy = float2 ( cos(fTheta), sin(fTheta) ) * Random.y * radius;
-            ParticleBuffer[DTid.x].position.z = 100.0f;
+            //// radius ì›í˜• ë²”ìœ„ë¡œ ìŠ¤í°
+                float fTheta = Random.xy * 3.141592f * 2.0f;
+                ParticleBuffer[DTid.x].position.xy = float2(0, 0);
+                ParticleBuffer[DTid.x].position.z = 0.0f;
             
-            ParticleBuffer[DTid.x].direction.xy 
-                = normalize(float2(ParticleBuffer[DTid.x].position.xy));
             
-            if (simulationSpace) // 1 world , 0 local
-            {
-                ParticleBuffer[DTid.x].position.xyz += worldPosition.xyz;
+                if (simulationSpace) // 1 world , 0 local
+                {
+                    ParticleBuffer[DTid.x].position.xyz += worldPosition.xyz;
+                }
+            
+                ParticleBuffer[DTid.x].velocity = ParticleBuffer[DTid.x].direction;
+            
+            ////íŒŒí‹°í´ ì†ë ¥
+                ParticleBuffer[DTid.x].time = 0.0f;
+                ParticleBuffer[DTid.x].speed = startSpeed;
+            
             }
-            
-            ////ÆÄÆ¼Å¬ ¼Ó·Â
-            ParticleBuffer[DTid.x].time = 0.0f;
-            ParticleBuffer[DTid.x].speed = startSpeed;
-            ParticleBuffer[DTid.x].lifeTime = startLifeTime;
-            
         }
+        else
+            ParticleBuffer[DTid.x].bJump = false;
+
     }
     else // active == 1
     {
-        ParticleBuffer[DTid.x].time += deltaTime;
-        if (ParticleBuffer[DTid.x].lifeTime < ParticleBuffer[DTid.x].time)
+        uint i = DTid.x % 4;
+        float delay = 0.02f;
+        bool isActive = true;
+        if(i != 0)
         {
-            ParticleBuffer[DTid.x].active = 0;
+            isActive = false;
+            if (ParticleBuffer[DTid.x / 4 * 4].time > i * delay)
+            {
+                isActive = true;
+            }
         }
-        else
+        
+        if(isActive)
         {
-            ParticleBuffer[DTid.x].position 
-            += ParticleBuffer[DTid.x].direction * ParticleBuffer[DTid.x].speed * deltaTime;
+        
+            ParticleBuffer[DTid.x].time += deltaTime;
+            if (ParticleBuffer[DTid.x].lifeTime < ParticleBuffer[DTid.x].time)
+            {
+                ParticleBuffer[DTid.x].active = 0;
+            }
+            else
+            {
+            //ì´ë™
+                ParticleBuffer[DTid.x].position 
+            += ParticleBuffer[DTid.x].velocity * deltaTime;
+            
+            //ì¤‘ë ¥
+                if (ParticleBuffer[DTid.x].velocity.y > -10)
+                    ParticleBuffer[DTid.x].velocity += float4(0, -10, 0, 0) * deltaTime;
+            
+            //ë§ˆì°°ë ¥ì— ì˜í•´ í˜ì„ ìƒë‹¤
+                float4 friction = -ParticleBuffer[DTid.x].velocity;
+                normalize(friction);
+                friction = friction * deltaTime;
+
+            
+			//ë§ˆì°°ë ¥ìœ¼ë¡œ ì¸í•œ ì†ë„ ê°ì†ŒëŸ‰ì´ í˜„ì¬ ì†ë„ë³´ë‹¤ ë” í° ê²½ìš°
+                if (length(ParticleBuffer[DTid.x].velocity) < length(friction))
+				//ì†ë„ë¥¼ 0 ë¡œ ë§Œë“ ë‹¤.
+                    ParticleBuffer[DTid.x].velocity = float4(0, 0, 0, 0);
+                else
+				//ì†ë„ì—ì„œ ë§ˆì°°ë ¥ìœ¼ë¡œ ì¸í•œ ë°˜ëŒ€ë°©í–¥ìœ¼ë¡œ ì†ë„ë¥¼ ì°¨ê°í•œë‹¤.
+                    ParticleBuffer[DTid.x].velocity += friction;
+            }
         }
     }
 }

@@ -668,32 +668,32 @@ namespace ya
 
 		//공격
 		//// 우좌 베기 3000
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 2) = [this]() {SetAttackUnGuardable(true); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 5) = [this]() {SetAttackUnGuardable(true); };
 
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 12) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSpearManBaseSpeed * (float)1.3); mSwordScript->SetBlock(false); };
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 23) = [this]() {  RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
 
 		//// 좌우 베기 3001
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 2) = [this]() {SetAttackUnGuardable(true); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 15) = [this]() {SetAttackUnGuardable(true); };
 
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 20) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSpearManBaseSpeed * (float)2); mSwordScript->SetBlock(false);  };
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 32) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt);  };
 
 
 		//// 전진 우좌 옆베기 3003
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 2) = [this]() {SetAttackUnGuardable(true); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 15) = [this]() {SetAttackUnGuardable(true); };
 
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 30) = [this]() { ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * (float)1.5); mSwordScript->SetBlock(false);  };
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 60) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 30) = [this]() { ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * (float)1.5); mSwordScript->SetBlock(false); RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 60) = [this]() { RM_STATE(MonsterState_Move);};
 		
 		
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_4", 2) = [this]() {SetAttackUnGuardable(true); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_4", 1) = [this]() {SetAttackUnGuardable(true); };
 
 
 
 
 		// 5연베기 3008
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 2) = [this]() {SetAttackUnGuardable(true); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 15) = [this]() {SetAttackUnGuardable(true); };
 
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 29) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * 2); mSwordScript->SetBlock(false); };
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 42) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt);  };

@@ -16,6 +16,7 @@
 #include "yaBoneAnimator.h"
 #include "yaMonsterUI.h"
 #include "yaCameraScript.h"
+#include "yaBossUI.h"
 
 #include <time.h>
 
@@ -70,10 +71,10 @@ namespace ya
             MonsterState_OnHitFront = 0x00001000,
             MonsterState_AttackBlocked = 0x00002000,
             MonsterState_SuperArmor = 0x00004000,
-            MonsterState_Groggy = 0x00004000,
-            MonsterState_DeathBlow = 0x00008000,
-            MonsterState_LookAt = 0x00010000,
-            MonsterState_Dead = 0x00020000,
+            MonsterState_Groggy = 0x00008000,
+            MonsterState_DeathBlow = 0x00010000,
+            MonsterState_LookAt = 0x00020000,
+            MonsterState_Dead = 0x00040000,
         };
 
     public:
@@ -89,6 +90,9 @@ namespace ya
     public:
         virtual void DeathBlow();
         virtual void Reset();
+
+        void ParryEffectOn();
+        GameObject* GetParticleObject();
 
         bool IsMonsterState(eMonsterState eState) { return STATE_HAVE(eState); }
 
@@ -155,13 +159,16 @@ namespace ya
 
     protected:
         std::shared_ptr<MeshData>   mMeshData;
-        //MeshObject*         mMeshObject;
         ActionScript*       mActionScript;
 
-        Attack              mAttackParams;
+        Transform*          mTransform;
+        Collider2D*         mCollider;
+
+        BossUI*             mBossUI;
         MonsterUI*          mMonsterUI;
         CameraScript*       mCamScript;
         Player*             mPlayerObject;
+        Attack              mAttackParams;
 
         int                 mBeforeState;
         int                 mState;

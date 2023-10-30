@@ -10,12 +10,14 @@
 #include "yaResources.h"
 
 #include "yaTime.h"
+#include "yaMath.h"
 
 namespace ya
 {
 	LoadingScene::LoadingScene()
 		: Scene(eSceneType::Loading)
 		, mLoadingTime(1.0f)
+		, mLoader(nullptr)
 	{
 
 	}
@@ -85,6 +87,27 @@ namespace ya
 			meshRenderer->SetMaterial(backgroundtMaterial, 0);
 		}
 
+		{
+			mLoader = object::Instantiate<GameObject>(eLayerType::UI, this);
+			mLoader->SetName(L"Load_loader");
+
+			Transform* loaderTr = mLoader->GetComponent<Transform>();
+			loaderTr->SetPosition(Vector3(-700.0f, -320.f, 0.f));
+			loaderTr->SetScale(Vector3(50.0f, 50.0f, 50.0f));
+
+			std::shared_ptr<Texture> texture = Resources::Load<Texture>(L"loader", L"Texture\\Menu\\Common\\loader_w.png");
+
+			std::shared_ptr<Material> loadertMaterial = std::make_shared<Material>();
+			loadertMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			loadertMaterial->SetShader(Resources::Find<Shader>(L"SpriteShader"));
+			loadertMaterial->SetTexture(eTextureSlot::Albedo, texture);
+			Resources::Insert<Material>(L"loadertMaterial", loadertMaterial);
+
+			MeshRenderer* meshRenderer = mLoader->AddComponent<MeshRenderer>();
+			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			meshRenderer->SetMaterial(loadertMaterial, 0);
+		}
+
 		Scene::Initialize();
 	}
 
@@ -95,6 +118,19 @@ namespace ya
 			SceneManager::LoadScene(eSceneType::Play);
 		}*/
 
+		{ // loader
+			Transform* loaderTr = mLoader->GetComponent<Transform>();
+			float rot = loaderTr->GetRotation().z;
+			rot -= Time::DeltaTime() * 200.0f;
+
+			if (rot < -360.0f)
+				rot += 360.0f;
+
+			mLoader->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, rot));
+		}
+
+		// scene change
+		// 일정 시간 대기 후 scene init이 완료되었다면 다음 씬을 불러온다.
 		if (mLoadingTime > 0.0f)
 		{
 			mLoadingTime -= Time::DeltaTime();

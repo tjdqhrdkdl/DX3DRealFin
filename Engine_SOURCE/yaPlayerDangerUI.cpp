@@ -14,7 +14,7 @@ namespace ya
 	PlayerDangerUI::PlayerDangerUI()
 		:mRenderTime((float)1.5)
 		, mRenderTimeChecker(0)
-		, mbRender(true)
+		, mbRender(false)
 	{
 	}
 	PlayerDangerUI::~PlayerDangerUI()
