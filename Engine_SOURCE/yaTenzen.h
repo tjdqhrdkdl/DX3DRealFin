@@ -30,7 +30,7 @@ namespace ya
         virtual void Render() override;
 
         virtual void DeathBlow() override;
-
+        void Reset() override;
         void Idle();
         void Alert();
         void Recognize();
@@ -58,6 +58,8 @@ namespace ya
         void DefenseEndEvent();
         void AttackEndEvent();
         void TraceEndEvent();
+        void AttackSoundEvent();
+        void AttackSwingSoundEvent();
 
         void OnCollisionEnter(Collider2D* collider) override;
         void OnCollisionStay(Collider2D* collider)  override;
@@ -81,6 +83,7 @@ namespace ya
 
         Vector3 mMoveDir;
         bool mbAnimReset;
+        bool mbNavOn;
 
         class TenzenSwordScript* mSwordScript;
 	};

@@ -31,6 +31,7 @@ namespace ya
 		, mTurnTimerMax(0.4f)
 		, mFrontTheta(5.0f)
 		, mDashTimerMax(0.2f)
+		, mBGMVolume(5)
 	{
 	}
 
@@ -131,6 +132,33 @@ namespace ya
 			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-dead.wav");
 			Resources::Insert<AudioClip>(L"voice-m-dead", clip);
 		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\bgm\\17. Approaching Forces.mp3");
+			Resources::Insert<AudioClip>(L"bgm-boss", clip);
+			mAudioClips.push_back(clip);
+			clip->SetLoop(true);
+			clip->SetVolume(0);
+
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\bgm\\11. Ashina Outskirts.mp3");
+			Resources::Insert<AudioClip>(L"bgm-usual", clip);
+			mAudioClips.push_back(clip);
+
+			clip->SetLoop(true);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = Resources::Load<AudioClip>(L"perilous_attack", L"..\\Resources\\Sound\\Monster\\perilous_attack.mp3");
+			mAudioClips.push_back(clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = Resources::Load<AudioClip>(L"recognize_sound", L"..\\Resources\\Sound\\Monster\\recognize_sound.mp3");
+			mAudioClips.push_back(clip);
+		}
+		
 	}
 
 	void PlayerActionScript::Update()
@@ -167,11 +195,22 @@ namespace ya
 
 	void PlayerActionScript::FixedUpdate()
 	{
+		std::shared_ptr<AudioClip> bgmClip = Resources::Find<AudioClip>(L"bgm-usual");
 		for (std::shared_ptr<AudioClip> clip : mAudioClips)
 		{
-			clip->Set3DAttributes(mTransform->GetPosition(), mPlayer->GetComponent<Rigidbody>()->GetVelocity());
+			if (bgmClip == clip)
+			{
+				clip->Set3DAttributes(mTransform->GetPosition() + Vector3(0, 10 - mBGMVolume, 0), mPlayer->GetComponent<Rigidbody>()->GetVelocity());
+			}
+			else
+				clip->Set3DAttributes(mTransform->GetPosition(), mPlayer->GetComponent<Rigidbody>()->GetVelocity());
+
 		}
-		
+		if (Input::GetKeyDown(eKeyCode::I))
+			mBGMVolume -= 1;
+		if (Input::GetKeyDown(eKeyCode::O))
+			mBGMVolume += 1;
+
 
 		ActionScript::FixedUpdate();
 	}

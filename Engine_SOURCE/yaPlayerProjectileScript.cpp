@@ -139,58 +139,59 @@ namespace ya
 			particleObj->GetComponent<Transform>()->SetPosition(effectPos);
 			particleSys->ParticleOn();
 			particleSys->SetParticleNum(100);
-		}
 
 
-		// 몬스터 패링
-		if (monster->IsMonsterState(MonsterBase::MonsterState_Defense) && abs(theta.y) <= 45.0f)
-		{
-			if (attackState == PlayerAttackScript::eAttackState::Attack1)
-			{
-				mPlayerAnim->Play(L"a050_130100");
-			}
-			else if (attackState == PlayerAttackScript::eAttackState::Attack2)
-			{
-				mPlayerAnim->Play(L"a050_150001");
-			}
-			else if (attackState == PlayerAttackScript::eAttackState::Attack3)
-			{
-				//mPlayerAnim->Play(L"a050_130201");
-			}
-			else if (attackState == PlayerAttackScript::eAttackState::Attack4)
-			{
-				mPlayerAnim->Play(L"a050_130201");
-			}
-			else if (attackState == PlayerAttackScript::eAttackState::Attack5)
-			{
-				mPlayerAnim->Play(L"a050_130200");
-			}
 
-			//Resources::Find<AudioClip>(L"sword-x-sword" + std::to_wstring(RandomNumber(1, 3)))->Play();
-			Resources::Find<AudioClip>(L"c000006601_" + std::to_wstring(RandomNumber(1, 3)))->Play();
-			return;
-		}
-		else
-		{
-			if (attackState == PlayerAttackScript::eAttackState::Attack1)
+			// 몬스터 패링
+			if (monster->IsMonsterState(MonsterBase::MonsterState_GuardSuccess) && abs(theta.y) <= 45.0f)
 			{
-				Resources::Find<AudioClip>(L"enemy_damage1")->Play();
+				if (attackState == PlayerAttackScript::eAttackState::Attack1)
+				{
+					mPlayerAnim->Play(L"a050_130100");
+				}
+				else if (attackState == PlayerAttackScript::eAttackState::Attack2)
+				{
+					mPlayerAnim->Play(L"a050_150001");
+				}
+				else if (attackState == PlayerAttackScript::eAttackState::Attack3)
+				{
+					//mPlayerAnim->Play(L"a050_130201");
+				}
+				else if (attackState == PlayerAttackScript::eAttackState::Attack4)
+				{
+					mPlayerAnim->Play(L"a050_130201");
+				}
+				else if (attackState == PlayerAttackScript::eAttackState::Attack5)
+				{
+					mPlayerAnim->Play(L"a050_130200");
+				}
+
+				//Resources::Find<AudioClip>(L"sword-x-sword" + std::to_wstring(RandomNumber(1, 3)))->Play();
+				Resources::Find<AudioClip>(L"c000006601_" + std::to_wstring(RandomNumber(1, 3)))->Play();
+				return;
 			}
-			else if (attackState == PlayerAttackScript::eAttackState::Attack2)
+			else
 			{
-				Resources::Find<AudioClip>(L"enemy_damage2")->Play();
-			}
-			else if (attackState == PlayerAttackScript::eAttackState::Attack3)
-			{
-				Resources::Find<AudioClip>(L"enemy_damage3")->Play();
-			}
-			else if (attackState == PlayerAttackScript::eAttackState::Attack4)
-			{
-				Resources::Find<AudioClip>(L"enemy_damage4")->Play();
-			}
-			else if (attackState == PlayerAttackScript::eAttackState::Attack5)
-			{
-				Resources::Find<AudioClip>(L"enemy_damage5")->Play();
+				if (attackState == PlayerAttackScript::eAttackState::Attack1)
+				{
+					Resources::Find<AudioClip>(L"enemy_damage1")->Play();
+				}
+				else if (attackState == PlayerAttackScript::eAttackState::Attack2)
+				{
+					Resources::Find<AudioClip>(L"enemy_damage2")->Play();
+				}
+				else if (attackState == PlayerAttackScript::eAttackState::Attack3)
+				{
+					Resources::Find<AudioClip>(L"enemy_damage3")->Play();
+				}
+				else if (attackState == PlayerAttackScript::eAttackState::Attack4)
+				{
+					Resources::Find<AudioClip>(L"enemy_damage4")->Play();
+				}
+				else if (attackState == PlayerAttackScript::eAttackState::Attack5)
+				{
+					Resources::Find<AudioClip>(L"enemy_damage5")->Play();
+				}
 			}
 		}
 	}

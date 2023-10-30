@@ -25,7 +25,8 @@ namespace ya
 		void Set3DAttributes(const Vector3 pos, const Vector3 vel);
 		void SetLoop(bool loop) { mbLoop = loop; }
 		void SetDelay(unsigned long long start, unsigned long long end, bool stopchannels = true);
-
+		void SetVolume(float volume);
+		bool isPlaying();
 	private:
 		FMOD::Sound* mSound;
 		FMOD::Channel* mChannel;
