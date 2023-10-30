@@ -38,7 +38,6 @@ namespace ya
 		, mTurnTimerMax(0.4f)
 		, mGroggyTimer(0.0f)
 		, mFrontTheta(5.0f)
-		, mDashTimerMax(0.2f)
 		, mInvincibleTimer(true)
 		, mBGMVolume(5)
 	{
