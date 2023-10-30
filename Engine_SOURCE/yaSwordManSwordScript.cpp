@@ -23,6 +23,7 @@ namespace ya
 			GameObject* particleObj = pl->GetParticleObject();
 			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
 			particleObj->GetComponent<Transform>()->SetPosition(GetOwner()->GetComponent<Transform>()->GetWorldPositioin());
+
 			particleSys->ParticleOn();
 			particleSys->SetParticleNum(100);
 			
@@ -61,6 +62,7 @@ namespace ya
 							default:
 								break;
 							}
+							swordMan->ParryEffectOn();
 
 							//체간 게이지 영향
 							swordMan->SetPosture(swordMan->GetPosture() + 7);

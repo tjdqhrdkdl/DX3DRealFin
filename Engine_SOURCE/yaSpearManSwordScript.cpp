@@ -52,6 +52,7 @@ namespace ya
 								soldier->SetAnimationName(L"Spear_ParriedLeft");
 							else
 								soldier->SetAnimationName(L"Spear_ParriedRight");
+							soldier->ParryEffectOn();
 
 							//체간 게이지 영향
 							soldier->SetPosture(soldier->GetPosture() + 7);

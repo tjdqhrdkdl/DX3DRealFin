@@ -12,7 +12,7 @@
 #include "yaTenzenSwordScript.h"
 
 #include "yaNavMesh.h"
-
+#include "yaAudioClip.h"
 
 #define STATE_HAVE(STATE) (mState & STATE) == STATE
 #define ADD_STATE(STATE) mState |= STATE
@@ -22,7 +22,7 @@
 
 namespace ya
 {
-	float eyeSightAngleCos = 0.2f;
+	float eyeSightAngleCos = 0.1f;
 	float tenzenWalkSpeed = 71;
 	float tenzenBaseSpeed = 200;
 	Tenzen::Tenzen()
@@ -130,7 +130,18 @@ namespace ya
 		if(mKatanaObjectTr)
 			mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
 		
-		
+
+		//오디오 클립 로드
+		Resources::Load<AudioClip>(L"tenzen_v_recognize", L"..\\Resources\\Sound\\tenzen\\Recognize\\c102008500.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_hit", L"..\\Resources\\Sound\\tenzen\\Hit\\c102008100.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_attack_1", L"..\\Resources\\Sound\\tenzen\\Attack\\c102008701.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_attack_2", L"..\\Resources\\Sound\\tenzen\\Attack\\c102008701b.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_attack_3", L"..\\Resources\\Sound\\tenzen\\Attack\\c102008701c.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_attack_4", L"..\\Resources\\Sound\\tenzen\\Attack\\c102008701d.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_attack_swing_1", L"..\\Resources\\Sound\\tenzen\\Attack\\c102006000.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_attack_swing_2", L"..\\Resources\\Sound\\tenzen\\Attack\\c102006000b.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_attack_swing_3", L"..\\Resources\\Sound\\tenzen\\Attack\\c102006000c.wav");
+		Resources::Load<AudioClip>(L"tenzen_v_attack_swing_4", L"..\\Resources\\Sound\\tenzen\\Attack\\c102006000d.wav");
 		
 
 
@@ -297,8 +308,9 @@ namespace ya
 		mAnimationName = L"DeathBlow1";
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
-				* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-					+ GetComponent<Transform>()->GetFinalScale().z / 2 + (float)0.5));
+			* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
+				+ GetComponent<Transform>()->GetFinalScale().z / 2 + 0.5)
+			- mPlayerObject->GetComponent<Transform>()->Right() * 0.8);
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);
@@ -307,6 +319,15 @@ namespace ya
 		RM_STATE(MonsterState_Trace);
 		ADD_STATE(MonsterState_LookAt);
 		RM_STATE(MonsterState_Idle);
+		mCamScript->SetLockOnFree();
+
+	}
+	void Tenzen::Reset()
+	{
+		RM_STATE(MonsterState_DrawSword);
+		mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+		mKatanaHandleObjectTr->SetScale(Vector3(1, 1, 1));
+		MonsterBase::Reset();
 	}
 	void Tenzen::Idle()
 	{
@@ -339,11 +360,30 @@ namespace ya
 					float dist = GetDistanceToPlayer();
 					float alert = GetAlertnessCount();
 
-					if (dist < 15)
-						SetAlertnessCount(alert + 50 * Time::DeltaTime());
-					else if (dist < 40)
-						SetAlertnessCount(alert + 20 * Time::DeltaTime());
 
+					if (mPlayerObject->IsStateFlag(ePlayerState::Crouch))
+					{
+						if (cosTheta > eyeSightAngleCos * 4)
+						{
+							if (dist < 5)
+								SetAlertnessCount(alert + 200 * Time::DeltaTime());
+							else if (dist < 7)
+								SetAlertnessCount(alert + 50 * Time::DeltaTime());
+							else if (dist < 10)
+								SetAlertnessCount(alert + 20 * Time::DeltaTime());
+							else if (dist < 12)
+								SetAlertnessCount(alert + 10 * Time::DeltaTime());
+						}
+					}
+					else
+					{
+						if (dist < 6)
+							SetAlertnessCount(alert + 200 * Time::DeltaTime());
+						else if (dist < 12)
+							SetAlertnessCount(alert + 50 * Time::DeltaTime());
+						else if (dist < 18)
+							SetAlertnessCount(alert + 20 * Time::DeltaTime());
+					}
 				}
 				if (GetAlertnessCount() > 100)
 				{
@@ -360,24 +400,21 @@ namespace ya
 				float cosTheta = EyeSightCheck();
 				Vector3 dir = mPlayerLastPosition - mTransform->GetPosition();
 				dir.y = 0;
-
-				if (dir.Length() < 5)
+				SetSpeed(200);
+				GetComponent<NavMesh>()->RenewPath(mPlayerLastPosition);
+				RM_STATE(MonsterState_LookAt);
+				RotateForwardTo(GetComponent<NavMesh>()->GetDir());
+				mbNavOn = true;
+				if (dir.Length() < 4)
 				{
 					mAnimationName = L"LookAround";
 					RM_STATE(MonsterState_Move);
 				}
 				else
 				{
-					dir.Normalize();
-					mMoveDir = dir;
-					ADD_STATE(MonsterState_Move);
-					mActionScript->Velocity(10);
+					mActionScript->Velocity(5);
 					SetSpeed(tenzenWalkSpeed);
 				}
-
-
-				RotateForwardTo(dir);
-
 
 				float dist = GetDistanceToPlayer();
 				mAlertTimeChecker += Time::DeltaTime();
@@ -386,16 +423,23 @@ namespace ya
 				{
 					RM_STATE(MonsterState_Alert);
 					RM_STATE(MonsterState_Move);
+					mbNavOn = false;
+
 					SetSpeed(tenzenWalkSpeed);
 
 					ADD_STATE(MonsterState_Idle);
 					mAlertTimeChecker = 0;
 					SetAlertnessCount(0);
 				}
-				if (cosTheta > eyeSightAngleCos && dist < 20)
+				else if (cosTheta > eyeSightAngleCos && dist < 12)
 				{
 					mActionScript->Velocity(18);
 					ADD_STATE(MonsterState_Recognize);
+					Resources::Find<AudioClip>(L"recognize_sound")->Play();
+					Resources::Find<AudioClip>(L"tenzen_v_recognize")->Play();
+					mbNavOn = false;
+					SetAlertnessCount(0);
+
 				}
 			}
 		}
@@ -404,6 +448,12 @@ namespace ya
 	{
 			if (STATE_HAVE(MonsterState_Recognize))
 			{
+				std::shared_ptr<AudioClip> bgmTenzen = Resources::Find<AudioClip>(L"bgm-boss");
+				if (!bgmTenzen->isPlaying())
+				{
+					bgmTenzen->Play();
+					Resources::Find<AudioClip>(L"bgm-usual")->Stop();
+				}
 				mBossUI->UIOn();
 				mMonsterUI->UIOff();
 				RM_STATE(MonsterState_Idle);
@@ -453,6 +503,12 @@ namespace ya
 
 			else
 			{
+				std::shared_ptr<AudioClip> bgmTenzen = Resources::Find<AudioClip>(L"bgm-boss");
+				if (bgmTenzen->isPlaying())
+				{
+					bgmTenzen->Stop();
+					Resources::Find<AudioClip>(L"bgm-usual")->Play();
+				}
 				SetRecognize(false);
 				mBossUI->UIOff();
 			}
@@ -521,6 +577,11 @@ namespace ya
 				RM_STATE(MonsterState_Trace);
 			}
 
+		}
+
+		else if (!mbNavOn)
+		{
+			GetComponent<NavMesh>()->SetTraceOn(false);
 		}
 	}
 
@@ -626,29 +687,53 @@ namespace ya
 		};
 
 		mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
-
+		//
+		// 3000
+		// 3001
+		// 3003
+		// 3004
+		// 3005
+		// 3006
+		// 
+		// 
+		// 3051
+		// 3054
+		// 3056
+		// 
 		// 칼을 우상단에서 우하단으로 크게 휘두르고 제자리로.
 		//mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
 
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 12) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);  SetSpeed(tenzenBaseSpeed * 4); mSwordScript->SetBlock(true); mSwordScript->SetAttackLeft(false); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 13) = std::bind(&Tenzen::AttackSoundEvent, this);
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 14) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); SetSpeed(tenzenBaseSpeed); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_1", 19) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
 		// 칼을 좌하단에서 우상단으로. 한걸음 내딛으며.
-		//mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 11) = std::bind(&Tenzen::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 17) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
 
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 12) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);};
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_2", 18) = [this]() { RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
 		// 전진 점프 하며, 칼을 우상단에서 좌하단으로. 한걸음 내딛으며.
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 2) = std::bind(&Tenzen::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 25) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
 
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(100); GetComponent<Rigidbody>()->SetJumping(true); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); mActionScript->Jump(110); GetComponent<Rigidbody>()->SetJumping(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_3", 14) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
 
 		// 못막는 공격, 하단 베기
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 1) = std::bind(&Tenzen::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 23) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
+
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 10) = [this]() { SetAttackUnGuardable(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 27) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 32) = [this]() { RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
 
 		// 못막는 공격, 찌르기. 전진
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 10) = std::bind(&Tenzen::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 21) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
+
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 5) = [this]() { SetAttackUnGuardable(true); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 18) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed * 4); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 20) = [this]() { RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed);  RM_STATE(MonsterState_LookAt);  };
@@ -661,23 +746,37 @@ namespace ya
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 12) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 40) = [this]() { ADD_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 46) = [this]() { RM_STATE(MonsterState_Move); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 10) = std::bind(&Tenzen::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 33) = std::bind(&Tenzen::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 22) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 48) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
+
 
 		// 콤보 공격 5베기
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); ADD_STATE(MonsterState_SuperArmor);  };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 4) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
+
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 7) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_7", 12) = [this]() {RM_STATE(MonsterState_LookAt); };
 
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); ADD_STATE(MonsterState_SuperArmor); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 5) = std::bind(&Tenzen::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 31) = std::bind(&Tenzen::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 3) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 16) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 34) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
+
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 7) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 17) = [this]() {mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 20) = [this]() {RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 24) = [this]() {mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); };
-		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 34) = [this]() {RM_STATE(MonsterState_Move); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 33) = [this]() {RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_8", 40) = [this]() {mAnimationName = L"SwordAttack_7"; };
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_8") = [this]() {if (mMeshData->GetAnimator()->GetCurrentFrameIdx() <= 38) AttackEndEvent(); };
 
 
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_9", 1) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move);  };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_9", 6) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_9", 7) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_9", 25) = [this]() {mAnimationName = L"SwordAttack_8"; };
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_9") = [this]() {if (mMeshData->GetAnimator()->GetCurrentFrameIdx() <= 23) AttackEndEvent(); };
@@ -726,8 +825,9 @@ namespace ya
 		mMeshData->GetAnimationFrameEvent(L"Hit2", 18) = [this]() { RM_STATE(MonsterState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"Hit1") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Move); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"Hit2") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Move); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationStartEvent(L"Hit1") = [this]() { ADD_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward(); };
-		mMeshData->GetAnimationStartEvent(L"Hit2") = [this]() { ADD_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward(); };
+					
+		mMeshData->GetAnimationStartEvent(L"Hit1") = [this]() { Resources::Find<AudioClip>(L"tenzen_v_hit")->Play();  ADD_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward(); };
+		mMeshData->GetAnimationStartEvent(L"Hit2") = [this]() { Resources::Find<AudioClip>(L"tenzen_v_hit")->Play(); ADD_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward();  };
 
 
 		mMeshData->GetAnimationEndEvent(L"GrogyDownFront") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); SetPosture(80); SetDeathBlow(false); };
@@ -824,6 +924,63 @@ namespace ya
 	void Tenzen::TraceEndEvent()
 	{
 		RM_STATE(MonsterState_Trace);
+	}
+
+	void Tenzen::AttackSoundEvent()
+	{
+		std::shared_ptr<AudioClip> clip;
+		switch (rand()%4)
+		{
+		case 0:
+			clip = Resources::Find<AudioClip>(L"tenzen_v_attack_1");
+			clip->Set3DAttributes(mTransform->GetPosition(), GetComponent<Rigidbody>()->GetVelocity());
+			clip->Play();
+			break;
+		case 1:
+			clip = Resources::Find<AudioClip>(L"tenzen_v_attack_2");
+			clip->Set3DAttributes(mTransform->GetPosition(), GetComponent<Rigidbody>()->GetVelocity());
+			clip->Play();
+			break;
+		case 2:
+			clip = Resources::Find<AudioClip>(L"tenzen_v_attack_3");
+			clip->Set3DAttributes(mTransform->GetPosition(), GetComponent<Rigidbody>()->GetVelocity());
+			clip->Play();
+			break;
+		case 3:
+			clip = Resources::Find<AudioClip>(L"tenzen_v_attack_4");
+			clip->Set3DAttributes(mTransform->GetPosition(), GetComponent<Rigidbody>()->GetVelocity());
+			clip->Play();
+			break;
+		}
+	}
+
+	void Tenzen::AttackSwingSoundEvent()
+	{
+		std::shared_ptr<AudioClip> clip;
+
+		switch (rand() % 4)
+		{
+		case 0:
+			clip = Resources::Find<AudioClip>(L"tenzen_v_attack_swing_1");
+			clip->Set3DAttributes(mTransform->GetPosition(), GetComponent<Rigidbody>()->GetVelocity());
+			clip->Play();
+			break;										
+		case 1:											
+			clip = Resources::Find<AudioClip>(L"tenzen_v_attack_swing_2");
+			clip->Set3DAttributes(mTransform->GetPosition(), GetComponent<Rigidbody>()->GetVelocity());
+			clip->Play();
+			break;										 
+		case 2:											 
+			clip = Resources::Find<AudioClip>(L"tenzen_v_attack_swing_3");
+			clip->Set3DAttributes(mTransform->GetPosition(), GetComponent<Rigidbody>()->GetVelocity());
+			clip->Play();
+			break;										
+		case 3:											
+			clip = Resources::Find<AudioClip>(L"tenzen_v_attack_swing_4");
+			clip->Set3DAttributes(mTransform->GetPosition(), GetComponent<Rigidbody>()->GetVelocity());
+			clip->Play();
+			break;
+		}
 	}
 
 	void Tenzen::OnCollisionEnter(Collider2D* collider)

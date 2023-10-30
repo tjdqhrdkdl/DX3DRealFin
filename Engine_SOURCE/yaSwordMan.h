@@ -43,6 +43,9 @@ namespace ya
         void AttackEndEvent();
         void TraceEndEvent();
 
+        void AttackSoundEvent();
+        void AttackSwingSoundEvent();
+
         void OnCollisionEnter(Collider2D* collider) override;
         void OnCollisionStay(Collider2D* collider)  override;
         void OnCollisionExit(Collider2D* collider)  override;
@@ -71,6 +74,8 @@ namespace ya
         class SwordManSwordScript* mRSwordScript;
         class SwordManSwordScript* mLSwordScript;
 
+        bool mbMoveForward;
+        bool mbNavOn;
     public:
         SwordMan();
         ~SwordMan();

@@ -104,7 +104,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
             += ParticleBuffer[DTid.x].velocity * deltaTime;
             
             //중력
-                if (ParticleBuffer[DTid.x].velocity.y > -10)
+                if (ParticleBuffer[DTid.x].velocity.y > -10 && ParticleBuffer[DTid.x].bGravity)
                     ParticleBuffer[DTid.x].velocity += float4(0, -10, 0, 0) * deltaTime;
             
             //마찰력에 의해 힘을 잃다

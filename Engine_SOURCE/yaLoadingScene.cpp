@@ -162,7 +162,6 @@ namespace ya
 
 	void LoadingScene::OnExit()
 	{
-
 	}
 
 }

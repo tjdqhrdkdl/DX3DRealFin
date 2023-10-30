@@ -581,88 +581,88 @@ namespace ya
 		// Create Debug Mesh
 		// 디버그 메쉬 끄려면 이 밑으로 주석.
 
-		//for (int i = 0; i < mesh->getMaxTiles(); ++i)
-		//{
-		//	const dtMeshTile* tile = mesh->getTile(i);
+		for (int i = 0; i < mesh->getMaxTiles(); ++i)
+		{
+			const dtMeshTile* tile = mesh->getTile(i);
 
-		//	std::vector<ya::renderer::Vertex> vtxs;
-		//	tile->verts; //이게 버텍스 덩어리임.
-		//	float* a = &tile->verts[tile->header->polyCount * 3];
-		//	float cur = a[0];
-		//	cur = a[1];
-		//	cur = a[2];
-		//	const float* orig = m_navMesh->getParams()->orig;
-		//	for (size_t i = 0; i < 10000; i++)
-		//	{
-		//		ya::renderer::Vertex v;
-		//		float* a = &tile->verts[i * 3];
-		//		v.pos = Vector4(a[0], a[2], a[1], 1);
-		//		v.color = Vector4(1, 0, 1, 1);
-		//		vtxs.push_back(v);
-		//	}
-		//	for (size_t i = 0; i < 10000; i++)
-		//	{
-		//		ya::renderer::Vertex v;
-		//		float* a = &tile->detailVerts[i * 3];
-		//		v.pos = Vector4(a[0], a[2], a[1], 1);
-		//		v.color = Vector4(1, 0, 1, 1);
-		//		vtxs.push_back(v);
-		//	}
+			std::vector<ya::renderer::Vertex> vtxs;
+			tile->verts; //이게 버텍스 덩어리임.
+			float* a = &tile->verts[tile->header->polyCount * 3];
+			float cur = a[0];
+			cur = a[1];
+			cur = a[2];
+			const float* orig = m_navMesh->getParams()->orig;
+			for (size_t i = 0; i < 10000; i++)
+			{
+				ya::renderer::Vertex v;
+				float* a = &tile->verts[i * 3];
+				v.pos = Vector4(a[0], a[2], a[1], 1);
+				v.color = Vector4(1, 0, 1, 1);
+				vtxs.push_back(v);
+			}
+			for (size_t i = 0; i < 10000; i++)
+			{
+				ya::renderer::Vertex v;
+				float* a = &tile->detailVerts[i * 3];
+				v.pos = Vector4(a[0], a[2], a[1], 1);
+				v.color = Vector4(1, 0, 1, 1);
+				vtxs.push_back(v);
+			}
 
-		//	std::shared_ptr<Mesh> navMesh = std::make_shared<Mesh>();
-		//	navMesh->CreateVertexBuffer(vtxs.data(), vtxs.size());
-		//	Microsoft::WRL::ComPtr<ID3D11Buffer> vtxBuffer = navMesh->GetVertexBuffer();
+			std::shared_ptr<Mesh> navMesh = std::make_shared<Mesh>();
+			navMesh->CreateVertexBuffer(vtxs.data(), vtxs.size());
+			Microsoft::WRL::ComPtr<ID3D11Buffer> vtxBuffer = navMesh->GetVertexBuffer();
 
-		//	std::vector<UINT> indexes;
+			std::vector<UINT> indexes;
 
-		//	for (int i = 0; i < tile->header->polyCount; ++i)
-		//	{
-		//		const dtPoly* p = &tile->polys[i];
-		//		if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
-		//			continue;
+			for (int i = 0; i < tile->header->polyCount; ++i)
+			{
+				const dtPoly* p = &tile->polys[i];
+				if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
+					continue;
 
-		//		const dtPolyDetail* pd = &tile->detailMeshes[i];
-		//		std::shared_ptr<Mesh> polyMesh = std::make_shared<Mesh>();
-		//		polyMesh->SetVertexBuffer(vtxBuffer);
-		//		
-		//		for (int j = 0; j < pd->triCount; ++j)
-		//		{
-		//			const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
-		//			for (int k = 0; k < 3; ++k)
-		//			{
-		//				if (t[k] < p->vertCount)
+				const dtPolyDetail* pd = &tile->detailMeshes[i];
+				std::shared_ptr<Mesh> polyMesh = std::make_shared<Mesh>();
+				polyMesh->SetVertexBuffer(vtxBuffer);
+				
+				for (int j = 0; j < pd->triCount; ++j)
+				{
+					const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
+					for (int k = 0; k < 3; ++k)
+					{
+						if (t[k] < p->vertCount)
 
-		//					indexes.push_back(p->verts[t[k]]);
-		//				//인덱싱 중임
-		//				//여기있는 버텍스, 그릴 차례!
-		//				//삼각형 그릴거임.
-		//				//3개씩. 버텍스 계속 알려주께!
-		//				//p->verts[t[k]] * 3이 너가 그릴 버텍스의 포지션 주소임.
-		//				//p->verts[t[0]],p->verts[t[1]],p->verts[t[2]] 각각 버텍스를 가리킴 
-		//				//*3을 해주는 이유는 버텍스의 xyz좌표가 들어있기 때문이다.
-		//				else
-		//					indexes.push_back(10000 + (pd->vertBase + t[k] - p->vertCount));
-		//					//dd->vertex(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], col);
-		//					
-		//			}
-		//		}
-		//		if (indexes.size() > 0)
-		//		{
-		//			polyMesh->CreateIndexBuffer(indexes.data(), indexes.size());
-		//			indexes.clear();
-		//			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, m_scene);
-		//			ground->SetName(L"ss");
-		//			MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-		//			groundRenderer->SetMesh(polyMesh);
-		//			groundRenderer->SetMaterial(Resources::Find<Material>(L"DebugPaintedMaterial"), 0);
+							indexes.push_back(p->verts[t[k]]);
+						//인덱싱 중임
+						//여기있는 버텍스, 그릴 차례!
+						//삼각형 그릴거임.
+						//3개씩. 버텍스 계속 알려주께!
+						//p->verts[t[k]] * 3이 너가 그릴 버텍스의 포지션 주소임.
+						//p->verts[t[0]],p->verts[t[1]],p->verts[t[2]] 각각 버텍스를 가리킴 
+						//*3을 해주는 이유는 버텍스의 xyz좌표가 들어있기 때문이다.
+						else
+							indexes.push_back(10000 + (pd->vertBase + t[k] - p->vertCount));
+							//dd->vertex(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], col);
+							
+					}
+				}
+				if (indexes.size() > 0)
+				{
+					polyMesh->CreateIndexBuffer(indexes.data(), indexes.size());
+					indexes.clear();
+					GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, m_scene);
+					ground->SetName(L"ss");
+					MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+					groundRenderer->SetMesh(polyMesh);
+					groundRenderer->SetMaterial(Resources::Find<Material>(L"DebugPaintedMaterial"), 0);
 
-		//			if (m_mapMeshTr)
-		//			{
-		//				ground->GetComponent<Transform>()->SetParent(m_mapMeshTr);
-		//			}
-		//		}
-		//	}
-		//}
+					if (m_mapMeshTr)
+					{
+						ground->GetComponent<Transform>()->SetParent(m_mapMeshTr);
+					}
+				}
+			}
+		}
 
 
 	}

@@ -1,6 +1,7 @@
 #include "yaMonsterBase.h"
 #include "yaPlayer.h"
 #include "yaPlayerDangerUI.h"
+#include "yaAudioClip.h"
 
 #include <iostream>
 
@@ -235,7 +236,12 @@ namespace ya
 	{
 		mAttackParams.unGuardable = b;
 		if (b)
+		{
 			mPlayerObject->DangerUION();
+			Resources::Find<AudioClip>(L"perilous_attack")->Play();
+
+		}
+
 	}
 
 	/// Monster Reset

@@ -10,6 +10,7 @@ struct Particle
     float speed;
     uint active;
     bool bJump;
+    bool bGravity;
 };
 
 struct ParticleShared

@@ -23,5 +23,6 @@ namespace ya
 
 	private:
 		std::vector<MonsterBase*> mMonsters;
+
 	};
 }
