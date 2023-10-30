@@ -23,6 +23,7 @@ namespace ya
 			GameObject* particleObj = pl->GetParticleObject();
 			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
 			particleObj->GetComponent<Transform>()->SetPosition(GetOwner()->GetComponent<Transform>()->GetWorldPositioin());
+
 			particleSys->ParticleOn();
 			particleSys->SetParticleNum(100);
 			

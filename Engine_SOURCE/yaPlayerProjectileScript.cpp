@@ -135,7 +135,7 @@ namespace ya
 		{
 			GameObject* particleObj = mPlayer->GetParticleObject();
 			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
-			Vector3 effectPos =  (GetOwner()->GetComponent<Transform>()->GetWorldPositioin() + monsterPos) * 0.5;
+			Vector3 effectPos = GetOwner()->GetComponent<Transform>()->GetWorldPositioin();
 			particleObj->GetComponent<Transform>()->SetPosition(effectPos);
 			particleSys->ParticleOn();
 			particleSys->SetParticleNum(100);

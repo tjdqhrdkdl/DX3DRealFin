@@ -65,16 +65,41 @@ namespace ya
 
 			if (i % 3 == 0)
 			{
-				particles[i].velocity = Vector4((float)(((float)rand() / (float)RAND_MAX) * 20 - 20)
-					, (float)((float)(rand() / (float)RAND_MAX) * 8)
-					, (float)((float)(rand() / (float)RAND_MAX) * 40 - 20), 0);
+				particles[i].velocity = Vector4((float)(((float)rand() / (float)RAND_MAX) - 0.5)
+					, (float)((float)(rand() / (float)RAND_MAX) - 0.5)
+					, (float)((float)(rand() / (float)RAND_MAX) - 0.5), 0);
+				particles[i].bGravity = false;
+				particles[i].lifeTime = 0.2f;
+
 			}
 			else
 			{
 				particles[i].velocity = particles[i - 1].velocity;
+				particles[i].bGravity = false;
+				particles[i].lifeTime = 0.2f;
+
+
 			}
+			if (i % 12 == 0)
+			{
+				particles[i].velocity = Vector4((float)(((float)rand() / (float)RAND_MAX) * 20 - 10)
+					, (float)((float)(rand() / (float)RAND_MAX) * 8)
+					, (float)((float)(rand() / (float)RAND_MAX) * 40 - 20), 0);
+				particles[i].bGravity = true;
+				particles[i].lifeTime = 0.5f;
+
+
+			}
+			else if (i%12 == 1 || i%12 == 2)
+			{
+				particles[i].velocity = particles[i - 1].velocity;
+				particles[i].bGravity = true;
+				particles[i].lifeTime = 0.5f;
+
+
+			}
+
 			particles[i].direction = particles[i].velocity;
-			particles[i].lifeTime = 0.5f;
 			particles[i].bJump = false;
 			
 		}
