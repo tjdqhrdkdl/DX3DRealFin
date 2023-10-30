@@ -1117,24 +1117,34 @@ namespace ya
 		if (Input::GetKeyDown(eKeyCode::LBTN))
 		{
 			if (mPlayer->GetState()->GetResurrectionCount() > 0)
-			{
+			{	// 회생한다
 				mPlayer->GetState()->Resurrection();
 				mPlayer->SetStateFlag(ePlayerState::Death, false);
 			}
 			else
-			{
+			{ // 회생할 수 없으므로 게임 리셋
 				PlayScene* playScene = dynamic_cast<PlayScene*>(SceneManager::GetScene(eSceneType::Play));
 				playScene->Reset();
 
 				LoadingScene* loadingScene = dynamic_cast<LoadingScene*>(SceneManager::GetScene(eSceneType::Loading));
-				loadingScene->SetLoading();
+				loadingScene->SetLoading(2.f);
 
 				SceneManager::LoadScene(eSceneType::Loading);
 			}
 		}
 		else if (Input::GetKeyDown(eKeyCode::RBTN))
 		{
-			if (mPlayer->GetState()->GetResurrectionCount() == 0)
+			if (mPlayer->GetState()->GetResurrectionCount() > 0)
+			{ // 회생하지 않고 포기한다(게임 리셋)
+				PlayScene* playScene = dynamic_cast<PlayScene*>(SceneManager::GetScene(eSceneType::Play));
+				playScene->Reset();
+
+				LoadingScene* loadingScene = dynamic_cast<LoadingScene*>(SceneManager::GetScene(eSceneType::Loading));
+				loadingScene->SetLoading(2.f);
+
+				SceneManager::LoadScene(eSceneType::Loading);
+			}
+			else
 			{
 				PlayScene* scene = dynamic_cast<PlayScene*>(SceneManager::GetScene(eSceneType::Play));
 				scene->Reset();
