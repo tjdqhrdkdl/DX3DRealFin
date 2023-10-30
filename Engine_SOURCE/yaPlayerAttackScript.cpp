@@ -67,7 +67,7 @@ namespace ya
 			std::wstring arm = ARM;
 			//weaponCollider->SetAnimOffSet(L"SwingSword1", Vector3(1, 0.5, 1));
 			weaponCollider->SetColliderActiveFrame(L"a050_300100_" + arm, 5, 40);
-			weaponCollider->SetColliderActiveFrame(L"a050_305101_" + arm, 5, 40);
+			weaponCollider->SetColliderActiveFrame(L"a050_305101_" + arm, 0, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_300020_" + arm, 5, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_300030_" + arm, 5, 40);
 			weaponCollider->SetColliderActiveFrame(L"a050_300040_" + arm, 5, 40);
