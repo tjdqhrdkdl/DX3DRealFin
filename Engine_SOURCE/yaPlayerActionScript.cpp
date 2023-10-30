@@ -2,6 +2,7 @@
 
 #include "yaInput.h"
 #include "yaTime.h"
+#include "yaResources.h"
 
 #include "yaPlayer.h"
 
@@ -10,6 +11,7 @@
 #include "yaCameraScript.h"
 #include "yaPlayerMeshScript.h"
 #include "yaBoneCollider.h"
+#include "yaAudioClip.h"
 
 namespace ya
 {
@@ -70,6 +72,7 @@ namespace ya
 
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			playerAnim->Play(L"a000_100300");
+			Resources::Find<AudioClip>(L"voice-m-dead")->Play();
 		};
 
 		mPlayer->GetState()->GetRessurctionEvent() = [this, owner]() {
@@ -114,6 +117,20 @@ namespace ya
 			PlayerActionScript* action = player->GetScript<PlayerActionScript>();
 			action->Velocity();
 			}));
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\foot-soil-w1.wav");
+			clip->SetLoop(true);
+			Resources::Insert<AudioClip>(L"foot-soil-w1", clip);
+			mAudioClips.push_back(clip);
+		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-dead.wav");
+			Resources::Insert<AudioClip>(L"voice-m-dead", clip);
+		}
 	}
 
 	void PlayerActionScript::Update()
@@ -150,6 +167,12 @@ namespace ya
 
 	void PlayerActionScript::FixedUpdate()
 	{
+		for (std::shared_ptr<AudioClip> clip : mAudioClips)
+		{
+			clip->Set3DAttributes(mTransform->GetPosition(), mPlayer->GetComponent<Rigidbody>()->GetVelocity());
+		}
+		
+
 		ActionScript::FixedUpdate();
 	}
 
@@ -362,6 +385,8 @@ namespace ya
 
 				if (abs(faceTheta) > 30.0f)
 					mbTurn = true;
+
+				Resources::Find<AudioClip>(L"foot-soil-w1")->Play();
 			}
 		}
 		if (Input::GetKeyDown(eKeyCode::A))
@@ -622,6 +647,7 @@ namespace ya
 
 		if (Input::GetKeyUp(eKeyCode::W))
 		{
+			Resources::Find<AudioClip>(L"foot-soil-w1")->Stop();
 			if (mPlayer->IsStateFlag(ePlayerState::Crouch))
 			{
 				mPlayerAnim->Play(L"a000_005300");

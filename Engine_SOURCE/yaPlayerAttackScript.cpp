@@ -25,6 +25,9 @@
 #include "yaAshinaSpearMan.h"
 #include "yaTenzen.h"
 
+#include "yaAudioClip.h"
+#include "yaResources.h"
+
 extern ya::Application application;
 
 namespace ya
@@ -125,6 +128,59 @@ namespace ya
 			player->SetStateFlag(ePlayerState::Idle, false);
 			}));
 
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\swing-katana.wav");
+			Resources::Insert<AudioClip>(L"swing-katana", clip);
+		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\kill-successx2.wav");
+			Resources::Insert<AudioClip>(L"kill-successx2", clip);
+		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\kill3.wav");
+			Resources::Insert<AudioClip>(L"kill3", clip);
+		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\damage_SE.wav");
+			Resources::Insert<AudioClip>(L"damage_SE1", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\damage_SE2.wav");
+			Resources::Insert<AudioClip>(L"damage_SE2", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\damage_SE3.wav");
+			Resources::Insert<AudioClip>(L"damage_SE3", clip);
+		}
+
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-damage-m-1.wav");
+			Resources::Insert<AudioClip>(L"voice-m-damage-m-1", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-damage-m-2.wav");
+			Resources::Insert<AudioClip>(L"voice-m-damage-m-2", clip);
+		}
+		{
+			std::shared_ptr<AudioClip> clip = std::make_shared<AudioClip>();
+			clip->Load(L"..\\Resources\\Sound\\main\\voice-m-damage-m-3.wav");
+			Resources::Insert<AudioClip>(L"voice-m-damage-m-3", clip);
+		}
+
+		std::wstring weapon = WEAPON;
+		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a200_510000_" + weapon, 20) = []() { Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play(); };
+		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a200_510000_" + weapon, 50) = []() { Resources::Find<AudioClip>(L"kill3")->Play(); };
 	}
 
 	void PlayerAttackScript::Update()
@@ -162,6 +218,7 @@ namespace ya
 				}
 
 				mPlayer->SetStateFlag(ePlayerState::Attack, true);
+				Resources::Find<AudioClip>(L"swing-katana")->Play();
 
 				if (mPlayer->IsStateFlag(ePlayerState::Jump))
 				{
@@ -239,6 +296,7 @@ namespace ya
 					mAttackState = eAttackState::Attack2;
 					mPlayerAnim->Play(L"a050_305101");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -277,6 +335,7 @@ namespace ya
 					mAttackState = eAttackState::Attack3;
 					mPlayerAnim->Play(L"a050_300020");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -315,6 +374,7 @@ namespace ya
 					mAttackState = eAttackState::Attack4;
 					mPlayerAnim->Play(L"a050_300030");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -353,6 +413,7 @@ namespace ya
 					mAttackState = eAttackState::Attack5;
 					mPlayerAnim->Play(L"a050_300040");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -391,6 +452,7 @@ namespace ya
 					mAttackState = eAttackState::Attack1;
 					mPlayerAnim->Play(L"a050_300100");
 					mTimer[(UINT)eAttackState::AttackMove] = mTimerMax[(UINT)eAttackState::AttackMove];
+					Resources::Find<AudioClip>(L"swing-katana")->Play();
 				}
 				else
 				{
@@ -686,6 +748,15 @@ namespace ya
 			GameObject* other = collider->GetOwner();
 			Transform* otherTr = other->GetComponent<Transform>();
 
+
+			// 플레이어의 방향과 몬스터간의 각도를 구한다.
+			float theta = playerTr->Forward().Dot(otherTr->Forward());
+			Vector3 cross = playerTr->Forward().Cross(otherTr->Forward());
+			theta = acos(theta);
+			theta *= 180.0f / XM_PI;
+			theta *= (cross.y / abs(cross.y));
+
+
 			if (!attackParam.unGuardable && mPlayer->IsStateFlag(ePlayerState::Block))
 			{
 				mPlayer->SetStateFlag(ePlayerState::Block, false);
@@ -728,19 +799,15 @@ namespace ya
 					mPlayer->GetState()->AddPosture(10.0f);
 				}
 
+				//Resources::Find<AudioClip>(L"sword-x-sword" + std::to_wstring(RandomNumber(1, 3)))->Play();
+				Resources::Find<AudioClip>(L"c000006601_" + std::to_wstring(RandomNumber(1, 3)))->Play();
+
 				if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
 					mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
 			}
 			else
 			{
 				mPlayer->SetStateFlag(ePlayerState::Hit, true); // 경직상태
-
-				// 플레이어의 방향과 몬스터간의 각도를 구한다.
-				float theta = playerTr->Forward().Dot(otherTr->Forward());
-				Vector3 cross = playerTr->Forward().Cross(otherTr->Forward());
-				theta = acos(theta);
-				theta *= 180.0f / XM_PI;
-				theta *= (cross.y / abs(cross.y));
 
 				if (attackParam.damage > 50.0f)
 				{
@@ -771,6 +838,8 @@ namespace ya
 						mTimer[(UINT)eAttackState::HitMove] = 0.3f;
 
 					mPlayer->GetState()->AddHp(-50.0f);
+					Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play();
+					Resources::Find<AudioClip>(L"voice-m-damage-m-" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				}
 				else
 				{
@@ -806,6 +875,8 @@ namespace ya
 						mTimer[(UINT)eAttackState::HitMove] = mTimerMax[(UINT)eAttackState::HitMove];
 
 					mPlayer->GetState()->AddHp(-30.0f);
+					Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play();
+					Resources::Find<AudioClip>(L"voice-m-damage-m-" + std::to_wstring(RandomNumber(1, 3)))->Play();
 				}
 			}
 		}
@@ -928,6 +999,7 @@ namespace ya
 				mPlayerAnim->Play(L"a200_510000");
 			}
 		}
+		Resources::Find<AudioClip>(L"kill-successx2")->Play();
 
 		EraseDeathBlowTarget(monster);
 		mDeathBlowTarget = nullptr;

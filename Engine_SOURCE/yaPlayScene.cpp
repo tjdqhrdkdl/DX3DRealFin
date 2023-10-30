@@ -27,6 +27,8 @@
 #include "yaMapCollider.h"
 
 #include "yaNavMeshTool.h"
+#include "yaAudioListener.h"
+
 #include "yaParticleSystem.h"
 namespace ya
 {
@@ -55,6 +57,8 @@ namespace ya
 		Player* player = object::Instantiate<Player>(eLayerType::Player, this);
 		player->GetComponent<Transform>()->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+
+		AudioListener* audioComp = player->AddComponent<AudioListener>();
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 		mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
