@@ -35,6 +35,7 @@ namespace ya
 		bool IsThreadLoad() { return mbThreadLoad; }
 
 		bool IsInitcomplete() { return mbInitComplete; }
+		bool IsObjectsPosed() { return mbObjectsPosed; }
 
 		std::function<void()>& GetCallBack() { return mInitCallBack; }
 
@@ -46,5 +47,7 @@ namespace ya
 		bool mbInitComplete;
 		bool mbThreadLoad;						// 스레드로 로드할지 여부
 		std::function<void()> mInitCallBack;	// initialize 완료 후 callback
+
+		bool mbObjectsPosed;
 	};
 }

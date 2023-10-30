@@ -18,6 +18,7 @@ namespace ya
     }
     void BoneCollider::Update()
     {
+        
         mCulPos = GetComponent<Transform>()->GetPosition();
         Collider2D* col = GetComponent<Collider2D>();
         if (col)

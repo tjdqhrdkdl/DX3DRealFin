@@ -35,6 +35,8 @@ namespace ya
 		{
 			layer.Update();
 		}
+		if(!mbObjectsPosed)
+			mbObjectsPosed = true;
 	}
 	void Scene::FixedUpdate()
 	{
