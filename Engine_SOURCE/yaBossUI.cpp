@@ -6,6 +6,7 @@
 #include "yaCameraScript.h"
 #include "yaHPMeterScript.h"
 #include "yaMonsterUIScript.h"
+#include "yaPlayer.h"
 
 #define PERCENTAGE 0.5
 
@@ -160,55 +161,70 @@ namespace ya
 	{
 		if (mMonster)
 		{
-			if (mbRender)
+			if (mMonster->GetPlayerObject() && !(mMonster->GetPlayerObject()->IsStateFlag(ePlayerState::Death)))
 			{
-				//ui 전체 포지션 값
-
-
-				//ui관련 상수버퍼 
-				MonsterMeterCheck();
-
-				//hp bar
-				mMonsterHpLayout->SetRender(true);
-				mMonsterHpBar->SetRender(true);
-
-
-				//posture bar
-				if (mMonster->GetPosture() == 0)
+				if (mbRender)
 				{
+					//ui 전체 포지션 값
+
+
+					//ui관련 상수버퍼 
+					MonsterMeterCheck();
+
+					//hp bar
+					mMonsterHpLayout->SetRender(true);
+					mMonsterHpBar->SetRender(true);
+
+
+					//posture bar
+					if (mMonster->GetPosture() == 0)
+					{
+						mMonsterPostureLayout->SetRender(false);
+						mMonsterPostureBar1->SetRender(false);
+						mMonsterPostureBar2->SetRender(false);
+					}
+
+					else
+					{
+						mMonsterPostureLayout->SetRender(true);
+						mMonsterPostureBar1->SetRender(true);
+						mMonsterPostureBar2->SetRender(true);
+					}
+
+					//레저렉션 카운트
+					if (mMonster->GetResurrectionCountMax() > 1)
+					{
+						if (mMonster->GetResurrectionCount() == 0)
+						{
+							mMonsterResurectionCount1->SetRender(false);
+							mMonsterResurectionCount2->SetRender(false);
+						}
+						else if (mMonster->GetResurrectionCount() == 1)
+						{
+							mMonsterResurectionCount1->SetRender(true);
+							mMonsterResurectionCount2->SetRender(false);
+						}
+						else if (mMonster->GetResurrectionCount() == 2)
+						{
+							mMonsterResurectionCount1->SetRender(true);
+							mMonsterResurectionCount2->SetRender(true);
+
+						}
+					}
+
+
+				}
+				else
+				{
+					mMonsterHpLayout->SetRender(false);
+					mMonsterHpBar->SetRender(false);
 					mMonsterPostureLayout->SetRender(false);
 					mMonsterPostureBar1->SetRender(false);
 					mMonsterPostureBar2->SetRender(false);
+
+					mMonsterResurectionCount1->SetRender(false);
+					mMonsterResurectionCount2->SetRender(false);
 				}
-
-				else
-				{
-					mMonsterPostureLayout->SetRender(true);
-					mMonsterPostureBar1->SetRender(true);
-					mMonsterPostureBar2->SetRender(true);
-				}
-
-				//레저렉션 카운트
-				if (mMonster->GetResurrectionCountMax() > 1)
-				{
-					if (mMonster->GetResurrectionCount() == 0)
-					{
-						mMonsterResurectionCount1->SetRender(false);
-						mMonsterResurectionCount2->SetRender(false);
-					}
-					else if (mMonster->GetResurrectionCount() == 1)
-					{
-						mMonsterResurectionCount1->SetRender(true);
-						mMonsterResurectionCount2->SetRender(false);
-					}
-					else if (mMonster->GetResurrectionCount() == 2)
-					{
-						mMonsterResurectionCount1->SetRender(true);
-						mMonsterResurectionCount2->SetRender(true);
-
-					}
-				}
-
 
 			}
 			else
@@ -222,7 +238,6 @@ namespace ya
 				mMonsterResurectionCount1->SetRender(false);
 				mMonsterResurectionCount2->SetRender(false);
 			}
-
 		}
 		GameObject::Update();
 	}

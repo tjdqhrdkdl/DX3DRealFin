@@ -246,93 +246,92 @@ namespace ya
 		if (mMonster)
 		{
 			MonsterMeterCheck();
-
-			if (mbRender)
+			if (mMonster->GetPlayerObject() && !(mMonster->GetPlayerObject()->IsStateFlag(ePlayerState::Death)))
 			{
-				//ui는 3초간 보여진다.
-				mRenderTimeChecker += Time::DeltaTime();
-				if (mRenderTimeChecker > mRenderTime)
+				if (mbRender)
 				{
-					mRenderTimeChecker = 0;
-					mbRender = false;
+					//ui는 3초간 보여진다.
+					mRenderTimeChecker += Time::DeltaTime();
+					if (mRenderTimeChecker > mRenderTime)
+					{
+						mRenderTimeChecker = 0;
+						mbRender = false;
+					}
+
+					//ui 전체 포지션 값
+					Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
+					world._42 += 1.5;
+					Matrix fin = world * mainCamera->GetViewMatrix();
+					fin *= mainCamera->GetProjectionMatrix();
+					Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
+					ndc = ndc / ndc.w;
+
+					Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
+					UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
+					GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
+					if (ndc.z > 1 or ndc.z < 0)
+						GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
+
+
+					//hp bar
+					mMonsterHpLayout->SetRender(true);
+					mMonsterHpBar->SetRender(true);
+
+
+					//posture bar
+					if (mMonster->GetPosture() == 0)
+					{
+						mMonsterPostureLayout->SetRender(false);
+						mMonsterPostureBar1->SetRender(false);
+						mMonsterPostureBar2->SetRender(false);
+					}
+
+					else
+					{
+						mMonsterPostureLayout->SetRender(true);
+						mMonsterPostureBar1->SetRender(true);
+						mMonsterPostureBar2->SetRender(true);
+					}
+
+					//레저렉션 카운트
+					if (mMonster->GetResurrectionCountMax() > 1)
+					{
+						if (mMonster->GetResurrectionCount() == 0)
+						{
+							mMonsterResurectionCount1->SetRender(false);
+							mMonsterResurectionCount2->SetRender(false);
+						}
+						else if (mMonster->GetResurrectionCount() == 1)
+						{
+							mMonsterResurectionCount1->SetRender(true);
+							mMonsterResurectionCount2->SetRender(false);
+						}
+						else if (mMonster->GetResurrectionCount() == 2)
+						{
+							mMonsterResurectionCount1->SetRender(true);
+							mMonsterResurectionCount2->SetRender(true);
+
+						}
+					}
+
+
 				}
-
-				//ui 전체 포지션 값
-				Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-				world._42 += 1.5;
-				Matrix fin = world * mainCamera->GetViewMatrix();
-				fin *= mainCamera->GetProjectionMatrix();
-				Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
-				ndc = ndc / ndc.w;
-
-				Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
-				UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-				GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
-				if (ndc.z > 1 or ndc.z < 0)
-					GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
-
-
-				//hp bar
-				mMonsterHpLayout->SetRender(true);
-				mMonsterHpBar->SetRender(true);
-
-
-				//posture bar
-				if (mMonster->GetPosture() == 0)
+				else
 				{
+					mMonsterHpLayout->SetRender(false);
+					mMonsterHpBar->SetRender(false);
 					mMonsterPostureLayout->SetRender(false);
 					mMonsterPostureBar1->SetRender(false);
 					mMonsterPostureBar2->SetRender(false);
+
+					mMonsterResurectionCount1->SetRender(false);
+					mMonsterResurectionCount2->SetRender(false);
+					mMonsterDeathBlow->SetRender(false);
+					mMonsterLockOn->SetRender(false);
+					mMonsterAlertnessBoundary->SetRender(false);
+					mMonsterAlertnessGage->SetRender(false);
 				}
 
-				else
-				{
-					mMonsterPostureLayout->SetRender(true);
-					mMonsterPostureBar1->SetRender(true);
-					mMonsterPostureBar2->SetRender(true);
-				}
-
-				//레저렉션 카운트
-				if (mMonster->GetResurrectionCountMax() > 1)
-				{
-					if (mMonster->GetResurrectionCount() == 0)
-					{
-						mMonsterResurectionCount1->SetRender(false);
-						mMonsterResurectionCount2->SetRender(false);
-					}
-					else if (mMonster->GetResurrectionCount() == 1)
-					{
-						mMonsterResurectionCount1->SetRender(true);
-						mMonsterResurectionCount2->SetRender(false);
-					}
-					else if (mMonster->GetResurrectionCount() == 2)
-					{
-						mMonsterResurectionCount1->SetRender(true);
-						mMonsterResurectionCount2->SetRender(true);
-
-					}
-				}
-
-
-			}
-			else
-			{
-				mMonsterHpLayout->SetRender(false);
-				mMonsterHpBar->SetRender(false);
-				mMonsterPostureLayout->SetRender(false);
-				mMonsterPostureBar1->SetRender(false);
-				mMonsterPostureBar2->SetRender(false);
-
-				mMonsterResurectionCount1->SetRender(false);
-				mMonsterResurectionCount2->SetRender(false);
-				mMonsterDeathBlow->SetRender(false);
-				mMonsterLockOn->SetRender(false);
-				mMonsterAlertnessBoundary->SetRender(false);
-				mMonsterAlertnessGage->SetRender(false);
-			}
-
-			if (mMonster->GetPlayerObject() && !(mMonster->GetPlayerObject()->IsStateFlag(ePlayerState::Death)))
-			{
 				if (mainCamera->GetOwner()->GetScript<CameraScript>()->GetLockOnTarget()
 					== mMonster)
 				{
@@ -385,7 +384,7 @@ namespace ya
 				}
 				{
 					if (mMonster->GetAlertnessCount() > 0
-						||( mMonster->IsRecognize()&& mRedAlertTimeChecker < mRedAlertTime)
+						|| (mMonster->IsRecognize() && mRedAlertTimeChecker < mRedAlertTime)
 						)
 					{
 						Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
@@ -420,6 +419,22 @@ namespace ya
 						mRedAlertTimeChecker = 0;
 				}
 			}
+			else
+			{
+				mMonsterHpLayout->SetRender(false);
+				mMonsterHpBar->SetRender(false);
+				mMonsterPostureLayout->SetRender(false);
+				mMonsterPostureBar1->SetRender(false);
+				mMonsterPostureBar2->SetRender(false);
+
+				mMonsterResurectionCount1->SetRender(false);
+				mMonsterResurectionCount2->SetRender(false);
+				mMonsterDeathBlow->SetRender(false);
+				mMonsterLockOn->SetRender(false);
+				mMonsterAlertnessBoundary->SetRender(false);
+				mMonsterAlertnessGage->SetRender(false);
+			}
+		
 		}
 		GameObject::Update();
 	}
