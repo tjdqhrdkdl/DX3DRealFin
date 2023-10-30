@@ -32,8 +32,16 @@ namespace ya
 			mHp = 0;
 			mbDeath = true;
 
-			if (mDeathEvent != nullptr)
-				mDeathEvent();
+			if(mResurrectionCount > 0 )
+			{
+				if (mDeathEvent != nullptr)
+					mDeathEvent();
+			}
+			else
+			{
+				if (mGameOverEvent != nullptr)
+					mGameOverEvent();
+			}
 		}
 	}
 

@@ -26,6 +26,7 @@ namespace ya
 
 	public:
 		void AdjustState();
+		void Invincible(float time = 2.0f);
 		
 	private:
 		void Idle();
@@ -58,5 +59,7 @@ namespace ya
 		bool mbTurn;
 		float mTurnTimer;
 		float mTurnTimerMax;
+
+		float mInvincibleTimer;
 	};
 }

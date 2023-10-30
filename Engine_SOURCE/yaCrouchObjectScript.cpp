@@ -32,7 +32,14 @@ namespace ya
 
 	void CrouchObjectScript::OnCollisionEnter(Collider2D* collider)
 	{
-		
+		GameObject* obj = collider->GetOwner();
+		Player* player = dynamic_cast<Player*>(obj);
+
+		if (player != nullptr)
+		{
+			if (player->IsStateFlag(ePlayerState::Crouch))
+				player->SetStateFlag(ePlayerState::Stealth, true);
+		}
 	}
 
 	void CrouchObjectScript::OnCollisionStay(Collider2D* collider)
@@ -42,16 +49,17 @@ namespace ya
 
 		if (player != nullptr)
 		{
-			UINT flag = player->GetStateFlag();
-			if ((UINT)ePlayerState::Crouch & flag)
-			{
-				player->SetStealth(true);
-			}
+			if (!player->IsStateFlag(ePlayerState::Crouch))
+				player->SetStateFlag(ePlayerState::Stealth, false);
 		}
 	}
 
 	void CrouchObjectScript::OnCollisionExit(Collider2D* collider)
 	{
+		GameObject* obj = collider->GetOwner();
+		Player* player = dynamic_cast<Player*>(obj);
+
+		player->SetStateFlag(ePlayerState::Stealth, false);
 	}
 
 	void CrouchObjectScript::Start()

@@ -34,6 +34,7 @@ namespace ya
 		, mTurnTimerMax(0.4f)
 		, mFrontTheta(5.0f)
 		, mDashTimerMax(0.2f)
+		, mInvincibleTimer(true)
 	{
 	}
 
@@ -75,12 +76,29 @@ namespace ya
 
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			playerAnim->Play(L"a000_100300");
+
+			player->OnDeathUI(true);
+			player->SetControl(false, 3.0f);
+		};
+
+		mPlayer->GetState()->GetGameOverEvent() = [this, owner]() {
+			Player* player = dynamic_cast<Player*>(owner);
+			player->SetStateFlag(ePlayerState::Death, true);
+
+			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
+			playerAnim->Play(L"a000_100300");
+
+			player->OnGameOverUI(true);
+			player->SetControl(false, 5.0f);
 		};
 
 		mPlayer->GetState()->GetRessurctionEvent() = [this, owner]() {
 			Player* player = dynamic_cast<Player*>(owner);
 			PlayerMeshScript* playerAnim = player->GetScript<PlayerMeshScript>();
 			playerAnim->Play(L"a000_100320");
+			Invincible(2.5f);
+
+			player->OnDeathUI(false);
 		};
 
 		mPlayer->GetStartStateEvent().insert(std::make_pair(ePlayerState::Sprint, [owner]() {
@@ -123,10 +141,26 @@ namespace ya
 
 	void PlayerActionScript::Update()
 	{
+		if (!mPlayer->IsControl())
+			return;
+
 		if (mPlayer->IsStateFlag(ePlayerState::Death))
 		{
 			Death();
 			return;
+		}
+
+		if (mPlayer->IsStateFlag(ePlayerState::Invincible))
+		{
+			if (mInvincibleTimer > 0.0f)
+			{
+				mInvincibleTimer -= Time::DeltaTime();
+			}
+			else
+			{
+				mPlayer->SetStateFlag(ePlayerState::Invincible, false);
+				mInvincibleTimer = 2.0f;
+			}
 		}
 
 		if (mPlayer->IsStateFlag(ePlayerState::DeathBlow))
@@ -147,7 +181,13 @@ namespace ya
 					Hang();
 				}
 			}
+
 			Hit();
+		}
+
+		if (Input::GetKeyDown(eKeyCode::I))
+		{
+			mPlayer->SetStateFlag(ePlayerState::Invincible, !mPlayer->IsStateFlag(ePlayerState::Invincible));
 		}
 
 		ActionScript::Update();
@@ -251,6 +291,11 @@ namespace ya
 					mPlayerAnim->Play(L"a000_000000");
 			}
 		}
+	}
+
+	void PlayerActionScript::Invincible(float time)
+	{
+		mPlayer->SetStateFlag(ePlayerState::Invincible, true); mInvincibleTimer = time;
 	}
 
 	void PlayerActionScript::Idle()

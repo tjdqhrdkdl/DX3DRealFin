@@ -7,6 +7,7 @@
 namespace ya
 {
 	class MonsterBase;
+	class PlayerScreenUI;
 	class Player : public GameObject
 	{
 		struct OriginSetting
@@ -50,18 +51,22 @@ namespace ya
 		UINT GetStateFlag() { return mStateFlag; }
 		bool IsStateFlag(ePlayerState state) { return (GetStateFlag() & (UINT)state) ? true : false; }
 
-		bool IsStealth() { return mbStealth; }
-		void SetStealth(bool stealth) { mbStealth = stealth; }
+		void SetControl(bool control, float time = 2.0f) { mbControl = control; mControlTimer = time; }
+		bool IsControl() { return mbControl; }
 
 		std::map<ePlayerState, std::function<void()>>& GetStartStateEvent() { return mStartStateEvent; }
 		std::map<ePlayerState, std::function<void()>>& GetEndStateEvent() { return mEndStateEvent; }
+
+		//PlayerScreenUI* GetPlayerScreenUI() { return mPlayerScreenUI; }
+		void OnDeathUI(bool on = true);
+		void OnGameOverUI(bool on = true);
 
 	private:
 		void CreatePlayerUI();
 
 	private:
 		GameObject* mCamera;
-		class PlayerHpTexture* mPlayerHpBar;
+		class PlayerScreenUI* mPlayerScreenUI;
 		class PlayerDangerUI* mPlayerDangerUI;
 
 		State* mState;
@@ -69,7 +74,9 @@ namespace ya
 		//eProsthetics mProsthetic;
 		BoneCollider* mWeaponCollider;
 
-		bool mbStealth;	// 은신
+		// 조작할 수 있는지
+		bool mbControl;
+		float mControlTimer;
 
 		std::map<ePlayerState, std::function<void()>> mStartStateEvent;
 		std::map<ePlayerState, std::function<void()>> mEndStateEvent;

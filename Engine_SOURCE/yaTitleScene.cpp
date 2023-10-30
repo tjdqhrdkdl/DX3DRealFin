@@ -53,7 +53,7 @@ namespace ya
 		std::shared_ptr<Texture> titleCopyTexture = Resources::Load<Texture>(L"SB_Title_copy", L"Texture\\Menu\\Common\\SB_Title_copy.png");
 		//std::shared_ptr<Texture> titleCopy2Texture = Resources::Load<Texture>(L"SB_Title_copy_2", L"Texture\\Menu\\Common\\SB_Title_copy_2.png");
 		std::shared_ptr<Texture> titleCopy3Texture = Resources::Load<Texture>(L"SB_Title_copy_2", L"Texture\\Menu\\Common\\SB_Title_copy_3.png");
-		std::shared_ptr<Texture> bgBlackTexture = Resources::Load<Texture>(L"bgblack", L"Texture\\Menu\\Common\\bgblack.png");
+		std::shared_ptr<Texture> bgBlackTexture = Resources::Find<Texture>(L"bgblack");
 		//std::shared_ptr<Texture> titleTexture = Resources::Load<Texture>(L"SB_Title", L"Texture\\Menu\\Common\\SB_Title.png");
 		//std::shared_ptr<Texture> title2Texture = Resources::Load<Texture>(L"SB_Title_02", L"Texture\\Menu\\Common\\SB_Title_02.png");
 

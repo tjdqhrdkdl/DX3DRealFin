@@ -47,6 +47,7 @@ namespace ya
 		std::function<void()>& GetStunEvent() { return mStunEvent; }
 		std::function<void()>& GetDeathEvent() { return mDeathEvent; }
 		std::function<void()>& GetRessurctionEvent() { return mResurrectionEvent; }
+		std::function<void()>& GetGameOverEvent() { return mGameOverEvent; }
 	
 	public:
 		void	Death();
@@ -79,6 +80,7 @@ namespace ya
 		std::function<void()> mStunEvent;			// 체간 다찼을때
 		std::function<void()> mDeathEvent;			// hp 0됐을때
 		std::function<void()> mResurrectionEvent;	// 부활 할때
+		std::function<void()> mGameOverEvent;		// 완전히 죽었을때
 	};
 
 }

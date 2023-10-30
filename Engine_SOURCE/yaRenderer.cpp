@@ -636,10 +636,10 @@ namespace ya::renderer
 
 #pragma region METER SHADER
 		std::shared_ptr<Shader> imageShader = std::make_shared<Shader>();
-		imageShader->Create(eShaderStage::VS, L"ImageVS.hlsl", "main");
+		imageShader->Create(eShaderStage::VS, L"SpriteVS.hlsl", "main");
 		imageShader->Create(eShaderStage::PS, L"ImagePS.hlsl", "main");
-		imageShader->SetDSState(eDSType::None);
-
+		spriteShader->SetRSState(eRSType::SolidNone);
+		spriteShader->SetDSState(eDSType::None);
 		Resources::Insert<Shader>(L"ImageShader", imageShader);
 #pragma endregion
 
@@ -1044,6 +1044,8 @@ namespace ya::renderer
 
 		Resources::Load<Texture>(L"Brick", L"Cube\\Brick.jpg");
 		Resources::Load<Texture>(L"Brick_N", L"Cube\\Brick_N.jpg");
+
+		Resources::Load<Texture>(L"bgblack", L"Texture\\Menu\\Common\\bgblack.png");
 
 	#pragma endregion
 		#pragma region DYNAMIC TEXTURE

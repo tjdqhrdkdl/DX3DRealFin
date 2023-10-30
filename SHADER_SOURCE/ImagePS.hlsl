@@ -45,12 +45,25 @@ float4 main(VSOut In) : SV_Target
         CalculateLight(lightColor, In.WorldPos.xyz, i);
     }
     color *= lightColor.diffuse;
-
-    if (useRange == 1 && (In.UV.x < imageRange.x || In.UV.x > imageRange.z || In.UV.y < imageRange.y || In.UV.y > imageRange.w))
-        discard;
     
-    if (useAlpha)
-        color.a = imageAlpha;
+    if (useRange == 1 && (In.UV.x < imageRange.x || In.UV.x > imageRange.z || In.UV.y < imageRange.y || In.UV.y > imageRange.w))
+       discard;
+   
+    if (imageAlpha == 0.0f)
+    {
+        color.a = 0.0f;
+    }
+    else if(imageAlpha == 1.0f)
+    {
+    }
+    else
+    {
+        color.a *= imageAlpha;
+        //if (imageAlphaType == 1)
+        //    color.a *= imageAlpha;
+        //else if (imageAlphaType == 2)
+        //    color.a = imageAlpha;
+    }
     
     if (colorType == 1)
     {
@@ -63,6 +76,6 @@ float4 main(VSOut In) : SV_Target
         color.g += imageColor.y * imageColor.w;
         color.b += imageColor.z * imageColor.w;
     }
-
-    return color;
-}
+    
+        return color;
+    }

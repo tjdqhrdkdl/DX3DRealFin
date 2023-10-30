@@ -103,15 +103,11 @@ cbuffer UniformDataCB : register(b9)
 
 cbuffer ImageData : register(b12)
 {
+    uint imageAlphaType;
+    float imageAlpha;
     uint colorType;
-    uint useRate;
     uint useRange;
-    uint imagepadding;
     
     float4 imageColor;
     float4 imageRange;
-    float2 imageRate;
-    
-    int useAlpha;
-    float imageAlpha;
 }
