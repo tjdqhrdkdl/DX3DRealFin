@@ -56,13 +56,9 @@ namespace ya
        // style은 0 , 1 , 2 가 있다.
         void SetStyle(UINT style);
 
-    private:
-        std::shared_ptr<MeshData> mMeshData;
+    private:  
         GameObject* mKatanaCollider;
-        Transform* mTransform;
 
-        Collider2D* mCollider;
-        class ActionScript* mActionScript;
 
         std::wstring mAnimationName;
 

@@ -9,8 +9,26 @@ extern ya::Application application;
 namespace ya
 {
 	MonsterBase::MonsterBase()
-		: mPlayerObject(nullptr)
+		: GameObject()
+		, mMeshData(nullptr)
+		, mActionScript(nullptr)
+		, mTransform(nullptr)
+		, mCollider(nullptr)
+		, mMonsterUI(nullptr)
+		, mCamScript(nullptr)
+		, mPlayerObject(nullptr)
+		, mAttackParams{}
+		, mBeforeState(0)
+		, mState(0)
 		, mMonsterState(nullptr)
+		, mAlertnessCount(0)
+		, mPlayerPos(Vector3::Zero)
+		, mMonster2PlayerNormalize(Vector3::Zero)
+		, mPlayer2MonsterNormalize(Vector3::Zero)
+		, mbRecognize(false)
+		, mbPostureRecovery(false)
+		, mBeforePosture(0.f)
+		, mPostureRecoveryTimeChecker(0.f)
 	{
 	}
 
@@ -236,11 +254,25 @@ namespace ya
 		// monsterState 리셋
 		mState = 0;
 		ADD_STATE(MonsterState_Idle);
+		mMeshData->GetAnimator()->SetStop(false);
+		mCollider->Active(true);
+		mActionScript->SetCheckCollider(true);
+
 		mbRecognize = false;
 		mAlertnessCount = 0;
 
 		// position 리셋
 		Transform* tr = GetComponent<Transform>();
 		tr->SetPosition(mOriginSetting.position);
+
+		mMeshData->GetAnimator()->SetStop(false);
+	}
+	void MonsterBase::ParryEffectOn()
+	{
+		 mPlayerObject->ParryEffectOn(); 
+	}
+	GameObject* MonsterBase::GetParticleObject()
+	{
+		return mPlayerObject->GetParticleObject();
 	}
 }

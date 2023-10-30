@@ -9,11 +9,9 @@
 namespace ya
 {
 	ya::RedOgre::RedOgre()
-		: mMeshData(nullptr)
+		: MonsterBase()
 		, mLHandCollider(nullptr)
 		, mRHandCollider(nullptr)
-		, mCollider(nullptr)
-		, mActionScript(nullptr)
 		, mState(0)
 		, mBeforeState(0)
 	{

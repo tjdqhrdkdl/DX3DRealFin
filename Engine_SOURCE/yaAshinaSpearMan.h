@@ -57,15 +57,7 @@ namespace ya
         void SetStyle(UINT style);
 
     private:
-        std::shared_ptr<MeshData> mMeshData;
         GameObject* mKatanaCollider;
-        Transform* mTransform;
-
-        Collider2D* mCollider;
-        class ActionScript* mActionScript;
-
-
-
         std::wstring mAnimationName;
 
         float mAlertTime;

@@ -14,7 +14,7 @@
 namespace ya
 {
 	ParryEffect::ParryEffect()
-		:mRenderTime((float)0.25)
+		:mRenderTime((float)0.5)
 		, mRenderTimeChecker(0)
 		, mbRender(false)
 	{
@@ -123,7 +123,7 @@ namespace ya
 				mEffectUI->GetComponent<Transform>()->SetScale(Vector3(50 + 800 * mRenderTimeChecker));
 				//ui 전체 포지션 값
 				Matrix world = mPlayer->GetComponent<Transform>()->GetWorldMatrix();
-				world._42 += 1.5;
+				world._42 += 0.9;
 				Matrix fin = world * mainCamera->GetViewMatrix();
 				fin *= mainCamera->GetProjectionMatrix();
 				Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);

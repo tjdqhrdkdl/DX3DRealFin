@@ -5,6 +5,7 @@
 
 #include "yaBoneCollider.h"
 #include "yaMonsterBase.h"
+#include "yaParticleSystem.h"
 
 #include "yaResources.h"
 #include "yaAudioClip.h"
@@ -97,6 +98,9 @@ namespace ya
 	}
 	void PlayerProjectileScript::OnCollisionEnter(Collider2D* collider)
 	{
+
+
+
 		Transform* playerTr = mPlayer->GetComponent<Transform>();
 		PlayerAttackScript* attack = mPlayer->GetScript<PlayerAttackScript>();
 
@@ -126,6 +130,17 @@ namespace ya
 		Vector3 theta = quaterToEuler * 180.0f / XM_PI;
 
 		PlayerAttackScript::eAttackState attackState = attack->GetAttackState();
+
+		if(false == dynamic_cast<BoneCollider*>(GetOwner())->CheckHitObjects(monster));
+		{
+			GameObject* particleObj = mPlayer->GetParticleObject();
+			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
+			Vector3 effectPos =  (GetOwner()->GetComponent<Transform>()->GetWorldPositioin() + monsterPos) * 0.5;
+			particleObj->GetComponent<Transform>()->SetPosition(effectPos);
+			particleSys->ParticleOn();
+			particleSys->SetParticleNum(100);
+		}
+
 
 		// 몬스터 패링
 		if (monster->IsMonsterState(MonsterBase::MonsterState_Defense) && abs(theta.y) <= 45.0f)

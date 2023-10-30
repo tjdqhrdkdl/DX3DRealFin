@@ -1,6 +1,7 @@
 #include "yaSoldierSwordScript.h"
 #include "yaPlayer.h"
 #include "yaAshinaSoldier.h"
+#include "yaParticleSystem.h"
 namespace ya
 {
 	SoldierSwordScript::SoldierSwordScript()
@@ -18,9 +19,14 @@ namespace ya
 		eLayerType layer = colObj->GetLayerType();
 		if (layer == eLayerType::Player)
 		{
+			Player* pl = dynamic_cast<Player*>(colObj);
+			GameObject* particleObj = pl->GetParticleObject();
+			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
+			particleObj->GetComponent<Transform>()->SetPosition(GetOwner()->GetComponent<Transform>()->GetWorldPositioin());
+			particleSys->ParticleOn();
+			particleSys->SetParticleNum(100);
 			if (mbBlock)
 			{
-				Player* pl = dynamic_cast<Player*>(colObj);
 				if (pl->IsStateFlag(ePlayerState::Block))
 				{
 

@@ -944,7 +944,7 @@ namespace ya
 		// 몬스터 
 
 		if (dynamic_cast<SwordMan*>(monster) != nullptr)
-		{
+		{ 
 			if (monster->IsRecognize())
 			{
 				mPlayerAnim->Play(L"a200_510000");
@@ -952,6 +952,7 @@ namespace ya
 			else
 			{
 				//암살 인살
+				mPlayerAnim->Play(L"a200_510000");
 			}
 		}
 		else if (dynamic_cast<AshinaSoldier*>(monster) != nullptr)
@@ -963,6 +964,7 @@ namespace ya
 			else
 			{
 				//암살 인살
+				mPlayerAnim->Play(L"a200_510000");
 			}
 			EraseDeathBlowTarget(monster);
 			mDeathBlowTarget = nullptr;
@@ -977,6 +979,7 @@ namespace ya
 			else
 			{
 				//암살 인살
+				mPlayerAnim->Play(L"a200_510000");
 			}
 			EraseDeathBlowTarget(monster);
 			mDeathBlowTarget = nullptr;

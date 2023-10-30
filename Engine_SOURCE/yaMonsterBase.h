@@ -91,6 +91,9 @@ namespace ya
         virtual void DeathBlow();
         virtual void Reset();
 
+        void ParryEffectOn();
+        GameObject* GetParticleObject();
+
         bool IsMonsterState(eMonsterState eState) { return STATE_HAVE(eState); }
 
     public:
@@ -156,14 +159,16 @@ namespace ya
 
     protected:
         std::shared_ptr<MeshData>   mMeshData;
-        //MeshObject*         mMeshObject;
         ActionScript*       mActionScript;
 
-        Attack              mAttackParams;
+        Transform*          mTransform;
+        Collider2D*         mCollider;
+
         BossUI*             mBossUI;
         MonsterUI*          mMonsterUI;
         CameraScript*       mCamScript;
         Player*             mPlayerObject;
+        Attack              mAttackParams;
 
         int                 mBeforeState;
         int                 mState;
