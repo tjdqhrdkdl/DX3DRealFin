@@ -13,13 +13,16 @@ namespace ya
 	void CollisionManager::Update()
 	{
 		Scene* scene = SceneManager::GetActiveScene();
-		for (UINT row = 0; row < (UINT)eLayerType::End; row++)
+		if (scene->IsObjectsPosed())
 		{
-			for (UINT column = 0; column < (UINT)eLayerType::End; column++)
+			for (UINT row = 0; row < (UINT)eLayerType::End; row++)
 			{
-				if (mLayerCollisionMatrix[row][column])
+				for (UINT column = 0; column < (UINT)eLayerType::End; column++)
 				{
-					LayerCollision(scene, (eLayerType)row, (eLayerType)column);
+					if (mLayerCollisionMatrix[row][column])
+					{
+						LayerCollision(scene, (eLayerType)row, (eLayerType)column);
+					}
 				}
 			}
 		}
