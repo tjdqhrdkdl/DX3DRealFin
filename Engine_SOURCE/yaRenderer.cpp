@@ -499,6 +499,14 @@ namespace ya::renderer
 
 		Resources::Insert<Shader>(L"MeterShader", meterShader);
 #pragma endregion
+#pragma region ALERTNESSUI SHADER
+		std::shared_ptr<Shader> alertnessUIShader = std::make_shared<Shader>();
+		alertnessUIShader->Create(eShaderStage::VS, L"alertnessUIVS.hlsl", "main");
+		alertnessUIShader->Create(eShaderStage::PS, L"alertnessUIPS.hlsl", "main");
+		alertnessUIShader->SetDSState(eDSType::None);
+
+		Resources::Insert<Shader>(L"AlertnessUIShader", alertnessUIShader);
+#pragma endregion
 #pragma region DangerUI SHADER
 		std::shared_ptr<Shader> DangerUIShader = std::make_shared<Shader>();
 		DangerUIShader->Create(eShaderStage::VS, L"DangerUIVS.hlsl", "main");
@@ -783,6 +791,12 @@ namespace ya::renderer
 			, meterShader->GetVSBlobBufferSize()
 			, meterShader->GetInputLayoutAddressOf());
 
+		std::shared_ptr<Shader> alertnessUIShader = Resources::Find<Shader>(L"AlertnessUIShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, alertnessUIShader->GetVSBlobBufferPointer()
+			, alertnessUIShader->GetVSBlobBufferSize()
+			, alertnessUIShader->GetInputLayoutAddressOf());
+
 		std::shared_ptr<Shader> dangerUIShader = Resources::Find<Shader>(L"DangerUIShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
 			, dangerUIShader->GetVSBlobBufferPointer()
@@ -1045,6 +1059,8 @@ namespace ya::renderer
 		Resources::Load<Texture>(L"SmileTexture", L"Smile.png");
 		Resources::Load<Texture>(L"DeathBlowTexture", L"UI\\Texture\\DeathBlow.png");
 		Resources::Load<Texture>(L"LockOnTexture", L"UI\\Texture\\LockOn.png");
+		Resources::Load<Texture>(L"AlertnessBoundaryTexture", L"UI\\Texture\\AlertnessBoundary.png");
+		Resources::Load<Texture>(L"AlertnessGageTexture", L"UI\\Texture\\AlertnessGage.png");
 
 		Resources::Load<Texture>(L"DefaultSprite", L"Light.png");
 		
@@ -1132,6 +1148,13 @@ namespace ya::renderer
 		meterMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		meterMaterial->SetShader(meterShader);
 		Resources::Insert<Material>(L"MeterMaterial", meterMaterial);
+#pragma endregion
+#pragma region ALERTNESSUI
+		std::shared_ptr<Shader> alertnessUIShader = Resources::Find<Shader>(L"AlertnessUIShader");
+		std::shared_ptr<Material> alertnessUIMaterial = std::make_shared<Material>();
+		alertnessUIMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		alertnessUIMaterial->SetShader(alertnessUIShader);
+		Resources::Insert<Material>(L"AlertnessUIMaterial", alertnessUIMaterial);
 #pragma endregion
 #pragma region DangerUI
 		std::shared_ptr<Shader> dangerUIShader = Resources::Find<Shader>(L"DangerUIShader");

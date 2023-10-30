@@ -6,6 +6,10 @@
 #include "yaCameraScript.h"
 #include "yaHPMeterScript.h"
 #include "yaMonsterUIScript.h"
+#include "yaPlayerDagerUIScript.h"
+#include "yaAlertnessUIScript.h"
+
+#include "yaPlayer.h"
 
 #define PERCENTAGE 0.5
 
@@ -15,6 +19,8 @@ namespace ya
 		:mRenderTime(2.5)
 		,mRenderTimeChecker(0)
 		, mbRender(false)
+		,mRedAlertTime(0.5f)
+		,mRedAlertTimeChecker(0)
 	{
 	}
 	MonsterUI::~MonsterUI()
@@ -185,7 +191,6 @@ namespace ya
 			Transform* tr = mMonsterLockOn->GetComponent<Transform>();
 
 			tr->SetScale(Vector3(20, 20, 50.f));
-
 			MeshRenderer* meshRenderer = mMonsterLockOn->AddComponent<MeshRenderer>();
 			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			std::shared_ptr<Material> mat = Resources::Find<Material>(L"LockOnMaterial");
@@ -193,12 +198,55 @@ namespace ya
 			meshRenderer->SetMaterial(mat, 0);
 			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"LockOnTexture"));
 		}
+		{
+			std::shared_ptr<Shader> alertnessUIShader = Resources::Find<Shader>(L"AlertnessUIShader");
+			std::shared_ptr<Material> alertnessUIMaterial = std::make_shared<Material>();
+			alertnessUIMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			alertnessUIMaterial->SetShader(alertnessUIShader);
+			Resources::Insert<Material>(L"AlertnessUIMaterial", alertnessUIMaterial);
+
+			mMonsterAlertnessBoundary = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterAlertnessBoundary->SetName(L"AnertnessBoundary");
+			mMonsterAlertnessBoundary->AddComponent<AlertnessUIScript>();
+			Transform* tr = mMonsterAlertnessBoundary->GetComponent<Transform>();
+
+			tr->SetScale(Vector3(25, 25, 50.f));
+			MeshRenderer* meshRenderer = mMonsterAlertnessBoundary->AddComponent<MeshRenderer>();
+			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+
+			meshRenderer->SetMaterial(alertnessUIMaterial, 0);
+			alertnessUIMaterial->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"AlertnessBoundaryTexture"));
+		} 
+		{
+			std::shared_ptr<Shader> alertnessUIShader = Resources::Find<Shader>(L"AlertnessUIShader");
+			std::shared_ptr<Material> alertnessUIGageMaterial = std::make_shared<Material>();
+			alertnessUIGageMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			alertnessUIGageMaterial->SetShader(alertnessUIShader);
+			Resources::Insert<Material>(L"AlertnessUIGageMaterial", alertnessUIGageMaterial);
+
+			mMonsterAlertnessGage = object::Instantiate<GameObject>(eLayerType::UI, GetScene());
+			mMonsterAlertnessGage->SetName(L"AnertnessGage");
+			mMonsterAlertnessGage->AddComponent<AlertnessUIScript>();
+
+			Transform* tr = mMonsterAlertnessGage->GetComponent<Transform>();
+
+			tr->SetScale(Vector3(19, 19, 50.f));
+			tr->SetPosition(Vector3(0, 10, 0.f));
+			MeshRenderer* meshRenderer = mMonsterAlertnessGage->AddComponent<MeshRenderer>();
+			meshRenderer->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+
+			meshRenderer->SetMaterial(alertnessUIGageMaterial, 0);
+			alertnessUIGageMaterial->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"AlertnessGageTexture"));
+		}
+
 		GameObject::Initialize();
 	}
 	void MonsterUI::Update()
 	{
 		if (mMonster)
 		{
+			MonsterMeterCheck();
+
 			if (mbRender)
 			{
 				//ui는 3초간 보여진다.
@@ -208,7 +256,7 @@ namespace ya
 					mRenderTimeChecker = 0;
 					mbRender = false;
 				}
-				
+
 				//ui 전체 포지션 값
 				Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
 				world._42 += 1.5;
@@ -223,8 +271,6 @@ namespace ya
 				if (ndc.z > 1 or ndc.z < 0)
 					GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
 
-				//ui관련 상수버퍼 
-				MonsterMeterCheck();
 
 				//hp bar
 				mMonsterHpLayout->SetRender(true);
@@ -281,8 +327,11 @@ namespace ya
 				mMonsterResurectionCount2->SetRender(false);
 				mMonsterDeathBlow->SetRender(false);
 				mMonsterLockOn->SetRender(false);
+				mMonsterAlertnessBoundary->SetRender(false);
+				mMonsterAlertnessGage->SetRender(false);
 			}
 
+			if (mMonster->GetPlayerObject() && !(mMonster->GetPlayerObject()->IsStateFlag(ePlayerState::Death)))
 			{
 				if (mainCamera->GetOwner()->GetScript<CameraScript>()->GetLockOnTarget()
 					== mMonster)
@@ -310,28 +359,65 @@ namespace ya
 				}
 
 
-			}
-			{
-				if (mMonster->IsDeathBlow())
+
 				{
-					Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
-					world._42 += -0.25;
-					Matrix fin = world * mainCamera->GetViewMatrix();
-					fin *= mainCamera->GetProjectionMatrix();
-					Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
-					ndc = ndc / ndc.w;
+					if (mMonster->IsDeathBlow())
+					{
+						Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
+						world._42 += -0.25;
+						Matrix fin = world * mainCamera->GetViewMatrix();
+						fin *= mainCamera->GetProjectionMatrix();
+						Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
+						ndc = ndc / ndc.w;
 
-					Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
-					UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
-					mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
-					if (ndc.z > 1 or ndc.z < 0)
-						mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
-					mMonsterDeathBlow->SetRender(true);
+						Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
+						UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
+						mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
+						if (ndc.z > 1 or ndc.z < 0)
+							mMonsterDeathBlow->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
+						mMonsterDeathBlow->SetRender(true);
 
+					}
+					else
+					{
+						mMonsterDeathBlow->SetRender(false);
+					}
 				}
-				else
 				{
-					mMonsterDeathBlow->SetRender(false);
+					if (mMonster->GetAlertnessCount() > 0
+						||( mMonster->IsRecognize()&& mRedAlertTimeChecker < mRedAlertTime)
+						)
+					{
+						Matrix world = mMonster->GetComponent<Transform>()->GetWorldMatrix();
+						world._42 += 2.0;
+						Matrix fin = world * mainCamera->GetViewMatrix();
+						fin *= mainCamera->GetProjectionMatrix();
+						Vector4 ndc = Vector4::Transform(Vector4(0, 0, 0, 1), fin);
+						ndc = ndc / ndc.w;
+
+						Vector4 UIPos = Vector4::Transform(ndc, UICamera->GetProjectionMatrix().Invert());
+						UIPos = Vector4::Transform(UIPos, UICamera->GetViewMatrix().Invert());
+						mMonsterAlertnessBoundary->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
+						mMonsterAlertnessGage->GetComponent<Transform>()->SetPosition(Vector3(UIPos.x, UIPos.y, (float)0.00001));
+						if (ndc.z > 1 or ndc.z < 0)
+						{
+							mMonsterAlertnessGage->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
+							mMonsterAlertnessBoundary->GetComponent<Transform>()->SetPosition(Vector3(50000, -50000, 0));
+						}
+						mMonsterAlertnessBoundary->SetRender(true);
+						mMonsterAlertnessGage->SetRender(true);
+					}
+
+					if (mMonster->IsRecognize())
+					{
+						if (mRedAlertTimeChecker > mRedAlertTime)
+							;
+						else
+							mRedAlertTimeChecker += Time::DeltaTime();
+
+					}
+					else
+						mRedAlertTimeChecker = 0;
 				}
 			}
 		}
@@ -350,11 +436,25 @@ namespace ya
 		float posture = (float)PERCENTAGE / (float)mMonster->GetState()->GetPostureMax();
 		float culposture = (float)PERCENTAGE - (posture * (float)mMonster->GetState()->GetPosture());
 
+		float alertness = mMonster->GetAlertnessCount();
+		int recognize = 0;
+		if (mMonster->IsRecognize())
+			recognize = 1;
+
 		renderer::MeterCB data;
 
 		data.HpMeter = culhp;
 		data.PostureMeter = culposture;
 
 		mMonsterHpLayout->GetScript<HPMeterScript>()->SetCB(data);
+
+		renderer::UniformDataCB data2;
+
+		data2.int_0 = 1;
+		data2.float_0 = alertness / 100;
+		data2.int_1 = recognize;
+		mMonsterAlertnessBoundary->GetScript<AlertnessUIScript>()->SetCB(data2);
+		data2.int_0 = 0;
+		mMonsterAlertnessGage->GetScript<AlertnessUIScript>()->SetCB(data2);
 	}
 }

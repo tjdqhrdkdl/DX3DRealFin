@@ -35,10 +35,15 @@ namespace ya
         GameObject* mMonsterResurectionCount2;
         GameObject* mMonsterDeathBlow;
         GameObject* mMonsterLockOn;
+        GameObject* mMonsterAlertnessBoundary;
+        GameObject* mMonsterAlertnessGage;
 
         bool mbRender;
         float mRenderTime;
         float mRenderTimeChecker;
+
+        float mRedAlertTime;
+        float mRedAlertTimeChecker;
 
 
     };

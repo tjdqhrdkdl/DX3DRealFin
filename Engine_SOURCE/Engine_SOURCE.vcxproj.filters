@@ -407,6 +407,7 @@
     <ClCompile Include="yaPlayerDangerUI.cpp">
       <Filter>Contents\Player\UI</Filter>
     </ClCompile>
+    <ClCompile Include="yaAlertnessUIScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">
@@ -829,6 +830,7 @@
     <ClInclude Include="yaPlayerDangerUI.h">
       <Filter>Contents\Player\UI</Filter>
     </ClInclude>
+    <ClInclude Include="yaAlertnessUIScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

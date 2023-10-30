@@ -253,6 +253,7 @@ namespace ya
 
 		mMonsterState->SetSpeed(mOriginSetting.state.GetSpeed());
 		mMonsterState->SetDeathBlow(false);
+		mMonsterState->SetPosture(mOriginSetting.state.GetPosture());
 
 		mMonsterState->SetResurrectionCountMax(mOriginSetting.state.GetResurrectionCountMax());
 		mMonsterState->SetResurrectionCount(mOriginSetting.state.GetResurrectionCount());

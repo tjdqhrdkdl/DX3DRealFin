@@ -203,6 +203,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClInclude Include="UIHPBarScript.h" />
     <ClInclude Include="UINames.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="yaAlertnessUIScript.h" />
     <ClInclude Include="yaAnimationData.h" />
     <ClInclude Include="yaAshinaSoldier.h" />
     <ClInclude Include="yaAshinaSpearMan.h" />
@@ -348,6 +349,7 @@ call CopyDLL.bat $(Configuration)</Command>
     <ClCompile Include="UICanvas_InGame.cpp" />
     <ClCompile Include="UIHPBarScript.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="yaAlertnessUIScript.cpp" />
     <ClCompile Include="yaAnimationData.cpp" />
     <ClCompile Include="yaAshinaSoldier.cpp" />
     <ClCompile Include="yaAshinaSpearMan.cpp" />

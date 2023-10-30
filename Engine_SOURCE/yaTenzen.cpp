@@ -309,8 +309,8 @@ namespace ya
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 			* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-				+ GetComponent<Transform>()->GetFinalScale().z / 2 + 0.5)
-			- mPlayerObject->GetComponent<Transform>()->Right() * 0.8);
+				+ GetComponent<Transform>()->GetFinalScale().z / 2 +(float) 0.5)
+			- mPlayerObject->GetComponent<Transform>()->Right() * (float)0.8);
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);
@@ -374,6 +374,13 @@ namespace ya
 							else if (dist < 12)
 								SetAlertnessCount(alert + 10 * Time::DeltaTime());
 						}
+						else
+						{
+							alert -= GetAlertnessCount() - 10 * Time::DeltaTime();
+							if (alert < 0)
+								alert = 0;
+							SetAlertnessCount(alert);
+						}
 					}
 					else
 					{
@@ -384,6 +391,14 @@ namespace ya
 						else if (dist < 18)
 							SetAlertnessCount(alert + 20 * Time::DeltaTime());
 					}
+				}
+
+				else
+				{
+					float alert = GetAlertnessCount() - 10 * Time::DeltaTime();
+					if (alert  < 0)
+						alert = 0;
+					SetAlertnessCount(alert);
 				}
 				if (GetAlertnessCount() > 100)
 				{
