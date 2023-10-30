@@ -58,5 +58,16 @@ namespace ya
 	void AudioClip::SetDelay(unsigned long long start, unsigned long long end, bool stopchannels)
 	{
 		mChannel->setDelay(start, end, stopchannels);
+		
+	}
+	void AudioClip::SetVolume(float volume)
+	{
+		mChannel->setVolume(volume);
+	}
+	bool AudioClip::isPlaying()
+	{
+		bool b;
+		mChannel->isPlaying(&b);
+		return b;
 	}
 }

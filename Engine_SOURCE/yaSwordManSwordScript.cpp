@@ -62,6 +62,7 @@ namespace ya
 							default:
 								break;
 							}
+							swordMan->ParryEffectOn();
 
 							//체간 게이지 영향
 							swordMan->SetPosture(swordMan->GetPosture() + 7);

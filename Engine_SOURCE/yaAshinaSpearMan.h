@@ -43,6 +43,10 @@ namespace ya
         void AttackEndEvent();
         void TraceEndEvent();
 
+        void AttackSoundEvent();
+        void AttackSpearSoundEvent();
+        void AttackSwingSoundEvent();
+
         void OnCollisionEnter(Collider2D* collider) override;
         void OnCollisionStay(Collider2D* collider)  override;
         void OnCollisionExit(Collider2D* collider)  override;
@@ -79,6 +83,8 @@ namespace ya
 
         std::vector<Transform*>  mSpear;
 
+        bool mbMoveForward;
+        bool mbNavOn;
         UINT mStyle;
     public:
         AshinaSpearMan();

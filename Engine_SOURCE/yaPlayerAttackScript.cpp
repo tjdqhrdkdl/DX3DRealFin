@@ -181,6 +181,8 @@ namespace ya
 		std::wstring weapon = WEAPON;
 		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a200_510000_" + weapon, 20) = []() { Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play(); };
 		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a200_510000_" + weapon, 50) = []() { Resources::Find<AudioClip>(L"kill3")->Play(); };
+		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a201_510000_" + weapon, 65) = []() { Resources::Find<AudioClip>(L"damage_SE" + std::to_wstring(RandomNumber(1, 3)))->Play(); };
+		mPlayerAnim->FindMeshData(weapon)->GetAnimationFrameEvent(L"a201_510000_" + weapon, 86) = []() { Resources::Find<AudioClip>(L"kill3")->Play(); };
 	}
 
 	void PlayerAttackScript::Update()
@@ -938,7 +940,7 @@ namespace ya
 		Vector3 quaterTheta = quaterToEuler * 180.0f / XM_PI;
 
 		playerTr->SetRotation(Vector3(0.0f, playerTr->GetRotation().y + quaterTheta.y, 0.0f));
-		playerTr->Update();
+		playerTr->FixedUpdate();
 
 		// 인살 가능한 몬스터가 있는 상태일때
 		// 몬스터 
@@ -988,15 +990,15 @@ namespace ya
 		else if (dynamic_cast<Tenzen*>(monster) != nullptr)
 		{
 			if (monster->IsRecognize())
-			{
+			{	
 				if (monster->GetResurrectionCount() > 0)
-					mPlayerAnim->Play(L"a200_510000");
+					mPlayerAnim->Play(L"a201_510000");
 				else
 					mPlayerAnim->Play(L"a201_510000");
 			}
 			else
 			{
-				mPlayerAnim->Play(L"a200_510000");
+				mPlayerAnim->Play(L"a201_510000");
 			}
 		}
 		Resources::Find<AudioClip>(L"kill-successx2")->Play();

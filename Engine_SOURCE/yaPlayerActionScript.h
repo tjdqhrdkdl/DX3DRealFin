@@ -27,6 +27,7 @@ namespace ya
 
 	public:
 		void AdjustState();
+		void SetBGMVolume(float v) { mBGMVolume = v; }
 		
 	private:
 		void Idle();
@@ -61,5 +62,7 @@ namespace ya
 		float mTurnTimerMax;
 
 		std::vector<std::shared_ptr<AudioClip>> mAudioClips;
+
+		float mBGMVolume;
 	};
 }

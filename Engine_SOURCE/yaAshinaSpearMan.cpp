@@ -12,6 +12,7 @@
 #include "yaSpearManSwordScript.h"
 
 #include "yaNavMesh.h"
+#include "yaAudioClip.h"
 
 
 #define STATE_HAVE(STATE) (mState & STATE) == STATE
@@ -22,7 +23,7 @@
 
 namespace ya
 {
-	float AshinaSpearManEyeSightAngleCos = 0.2f;
+	float AshinaSpearManEyeSightAngleCos = 0.1f;
 	float AshinaSpearManWalkSpeed = 60;
 	float AshinaSpearManBaseSpeed = 70;
 	AshinaSpearMan::AshinaSpearMan()
@@ -254,6 +255,20 @@ namespace ya
 
 		SetOriginState(GetState());
 		SetOriginPosition(mTransform->GetPosition());
+
+
+		//오디오 클립 로드
+		Resources::Load<AudioClip>(L"ashinasoldier_v_recognize", L"..\\Resources\\Sound\\ashinasoldier\\Recognize\\c101008400i.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_hit", L"..\\Resources\\Sound\\ashinasoldier\\Hit\\c101008100.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_1", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101008302.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_2", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101008302b.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_3", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101008302c.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_4", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101008302d.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_swing_1", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101006004.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_swing_2", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101006004c.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_swing_3", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101006004d.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_swing_4", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101006007b.wav");
+		Resources::Load<AudioClip>(L"ashinasoldier_v_attack_spear_swing", L"..\\Resources\\Sound\\ashinasoldier\\Attack\\c101009100.wav");
 	}
 	void AshinaSpearMan::Update()
 	{
@@ -340,7 +355,7 @@ namespace ya
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 			* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-				+ GetComponent<Transform>()->GetFinalScale().z / 2 + 1));
+				+ GetComponent<Transform>()->GetFinalScale().z / 2));
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);
@@ -382,11 +397,30 @@ namespace ya
 					float dist = GetDistanceToPlayer();
 					float alert = GetAlertnessCount();
 
-					if (dist < 15)
-						SetAlertnessCount(alert + 50 * Time::DeltaTime());
-					else if (dist < 40)
-						SetAlertnessCount(alert + 20 * Time::DeltaTime());
 
+					if (mPlayerObject->IsStateFlag(ePlayerState::Crouch))
+					{
+						if (cosTheta > AshinaSpearManEyeSightAngleCos * 4)
+						{
+							if (dist < 5)
+								SetAlertnessCount(alert + 200 * Time::DeltaTime());
+							else if (dist < 7)
+								SetAlertnessCount(alert + 50 * Time::DeltaTime());
+							else if (dist < 10)
+								SetAlertnessCount(alert + 20 * Time::DeltaTime());
+							else if (dist < 12)
+								SetAlertnessCount(alert + 10 * Time::DeltaTime());
+						}
+					}
+					else
+					{
+						if (dist < 6)
+							SetAlertnessCount(alert + 200 * Time::DeltaTime());
+						else if (dist < 12)
+							SetAlertnessCount(alert + 50 * Time::DeltaTime());
+						else if (dist < 18)
+							SetAlertnessCount(alert + 20 * Time::DeltaTime());
+					}
 				}
 				if (GetAlertnessCount() > 100)
 				{
@@ -403,24 +437,21 @@ namespace ya
 				float cosTheta = EyeSightCheck();
 				Vector3 dir = mPlayerLastPosition - mTransform->GetPosition();
 				dir.y = 0;
-
-				if (dir.Length() < 5)
+				SetSpeed(200);
+				GetComponent<NavMesh>()->RenewPath(mPlayerLastPosition);
+				RM_STATE(MonsterState_LookAt);
+				RotateForwardTo(GetComponent<NavMesh>()->GetDir());
+				mbNavOn = true;
+				if (dir.Length() < 4)
 				{
 					mAnimationName = L"Spear_LookAround";
 					RM_STATE(MonsterState_Move);
 				}
 				else
 				{
-					dir.Normalize();
-					mMoveDir = dir;
-					ADD_STATE(MonsterState_Move);
-					mActionScript->Velocity(10);
+					mActionScript->Velocity(5);
 					SetSpeed(AshinaSpearManWalkSpeed);
 				}
-
-
-				RotateForwardTo(dir);
-
 
 				float dist = GetDistanceToPlayer();
 				mAlertTimeChecker += Time::DeltaTime();
@@ -429,16 +460,22 @@ namespace ya
 				{
 					RM_STATE(MonsterState_Alert);
 					RM_STATE(MonsterState_Move);
+					mbNavOn = false;
+
 					SetSpeed(AshinaSpearManWalkSpeed);
 
 					ADD_STATE(MonsterState_Idle);
 					mAlertTimeChecker = 0;
 					SetAlertnessCount(0);
 				}
-				if (cosTheta > AshinaSpearManEyeSightAngleCos && dist < 20)
+				else if (cosTheta > AshinaSpearManEyeSightAngleCos && dist < 12)
 				{
 					mActionScript->Velocity(18);
 					ADD_STATE(MonsterState_Recognize);
+					Resources::Find<AudioClip>(L"recognize_sound")->Play();
+					Resources::Find<AudioClip>(L"ashinasoldier_v_recognize")->Play();
+					mbNavOn = false;
+
 				}
 			}
 		}
@@ -555,7 +592,7 @@ namespace ya
 			}
 		}
 
-		else
+		else if (!mbNavOn)
 		{
 			GetComponent<NavMesh>()->SetTraceOn(false);
 		}
@@ -639,7 +676,8 @@ namespace ya
 	{
 		if (STATE_HAVE(MonsterState_Move))
 		{
-			mMoveDir = mTransform->Forward();
+			if(mbMoveForward)
+				mMoveDir = mTransform->Forward();
 
 			mActionScript->Move(mMoveDir, GetSpeed());
 		}
@@ -670,34 +708,48 @@ namespace ya
 		//// 우좌 베기 3000
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 5) = [this]() {SetAttackUnGuardable(true); };
 
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 12) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSpearManBaseSpeed * (float)1.3); mSwordScript->SetBlock(false); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 12) = [this]() {mbMoveForward = true; ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSpearManBaseSpeed * (float)1.3); mSwordScript->SetBlock(false); };
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 23) = [this]() {  RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
 
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 11) = std::bind(&AshinaSpearMan::AttackSpearSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_1", 20) = [this]() {  AttackSoundEvent(); AttackSwingSoundEvent(); };
 		//// 좌우 베기 3001
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 15) = [this]() {SetAttackUnGuardable(true); };
 
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 20) = [this]() {ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSpearManBaseSpeed * (float)2); mSwordScript->SetBlock(false);  };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 20) = [this]() {mbMoveForward = true; ADD_STATE(MonsterState_Move);  SetSpeed(AshinaSpearManBaseSpeed * (float)2); mSwordScript->SetBlock(false);  };
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 32) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt);  };
 
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 11) = std::bind(&AshinaSpearMan::AttackSpearSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 25) = std::bind(&AshinaSpearMan::AttackSwingSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_2", 20) = std::bind(&AshinaSpearMan::AttackSoundEvent, this);
 
 		//// 전진 우좌 옆베기 3003
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 15) = [this]() {SetAttackUnGuardable(true); };
 
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 30) = [this]() { ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * (float)1.5); mSwordScript->SetBlock(false); RM_STATE(MonsterState_LookAt); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 30) = [this]() { mbMoveForward = true; ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * (float)1.5); mSwordScript->SetBlock(false); RM_STATE(MonsterState_LookAt); };
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 60) = [this]() { RM_STATE(MonsterState_Move);};
-		
+
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 58) = std::bind(&AshinaSpearMan::AttackSpearSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 65) = std::bind(&AshinaSpearMan::AttackSwingSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 5) = std::bind(&AshinaSpearMan::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_3", 64) = std::bind(&AshinaSpearMan::AttackSoundEvent, this);
 		
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_4", 1) = [this]() {SetAttackUnGuardable(true); };
 
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_4", 13) = std::bind(&AshinaSpearMan::AttackSwingSoundEvent, this);
 
 
 
 		// 5연베기 3008
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 15) = [this]() {SetAttackUnGuardable(true); };
 
-		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 29) = [this]() {  ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * 2); mSwordScript->SetBlock(false); };
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 29) = [this]() {mbMoveForward = true;  ADD_STATE(MonsterState_Move); SetSpeed(AshinaSpearManBaseSpeed * 2); mSwordScript->SetBlock(false); };
 		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 42) = [this]() { RM_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt);  };
 
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 28) = std::bind(&AshinaSpearMan::AttackSpearSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 37) = std::bind(&AshinaSpearMan::AttackSwingSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 7) = std::bind(&AshinaSpearMan::AttackSoundEvent, this);
+		mMeshData->GetAnimationFrameEvent(L"Spear_SwordAttack_5", 33) = std::bind(&AshinaSpearMan::AttackSoundEvent, this);
 
 
 
@@ -735,12 +787,15 @@ namespace ya
 
 
 
+
+		mMeshData->GetAnimationFrameEvent(L"HitFront", 7) = [this]() {  RM_STATE(MonsterState_Move); };
+		mMeshData->GetAnimationFrameEvent(L"HitBack", 7) = [this]() {  RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"HitFront", 18) = [this]() { RM_STATE(MonsterState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationFrameEvent(L"HitBack", 18) = [this]() { RM_STATE(MonsterState_OnHit); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"HitFront") = [this]() { RM_STATE(MonsterState_OnHit);  mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"HitBack") = [this]() { RM_STATE(MonsterState_OnHit); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationStartEvent(L"HitFront") = [this]() { ADD_STATE(MonsterState_OnHit); };
-		mMeshData->GetAnimationStartEvent(L"HitBack") = [this]() { ADD_STATE(MonsterState_OnHit); };
+		mMeshData->GetAnimationStartEvent(L"HitFront") = [this]() {Resources::Find<AudioClip>(L"ashinasoldier_v_hit")->Play();  ADD_STATE(MonsterState_OnHit);mbMoveForward = false;  ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward(); };
+		mMeshData->GetAnimationStartEvent(L"HitBack") = [this]() { Resources::Find<AudioClip>(L"ashinasoldier_v_hit")->Play(); ADD_STATE(MonsterState_OnHit); mbMoveForward = false; ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward(); };
 
 
 		mMeshData->GetAnimationEndEvent(L"Spear_GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); SetPosture(80); SetDeathBlow(false); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); };
@@ -855,6 +910,73 @@ namespace ya
 	void AshinaSpearMan::TraceEndEvent()
 	{
 		RM_STATE(MonsterState_Trace);
+	}
+
+	void AshinaSpearMan::AttackSoundEvent()
+	{
+		std::shared_ptr<AudioClip> clip;
+
+		switch (rand() % 4)
+		{
+		case 0:
+			clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_1");
+			clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+			clip->Play();
+			break;
+		case 1:
+			clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_2");
+			clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+			clip->Play();
+			break;
+		case 2:
+			clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_3");
+			clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+			clip->Play();
+			break;
+		case 3:
+			clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_4");
+			clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+			clip->Play();
+			break;
+		}
+	}
+
+	void AshinaSpearMan::AttackSpearSoundEvent()
+	{
+		std::shared_ptr<AudioClip> clip;
+
+		clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_spear_swing");
+		clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+		clip->Play();
+	}
+
+	void AshinaSpearMan::AttackSwingSoundEvent()
+	{
+		std::shared_ptr<AudioClip> clip;
+
+		switch (rand() % 4)
+		{
+		case 0:
+			clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_swing_1");
+			clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+			clip->Play();
+			break;
+		case 1:
+			clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_swing_2");
+			clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+			clip->Play();
+			break;
+		case 2:
+			clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_swing_3");
+			clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+			clip->Play();
+			break;
+		case 3:
+			clip = Resources::Find<AudioClip>(L"ashinasoldier_v_attack_swing_4");
+			clip->Set3DAttributes(mTransform->GetPosition(), Vector3::Zero);
+			clip->Play();
+			break;
+		}
 	}
 
 	void AshinaSpearMan::OnCollisionEnter(Collider2D* collider)
