@@ -361,9 +361,9 @@ namespace ya
 
 			Transform* tr = player->GetComponent<Transform>();
 			tr->SetLocalPosition(Vector3(100.f, 500.f, 0.f));
-			tr->SetLocalRotation(Vector3(0.f, 0.f, 45.f));
+			//tr->SetLocalRotation(Vector3(0.f, 0.f, 45.f));
 
-			parent = tr;
+			//parent = tr;
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
 			//coll3D->SetSize(Vector3(30.f, 30.f, 30.f));
@@ -372,33 +372,34 @@ namespace ya
 			coll3D->EnableGravity(true);
 		}
 
-		{
-			PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Player, this);
-			player->SetName(L"childObj");
-			//player->AddComponent<PhysXPlayerScript>();
+		//{
+		//	PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Player, this);
+		//	player->SetName(L"childObj");
+		//	//player->AddComponent<PhysXPlayerScript>();
 
-			Transform* tr = player->GetComponent<Transform>();
-			tr->SetLocalPosition(Vector3(0.f, 1.f, -1.f));
-			//tr->SetLocalRotation(Vector3(0.f, 0.f, 45.f));
-			tr->SetLocalScale(Vector3::One);
+		//	Transform* tr = player->GetComponent<Transform>();
+		//	tr->SetLocalPosition(Vector3(0.f, 1.f, -1.f));
+		//	//tr->SetLocalRotation(Vector3(0.f, 0.f, 45.f));
+		//	tr->SetLocalScale(Vector3::One);
 
-			tr->SetParent(parent);
+		//	tr->SetParent(parent);
 
-			Collider3D* coll3D = player->GetComponent<Collider3D>();
-			coll3D->SetSyncScaleToTransfom(true);
-			//coll3D->SetSize(Vector3(1.f));
-			coll3D->SetMass(0.6f);
-			coll3D->SetType(eColliderType::Box);
-			coll3D->EnableGravity(true);
-		}
+		//	Collider3D* coll3D = player->GetComponent<Collider3D>();
+		//	coll3D->SetSyncScaleToTransfom(true);
+		//	//coll3D->SetSize(Vector3(1.f));
+		//	coll3D->SetMass(0.6f);
+		//	coll3D->SetType(eColliderType::Box);
+		//	coll3D->EnableGravity(true);
+		//}
 
 		{
 			PhysXDebugObj* player = object::Instantiate<PhysXDebugObj>(eLayerType::Ground, this);
 			player->SetName(L"Ground");
 			Transform* tr = player->GetComponent<Transform>();
+			tr->SetLocalPosition(Vector3(0.f, -100.f, 0.f));
 			tr->SetLocalScale(Vector3(1000.f, 30.f, 1000.f));
 			//tr->SetLocalPosition(Vector3(10.f, 10.f, 10.f));
-			tr->SetLocalRotation(Vector3(0.f, 0.f, 45.f));
+			//tr->SetLocalRotation(Vector3(0.f, 0.f, 45.f));
 
 			Collider3D* coll3D = player->GetComponent<Collider3D>();
 			coll3D->SetType(eColliderType::Box, true);

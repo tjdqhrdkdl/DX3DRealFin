@@ -529,7 +529,7 @@ namespace ya
 		meshAttribute.position = MathUtil::pxToVector3(worldTransform.p);
 		//meshAttribute.position += _offsetPosition;
 
-		meshAttribute.rotation = MathUtil::pxToQuaternion(worldTransform.q).ToEulerXYZOrder() * gRadianToDegreeFactor;
+		meshAttribute.rotation = MathUtil::pxToQuaternion(worldTransform.q).ToEuler() * gRadianToDegreeFactor;
 			
 		meshAttribute.parent = nullptr;
 

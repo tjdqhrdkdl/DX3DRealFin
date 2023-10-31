@@ -159,7 +159,7 @@ namespace ya
 	inline void Transform::SetLocalRotationQuaternion(const Quaternion& _rot)
 	{
 		mQuatLocal = _rot;
-		mRotLocal = mQuatLocal.ToEulerXYZOrder() * gRadianToDegreeFactor;
+		mRotLocal = mQuatLocal.ToEuler() * gRadianToDegreeFactor;
 		NeedMyUpdate();
 	}
 }

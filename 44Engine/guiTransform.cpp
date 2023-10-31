@@ -49,7 +49,10 @@ namespace gui
 		ImGui::InputFloat3("##Position", (float*)&mPosition);
 
 		ImGui::Text("Rotation"); ImGui::SameLine();
-		ImGui::InputFloat3("##Rotation", (float*)&mRotation);
+		if (ImGui::DragFloat3("##Rotation", (float*)&mRotation) && GetTarget())
+		{
+			GetTarget()->GetComponent<ya::Transform>()->SetLocalRotation(mRotation);
+		}
 
 		ImGui::Text("Scale"); ImGui::SameLine();
 		ImGui::InputFloat3("##Scale", (float*)&mScale);

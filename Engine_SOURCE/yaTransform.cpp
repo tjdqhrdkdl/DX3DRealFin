@@ -186,7 +186,7 @@ namespace ya
 
 		//2. 회전행렬
 		Vector3 radian = mRotLocal * gDegreeToRadianFactor;
-		mQuatLocal = Quaternion::CreateFromPitchYawRoll(radian);
+		mQuatLocal = Quaternion::CreateFromYawPitchRoll(radian);
 		mMatWorld *= Matrix::CreateFromQuaternion(mQuatLocal);
 
 		//3. 이동행렬
@@ -203,7 +203,7 @@ namespace ya
 			mMatWorld *= mParent->GetWorldMatrix();
 			Vector3 posWorld{};
 			mMatWorld.Decompose(mScaleWorld, mQuatWorld, posWorld);
-			mRotWorld = mQuatWorld.ToEulerXYZOrder() * gRadianToDegreeFactor;
+			mRotWorld = mQuatWorld.ToEuler() * gRadianToDegreeFactor;
 		}
 		else
 		{
