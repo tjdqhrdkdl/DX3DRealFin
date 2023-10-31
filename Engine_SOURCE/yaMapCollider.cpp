@@ -122,15 +122,15 @@ namespace ya
 		AddGroundCollider(Vector3( 9.097,-7.9458, 7.9865), Vector3(-10.76, -4.856,  0.0000), Vector3(21.865, 10.00 , 3.612 ));
 		AddGroundCollider(Vector3( -0.41,-8.8318, 1.0564), Vector3(1.9803, 16.7396, 0.0000), Vector3(2.8238, 10.000, 7.8979));
 
-		AddGroundCollider(Vector3( 23.041,-8.1637,  2.411), Vector3(-1.300, -1.994, -2.11), Vector3(13.70, 10.00, 7.897));
-		AddGroundCollider(Vector3(30.961, -12.318, -27.50), Vector3(6.142, -4.812, -1.26), Vector3(6.244, 10.00, 10.54));
+		//AddGroundCollider(Vector3( 23.041,-8.1637,  2.411), Vector3(-1.300, -1.994, -2.11), Vector3(13.70, 10.00, 7.897));
+		//AddGroundCollider(Vector3(30.961, -12.318, -27.50), Vector3(6.142, -4.812, -1.26), Vector3(6.244, 10.00, 10.54));
 		AddGroundCollider(Vector3(10.000, -11.000, -20.000), Vector3( 0, -0, -0), Vector3(60.000, 4, 60.000));
 
-		AddGroundCollider(Vector3(0.6593, -18.362, -29.20), Vector3( 3.6196, 16.739, -3.2266), Vector3(16.527,19.95, 15.76));
-		AddGroundCollider(Vector3(8.0972, -17.122, -3.019), Vector3( -15.39, -3.516,  0.6036), Vector3(6.2035,19.95, 13.54));
-		AddGroundCollider(Vector3(11.941, -17.846, -4.172), Vector3( -10.24, 1.2749, -11.777), Vector3(6.2035,19.95, 8.302));
-		AddGroundCollider(Vector3(5.5235, -17.869, -5.665), Vector3( -13.64, -10.93,  10.616), Vector3(6.2035,19.95, 8.302));
-		AddGroundCollider(Vector3(27.926, -18.105, -27.11), Vector3( 5.3689, -6.045,  5.8809), Vector3(12.215,19.95, 11.89));
+		//AddGroundCollider(Vector3(0.6593, -18.362, -29.20), Vector3( 3.6196, 16.739, -3.2266), Vector3(16.527,19.95, 15.76));
+		//AddGroundCollider(Vector3(8.0972, -17.122, -3.019), Vector3( -15.39, -3.516,  0.6036), Vector3(6.2035,19.95, 13.54));
+		//AddGroundCollider(Vector3(11.941, -17.846, -4.172), Vector3( -10.24, 1.2749, -11.777), Vector3(6.2035,19.95, 8.302));
+		//AddGroundCollider(Vector3(5.5235, -17.869, -5.665), Vector3( -13.64, -10.93,  10.616), Vector3(6.2035,19.95, 8.302));
+		//AddGroundCollider(Vector3(27.926, -18.105, -27.11), Vector3( 5.3689, -6.045,  5.8809), Vector3(12.215,19.95, 11.89));
 		//은혜
 		mWalkerName = L"JU";
 		// 14xxxx
