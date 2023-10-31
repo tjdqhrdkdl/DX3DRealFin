@@ -78,27 +78,24 @@ namespace ya
 		// 속도에 가속도를 더해준다.
 		mVelocity += (mAccelation * Time::DeltaTime());
 
+		Vector3 gravity = mGravity;
+		gravity.Normalize();
+		float dot = gravity.Dot(mVelocity);
+		Vector3 sideVelocity;
 		if (mbGrounded && !mbJumping)
-
 		{ // 땅
-			Vector3 gravity = mGravity;
-			gravity.Normalize();
 
-			float dot = gravity.Dot(mVelocity);
 			mVelocity -= gravity * dot;
+			sideVelocity = mVelocity;
 		}
 		else
 		{ // 공중
 			mVelocity += mGravity * Time::DeltaTime();
+			gravity = gravity * dot;
+			sideVelocity = mVelocity - gravity;
 		}
 
 		// 최대 속도 제한
-		Vector3 gravity = mGravity;
-		gravity.Normalize();
-		float dot = gravity.Dot(mVelocity);
-		gravity = gravity * dot;
-
-		Vector3 sideVelocity = mVelocity - gravity;
 		if (mLimitVelocity.y < gravity.Length())
 		{
 			gravity.Normalize();
