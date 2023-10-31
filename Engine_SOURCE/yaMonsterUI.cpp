@@ -406,6 +406,11 @@ namespace ya
 						mMonsterAlertnessBoundary->SetRender(true);
 						mMonsterAlertnessGage->SetRender(true);
 					}
+					else
+					{
+						mMonsterAlertnessBoundary->SetRender(false);
+						mMonsterAlertnessGage->SetRender(false);
+					}
 
 					if (mMonster->IsRecognize())
 					{
@@ -435,6 +440,21 @@ namespace ya
 				mMonsterAlertnessGage->SetRender(false);
 			}
 		
+			if(mMonster->IsMonsterState(MonsterBase::MonsterState_Dead))
+			{
+				mMonsterHpLayout->SetRender(false);
+				mMonsterHpBar->SetRender(false);
+				mMonsterPostureLayout->SetRender(false);
+				mMonsterPostureBar1->SetRender(false);
+				mMonsterPostureBar2->SetRender(false);
+
+				mMonsterResurectionCount1->SetRender(false);
+				mMonsterResurectionCount2->SetRender(false);
+				mMonsterDeathBlow->SetRender(false);
+				mMonsterLockOn->SetRender(false);
+				mMonsterAlertnessBoundary->SetRender(false);
+				mMonsterAlertnessGage->SetRender(false);
+			}
 		}
 		GameObject::Update();
 	}

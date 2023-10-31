@@ -55,7 +55,7 @@ namespace ya
 
 							soldier->ParryEffectOn();
 							//체간 게이지 영향
-							soldier->SetPosture(soldier->GetPosture() + 7);
+							soldier->SetPosture(soldier->GetPosture() + 50);
 						}
 						//그냥 막힘
 						else

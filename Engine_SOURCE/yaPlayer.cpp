@@ -38,7 +38,8 @@ namespace ya
 		SetName(L"Player");
 
 		Transform* tr = GetComponent<Transform>();
-		Vector3 pos = Vector3(30.0f, 0.0f, -30.0f);
+		Vector3 pos = Vector3(190.f, -28.6f, 88.0f);
+
 		tr->SetPosition(pos);
 		//tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
 

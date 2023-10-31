@@ -131,8 +131,7 @@ namespace ya
 
 		PlayerAttackScript::eAttackState attackState = attack->GetAttackState();
 
-		if(false == dynamic_cast<BoneCollider*>(GetOwner())->CheckHitObjects(monster))
-		{
+		
 			GameObject* particleObj = mPlayer->GetParticleObject();
 			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
 			Vector3 effectPos = GetOwner()->GetComponent<Transform>()->GetWorldPositioin();
@@ -192,7 +191,7 @@ namespace ya
 				{
 					Resources::Find<AudioClip>(L"enemy_damage5")->Play();
 				}
-			}
+			
 		}
 	}
 	void PlayerProjectileScript::OnCollisionStay(Collider2D* collider)
