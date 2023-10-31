@@ -50,14 +50,14 @@ float4 main(VSOut In) : SV_Target
         color.r = 1;
         color.g = 0.7;
         color.b = 0;
-        color.a -= 4 * time;
+        color.a -= 2 * time;
     }
     else
     {
         color.r = 1;
         color.g = 0.5;
         color.b = 0;
-        color.a -= 0.2 + 4 * time ;
+        color.a -= 0.2 + 2 * time ;
     }
     //color.a = color.r;
     //color.r = 1;

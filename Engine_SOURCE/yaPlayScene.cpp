@@ -31,6 +31,7 @@
 
 #include "yaParticleSystem.h"
 #include "yaAudioClip.h"
+#include "yaPlayerActionScript.h"
 
 namespace ya
 {
@@ -57,7 +58,7 @@ namespace ya
 
 
 		Player* player = object::Instantiate<Player>(eLayerType::Player, this);
-		player->GetComponent<Transform>()->SetPosition(Vector3(30.0f, 0.0f, -30.0f));
+		player->GetComponent<Transform>()->SetPosition(Vector3(190.f, -28.6f, 88.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 
 		AudioListener* audioComp = player->AddComponent<AudioListener>();
@@ -169,7 +170,7 @@ namespace ya
 			lightComp->SetType(eLightType::Directional);
 			lightComp->SetDiffuse(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 			lightComp->SetSpecular(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-			lightComp->SetAmbient(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
+			lightComp->SetAmbient(Vector4(0.5f, 0.5f, 0.5f, 1.0f));
 		}
 
 
@@ -231,10 +232,10 @@ namespace ya
 		}
 
 		{
-			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
-			Transform* objTransform = obj->GetComponent<Transform>();
-			objTransform->SetPosition(-85.f, 35.f, 130.f);
-			objTransform->SetRotation(-90.f, 0.f, 0.f);
+			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			//Transform* objTransform = obj->GetComponent<Transform>();
+			//objTransform->SetPosition(-85.f, 35.f, 130.f);
+			//objTransform->SetRotation(-90.f, 0.f, 0.f);
 		}
 		{
 			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::None, this);
@@ -250,10 +251,10 @@ namespace ya
 
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
-		//mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-10.0f, 0.0f, 10.0f)));
-		//mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, -10.0f)));
-		//mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
+		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(173.6f, -36.0f, 66.0f)));/*
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(173.6f, -36.0f, 66.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(138.5f, -32.0f, 35.0f)));
+		mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(136.1f, -23.5f, 47.5f)));*/
 
 		Scene::Initialize();
 	}
@@ -269,6 +270,39 @@ namespace ya
 		{
 			Reset();
 		}
+
+		bool bgmVolUp = false;
+		for (UINT i = 0; i < mMonsters.size(); i++)
+		{
+			if (mMonsters[i]->IsRecognize() && ! (mMonsters[i]->IsMonsterState(MonsterBase::MonsterState_Dead)))
+			{
+				bgmVolUp = true;
+				Vector3 monPos1 = mMonsters[i]->GetComponent<Transform>()->GetPosition();
+
+				for (UINT k = 0; k < mMonsters.size(); k++)
+				{
+					if (i == k)
+						continue;
+					if (!(mMonsters[k]->IsRecognize()))
+					{
+						Vector3 monPos2 = mMonsters[k]->GetComponent<Transform>()->GetPosition();
+						if (Vector3::Distance(monPos1, monPos2) < 7)
+						{
+							mMonsters[k]->SetPlayerLastPosition(GetPlayer()->GetComponent<Transform>()->GetPosition());
+							mMonsters[k]->SetAlertnessCount(100);
+							mMonsters[k]->AddMonsterState(MonsterBase::eMonsterState::MonsterState_Alert);
+						}
+					}
+				}
+			}
+		}
+		
+		if (bgmVolUp)
+			GetPlayer()->GetScript<PlayerActionScript>()->SetBGMVolume(10);
+		else
+			GetPlayer()->GetScript<PlayerActionScript>()->SetBGMVolume(5);
+
+		
 
 		Scene::Update();
 	}

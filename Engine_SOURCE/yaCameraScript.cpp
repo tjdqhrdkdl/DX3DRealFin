@@ -375,7 +375,7 @@ namespace ya
 			Vector3 theta = rot.ToEuler();
 			if (fabsf(theta.x) > XM_PIDIV2 * 0.6)
 				continue;
-			if (fabsf(theta.y) > XM_PIDIV2 * 0.5)
+			if (monPlDiff.y > 2)
 				continue;
 			//if (fabsf(theta.z) > XM_PI * 2 / 3)
 			//	continue;

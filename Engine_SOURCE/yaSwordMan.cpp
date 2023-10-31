@@ -268,7 +268,7 @@ namespace ya
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 			* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-				+ GetComponent<Transform>()->GetFinalScale().z / 2));
+				+ GetComponent<Transform>()->GetFinalScale().z / 2 + 1 ));
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);
@@ -323,6 +323,13 @@ namespace ya
 								SetAlertnessCount(alert + 20 * Time::DeltaTime());
 							else if (dist < 12)
 								SetAlertnessCount(alert + 10 * Time::DeltaTime());
+							else
+							{
+								alert -= 10 * Time::DeltaTime();
+								if (alert < 0)
+									alert = 0;
+								SetAlertnessCount(alert);
+							}
 						}
 						else
 						{
@@ -332,6 +339,7 @@ namespace ya
 							SetAlertnessCount(alert);
 						}
 					}
+
 					else
 					{
 						if (dist < 6)
@@ -340,8 +348,17 @@ namespace ya
 							SetAlertnessCount(alert + 50 * Time::DeltaTime());
 						else if (dist < 18)
 							SetAlertnessCount(alert + 20 * Time::DeltaTime());
+						else
+						{
+							alert -= 10 * Time::DeltaTime();
+							if (alert < 0)
+								alert = 0;
+							SetAlertnessCount(alert);
+						}
 					}
+
 				}
+
 				else
 				{
 					float alert = GetAlertnessCount() - 10 * Time::DeltaTime();
@@ -397,8 +414,9 @@ namespace ya
 				}
 				else if (cosTheta > SwordManEyeSightAngleCos && dist < 12)
 				{
-					mActionScript->Velocity(18);
+					mActionScript->Velocity(10);
 					ADD_STATE(MonsterState_Recognize);
+					ADD_STATE(MonsterState_LookAt	);
 					Resources::Find<AudioClip>(L"recognize_sound")->Play();
 					Resources::Find<AudioClip>(L"ashinasoldier_v_recognize")->Play();
 					mbNavOn = false;
@@ -418,6 +436,7 @@ namespace ya
 		}
 		if (STATE_HAVE(MonsterState_Recognize))
 		{
+			SetAlertnessCount(0);
 			RM_STATE(MonsterState_Idle);
 			SetRecognize(true);
 
@@ -427,11 +446,19 @@ namespace ya
 				&& !(STATE_HAVE(MonsterState_OnHit)) && !(STATE_HAVE(MonsterState_AttackBlocked))
 				&& !(STATE_HAVE(MonsterState_Groggy)))
 			{
+				//bool a = STATE_HAVE(MonsterState_Attack);
+				//bool b = STATE_HAVE(MonsterState_Trace);
+				//bool c = STATE_HAVE(MonsterState_Groggy);
+				//bool d = STATE_HAVE(MonsterState_OnHit);
+				//bool e = STATE_HAVE(MonsterState_AttackBlocked);
+				//bool f = STATE_HAVE(MonsterState_Defense);
+				//bool g = STATE_HAVE(MonsterState_GuardSuccess);
+
 				Vector3 pos = mTransform->GetPosition();
 				Vector3 playerPos = GetPlayerPos();
 
 				//플레이어 거리가 너무 멀어졌을 때
-				float traceDist = 10;
+				float traceDist = 7;
 				if (GetDistanceToPlayer() > traceDist)
 				{
 					ADD_STATE(MonsterState_Trace);
@@ -534,7 +561,7 @@ namespace ya
 			GetComponent<NavMesh>()->RenewPath(playerPos);
 			RM_STATE(MonsterState_LookAt);
 			RotateForwardTo(GetComponent<NavMesh>()->GetDir());
-			if (GetDistanceToPlayer() < 10)
+			if (GetDistanceToPlayer() < 5)
 			{
 				ADD_STATE(MonsterState_LookAt);
 				RM_STATE(MonsterState_Move);
@@ -744,8 +771,8 @@ namespace ya
 
 		//mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&SwordMan::DefenseEndEvent, this);
 
-		mMeshData->GetAnimationFrameEvent(L"GuardLeft", 27) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationFrameEvent(L"GuardRight", 27) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationFrameEvent(L"GuardLeft", 18) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationFrameEvent(L"GuardRight", 18) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"GuardLeft") = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"GuardRight") = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationStartEvent(L"GuardLeft") = [this]() { ADD_STATE(MonsterState_GuardSuccess); };
@@ -773,7 +800,7 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"HitBack") = [this]() {  Resources::Find<AudioClip>(L"swordman_v_hit")->Play(); ADD_STATE(MonsterState_OnHit); mbMoveForward = false; ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward();  };
 
 
-		mMeshData->GetAnimationEndEvent(L"GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); SetPosture(80); SetDeathBlow(false); };
+		mMeshData->GetAnimationEndEvent(L"GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); /*SetPosture(80); SetDeathBlow(false);*/ };
 		mMeshData->GetAnimationStartEvent(L"GrogyDownParried") = [this]() { SetDeathBlow(true); RM_STATE(MonsterState_Guard); };
 		mMeshData->GetAnimationFrameEvent(L"GrogyDownParried", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
 
@@ -990,13 +1017,15 @@ namespace ya
 					//막기 상태지만 뒤를 맞는 상황
 					else
 					{
-						SetHp(GetHP() - 5);
+						SetHp(GetHP() - 10);
 
 						if (!(STATE_HAVE(MonsterState_SuperArmor)))
 						{
 							ADD_STATE(MonsterState_OnHit);
 							RM_STATE(MonsterState_OnHitFront);
 						}
+						SetPosture(GetPosture() + 10);
+
 					}
 
 
@@ -1035,7 +1064,7 @@ namespace ya
 					if (GetHP() == 0)
 						SetPosture(GetPostureMax());
 					else
-						SetPosture(GetPosture() + 10);
+						SetPosture(GetPosture() + 20);
 
 
 					if (!(STATE_HAVE(MonsterState_SuperArmor)))

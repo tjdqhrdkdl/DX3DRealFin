@@ -134,6 +134,9 @@ namespace ya
         bool    IsRecognize() { return mbRecognize; }
         void    SetRecognize(bool recognize) { mbRecognize = recognize; }
 
+        void    SetPlayerLastPosition(Vector3 pos) { mPlayerLastPosition = pos; }
+        void    AddMonsterState(eMonsterState state) { ADD_STATE(state); }
+
     public:
         Player* GetPlayerObject() { return mPlayerObject; }
         void SetPlayerObject(Player* target) { mPlayerObject = target; }
@@ -173,6 +176,7 @@ namespace ya
         int                 mBeforeState;
         int                 mState;
         bool                mbAssaination;
+        Vector3             mPlayerLastPosition;
 
     private:
         State*              mMonsterState;

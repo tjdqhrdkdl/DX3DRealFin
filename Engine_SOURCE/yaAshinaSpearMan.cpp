@@ -355,7 +355,7 @@ namespace ya
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 			* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-				+ GetComponent<Transform>()->GetFinalScale().z / 2));
+				+ GetComponent<Transform>()->GetFinalScale().z / 2 + 0.5));
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);
@@ -411,6 +411,13 @@ namespace ya
 								SetAlertnessCount(alert + 20 * Time::DeltaTime());
 							else if (dist < 12)
 								SetAlertnessCount(alert + 10 * Time::DeltaTime());
+							else
+							{
+								alert -= 10 * Time::DeltaTime();
+								if (alert < 0)
+									alert = 0;
+								SetAlertnessCount(alert);
+							}
 						}
 						else
 						{
@@ -429,6 +436,13 @@ namespace ya
 							SetAlertnessCount(alert + 50 * Time::DeltaTime());
 						else if (dist < 18)
 							SetAlertnessCount(alert + 20 * Time::DeltaTime());
+						else
+						{
+							alert -= 10 * Time::DeltaTime();
+							if (alert < 0)
+								alert = 0;
+							SetAlertnessCount(alert);
+						}
 					}
 
 				}
@@ -487,12 +501,12 @@ namespace ya
 				}
 				else if (cosTheta > AshinaSpearManEyeSightAngleCos && dist < 12)
 				{
-					mActionScript->Velocity(18);
+					mActionScript->Velocity(10);
 					ADD_STATE(MonsterState_Recognize);
 					Resources::Find<AudioClip>(L"recognize_sound")->Play();
 					Resources::Find<AudioClip>(L"ashinasoldier_v_recognize")->Play();
 					mbNavOn = false;
-
+					ADD_STATE(MonsterState_LookAt);
 				}
 			}
 		}
@@ -822,8 +836,8 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"HitBack") = [this]() { Resources::Find<AudioClip>(L"ashinasoldier_v_hit")->Play(); ADD_STATE(MonsterState_OnHit); mbMoveForward = false; ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward(); };
 
 
-		mMeshData->GetAnimationEndEvent(L"Spear_GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); SetPosture(80); SetDeathBlow(false); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); };
-		mMeshData->GetAnimationStartEvent(L"Spear_GrogyDownParried") = [this]() { SetDeathBlow(true); RM_STATE(MonsterState_Guard); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) - (float)0.2 * mPlayerObject->GetComponent<Transform>()->Right()); mCamScript->SetCameraZoomDistance(1.5); };
+		mMeshData->GetAnimationEndEvent(L"Spear_GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy);/* SetPosture(80); SetDeathBlow(false); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); */};
+		mMeshData->GetAnimationStartEvent(L"Spear_GrogyDownParried") = [this]() { SetDeathBlow(true); RM_STATE(MonsterState_Guard); /*mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) - (float)0.2 * mPlayerObject->GetComponent<Transform>()->Right()); mCamScript->SetCameraZoomDistance(1.5);*/ };
 		mMeshData->GetAnimationFrameEvent(L"Spear_GrogyDownParried", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
 
 		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Recognize); SetPosture(0); SetHp(GetMaxHP()); mMonsterUI->UIOn(); };
@@ -1045,13 +1059,15 @@ namespace ya
 					//막기 상태지만 뒤를 맞는 상황
 					else
 					{
-						SetHp(GetHP() - 5);
+						SetHp(GetHP() - 20);
 
 						if (!(STATE_HAVE(MonsterState_SuperArmor)))
 						{
 							ADD_STATE(MonsterState_OnHit);
 							RM_STATE(MonsterState_OnHitFront);
 						}
+						SetPosture(GetPosture() + 20);
+
 					}
 
 
@@ -1084,13 +1100,13 @@ namespace ya
 					float theta = rot.ToEuler().y;
 					theta *= 180.f / XM_PI;
 
-					SetHp(GetHP() - 5);
+					SetHp(GetHP() - 20);
 					//체간 깎기
 
 					if (GetHP() == 0)
 						SetPosture(GetPostureMax());
 					else
-						SetPosture(GetPosture() + 10);
+						SetPosture(GetPosture() + 30);
 
 
 					if (!(STATE_HAVE(MonsterState_SuperArmor)))

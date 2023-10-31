@@ -383,7 +383,7 @@ namespace ya
 
 			Transform* deathTextTr = mDeathText->GetComponent<Transform>();
 			deathTextTr->SetPosition(Vector3(0.f, 0.f, -150.f));
-			deathTextTr->SetScale(Vector3(400.f, 400.f, 0.f));
+			deathTextTr->SetScale(Vector3(0, 0, 0.f));
 
 			std::shared_ptr<Material> deathTextMaterial = std::make_shared<Material>();
 			deathTextMaterial->SetRenderingMode(eRenderingMode::Transparent);
