@@ -58,7 +58,7 @@ namespace ya
 
 	void Rigidbody::FixedUpdate()
 	{
-		
+
 	}
 
 	void Rigidbody::Update()
@@ -162,7 +162,7 @@ namespace ya
 
 		if (mbForwardBlocked && mbJumping)
 		{
- 			velo.x = 0.f;
+			velo.x = 0.f;
 			velo.z = 0.f;
 		}
 
@@ -357,7 +357,7 @@ namespace ya
 		for (int i = 0; i < 3; ++i)
 		{
 			//if (velocity.Length() <= ForwardHit[i].length && ForwardHit[i].isHit)
-			if(rayLength >= ForwardHit[i].length && ForwardHit[i].isHit)
+			if (rayLength >= ForwardHit[i].length && ForwardHit[i].isHit)
 				return true;
 		}
 
