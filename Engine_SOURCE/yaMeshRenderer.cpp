@@ -10,6 +10,7 @@ namespace ya
 {
 	MeshRenderer::MeshRenderer()
 		: BaseRenderer(eComponentType::MeshRenderer)
+		, ComponentType(eComponentType::MeshRenderer)
 	{
 	}
 

@@ -4,7 +4,7 @@
 
 namespace ya
 {
-	class AudioListener : public Component
+	class AudioListener : public Component, ComponentType<AudioListener>
 	{
 	public:
 		AudioListener();

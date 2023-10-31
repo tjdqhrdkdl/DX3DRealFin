@@ -1,5 +1,6 @@
 #include "yaGameObject.h"
 #include "yaTransform.h"
+#include "yaBaseRenderer.h"
 
 namespace ya
 {
@@ -140,7 +141,7 @@ namespace ya
 
 	void GameObject::AddComponent(Component* comp)
 	{
-		eComponentType order = comp->GetOrder();
+		eComponentType order = comp->GetType();
 
 		if (order != eComponentType::Script)
 		{
@@ -149,8 +150,23 @@ namespace ya
 		}
 		else
 		{
-			mScripts.push_back(dynamic_cast<Script*>(comp));
+			mScripts.push_back(static_cast<Script*>(comp));
 			comp->SetOwner(this);
 		}
+	}
+
+
+	BaseRenderer* GameObject::GetRenderer()
+	{
+		BaseRenderer* render{};
+		if (mComponents[(UINT)eComponentType::MeshRenderer])
+		{
+			render = static_cast<BaseRenderer*>(mComponents[(UINT)eComponentType::MeshRenderer]);
+		}
+		else if (mComponents[(UINT)eComponentType::SpriteRenderer])
+		{
+			render = static_cast<BaseRenderer*>(mComponents[(UINT)eComponentType::SpriteRenderer]);
+		}
+		return render;
 	}
 }

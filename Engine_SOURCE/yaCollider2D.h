@@ -4,7 +4,7 @@
 
 namespace ya
 {
-	class Collider2D : public Component
+	class Collider2D : public Component, ComponentType<Collider2D>
 	{
 	public:
 		Collider2D();

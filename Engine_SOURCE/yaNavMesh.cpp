@@ -9,7 +9,8 @@
 namespace ya
 {
 	NavMesh::NavMesh()
-		:Component(eComponentType::NavMesh)
+		: Component(eComponentType::NavMesh)
+		, ComponentType(eComponentType::NavMesh)
 	{
 	}
 	NavMesh::~NavMesh()

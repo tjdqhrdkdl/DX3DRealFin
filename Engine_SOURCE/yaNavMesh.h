@@ -4,7 +4,7 @@
 namespace ya
 {
 	using namespace math;
-	class NavMesh : public Component
+	class NavMesh : public Component, ComponentType<NavMesh>
 	{
 	public:
 		NavMesh();

@@ -23,6 +23,7 @@ namespace ya
 
 	Camera::Camera()
 		: Component(eComponentType::Camera)
+		, ComponentType(eComponentType::Camera)
 		, mType(eProjectionType::Orthographic)
 		, mAspectRatio(1.0f)
 		, mNear(1.0f)
@@ -374,7 +375,8 @@ namespace ya
 	void Camera::pushGameObjectToRenderingModes(GameObject* gameObj)
 	{
 		BaseRenderer* renderer
-			= gameObj->GetComponent<BaseRenderer>();
+			= gameObj->GetRenderer();
+
 		if (renderer == nullptr)
 			return;
 

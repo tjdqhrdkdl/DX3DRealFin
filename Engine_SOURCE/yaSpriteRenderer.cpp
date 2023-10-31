@@ -7,6 +7,7 @@ namespace ya
 {
 	SpriteRenderer::SpriteRenderer()
 		: BaseRenderer(eComponentType::SpriteRenderer)
+		, ComponentType(eComponentType::SpriteRenderer)
 	{
 	}
 

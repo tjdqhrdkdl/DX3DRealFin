@@ -12,7 +12,7 @@ namespace ya::graphics
 		World,
 	};
 
-	class ParticleSystem : public BaseRenderer
+	class ParticleSystem : public BaseRenderer, ComponentType<ParticleSystem>
 	{
 	public:
 		ParticleSystem();

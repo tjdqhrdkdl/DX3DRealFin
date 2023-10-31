@@ -5,6 +5,7 @@ namespace ya
 {
 	Animator::Animator()
 		: Component(eComponentType::Animator)
+		, ComponentType(eComponentType::Animator)
 		, mAnimations{}
 		, mEvents{}
 		, mActiveAnimation(nullptr)

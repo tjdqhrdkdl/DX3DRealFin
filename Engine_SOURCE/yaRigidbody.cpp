@@ -11,7 +11,8 @@
 namespace ya
 {
 	Rigidbody::Rigidbody()
-		:Component(eComponentType::Rigidbody)
+		: Component(eComponentType::Rigidbody)
+		, ComponentType(eComponentType::Rigidbody)
 		, mTransform(nullptr)
 		, mActionScript(nullptr)
 		, mMass(0.6f)

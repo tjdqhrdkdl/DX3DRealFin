@@ -8,6 +8,7 @@ namespace ya
 {
 	Light::Light()
 		: Component(eComponentType::Light)
+		, ComponentType(eComponentType::Light)
 	{
 		renderer::lights.push_back(this);
 	}
@@ -78,7 +79,7 @@ namespace ya
 		material->Bind();
 		mVolumeMesh->Render(0);
 	}
-	void Light::SetType(eLightType type)
+	void Light::SetLightType(eLightType type)
 	{
 		mAttribute.type = type;
 		if (mAttribute.type == eLightType::Directional)

@@ -8,7 +8,7 @@
 using namespace ya::graphics;
 namespace ya
 {
-	class SpriteRenderer : public BaseRenderer
+	class SpriteRenderer : public BaseRenderer, ComponentType<SpriteRenderer>
 	{
 	public:
 		SpriteRenderer();

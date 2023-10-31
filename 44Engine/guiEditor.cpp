@@ -27,7 +27,7 @@ namespace gui
 {
 	void Editor::Initialize()
 	{
-		mEnable = true;
+		mEnable = false;
 
 		if (mEnable == false)
 			return;
@@ -44,6 +44,7 @@ namespace gui
 		renderer->SetMaterial(material, 0);
 
 		std::shared_ptr<ya::Mesh> circleMesh = ya::Resources::Find<ya::Mesh>(L"CircleMesh");
+
 
 		mDebugObjects[(UINT)eColliderType::Circle] = new DebugObject();
 		renderer
@@ -198,7 +199,7 @@ namespace gui
 		else if (mesh.type == eColliderType::Sphere)
 			tr->SetScale(Vector3(mesh.radius));
 
-		ya::BaseRenderer* renderer = debugObj->GetComponent<ya::BaseRenderer>();
+		ya::BaseRenderer* renderer = debugObj->GetRenderer();
 		ya::Camera* camera = ya::renderer::mainCamera;
 
 		tr->FixedUpdate();

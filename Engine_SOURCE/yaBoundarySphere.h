@@ -5,7 +5,7 @@
 namespace ya
 {
 	using namespace math;
-	class BoundarySphere : public Component
+	class BoundarySphere : public Component, ComponentType<BoundarySphere>
 	{
 	public:
 		BoundarySphere();

@@ -10,6 +10,7 @@ namespace ya
 
 	Transform::Transform()
 		: Component(eComponentType::Transform)
+		, ComponentType(eComponentType::Transform)
 		, mForward(Vector3::Forward)
 		, mRight(Vector3::Right)
 		, mUp(Vector3::Up)

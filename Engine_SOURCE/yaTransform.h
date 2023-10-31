@@ -4,7 +4,7 @@
 using namespace ya::math;
 namespace ya
 {
-	class Transform : public Component
+	class Transform : public Component, ComponentType<Transform>
 	{
 	public:
 		Transform();

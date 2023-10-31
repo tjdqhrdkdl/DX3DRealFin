@@ -6,6 +6,7 @@
 namespace ya
 {
 	class Scene;
+	class BaseRenderer;
 	class GameObject : public Entity
 	{
 		
@@ -31,7 +32,7 @@ namespace ya
 		T* AddComponent()
 		{
 			T* comp = new T();
-			eComponentType order = comp->GetOrder();
+			eComponentType order = comp->GetType();
 
 			if (order != eComponentType::Script)
 			{
@@ -40,7 +41,7 @@ namespace ya
 			}
 			else
 			{
-				mScripts.push_back(dynamic_cast<Script*>(comp));
+				mScripts.push_back(reinterpret_cast<Script*>(comp));
 				comp->SetOwner(this);
 			}
 
@@ -50,19 +51,17 @@ namespace ya
 		}
 		void AddComponent(Component* comp);
 
+		Component* GetComponent(eComponentType type);
+		BaseRenderer* GetRenderer();
+
 		template <typename T>
 		T* GetComponent()
 		{
-			T* comp;
-			for (auto c : mComponents)
-			{
-				comp = dynamic_cast<T*>(c);
+			T* comp{};
 
-				if (comp != nullptr)
-					return comp;
-			}
+			eComponentType type = ComponentType<T>::GetTypeT();
 
-			return nullptr;
+			return static_cast<T*>(mComponents[(UINT)type]);
 		}
 		template <typename T>
 		std::vector<T*> GetComponents()
@@ -131,5 +130,12 @@ namespace ya
 
 		bool mbRender;
 	};
+
+	inline Component* GameObject::GetComponent(eComponentType type)
+	{
+		return static_cast<Component*>(mComponents[(UINT)type]);
+	}
+
+
 }
 

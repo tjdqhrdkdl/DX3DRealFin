@@ -7,7 +7,7 @@
 using namespace ya::graphics;
 namespace ya
 {
-	class MeshRenderer : public BaseRenderer
+	class MeshRenderer : public BaseRenderer, ComponentType<MeshRenderer>
 	{
 	public:
 		MeshRenderer();
@@ -18,6 +18,5 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void PrevRender() override;
 		virtual void Render() override;
-
 	};
 }

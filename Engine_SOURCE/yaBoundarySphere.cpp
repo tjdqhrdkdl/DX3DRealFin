@@ -7,6 +7,7 @@ namespace ya
 {
 	BoundarySphere::BoundarySphere() 
 		: Component(eComponentType::BoundarySphere)
+		, ComponentType(eComponentType::BoundarySphere)
 		, mRadius(2.0f)
 		, mCenter(Vector3::Zero)
 	{

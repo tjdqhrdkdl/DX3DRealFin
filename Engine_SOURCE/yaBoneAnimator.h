@@ -10,7 +10,7 @@ namespace ya
 {
 
 	class StructedBuffer;
-	class BoneAnimator : public Component
+	class BoneAnimator : public Component, ComponentType<BoneAnimator>
 	{
 	public:
 

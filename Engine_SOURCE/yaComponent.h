@@ -18,13 +18,35 @@ namespace ya
 		virtual void PrevRender() {};
 		virtual void Render() = 0;
 
-		eComponentType GetOrder() { return mType; };
-
+		eComponentType GetType() { return mType; }
 		GameObject* GetOwner() { return mOwner; }
 		void SetOwner(GameObject* owner) { mOwner = owner; }
 
 	private:
-		const eComponentType mType;
+		eComponentType mType;
 		GameObject* mOwner;
 	};
+
+	template <typename T>
+	class ComponentType
+	{
+	public:
+		explicit ComponentType(eComponentType type);
+		virtual ~ComponentType() = default;
+
+		static eComponentType GetTypeT() { return _componentType; }
+
+	private:
+		static eComponentType _componentType;
+	};
+
+	template <typename T>
+	eComponentType ComponentType<T>::_componentType = eComponentType::End;
+
+	template <typename T>
+	ComponentType<T>::ComponentType(eComponentType type)
+	{
+		if (_componentType == eComponentType::End)
+			_componentType = type;
+	}
 }

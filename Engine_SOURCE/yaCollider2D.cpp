@@ -8,6 +8,7 @@ namespace ya
 	UINT Collider2D::ColliderNumber = 0;
 	Collider2D::Collider2D()
 		: Component(eComponentType::Collider)
+		, ComponentType(eComponentType::Collider)
 		, mType(eColliderType::None)
 		, mTransform(nullptr)
 		, mSize(Vector3::One)

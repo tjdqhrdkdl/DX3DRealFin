@@ -11,6 +11,7 @@ namespace ya
 {
 	BoneAnimator::BoneAnimator()
 		: Component(eComponentType::BoneAnimator)
+		, ComponentType(eComponentType::BoneAnimator)
 		, mBones{}
 		, mAnimationClips{}
 		, mAnimationUpdateTime(0)

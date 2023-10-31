@@ -4,7 +4,7 @@
 namespace ya
 {
 	using namespace math;
-	class Camera : public Component
+	class Camera : public Component, ComponentType<Camera>
 	{
 	public:
 		enum eProjectionType

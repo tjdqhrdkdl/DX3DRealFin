@@ -5,7 +5,7 @@
 
 namespace ya
 {
-	class Light : public Component
+	class Light : public Component, ComponentType<Light>
 	{
 	public:
 		Light();
@@ -15,7 +15,7 @@ namespace ya
 		virtual void Update() override;
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
-		void SetType(eLightType type);
+		void SetLightType(eLightType type);
 
 		graphics::LightAttribute GetLightAttribute() { return mAttribute; }
 
@@ -27,7 +27,7 @@ namespace ya
 		
 
 		Vector4 GetDiffuse() { mAttribute.diffuse; }
-		eLightType GetType() { return (eLightType)mAttribute.type; }
+		eLightType GetLightType() { return (eLightType)mAttribute.type; }
 		float GetRadius() { mAttribute.radius; }
 		float GetAngle() { mAttribute.angle; }
 		void SetIndex(UINT idx) { mIndex = idx; }

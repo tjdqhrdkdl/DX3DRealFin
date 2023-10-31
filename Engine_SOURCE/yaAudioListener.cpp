@@ -7,6 +7,7 @@ namespace ya
 {
 	AudioListener::AudioListener()
 		: Component(eComponentType::AudioListener)
+		, ComponentType(eComponentType::AudioListener)
 	{
 
 	}

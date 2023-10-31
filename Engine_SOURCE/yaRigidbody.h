@@ -7,7 +7,7 @@ namespace ya
 
 	class WallCheckObject;
 
-	class Rigidbody : public Component
+	class Rigidbody : public Component, ComponentType<Rigidbody>
 	{
 	public:
 		Rigidbody();

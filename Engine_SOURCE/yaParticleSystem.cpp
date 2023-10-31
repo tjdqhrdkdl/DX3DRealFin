@@ -14,6 +14,7 @@ namespace ya
 {
 	ParticleSystem::ParticleSystem()
 		: BaseRenderer(eComponentType::ParticleSystem)
+		, ComponentType(eComponentType::ParticleSystem)
 		, mMaxParticles(1020)
 		, mStartSize(Vector4(.1f, .1f, 0.1f, 1.0f))
 		, mStartColor(Vector4(1.0f, 0.4f, 0.f, 1.0f))

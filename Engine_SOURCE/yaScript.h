@@ -4,7 +4,7 @@
 
 namespace ya
 {
-	class Script : public Component
+	class Script : public Component, ComponentType<Script>
 	{
 	public:
 		Script();

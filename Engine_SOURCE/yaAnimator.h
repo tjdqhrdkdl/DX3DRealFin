@@ -4,7 +4,7 @@
 
 namespace ya
 {
-	class Animator : public Component
+	class Animator : public Component, ComponentType<Animator>
 	{
 	public:
 		struct Events
