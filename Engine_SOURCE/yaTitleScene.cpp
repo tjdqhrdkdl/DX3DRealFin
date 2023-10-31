@@ -13,14 +13,15 @@
 #include "yaSpriteRenderer.h"
 #include "yaMeshRenderer.h"
 #include "yaGridScript.h"
-
+#include "yaAudioListener.h"
+#include "yaAudioClip.h"
 
 namespace ya
 {
 	TitleScene::TitleScene()
 		: Scene(eSceneType::Title)
 	{
-		
+
 	}
 
 	TitleScene::~TitleScene()
@@ -35,8 +36,13 @@ namespace ya
 		cameraComp->DisableLayerMasks();
 		cameraComp->TurnLayerMask(eLayerType::UI, true);
 		cameraObj->AddComponent<CameraScript>();
+		cameraObj->AddComponent<AudioListener>();
 
+		std::shared_ptr<AudioClip> bgm = Resources::Load<AudioClip>(L"TitleBGM", L"..\\Resources\\Sound\\bgm\\01. Sekiro, the One Armed Wolf.mp3");
+		bgm->SetLoop(true);
+		bgm->Play();
 		{
+
 			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::None, this);
 			directionalLight->SetName(L"Title_directionalLight");
 
@@ -145,6 +151,7 @@ namespace ya
 
 	void TitleScene::OnExit()
 	{
+		Resources::Find<AudioClip>(L"TitleBGM")->Stop();
 
 	}
 
