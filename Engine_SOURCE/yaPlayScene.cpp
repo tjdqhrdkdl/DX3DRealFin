@@ -202,10 +202,10 @@ namespace ya
 		}
 
 		{
-			/*MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
 			Transform* objTransform = obj->GetComponent<Transform>();
 			objTransform->SetPosition(-85.f, 35.f, 130.f);
-			objTransform->SetRotation(-90.f, 0.f, 0.f);*/
+			objTransform->SetRotation(-90.f, 0.f, 0.f);
 		}
 		{
 			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::None, this);
@@ -225,24 +225,25 @@ namespace ya
 
 		// 1
 		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(180.0f, -33.0f, 70.0f)));		// 싸움
-		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(169.0f, -31.0f, 65.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
+		//mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(169.0f, -31.0f, 65.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
 		
 		// 2
-		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(150.0f, -22.0f, 25.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
-		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(128.0f, -21.0f, 33.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(128.0f, -21.0f, 33.0f), Vector3(0.0f, 30.0f, 0.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(109.0f, -21.0f, 9.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
 
 		// 3
-		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(105.0f, -22.0f, 18.0f)));
 		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(86.0f, -15.0f, 12.0f)));
-		mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(85.0f, -28.0f, 9.0f)));
-		mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(74.0f, -9.0f, 9.0f)));
-		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(45.0f, -6.0f, -2.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(64.0f, -9.0f, -9.0f)));
+		mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(78.0f, -15.0f, -4.0f)));
+		//mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(74.0f, -9.0f, 9.0f)));
+		//mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(45.0f, -6.0f, -2.0f)));
 
 		// 4
-		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(25.0f, 4.0f, 138.0f)));
-		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-8.0f, -2.0f, -7.0f)));
-		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(-1.0f, -6.0f, 39.0f)));
-		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(6.0f, 8.0f, -2.0f)));
+		//mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-8.0f, -2.0f, -7.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(18.f, -4.0f, -11.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(6.0f, 8.0f, -2.0f)));
+		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(1.0f, -4.0f, -15.0f)));
+
 
 
 		Scene::Initialize();
