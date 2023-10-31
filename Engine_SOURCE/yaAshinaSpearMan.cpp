@@ -411,6 +411,13 @@ namespace ya
 								SetAlertnessCount(alert + 20 * Time::DeltaTime());
 							else if (dist < 12)
 								SetAlertnessCount(alert + 10 * Time::DeltaTime());
+							else
+							{
+								alert -= 10 * Time::DeltaTime();
+								if (alert < 0)
+									alert = 0;
+								SetAlertnessCount(alert);
+							}
 						}
 						else
 						{
@@ -429,16 +436,17 @@ namespace ya
 							SetAlertnessCount(alert + 50 * Time::DeltaTime());
 						else if (dist < 18)
 							SetAlertnessCount(alert + 20 * Time::DeltaTime());
+						else
+						{
+							alert -= 10 * Time::DeltaTime();
+							if (alert < 0)
+								alert = 0;
+							SetAlertnessCount(alert);
+						}
 					}
 
 				}
-				else
-				{
-					float alert = GetAlertnessCount() - 10 * Time::DeltaTime();
-					if (alert < 0)
-						alert = 0;
-					SetAlertnessCount(alert);
-				}
+
 				if (GetAlertnessCount() > 100)
 				{
 					mPlayerLastPosition = GetPlayerPos();
@@ -487,7 +495,7 @@ namespace ya
 				}
 				else if (cosTheta > AshinaSpearManEyeSightAngleCos && dist < 12)
 				{
-					mActionScript->Velocity(18);
+					mActionScript->Velocity(10);
 					ADD_STATE(MonsterState_Recognize);
 					Resources::Find<AudioClip>(L"recognize_sound")->Play();
 					Resources::Find<AudioClip>(L"ashinasoldier_v_recognize")->Play();
@@ -1045,13 +1053,15 @@ namespace ya
 					//막기 상태지만 뒤를 맞는 상황
 					else
 					{
-						SetHp(GetHP() - 5);
+						SetHp(GetHP() - 20);
 
 						if (!(STATE_HAVE(MonsterState_SuperArmor)))
 						{
 							ADD_STATE(MonsterState_OnHit);
 							RM_STATE(MonsterState_OnHitFront);
 						}
+						SetPosture(GetPosture() + 20);
+
 					}
 
 
@@ -1084,13 +1094,13 @@ namespace ya
 					float theta = rot.ToEuler().y;
 					theta *= 180.f / XM_PI;
 
-					SetHp(GetHP() - 5);
+					SetHp(GetHP() - 20);
 					//체간 깎기
 
 					if (GetHP() == 0)
 						SetPosture(GetPostureMax());
 					else
-						SetPosture(GetPosture() + 10);
+						SetPosture(GetPosture() + 30);
 
 
 					if (!(STATE_HAVE(MonsterState_SuperArmor)))

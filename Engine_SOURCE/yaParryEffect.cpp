@@ -14,7 +14,7 @@
 namespace ya
 {
 	ParryEffect::ParryEffect()
-		:mRenderTime((float)0.5)
+		:mRenderTime((float)0.75)
 		, mRenderTimeChecker(0)
 		, mbRender(false)
 	{
@@ -47,7 +47,7 @@ namespace ya
 			mAnimator->Create(L"Parry", parryTexture, Vector2(0, 0), Vector2(256, 256), Vector2(0, 0), 1, 1, 0.05f);
 			mAnimator->Play(L"Parry", false);
 			Transform* hptr = mMainUI->GetComponent<Transform>();
-			hptr->SetScale(Vector3(1000, 1000, 50.0f));
+			hptr->SetScale(Vector3(1500, 1500, 50.0f));
 
 			hptr->SetParent(UITr);
 			//MeshRenderer* meshRenderer = mMainUI->AddComponent<MeshRenderer>();
@@ -68,7 +68,7 @@ namespace ya
 			mAnimator2->Create(L"Parry2", parryTexture, Vector2(0, 0), Vector2(256, 256), Vector2(0, 0), 1, 1, 0.05f);
 			mAnimator2->Play(L"Parry2", false);
 			Transform* hptr = mEffectUI->GetComponent<Transform>();
-			hptr->SetScale(Vector3(1000, 1000, 50.0f));
+			hptr->SetScale(Vector3(1500, 1500, 50.0f));
 
 			hptr->SetParent(UITr);
 		}
@@ -119,8 +119,8 @@ namespace ya
 					mMainUI->SetRender(false);
 					return;
 				}
-				mMainUI->GetComponent<Transform>()->SetScale(Vector3(80 + 1000 * mRenderTimeChecker));
-				mEffectUI->GetComponent<Transform>()->SetScale(Vector3(50 + 800 * mRenderTimeChecker));
+				mMainUI->GetComponent<Transform>()->SetScale(Vector3(150 + 1400 * mRenderTimeChecker));
+				mEffectUI->GetComponent<Transform>()->SetScale(Vector3(100 + 1100 * mRenderTimeChecker));
 				//ui 전체 포지션 값
 				Matrix world = mPlayer->GetComponent<Transform>()->GetWorldMatrix();
 				world._42 += 0.9;

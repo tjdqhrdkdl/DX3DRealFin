@@ -374,6 +374,13 @@ namespace ya
 								SetAlertnessCount(alert + 20 * Time::DeltaTime());
 							else if (dist < 12)
 								SetAlertnessCount(alert + 10 * Time::DeltaTime());
+							else
+							{
+								alert -= 10 * Time::DeltaTime();
+								if (alert < 0)
+									alert = 0;
+								SetAlertnessCount(alert);
+							}
 						}
 						else
 						{
@@ -383,6 +390,7 @@ namespace ya
 							SetAlertnessCount(alert);
 						}
 					}
+
 					else
 					{
 						if (dist < 6)
@@ -391,15 +399,15 @@ namespace ya
 							SetAlertnessCount(alert + 50 * Time::DeltaTime());
 						else if (dist < 18)
 							SetAlertnessCount(alert + 20 * Time::DeltaTime());
+						else
+						{
+							alert -= 10 * Time::DeltaTime();
+							if (alert < 0)
+								alert = 0;
+							SetAlertnessCount(alert);
+						}
 					}
-				}
 
-				else
-				{
-					float alert = GetAlertnessCount() - 10 * Time::DeltaTime();
-					if (alert  < 0)
-						alert = 0;
-					SetAlertnessCount(alert);
 				}
 				if (GetAlertnessCount() > 100)
 				{
@@ -449,13 +457,15 @@ namespace ya
 				}
 				else if (cosTheta > eyeSightAngleCos && dist < 12)
 				{
-					mActionScript->Velocity(18);
+					mActionScript->Velocity(10);
 					ADD_STATE(MonsterState_Recognize);
 					Resources::Find<AudioClip>(L"recognize_sound")->Play();
 					Resources::Find<AudioClip>(L"tenzen_v_recognize")->Play();
 					mbNavOn = false;
 					SetAlertnessCount(0);
-
+					Vector3 dir = mPlayerObject->GetComponent<Transform>()->GetPosition() - mTransform->GetPosition();
+					dir.Normalize();
+					RotateForwardTo(dir);
 				}
 			}
 		}
@@ -757,6 +767,8 @@ namespace ya
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_4", 32) = [this]() { RM_STATE(MonsterState_Move);  RM_STATE(MonsterState_LookAt); };
 
 		// 못막는 공격, 찌르기. 전진
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 10) = std::bind(&Tenzen::AttackSoundEvent, this);
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 21) = std::bind(&Tenzen::AttackSwingSoundEvent, this);
 
@@ -767,7 +779,7 @@ namespace ya
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_5", 60) = [this]() { RM_STATE(MonsterState_Move); SetSpeed(tenzenBaseSpeed);  };
 
 		// 양옆으로 휘두르기, 2회 연속공격, 2회전진
-		//mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
+		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 1) = [this]() {ADD_STATE(MonsterState_SuperArmor); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 3) = [this]() { mMoveDir = mTransform->Forward(); ADD_STATE(MonsterState_Move); RM_STATE(MonsterState_LookAt); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 12) = [this]() { RM_STATE(MonsterState_Move); };
 		mMeshData->GetAnimationFrameEvent(L"SwordAttack_6", 40) = [this]() { ADD_STATE(MonsterState_Move); };
@@ -830,8 +842,8 @@ namespace ya
 
 		mMeshData->GetAnimationStartEvent(L"BlockedLeft") = [this]() { ADD_STATE(MonsterState_AttackBlocked); };
 		mMeshData->GetAnimationStartEvent(L"BlockedRight") = [this]() { ADD_STATE(MonsterState_AttackBlocked); };
-		mMeshData->GetAnimationFrameEvent(L"BlockedLeft", 28) = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationFrameEvent(L"BlockedRight", 28) = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationFrameEvent(L"BlockedLeft", 20) = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationFrameEvent(L"BlockedRight", 20) = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"BlockedLeft") = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"BlockedRight") = [this]() { RM_STATE(MonsterState_AttackBlocked); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 
@@ -1056,6 +1068,8 @@ namespace ya
 							ADD_STATE(MonsterState_OnHit);
 							RM_STATE(MonsterState_OnHitFront);
 						}
+						SetPosture(GetPosture() + 5);
+
 					}
 
 

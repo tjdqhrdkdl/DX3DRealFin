@@ -67,7 +67,6 @@ namespace ya
 
         float mAlertTime;
         float mAlertTimeChecker;
-        Vector3 mPlayerLastPosition;
 
         Vector3 mMoveDir;
         bool mbAnimReset;

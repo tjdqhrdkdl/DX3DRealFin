@@ -80,7 +80,7 @@ namespace ya
 
 
 			}
-			if (i % 12 == 0)
+			if (i % 9 == 0)
 			{
 				particles[i].velocity = Vector4((float)(((float)rand() / (float)RAND_MAX) * 20 - 10)
 					, (float)((float)(rand() / (float)RAND_MAX) * 8)
@@ -90,7 +90,7 @@ namespace ya
 
 
 			}
-			else if (i%12 == 1 || i%12 == 2)
+			else if (i%9 == 1 || i%9 == 2)
 			{
 				particles[i].velocity = particles[i - 1].velocity;
 				particles[i].bGravity = true;
@@ -131,7 +131,7 @@ namespace ya
 			UINT iAliveCount = (UINT)f;
 			mTime = f - std::floor(f);
 
-			ParticleShared shared = { 100, };
+			ParticleShared shared = { 200, };
 			mSharedBuffer->SetData(&shared, 1);
 		}
 		else

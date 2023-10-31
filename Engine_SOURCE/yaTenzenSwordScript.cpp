@@ -58,7 +58,7 @@ namespace ya
 
 							tenzen->ParryEffectOn();
 							//체간 게이지 영향
-							tenzen->SetPosture(tenzen->GetPosture() + 7);
+							tenzen->SetPosture(tenzen->GetPosture() + 15);
 						}
 						//그냥 막힘
 						else
