@@ -110,26 +110,27 @@ namespace ya
 		AddWallCollider(Vector3(-11.40, -1.570, 8.8553), Vector3(0, 83.3073, 0), Vector3(13.764, 33.406, 0.1));
 		AddWallCollider(Vector3(25.412, -1.570, 3.8106), Vector3(0, 87.8189, 0), Vector3(14.962, 6.4707, 0.1));
 
-		AddGroundCollider(Vector3(25.412, -1.570, 3.8106), Vector3(0, 0, 0), Vector3(14.962, 6.4707, 2));
+		AddGroundCollider(Vector3(25.412, -1.570, 3.8106), Vector3(0, 0, 0), Vector3(14.962, 6.4707, 2));  //
 		AddGroundCollider(Vector3(-12.94, -7.8619, -3.965), Vector3(0, -4.857, 0), Vector3(13.654, 10, 20.000));
 		AddGroundCollider(Vector3(-7.844, -7.8619, -25.73), Vector3(0, -4.857, 0), Vector3(8.7088, 10, 24.145));		
 
-		AddGroundCollider(Vector3(7.0110, -10.141, 2.869), Vector3(-25.240, -4.8569, 0.0000), Vector3(5.7693, 10.000, 8.9416));
-		AddGroundCollider(Vector3(1.7148, -9.7413, 0.620), Vector3(-16.19, 16.189, -26.04), Vector3(5.769, 10.00, 6.281));
-		AddGroundCollider(Vector3(14.184, -9.5674, 1.838), Vector3(-15.468, -0.9376, 14.728), Vector3(6.2864, 10.000, 6.7889));
+		AddGroundCollider(Vector3(7.011, -11.000, -3.500), Vector3(-18.000, -4.8569, 0.0000), Vector3(10.000, 10.000, 20.000)); // 14
+		AddGroundCollider(Vector3(0.000, -9.000, 0.5), Vector3(0, -4.000, -25.000), Vector3(7.400, 10.00, 8.000));
+		AddGroundCollider(Vector3(14.184, -9.300, 1.500), Vector3(-5.000, 0.000, 20.000), Vector3(7.000, 10.000, 8.000));
 
-		AddGroundCollider(Vector3( -3.91,-7.8618, 1.7890), Vector3(0.0000, -4.8569, 0.0000), Vector3(5.2156, 10.000, 10.446));
-		AddGroundCollider(Vector3( 9.097,-7.9458, 7.9865), Vector3(-10.76, -4.856,  0.0000), Vector3(21.865, 10.00 , 3.612 ));
-		AddGroundCollider(Vector3( -0.41,-8.8318, 1.0564), Vector3(1.9803, 16.7396, 0.0000), Vector3(2.8238, 10.000, 7.8979));
+		AddGroundCollider(Vector3( -3.91,-7.8618, 1.7890), Vector3(0.0000, -4.8569, 0.0000), Vector3(5.2156, 10.000, 10.446)); // 17
+		AddGroundCollider(Vector3( 9.097,-7.9458, 6.500), Vector3(0, -4.856,  0.0000), Vector3(21.865, 10.00 , 4.000));
+		//AddGroundCollider(Vector3( -0.41,-8.8318, 1.0564), Vector3(1.9803, 16.7396, 0.0000), Vector3(2.8238, 10.000, 7.8979));
 
-		//AddGroundCollider(Vector3( 23.041,-8.1637,  2.411), Vector3(-1.300, -1.994, -2.11), Vector3(13.70, 10.00, 7.897));
+		AddGroundCollider(Vector3( 23.041,-8.000,  2.411), Vector3(0, -1.994, 0), Vector3(15.000, 10.00, 10.000)); // 20
 		//AddGroundCollider(Vector3(30.961, -12.318, -27.50), Vector3(6.142, -4.812, -1.26), Vector3(6.244, 10.00, 10.54));
-		AddGroundCollider(Vector3(10.000, -11.000, -20.000), Vector3( 0, -0, -0), Vector3(60.000, 4, 60.000));
+		AddGroundCollider(Vector3(10.000, -10.000, -20.000), Vector3( 0, -0, -0), Vector3(60.000, 4, 60.000));
 
 		//AddGroundCollider(Vector3(0.6593, -18.362, -29.20), Vector3( 3.6196, 16.739, -3.2266), Vector3(16.527,19.95, 15.76));
-		//AddGroundCollider(Vector3(8.0972, -17.122, -3.019), Vector3( -15.39, -3.516,  0.6036), Vector3(6.2035,19.95, 13.54));
-		//AddGroundCollider(Vector3(11.941, -17.846, -4.172), Vector3( -10.24, 1.2749, -11.777), Vector3(6.2035,19.95, 8.302));
-		//AddGroundCollider(Vector3(5.5235, -17.869, -5.665), Vector3( -13.64, -10.93,  10.616), Vector3(6.2035,19.95, 8.302));
+		//AddGroundCollider(Vector3(8.0972, -17.122, -3.019), Vector3( -15.39, -3.516,  0.6036), Vector3(6.2035,19.95, 13.54)); 쓰렉
+		AddGroundCollider(Vector3(2.500, -10.700, -5.665), Vector3(-16.000, 5.000, 30.000), Vector3(4.000, 7.000, 8.302));
+		AddGroundCollider(Vector3(14.000, -9.800, -4.172), Vector3(-20.000, -12.000, -25.000), Vector3(6.203, 5.000, 8.302));
+		AddGroundCollider(Vector3(14.000, -9.800, -4.172), Vector3(-20.000, -12.000, -25.000), Vector3(6.203, 5.000, 8.302));
 		//AddGroundCollider(Vector3(27.926, -18.105, -27.11), Vector3( 5.3689, -6.045,  5.8809), Vector3(12.215,19.95, 11.89));
 		//은혜
 		mWalkerName = L"JU";
