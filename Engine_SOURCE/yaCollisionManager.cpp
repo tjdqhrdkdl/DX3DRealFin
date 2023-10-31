@@ -500,7 +500,10 @@ namespace ya
 				continue;
 
 			if (dist < distMin)
-				distMin = dist; colObj = obj;
+			{
+				distMin = dist;
+				colObj = obj;
+			}
 		}
 		return DistAndObj(distMin, colObj);
 
