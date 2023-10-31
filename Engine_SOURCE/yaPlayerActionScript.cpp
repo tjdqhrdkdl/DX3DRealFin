@@ -669,17 +669,13 @@ namespace ya
 				}
 				else
 				{
-					if (abs(theta) > mFrontTheta)
-					{	// 진행하려는 방향과 각도 차이가 날때 회전시킨다.
+					if (abs(theta) > mFrontTheta) // 진행하려는 방향과 각도 차이가 날때 회전시킨다.
 						mbRotate = true;
-					}
+
+					if (mbDash)
+						Move(cameraForward, mDashSpeed);
 					else
-					{	// 진행하려는 방향과 각도 차이가 없으면 player의 forward 방향으로 이동시킨다.
-						if (mbDash)
-							Move(mTransform->Forward(), mDashSpeed);
-						else
-							Move(mTransform->Forward());
-					}
+						Move(cameraForward);
 
 					mLastDir = eDirection::Forward;
 				}
@@ -694,16 +690,12 @@ namespace ya
 				else
 				{
 					if (abs(theta) > mFrontTheta)
-					{
 						mbRotate = true;
-					}
+
+					if (mbDash)
+						Move(-cameraForward, mDashSpeed);
 					else
-					{
-						if (mbDash)
-							Move(mTransform->Forward(), mDashSpeed);
-						else
-							Move(mTransform->Forward());
-					}
+						Move(-cameraForward);
 
 					mLastDir = eDirection::Back;
 				}
@@ -717,19 +709,15 @@ namespace ya
 				}
 				else
 				{
-					mLastDir = eDirection::Right;
-
 					if (abs(theta) > mFrontTheta)
-					{
 						mbRotate = true;
-					}
+
+					if (mbDash)
+						Move(cameraRight, mDashSpeed);
 					else
-					{
-						if (mbDash)
-							Move(mTransform->Forward(), mDashSpeed);
-						else
-							Move(mTransform->Forward());
-					}
+						Move(cameraRight);
+
+					mLastDir = eDirection::Right;
 				}
 			}
 			if (Input::GetKey(eKeyCode::A))
@@ -740,19 +728,15 @@ namespace ya
 				}
 				else
 				{
-					mLastDir = eDirection::Left;
-
 					if (abs(theta) > mFrontTheta)
-					{
 						mbRotate = true;
-					}
+
+					if (mbDash)
+						Move(-cameraRight, mDashSpeed);
 					else
-					{
-						if (mbDash)
-							Move(mTransform->Forward(), mDashSpeed);
-						else
-							Move(mTransform->Forward());
-					}
+						Move(-cameraRight);
+
+					mLastDir = eDirection::Left;
 				}
 			}
 		}
