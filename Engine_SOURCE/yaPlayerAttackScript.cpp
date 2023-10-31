@@ -38,7 +38,7 @@ namespace ya
 		, mPlayerAnim(nullptr)
 		, mAttackState(eAttackState::None)
 		, mTimer{ 0.0f }
-		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.2f, 3.0f }
+		, mTimerMax{ 0.0f,  0.8f, 0.8f, 0.8f, 0.8f, 0.8f,  0.5f, 0.5f, 0.5f,  0.8f, 0.8f,  0.8f,  0.4f, 0.15f, 3.0f }
 		, mbKeyInput(false)
 		, mHitDirection(Vector3::Zero)
 		, mDeathBlowTarget(nullptr)
@@ -812,7 +812,8 @@ namespace ya
 			else
 			{
 				mPlayer->SetStateFlag(ePlayerState::Hit, true); // 경직상태
-				mAttackState = eAttackState::HitMove;
+				//mAttackState = eAttackState::HitMove;
+				mAttackState = eAttackState::None;
 
 				if (attackParam.damage > 50.0f)
 				{
@@ -836,7 +837,7 @@ namespace ya
 
 						// 피격 당했을때 밀려나는 로직
 						if (mTimer[(UINT)eAttackState::HitMove] <= 0.0f)
-							mTimer[(UINT)eAttackState::HitMove] = 0.4f;
+							mTimer[(UINT)eAttackState::HitMove] = 0.3f;
 
 						mPlayer->GetState()->AddPosture(50.0f);
 					}
