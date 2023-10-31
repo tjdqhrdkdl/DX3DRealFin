@@ -38,9 +38,9 @@ namespace ya
 		SetName(L"Player");
 
 		Transform* tr = GetComponent<Transform>();
-		Vector3 pos = Vector3(190.f, -28.6f, 88.0f);
-
+		Vector3 pos = Vector3(190.0f, -28.0f, 86.0f);
 		tr->SetPosition(pos);
+		tr->SetRotation(Vector3(0.0f, -150.0f, 0.0f));
 		//tr->SetScale(Vector3(0.4f, 0.4f, 0.4f));
 
 		/*MeshRenderer* mr = player->AddComponent<MeshRenderer>();
@@ -293,5 +293,4 @@ namespace ya
 		Transform* tr = mParticleObject->GetComponent<Transform>();
 		tr->SetPosition(GetComponent<Transform>()->GetPosition() + GetComponent<Transform>()->Forward());
 	}
-
 }
