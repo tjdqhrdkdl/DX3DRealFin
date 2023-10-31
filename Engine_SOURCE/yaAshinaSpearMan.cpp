@@ -355,7 +355,7 @@ namespace ya
 
 		GetComponent<Transform>()->SetPosition(GetPlayerPos() + mPlayerObject->GetComponent<Transform>()->Forward()
 			* (mPlayerObject->GetComponent<Transform>()->GetFinalScale().z / 2
-				+ GetComponent<Transform>()->GetFinalScale().z / 2));
+				+ GetComponent<Transform>()->GetFinalScale().z / 2 + 0.5));
 		SetPosture(0);
 		SetResurrectionCount(GetResurrectionCount() - 1);
 		RM_STATE(MonsterState_Move);
@@ -446,7 +446,13 @@ namespace ya
 					}
 
 				}
-
+				else
+				{
+					float alert = GetAlertnessCount() - 10 * Time::DeltaTime();
+					if (alert < 0)
+						alert = 0;
+					SetAlertnessCount(alert);
+				}
 				if (GetAlertnessCount() > 100)
 				{
 					mPlayerLastPosition = GetPlayerPos();
@@ -500,7 +506,7 @@ namespace ya
 					Resources::Find<AudioClip>(L"recognize_sound")->Play();
 					Resources::Find<AudioClip>(L"ashinasoldier_v_recognize")->Play();
 					mbNavOn = false;
-
+					ADD_STATE(MonsterState_LookAt);
 				}
 			}
 		}
@@ -830,8 +836,8 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"HitBack") = [this]() { Resources::Find<AudioClip>(L"ashinasoldier_v_hit")->Play(); ADD_STATE(MonsterState_OnHit); mbMoveForward = false; ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward(); };
 
 
-		mMeshData->GetAnimationEndEvent(L"Spear_GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); SetPosture(80); SetDeathBlow(false); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); };
-		mMeshData->GetAnimationStartEvent(L"Spear_GrogyDownParried") = [this]() { SetDeathBlow(true); RM_STATE(MonsterState_Guard); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) - (float)0.2 * mPlayerObject->GetComponent<Transform>()->Right()); mCamScript->SetCameraZoomDistance(1.5); };
+		mMeshData->GetAnimationEndEvent(L"Spear_GrogyDownParried") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy);/* SetPosture(80); SetDeathBlow(false); mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) + Vector3(0, 0.5, 0)); mCamScript->SetCameraZoomDistance(3.5); */};
+		mMeshData->GetAnimationStartEvent(L"Spear_GrogyDownParried") = [this]() { SetDeathBlow(true); RM_STATE(MonsterState_Guard); /*mCamScript->SetDestinationDir(-(mPlayerObject->GetComponent<Transform>()->Forward()) - (float)0.2 * mPlayerObject->GetComponent<Transform>()->Right()); mCamScript->SetCameraZoomDistance(1.5);*/ };
 		mMeshData->GetAnimationFrameEvent(L"Spear_GrogyDownParried", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
 
 		mMeshData->GetAnimationEndEvent(L"DeathBlow1") = [this]() { RM_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Recognize); SetPosture(0); SetHp(GetMaxHP()); mMonsterUI->UIOn(); };

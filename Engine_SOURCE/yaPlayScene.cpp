@@ -251,8 +251,10 @@ namespace ya
 
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		//mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(10.0f, 0.0f, 10.0f)));
+		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(173.6f, -36.0f, 66.0f)));/*
 		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(173.6f, -36.0f, 66.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(138.5f, -32.0f, 35.0f)));
+		mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(136.1f, -23.5f, 47.5f)));*/
 
 		Scene::Initialize();
 	}

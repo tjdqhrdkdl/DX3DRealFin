@@ -409,6 +409,13 @@ namespace ya
 					}
 
 				}
+				else
+				{
+					float alert = GetAlertnessCount() - 10 * Time::DeltaTime();
+					if (alert < 0)
+						alert = 0;
+					SetAlertnessCount(alert);
+				}
 				if (GetAlertnessCount() > 100)
 				{
 					mPlayerLastPosition = GetPlayerPos();
@@ -466,6 +473,7 @@ namespace ya
 					Vector3 dir = mPlayerObject->GetComponent<Transform>()->GetPosition() - mTransform->GetPosition();
 					dir.Normalize();
 					RotateForwardTo(dir);
+					ADD_STATE(MonsterState_LookAt);
 				}
 			}
 		}
@@ -831,8 +839,8 @@ namespace ya
 		mMeshData->GetAnimationEndEvent(L"SwordAttack_7") = std::bind(&Tenzen::AttackEndEvent, this);
 		mMeshData->GetAnimationEndEvent(L"Defense") = std::bind(&Tenzen::DefenseEndEvent, this);
 
-		mMeshData->GetAnimationFrameEvent(L"GuardLeft", 27) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
-		mMeshData->GetAnimationFrameEvent(L"GuardRight", 27) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationFrameEvent(L"GuardLeft",18) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
+		mMeshData->GetAnimationFrameEvent(L"GuardRight", 18) = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"GuardLeft") = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationEndEvent(L"GuardRight") = [this]() { RM_STATE(MonsterState_GuardSuccess); mMeshData->GetAnimator()->SetAnimationChangeTime(0.2f); };
 		mMeshData->GetAnimationStartEvent(L"GuardLeft") = [this]() { ADD_STATE(MonsterState_GuardSuccess); };
@@ -868,7 +876,7 @@ namespace ya
 		mMeshData->GetAnimationStartEvent(L"Hit2") = [this]() { Resources::Find<AudioClip>(L"tenzen_v_hit")->Play(); ADD_STATE(MonsterState_OnHit); ADD_STATE(MonsterState_Move); mMoveDir = -mTransform->Forward();  };
 
 
-		mMeshData->GetAnimationEndEvent(L"GrogyDownFront") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); SetPosture(80); SetDeathBlow(false); };
+		mMeshData->GetAnimationEndEvent(L"GrogyDownFront") = [this]() { RM_STATE(MonsterState_OnHit); RM_STATE(MonsterState_Groggy); /*SetPosture(80); SetDeathBlow(false);*/ };
 		mMeshData->GetAnimationStartEvent(L"GrogyDownFront") = [this]() { SetDeathBlow(true); RM_STATE(MonsterState_Guard); };
 		mMeshData->GetAnimationFrameEvent(L"GrogyDownFront", 70) = [this]() { SetDeathBlow(false); SetPosture(80); };
 
