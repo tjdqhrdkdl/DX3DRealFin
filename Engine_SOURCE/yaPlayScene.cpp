@@ -222,6 +222,7 @@ namespace ya
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
 
+
 		// 1
 		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(180.0f, -33.0f, 70.0f)));		// 싸움
 		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(169.0f, -31.0f, 65.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
@@ -242,6 +243,7 @@ namespace ya
 		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-8.0f, -2.0f, -7.0f)));
 		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(-1.0f, -6.0f, 39.0f)));
 		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(6.0f, 8.0f, -2.0f)));
+
 
 		Scene::Initialize();
 	}
