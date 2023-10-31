@@ -11,6 +11,10 @@ extern ya::Application application;
 
 namespace ya::renderer
 {
+	bool bEnableDebugRender = true;
+
+
+
 	Vertex vertexes[4] = {};
 	ConstantBuffer* constantBuffers[(UINT)eCBType::End] = {};
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerStates[(UINT)eSamplerType::End] = {};
@@ -31,6 +35,8 @@ namespace ya::renderer
 	std::shared_ptr<Texture> postProcessTexture = nullptr;
 
 	ya::GameObject* inspectorGameObject = nullptr;
+
+	
 
 	void LoadMesh()
 	{

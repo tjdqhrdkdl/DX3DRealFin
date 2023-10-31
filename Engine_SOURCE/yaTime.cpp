@@ -28,11 +28,25 @@ namespace ya
             = static_cast<float>((mCurFrequency.QuadPart - mPrevFrequency.QuadPart));
 
         mDeltaTime = differenceInFrequancy / static_cast<float>(mCpuFrequency.QuadPart);
+
         if (mDeltaTime > 0.5f)
         {
             constexpr float fps30 = 1.f / 30.f;
             mDeltaTime = fps30;
         }
+
+#pragma region DEBUG
+        
+        //constexpr float waitTime = 0.1f;
+        //if (mDeltaTime < waitTime)
+        //{
+        //    DWORD wait = static_cast<DWORD>((waitTime - mDeltaTime) * 1000.f);
+        //    Sleep(wait);
+        //    mDeltaTime = waitTime;
+        //}
+
+
+#pragma endregion DEBUG
 
 
         mPrevFrequency.QuadPart = mCurFrequency.QuadPart;

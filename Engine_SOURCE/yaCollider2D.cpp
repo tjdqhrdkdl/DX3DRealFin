@@ -34,10 +34,8 @@ namespace ya
 	{
 	}
 
-	void Collider2D::FixedUpdate()
+	void Collider2D::CollisionUpdate()
 	{
-		if (!mbActive)
-			return;
 		Vector3 scale = mTransform->GetScale();
 		scale *= Vector3(mSize.x, mSize.y, mSize.z);
 
@@ -48,26 +46,34 @@ namespace ya
 		Vector3 colliderPos = position + Vector3(mCenter.x, mCenter.y, mCenter.z);
 		mPosition = colliderPos;
 
-		Matrix scaleMatrix = Matrix::CreateScale(scale);
-		Matrix rotationMatrix;
-		rotationMatrix = Matrix::CreateRotationX(rotation.x);
-		rotationMatrix *= Matrix::CreateRotationY(rotation.y);
-		rotationMatrix *= Matrix::CreateRotationZ(rotation.z);
+		//Matrix scaleMatrix = Matrix::CreateScale(scale);
+		//Matrix rotationMatrix;
+		//rotationMatrix = Matrix::CreateRotationX(rotation.x);
+		//rotationMatrix *= Matrix::CreateRotationY(rotation.y);
+		//rotationMatrix *= Matrix::CreateRotationZ(rotation.z);
 
-		Matrix positionMatrix;
-		positionMatrix.Translation(Vector3(colliderPos.x, colliderPos.y, colliderPos.z));
+		//Matrix positionMatrix;
+		//positionMatrix.Translation(Vector3(colliderPos.x, colliderPos.y, colliderPos.z));
 
-		Matrix worldMatrix = scaleMatrix * rotationMatrix * positionMatrix;
+		//Matrix worldMatrix = scaleMatrix * rotationMatrix * positionMatrix;
 
-		DebugMesh meshAttribute = {};
-		meshAttribute.position = Vector3(colliderPos.x, colliderPos.y, colliderPos.z);
-		meshAttribute.radius = mRadius;
-		meshAttribute.rotation = rotation;
-		meshAttribute.scale = scale;
-		meshAttribute.parent = mTransform->GetParent();
-		meshAttribute.type = mType;
+		if (renderer::bEnableDebugRender)
+		{
 
-		renderer::debugMeshes.push_back(meshAttribute);
+			DebugMesh meshAttribute = {};
+			meshAttribute.position = Vector3(colliderPos.x, colliderPos.y, colliderPos.z);
+			meshAttribute.radius = mRadius;
+			meshAttribute.rotation = rotation;
+			meshAttribute.scale = scale;
+			meshAttribute.parent = mTransform->GetParent();
+			meshAttribute.type = mType;
+
+			renderer::debugMeshes.push_back(meshAttribute);
+		}
+	}
+
+	void Collider2D::FixedUpdate()
+	{
 	}
 
 	void Collider2D::Render()
@@ -126,6 +132,12 @@ namespace ya
 		{
 			script->OnTriggerExit(collider);
 		}
+	}
+
+	Vector3 Collider2D::GetWorldScale()
+	{
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		return tr->GetScale() * mSize;
 	}
 
 }

@@ -54,6 +54,21 @@ namespace ya
 		}
 	}
 
+	void Layer::CollisionUpdate()
+	{
+		for (int i = 0; i < mGameObjects.size(); i++)
+		{
+			GameObject* obj = mGameObjects[i];
+
+			if (obj == nullptr)
+				continue;
+			if (obj->GetState() != GameObject::eState::Active)
+				continue;
+
+			obj->CollisionUpdate();
+		}
+	}
+
 	void Layer::FixedUpdate()
 	{
 

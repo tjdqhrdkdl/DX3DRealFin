@@ -41,9 +41,7 @@ namespace ya
 	{
 	public:
 		static void Initialize();
-		static void Update();
-		static void FixedUpdate();
-		static void Render();
+		static void Collision();
 
 		static void CollisionLayerCheck(eLayerType left, eLayerType right, bool enable = true);
 		static void LayerCollision(class Scene* scene, eLayerType left, eLayerType right);

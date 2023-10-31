@@ -190,6 +190,8 @@ namespace ya::renderer
 
 	extern ya::GameObject* inspectorGameObject;
 
+	extern bool bEnableDebugRender;
+
 	void Initialize();
 	void Render();
 	void Release();

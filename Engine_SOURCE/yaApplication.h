@@ -11,11 +11,12 @@ namespace ya
 		Application();
 		~Application();
 
-		virtual void Initialize();
-		virtual void Update();
-		virtual void FixedUpdate();
-		virtual void Render();
-		virtual void Destroy();
+		void Initialize();
+		void Update();
+		void Collision();
+		void FixedUpdate();
+		void Render();
+		void Destroy();
 
 		// Running main engine loop
 		void Run();

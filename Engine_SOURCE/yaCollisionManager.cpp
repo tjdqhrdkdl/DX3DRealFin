@@ -10,7 +10,7 @@ namespace ya
 	void CollisionManager::Initialize()
 	{
 	}
-	void CollisionManager::Update()
+	void CollisionManager::Collision()
 	{
 		Scene* scene = SceneManager::GetActiveScene();
 		if (scene->IsObjectsPosed())
@@ -27,12 +27,7 @@ namespace ya
 			}
 		}
 	}
-	void CollisionManager::FixedUpdate()
-	{
-	}
-	void CollisionManager::Render()
-	{
-	}
+
 	void CollisionManager::CollisionLayerCheck(eLayerType left, eLayerType right, bool enable)
 	{
 		int row = 0;

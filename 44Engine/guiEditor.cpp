@@ -27,7 +27,7 @@ namespace gui
 {
 	void Editor::Initialize()
 	{
-		mEnable = false;
+		mEnable = true;
 
 		if (mEnable == false)
 			return;
@@ -141,10 +141,14 @@ namespace gui
 			obj->Render();
 		}
 
-		for ( DebugMesh& mesh : ya::renderer::debugMeshes)
+		if (ya::renderer::bEnableDebugRender)
 		{
-			DebugRender(mesh);
+			for (DebugMesh& mesh : ya::renderer::debugMeshes)
+			{
+				DebugRender(mesh);
+			}
 		}
+
 		ya::renderer::debugMeshes.clear();
 	}
 

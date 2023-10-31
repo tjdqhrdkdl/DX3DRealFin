@@ -38,6 +38,13 @@ namespace ya
 		if(!mbObjectsPosed)
 			mbObjectsPosed = true;
 	}
+	void Scene::CollisionUpdate()
+	{
+		for (Layer& layer : mLayers)
+		{
+			layer.CollisionUpdate();
+		}
+	}
 	void Scene::FixedUpdate()
 	{
 		for (Layer& layer : mLayers)

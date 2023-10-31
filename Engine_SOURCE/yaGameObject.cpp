@@ -74,6 +74,18 @@ namespace ya
 		}
 	}
 
+	void GameObject::CollisionUpdate()
+	{
+		Collider2D* col = GetComponent<Collider2D>();
+		if (col)
+		{
+			if (col->IsActive())
+			{
+				col->CollisionUpdate();
+			}
+		}
+	}
+
 	void GameObject::FixedUpdate()
 	{
 		for (Component* comp : mComponents)

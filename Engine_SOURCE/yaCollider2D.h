@@ -10,8 +10,10 @@ namespace ya
 		Collider2D();
 		~Collider2D();
 		
+
 		virtual void Initialize() override;
 		virtual void Update() override;
+		void CollisionUpdate();
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
@@ -32,6 +34,7 @@ namespace ya
 		UINT GetID() { return mID; }
 		Vector3 GetPosition() { return mPosition; }
 		Vector3 GetSize() { return mSize; }
+		Vector3 GetWorldScale();
 		Vector3 GetCenter() { return mCenter; }
 		eColliderType GetColliderType() { return mType; }
 

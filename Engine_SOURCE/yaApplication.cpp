@@ -46,14 +46,19 @@ namespace ya
 	{
 		Time::Update();
 		Input::Update();
-		CollisionManager::Update();
+		
 		SceneManager::Update();
+	}
+
+	void Application::Collision()
+	{
+		SceneManager::CollisionUpdate();
+		CollisionManager::Collision();
 	}
 
 	// GPU update
 	void Application::FixedUpdate()
 	{
-		CollisionManager::FixedUpdate();
 		SceneManager::FixedUpdate();
 	}
 
@@ -64,7 +69,6 @@ namespace ya
 		//graphicDevice->Clear();
 		graphicDevice->AdjustViewPorts();
 		renderer::ClearRenderTargets();
-
 		
 		renderer::Render();
 	}
@@ -78,6 +82,7 @@ namespace ya
 	void Application::Run()
 	{
 		Update();
+		Collision();
 		FixedUpdate();
 		Render();
 		Destroy();
