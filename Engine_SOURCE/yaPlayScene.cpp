@@ -227,7 +227,7 @@ namespace ya
 
 
 		{
-			object::Instantiate<MapCollider>(eLayerType::Ground, this);
+			//object::Instantiate<MapCollider>(eLayerType::Ground, this);
 		}
 
 		{
