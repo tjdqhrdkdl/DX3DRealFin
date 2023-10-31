@@ -200,10 +200,14 @@ namespace ya
 		AddWallCollider(Vector3(55.50, -18.0, -19.0), Vector3(0.0, -5.0, 10.0), Vector3(1, 14.0, 9.0));
 		AddWallCollider(Vector3(53.0, -10.0, -22.0), Vector3(-10.0, -5.0, 0.0), Vector3(17.0, 10.0, 1));
 		AddWallCollider(Vector3(43.0, -6.40, -24.0), Vector3(-10.0, -5.0, 0.0), Vector3(7.0, 10.0, 1));
-		AddWallCollider(Vector3(41.50, -9.40, -13.50), Vector3(0.0, -5.0, 0.0), Vector3(1, 1, 19.0));
+		AddWallCollider(Vector3(41.50, -10.0, -13.50), Vector3(0.0, -5.0, 0.0), Vector3(1, 1, 19.0));
 		AddWallCollider(Vector3(39.0, -6.60, -3.70), Vector3(10.0, -5.0, 0.0), Vector3(3.0, 10.0, 1));
 		AddWallCollider(Vector3(40.30, -6.60, -2.0), Vector3(0.0, -5.0, 10.0), Vector3(1, 10.0, 3.0));
 
+		AddGroundCollider(Vector3(89.000, -23.000, -5.000), Vector3(-6.000, -4.000, 0), Vector3(15.000, 1.000, 25.000));
+		AddGroundCollider(Vector3(77.000, -20.000, -5.000), Vector3(1.000, 0, -14.000), Vector3(20.000, 1.000, 18.000));
+		AddGroundCollider(Vector3(43.500, -10.400, -13.000), Vector3(1.000, -5.000, -22.000), Vector3(4.000, 1.000, 9.0));
+		AddGroundCollider(Vector3(34.600, -9.500, -14.000), Vector3(0, -5.000, 0), Vector3(15.000, 1.000, 30.000));
 
 		AddGroundCollider(Vector3(97.90, -15.30, -9.10), Vector3(3.80, -5.0, -34.0), Vector3(2.20, 0.30, 10.60));
 		AddGroundCollider(Vector3(96.20, -15.30, -9.10), Vector3(-3.0, -5.0, 30.0), Vector3(1.80, 0.30, 10.60));
@@ -216,8 +220,8 @@ namespace ya
 		AddGroundCollider(Vector3(85.0, -15.30, 24.0), Vector3(0, -5.0, 2.0), Vector3(22.0, 1.0, 10.0));
 		AddGroundCollider(Vector3(72.0, -15.0, 24.0), Vector3(0, -30.0, 0), Vector3(8.0, 1.0, 10.0));
 
-		AddGroundCollider(Vector3(62.0, -15.0, -9.50), Vector3(0, -4.0, -22.0), Vector3(22.0, 1.0, 8.50));
-		AddGroundCollider(Vector3(49.70, -11.0, -12.50), Vector3(0, -5.0, 0), Vector3(11.0, 1.0, 24.0));
+		AddGroundCollider(Vector3(62.0, -15.0, -9.50), Vector3(0, -4.0, -22.0), Vector3(19.0, 1.0, 8.50));
+		AddGroundCollider(Vector3(45.5, -11.0, -12.50), Vector3(0, -5.0, 0), Vector3(18.000, 1.0, 24.0));
 		AddGroundCollider(Vector3(49.0, -11.0, 4.50), Vector3(0, -6.0, 0), Vector3(15.0, 1.0, 15.0));
 		AddGroundCollider(Vector3(58.0, -8.50, 6.0), Vector3(0, -20.0, 15.0), Vector3(18.0, 1.0, 10.0));
 		AddGroundCollider(Vector3(68.0, -6.50, 8.0), Vector3(-4.0, -20.0, 10.0), Vector3(10.0, 1.0, 10.0));
