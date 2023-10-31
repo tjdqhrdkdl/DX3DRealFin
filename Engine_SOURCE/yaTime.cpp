@@ -28,6 +28,13 @@ namespace ya
             = static_cast<float>((mCurFrequency.QuadPart - mPrevFrequency.QuadPart));
 
         mDeltaTime = differenceInFrequancy / static_cast<float>(mCpuFrequency.QuadPart);
+        if (mDeltaTime > 0.5f)
+        {
+            constexpr float fps30 = 1.f / 30.f;
+            mDeltaTime = fps30;
+        }
+
+
         mPrevFrequency.QuadPart = mCurFrequency.QuadPart;
     }
 
