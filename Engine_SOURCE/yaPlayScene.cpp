@@ -58,7 +58,8 @@ namespace ya
 
 
 		Player* player = object::Instantiate<Player>(eLayerType::Player, this);
-		player->GetComponent<Transform>()->SetPosition(Vector3(190.f, -28.6f, 88.0f));
+		player->GetComponent<Transform>()->SetPosition(Vector3(190.0f, -28.0f, 86.0f));
+		player->GetComponent<Transform>()->SetRotation(Vector3(0.0f, -150.0f, 0.0f));
 		player->GetComponent<Transform>()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 
 		AudioListener* audioComp = player->AddComponent<AudioListener>();
@@ -86,20 +87,6 @@ namespace ya
 			
 		}
 
-
-		/*{
-			GameObject* player = object::Instantiate<GameObject>(eLayerType::Monster);
-			player->GetComponent<Transform>()->SetPosition(Vector3(-25.0f, 10.0f, 0.0f));
-			player->GetComponent<Transform>()->SetScale(Vector3(10.0f, 10.0f, 10.0f));
-			player->SetName(L"PPP");
-			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			
-			std::shared_ptr<Material> mat = Resources::Find<Material>(L"SpriteMaterial");
-			mr->SetMaterial(mat, 0);
-			mat->SetTexture(eTextureSlot::Albedo, Resources::Find<Texture>(L"ShadowMapTarget"));
-		}*/
-
 		{
 			GameObject* skyBox = object::Instantiate<GameObject>(eLayerType::None, this);
 
@@ -110,23 +97,6 @@ namespace ya
 			mr->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SkyBoxMaterial"), 0);
 		}
-
-
-		{
-			//GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
-			//ground->SetName(L"Ground");
-			//Transform* groundTr = ground->GetComponent<Transform>();
-			//groundTr->SetPosition(Vector3(0.0f, -11.0f, 10.0f));
-			//groundTr->SetScale(Vector3(1000.0f, 4.0f, 1000.0f));
-			//groundTr->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			//groundCollider->SetType(eColliderType::Box);
-			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-		}
-
 
 		/*{
 			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
@@ -232,10 +202,10 @@ namespace ya
 		}
 
 		{
-			//MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
-			//Transform* objTransform = obj->GetComponent<Transform>();
-			//objTransform->SetPosition(-85.f, 35.f, 130.f);
-			//objTransform->SetRotation(-90.f, 0.f, 0.f);
+			/*MapObjects* obj = object::Instantiate<MapObjects>(eLayerType::None, this);
+			Transform* objTransform = obj->GetComponent<Transform>();
+			objTransform->SetPosition(-85.f, 35.f, 130.f);
+			objTransform->SetRotation(-90.f, 0.f, 0.f);*/
 		}
 		{
 			GameObject* trObj = object::Instantiate<GameObject>(eLayerType::None, this);
@@ -251,10 +221,29 @@ namespace ya
 
 
 		//Resources::Load<MeshData>(L"test", L"Player/Mesh/o000100.fbx");
-		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(173.6f, -36.0f, 66.0f)));/*
-		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(173.6f, -36.0f, 66.0f)));
-		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(138.5f, -32.0f, 35.0f)));
-		mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(136.1f, -23.5f, 47.5f)));*/
+
+
+		// 1
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(180.0f, -33.0f, 70.0f)));		// 싸움
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(169.0f, -31.0f, 65.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
+		
+		// 2
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(150.0f, -22.0f, 25.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
+		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(128.0f, -21.0f, 33.0f)));
+
+		// 3
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(105.0f, -22.0f, 18.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(86.0f, -15.0f, 12.0f)));
+		mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(85.0f, -28.0f, 9.0f)));
+		mMonsters.push_back(object::Instantiate<SwordMan>(eLayerType::Monster, this, Vector3(74.0f, -9.0f, 9.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(45.0f, -6.0f, -2.0f)));
+
+		// 4
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(25.0f, 4.0f, 138.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(-8.0f, -2.0f, -7.0f)));
+		mMonsters.push_back(object::Instantiate<AshinaSpearMan>(eLayerType::Monster, this, Vector3(-1.0f, -6.0f, 39.0f)));
+		mMonsters.push_back(object::Instantiate<Tenzen>(eLayerType::Monster, this, Vector3(6.0f, 8.0f, -2.0f)));
+
 
 		Scene::Initialize();
 	}
@@ -270,6 +259,12 @@ namespace ya
 		{
 			Reset();
 		}
+
+		if (Input::GetKeyDown(eKeyCode::N_1))
+		{
+			GetPlayer()->GetComponent<Transform>()->SetPosition(GetPlayer()->GetCamera()->GetComponent<Transform>()->GetPosition());
+		}
+
 
 		bool bgmVolUp = false;
 		for (UINT i = 0; i < mMonsters.size(); i++)
