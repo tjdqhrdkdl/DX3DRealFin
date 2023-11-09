@@ -36,7 +36,7 @@ namespace ya
 	{
 		auto InGameUITex = Resources::Load<Texture>(L"InGameMainHUDTexture", L"Texture\\UI\\SB_In_Game.png");
 		assert(nullptr != InGameUITex);
-		MeshRenderer* meshRenderer = GetComponent<MeshRenderer>();
+		MeshRenderer* meshRenderer = GetRenderer<MeshRenderer>();
 		meshRenderer->GetMaterial(0u)->SetTexture((eTextureSlot)InGameUITextures::HUD_Player, InGameUITex);
 
 		UICanvasObj::AddUIInfo(UI::InGame::HPBar_BackGround, InGameUITextures::HUD_Player, Vector2(1512.f, 1974.f), Vector2(1890.f, 2013.f));

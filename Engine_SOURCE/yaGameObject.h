@@ -1,6 +1,7 @@
 #pragma once
 #include "yaComponent.h"
 #include "yaScript.h"
+#include "yaBaseRenderer.h"
 #include "yaEntity.h"
 
 namespace ya
@@ -32,15 +33,22 @@ namespace ya
 			T* comp = new T();
 			eComponentType order = comp->GetOrder();
 
-			if (order != eComponentType::Script)
+			if (order == eComponentType::Script)
 			{
-				mComponents[(UINT)order] = comp;
-				mComponents[(UINT)order]->SetOwner(this);
+
+				mScripts.push_back(dynamic_cast<Script*>(comp));
+				comp->SetOwner(this);
+			}
+			else if (order == eComponentType::MeshRenderer || order == eComponentType::SpriteRenderer)
+			{
+				mRenderers.push_back(dynamic_cast<BaseRenderer*>(comp));
+				comp->SetOwner(this);
 			}
 			else
 			{
-				mScripts.push_back(dynamic_cast<Script*>(comp));
-				comp->SetOwner(this);
+
+				mComponents[(UINT)order] = comp;
+				mComponents[(UINT)order]->SetOwner(this);
 			}
 
 			comp->Initialize();
@@ -94,6 +102,20 @@ namespace ya
 
 			return nullptr;
 		}
+		template <typename T>
+		T* GetRenderer()
+		{
+			T* renderer;
+			for (auto c : mRenderers)
+			{
+				renderer = dynamic_cast<T*>(c);
+
+				if (renderer != nullptr)
+					return renderer;
+			}
+
+			return nullptr;
+		}
 
 		const std::vector<Script*>& GetScripts() { return mScripts; }
 
@@ -125,6 +147,7 @@ namespace ya
 		eState mState;
 		eLayerType mType;
 		std::vector<Script*> mScripts;
+		std::vector<BaseRenderer*> mRenderers;
 		bool mbDontDestroy;
 		Scene* mScene;
 

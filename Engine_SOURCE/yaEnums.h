@@ -40,6 +40,7 @@ namespace ya::enums
 		Rigidbody,
 		Collider,
 		//Collider2,
+		BaseRenderer,
 		MeshRenderer,
 		SpriteRenderer,
 		Animator,

@@ -118,17 +118,17 @@ namespace ya
 
 
 		//칼과 손잡이 찾아두기
-		std::vector<GameObject*> childObjects = mMeshData->GetChildObjects();
-		std::vector<std::vector<std::shared_ptr<Material>>> materials = mMeshData->GetMaterialsVec();
-		for (size_t i = 0; i < materials.size(); i++)
-		{
-			if (materials[i][0]->GetName() == L"#04#")
-				mKatanaObjectTr = childObjects[i]->GetComponent<Transform>();
-			if (materials[i][0]->GetName() == L"#06#")
-				mKatanaHandleObjectTr = childObjects[i]->GetComponent<Transform>();
-		}
-		if(mKatanaObjectTr)
-			mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+		//std::vector<GameObject*> childObjects = mMeshData->GetChildObjects();
+		//std::vector<std::vector<std::shared_ptr<Material>>> materials = mMeshData->GetMaterialsVec();
+		//for (size_t i = 0; i < materials.size(); i++)
+		//{
+		//	if (materials[i][0]->GetName() == L"#04#")
+		//		mKatanaObjectTr = childObjects[i]->GetComponent<Transform>();
+		//	if (materials[i][0]->GetName() == L"#06#")
+		//		mKatanaHandleObjectTr = childObjects[i]->GetComponent<Transform>();
+		//}
+		//if(mKatanaObjectTr)
+		//	mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
 		
 
 		//오디오 클립 로드
@@ -325,8 +325,8 @@ namespace ya
 	void Tenzen::Reset()
 	{
 		RM_STATE(MonsterState_DrawSword);
-		mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
-		mKatanaHandleObjectTr->SetScale(Vector3(1, 1, 1));
+		//mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+		//mKatanaHandleObjectTr->SetScale(Vector3(1, 1, 1));
 		MonsterBase::Reset();
 	}
 	void Tenzen::Idle()
@@ -485,8 +485,8 @@ namespace ya
 			SetRecognize(false);
 			mState = 0;
 			ADD_STATE(MonsterState_Idle);
-			mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
-			mKatanaHandleObjectTr->SetScale(Vector3(1, 1, 1));
+			//mKatanaObjectTr->SetScale(Vector3(0, 0, 0));
+			//mKatanaHandleObjectTr->SetScale(Vector3(1, 1, 1));
 			return;
 		}
 
@@ -726,8 +726,8 @@ namespace ya
 		//End Event 는 애니메이션이 종료 또는 Complete될 때 생기는 이벤트
 		//Start Event 는 애니메이션이 다른 애니메이션으로 전환되며 새로운 애니메이션이 시작할 때 생기는 이벤트
 		mMeshData->GetAnimationFrameEvent(L"DrawSword", 20) = [this]() {
-		mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
-		mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0));
+		//mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
+		//mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0));
 		};
 
 		mMeshData->GetAnimationEndEvent(L"DrawSword") = std::bind(&Tenzen::DrawSwordEndEvent, this);
@@ -953,8 +953,8 @@ namespace ya
 	void Tenzen::DrawSwordEndEvent()
 	{
 		ADD_STATE(MonsterState_DrawSword);
-		mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
-		mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0));
+		//mKatanaObjectTr->SetScale(Vector3(1, 1, 1));
+		//mKatanaHandleObjectTr->SetScale(Vector3(0, 0, 0));
 		//ADD_STATE(MonsterState_Guard);
 	}
 	void Tenzen::DefenseEndEvent()

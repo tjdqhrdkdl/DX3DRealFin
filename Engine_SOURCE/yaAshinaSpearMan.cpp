@@ -185,45 +185,45 @@ namespace ya
 		animator->SetAnimationTailTime(0.1f);
 
 
-		std::vector<GameObject*> childObjects = mMeshData->GetChildObjects();
-		std::vector<std::vector<std::shared_ptr<Material>>> materials = mMeshData->GetMaterialsVec();
-		for (size_t i = 0; i < materials.size(); i++)
-		{
-			if (materials[i][0]->GetName() == L"#22#.001")
-				mHat.push_back(childObjects[i]->GetComponent<Transform>());
-			if (materials[i][0]->GetName() == L"#23#")
-				mStraw.push_back(childObjects[i]->GetComponent<Transform>());
-			if (materials[i][0]->GetName() == L"#18#")
-				mAccessories.push_back(childObjects[i]->GetComponent<Transform>());
-			if (materials[i][0]->GetName() == L"#11#")
-				mArmor.push_back(childObjects[i]->GetComponent<Transform>());
-			if (materials[i][0]->GetName() == L"#00#")
-				mBaseSword.push_back(childObjects[i]->GetComponent<Transform>());
-			if (materials[i][0]->GetName() == L"#01#")
-				mBaseSwordInScabbard.push_back(childObjects[i]->GetComponent<Transform>());
-			if (materials[i][0]->GetName() == L"#04#")
-				mSpear.push_back(childObjects[i]->GetComponent<Transform>());
+		//std::vector<GameObject*> childObjects = mMeshData->GetChildObjects();
+		//std::vector<std::vector<std::shared_ptr<Material>>> materials = mMeshData->GetMaterialsVec();
+		//for (size_t i = 0; i < materials.size(); i++)
+		//{
+		//	if (materials[i][0]->GetName() == L"#22#.001")
+		//		mHat.push_back(childObjects[i]->GetComponent<Transform>());
+		//	if (materials[i][0]->GetName() == L"#23#")
+		//		mStraw.push_back(childObjects[i]->GetComponent<Transform>());
+		//	if (materials[i][0]->GetName() == L"#18#")
+		//		mAccessories.push_back(childObjects[i]->GetComponent<Transform>());
+		//	if (materials[i][0]->GetName() == L"#11#")
+		//		mArmor.push_back(childObjects[i]->GetComponent<Transform>());
+		//	if (materials[i][0]->GetName() == L"#00#")
+		//		mBaseSword.push_back(childObjects[i]->GetComponent<Transform>());
+		//	if (materials[i][0]->GetName() == L"#01#")
+		//		mBaseSwordInScabbard.push_back(childObjects[i]->GetComponent<Transform>());
+		//	if (materials[i][0]->GetName() == L"#04#")
+		//		mSpear.push_back(childObjects[i]->GetComponent<Transform>());
 
 
-			if (materials[i][0]->GetName() == L"#02#")//ShortSword
-				childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
-			if (materials[i][0]->GetName() == L"#05#")//gun
-				childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
-			if (materials[i][0]->GetName() == L"#06#")//stick
-				childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
-			if (materials[i][0]->GetName() == L"#07#")//stone
-				childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
-			if (materials[i][0]->GetName() == L"#30#")//Scabbard
-				childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
-		}
-		for (size_t i = 0; i < mSpear.size(); i++)
-		{
-			mBaseSword[i]->SetScale(Vector3::Zero);
-		}
-		for (size_t i = 0; i < mBaseSwordInScabbard.size(); i++)
-		{
-			mBaseSwordInScabbard[i]->SetScale(Vector3::Zero);
-		}
+		//	if (materials[i][0]->GetName() == L"#02#")//ShortSword
+		//		childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
+		//	if (materials[i][0]->GetName() == L"#05#")//gun
+		//		childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
+		//	if (materials[i][0]->GetName() == L"#06#")//stick
+		//		childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
+		//	if (materials[i][0]->GetName() == L"#07#")//stone
+		//		childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
+		//	if (materials[i][0]->GetName() == L"#30#")//Scabbard
+		//		childObjects[i]->GetComponent<Transform>()->SetScale(Vector3::Zero);
+		//}
+		//for (size_t i = 0; i < mSpear.size(); i++)
+		//{
+		//	mBaseSword[i]->SetScale(Vector3::Zero);
+		//}
+		//for (size_t i = 0; i < mBaseSwordInScabbard.size(); i++)
+		//{
+		//	mBaseSwordInScabbard[i]->SetScale(Vector3::Zero);
+		//}
 
 		//SetPlayerObject(dynamic_cast<Player*>(SceneManager::GetActiveScene()->GetPlayer()));
 		SetPlayerObject(dynamic_cast<Player*>(GetScene()->GetPlayer()));
@@ -1186,66 +1186,66 @@ namespace ya
 	}
 	void AshinaSpearMan::SetStyle(UINT style)
 	{
-		// 낭인 스타일
-		if (style == 0)
-		{
-			for (size_t i = 0; i < mHat.size(); i++)
-			{
-				mHat[i]->SetScale(Vector3::One);
-			}
-			for (size_t i = 0; i < mArmor.size(); i++)
-			{
-				mArmor[i]->SetScale(Vector3::One);
-			}
-			for (size_t i = 0; i < mStraw.size(); i++)
-			{
-				mStraw[i]->SetScale(Vector3::One);
-			}
-			for (size_t i = 0; i < mAccessories.size(); i++)
-			{
-				mAccessories[i]->SetScale(Vector3::One);
-			}
-		}
-		// 제일 약한 잡몹 스타일
-		else if (style == 1)
-		{
-			for (size_t i = 0; i < mHat.size(); i++)
-			{
-				mHat[i]->SetScale(Vector3::Zero);
-			}
-			for (size_t i = 0; i < mArmor.size(); i++)
-			{
-				mArmor[i]->SetScale(Vector3::Zero);
-			}
-			for (size_t i = 0; i < mStraw.size(); i++)
-			{
-				mStraw[i]->SetScale(Vector3::Zero);
-			}
-			for (size_t i = 0; i < mAccessories.size(); i++)
-			{
-				mAccessories[i]->SetScale(Vector3::Zero);
-			}
-		}
+		//// 낭인 스타일
+		//if (style == 0)
+		//{
+		//	for (size_t i = 0; i < mHat.size(); i++)
+		//	{
+		//		mHat[i]->SetScale(Vector3::One);
+		//	}
+		//	for (size_t i = 0; i < mArmor.size(); i++)
+		//	{
+		//		mArmor[i]->SetScale(Vector3::One);
+		//	}
+		//	for (size_t i = 0; i < mStraw.size(); i++)
+		//	{
+		//		mStraw[i]->SetScale(Vector3::One);
+		//	}
+		//	for (size_t i = 0; i < mAccessories.size(); i++)
+		//	{
+		//		mAccessories[i]->SetScale(Vector3::One);
+		//	}
+		//}
+		//// 제일 약한 잡몹 스타일
+		//else if (style == 1)
+		//{
+		//	for (size_t i = 0; i < mHat.size(); i++)
+		//	{
+		//		mHat[i]->SetScale(Vector3::Zero);
+		//	}
+		//	for (size_t i = 0; i < mArmor.size(); i++)
+		//	{
+		//		mArmor[i]->SetScale(Vector3::Zero);
+		//	}
+		//	for (size_t i = 0; i < mStraw.size(); i++)
+		//	{
+		//		mStraw[i]->SetScale(Vector3::Zero);
+		//	}
+		//	for (size_t i = 0; i < mAccessories.size(); i++)
+		//	{
+		//		mAccessories[i]->SetScale(Vector3::Zero);
+		//	}
+		//}
 
-		// 강한몹 스타일
-		else
-		{
-			for (size_t i = 0; i < mHat.size(); i++)
-			{
-				mHat[i]->SetScale(Vector3::One);
-			}
-			for (size_t i = 0; i < mArmor.size(); i++)
-			{
-				mArmor[i]->SetScale(Vector3::One);
-			}
-			for (size_t i = 0; i < mStraw.size(); i++)
-			{
-				mStraw[i]->SetScale(Vector3::Zero);
-			}
-			for (size_t i = 0; i < mAccessories.size(); i++)
-			{
-				mAccessories[i]->SetScale(Vector3::Zero);
-			}
-		}
+		//// 강한몹 스타일
+		//else
+		//{
+		//	for (size_t i = 0; i < mHat.size(); i++)
+		//	{
+		//		mHat[i]->SetScale(Vector3::One);
+		//	}
+		//	for (size_t i = 0; i < mArmor.size(); i++)
+		//	{
+		//		mArmor[i]->SetScale(Vector3::One);
+		//	}
+		//	for (size_t i = 0; i < mStraw.size(); i++)
+		//	{
+		//		mStraw[i]->SetScale(Vector3::Zero);
+		//	}
+		//	for (size_t i = 0; i < mAccessories.size(); i++)
+		//	{
+		//		mAccessories[i]->SetScale(Vector3::Zero);
+		//	}
+		//}
 	}
 }

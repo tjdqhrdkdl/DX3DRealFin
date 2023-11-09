@@ -88,7 +88,7 @@ namespace ya
 		}
 
 
-		MeshRenderer* renderer = GetComponent<MeshRenderer>();
+		MeshRenderer* renderer = GetRenderer<MeshRenderer>();
 		assert(renderer);
 		std::shared_ptr<Material> mtrl = renderer->GetMaterial(0);
 		assert(mtrl.get());
