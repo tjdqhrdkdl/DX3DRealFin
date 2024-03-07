@@ -269,7 +269,7 @@ namespace ya
 		direction.Normalize();
 		std::vector<eLayerType> layers = {};
 		layers.push_back(eLayerType::Ground);
-		//layers.push_back(eLayerType::Wall);
+		layers.push_back(eLayerType::Wall);
 		RayHit hit = CollisionManager::RayCast(mPlayerTarget, mDelayedTargetPos, direction, layers);
 		if (hit.isHit)
 		{

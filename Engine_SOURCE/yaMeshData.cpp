@@ -639,15 +639,18 @@ namespace ya
 			meshObject = object::Instantiate<MeshObject>(type, scene);	
 
 		meshObject->SetName(objName + L".All");
+
+		GameObject* gameObj = nullptr;
+		if (scene == nullptr)
+			gameObj = object::Instantiate<GameObject>(type);
+		else
+			gameObj = object::Instantiate<GameObject>(type, scene);
+		gameObj->SetName(objName);
+		meshObject->PushBackObject(gameObj);
+		mChildObjects.push_back(gameObj);
+
 		for (size_t i = 0; i < mMeshes.size(); i++)
 		{
-			GameObject* gameObj = nullptr;
-			if (scene == nullptr)
-				gameObj = object::Instantiate<GameObject>(type);
-			else
-				gameObj = object::Instantiate<GameObject>(type, scene);
-
-			gameObj->SetName(objName +L"." + std::to_wstring(i));
 			MeshRenderer* mr = gameObj->AddComponent<MeshRenderer>();
 			mr->SetMesh(mMeshes[i]);
 			mMeshes[i]->SetParentMeshData(this);
@@ -656,23 +659,14 @@ namespace ya
 			{
 				mr->SetMaterial(mMaterialsVec[i][k], (int)k);
 			}
+		}
 
-			meshObject->PushBackObject(gameObj);
-			mChildObjects.push_back(gameObj);
-
-			if (mAnimationData != nullptr || mAnimationClipCount > 0)
-			{
-				BoneAnimator* animator = gameObj->AddComponent<BoneAnimator>();
-
-				if (i == 0)
-				{
-					mRepresentBoneAnimator = animator;		
-					animator->SetBones(GetBones());
-					animator->SetAnimaitionClip(GetAnimClips());
-				}
-				else
-					animator->SetParentAnimator(mRepresentBoneAnimator);
-			}
+		if (mAnimationData != nullptr || mAnimationClipCount > 0)
+		{
+			BoneAnimator* animator = gameObj->AddComponent<BoneAnimator>();
+			mRepresentBoneAnimator = animator;
+			animator->SetBones(GetBones());
+			animator->SetAnimaitionClip(GetAnimClips());
 		}
 
 		if(mbBoundarySphere)

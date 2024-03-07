@@ -196,9 +196,6 @@
     <ClCompile Include="yaMeshObject.cpp">
       <Filter>Engine\Resource\MeshData</Filter>
     </ClCompile>
-    <ClCompile Include="yaStructedBuffer.cpp">
-      <Filter>Engine\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="yaMultiRenderTarget.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
@@ -397,7 +394,6 @@
     <ClCompile Include="yaMonsterUI.cpp">
       <Filter>Contents\Monster\UI</Filter>
     </ClCompile>
-    <ClCompile Include="yaImageScript.cpp" />
     <ClCompile Include="yaPlayerDagerUIScript.cpp">
       <Filter>Contents\Player\UI</Filter>
     </ClCompile>
@@ -408,6 +404,10 @@
       <Filter>Contents\Player\UI</Filter>
     </ClCompile>
     <ClCompile Include="yaAlertnessUIScript.cpp" />
+    <ClCompile Include="yaImageScript.cpp" />
+    <ClCompile Include="yaStructedBuffer.cpp">
+      <Filter>Engine\Graphics\Buffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="yaMath.h">

@@ -153,7 +153,7 @@ namespace ya
 
 			// Bone Data
 			GameObject* gameObj = GetOwner();
-			MeshRenderer* mr = gameObj->GetComponent<MeshRenderer>();
+			MeshRenderer* mr = gameObj->GetRenderer<MeshRenderer>();
 			std::shared_ptr<Mesh> mesh = mr->GetMesh();
 
 			CheckBone();
@@ -262,7 +262,7 @@ namespace ya
 		mBoneMatrixBuffer->Clear();
 
 		GameObject* gameObj = GetOwner();
-		MeshRenderer* mr = gameObj->GetComponent<MeshRenderer>();
+		MeshRenderer* mr = gameObj->GetRenderer<MeshRenderer>();
 		UINT iMtrlCount = mr->GetMaterialCount();
 		std::shared_ptr<Material> pMtrl = nullptr;
 		for (UINT i = 0; i < iMtrlCount; ++i)

@@ -115,21 +115,6 @@ namespace ya
 		}*/
 
 		{
-			//GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
-			//ground->SetName(L"Ground2");
-			//Transform* groundTr = ground->GetComponent<Transform>();
-			//groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
-			//groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
-			//groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
-			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			//groundCollider->SetType(eColliderType::Box);
-			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
-		}
-
-		{
 			GameObject* directionalLight = object::Instantiate<GameObject>(eLayerType::None, this);
 			directionalLight->SetName(L"directionalLight");
 
@@ -145,18 +130,18 @@ namespace ya
 
 
 		{
-			//GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
-			//ground->SetName(L"Ground2");
-			//Transform* groundTr = ground->GetComponent<Transform>();
-			//groundTr->SetPosition(Vector3(100.0f, -5.0f, -15.0f));
-			//groundTr->SetScale(Vector3(20.0f, 1.0f, 30.0f));
-			//groundTr->SetRotation(Vector3(-30.0f, 0.0f, 0.0f));
-			////MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
-			////groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
-			////groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
-			//Collider2D* groundCollider = ground->AddComponent<Collider2D>();
-			//groundCollider->SetType(eColliderType::Box);
-			//groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
+			GameObject* ground = object::Instantiate<GameObject>(eLayerType::Ground, this);
+			ground->SetName(L"Ground2");
+			Transform* groundTr = ground->GetComponent<Transform>();
+			groundTr->SetPosition(Vector3(100.0f, -50.0f, -15.0f));
+			groundTr->SetScale(Vector3(2000.0f, 1.0f, 3000.0f));
+			groundTr->SetRotation(Vector3(0, 0.0f, 0.0f));
+			//MeshRenderer* groundRenderer = ground->AddComponent<MeshRenderer>();
+			//groundRenderer->SetMesh(Resources::Find<Mesh>(L"CubeMesh"));
+			//groundRenderer->SetMaterial(Resources::Find<Material>(L"BasicMaterial"), 0);
+			Collider2D* groundCollider = ground->AddComponent<Collider2D>();
+			groundCollider->SetType(eColliderType::Box);
+			groundCollider->SetSize(Vector3(1.0, 1.0f, 1.0f));
 		}
 
 		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Player, true);
@@ -225,7 +210,7 @@ namespace ya
 
 		// 1
 		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(180.0f, -33.0f, 70.0f)));		// 싸움
-		//mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(169.0f, -31.0f, 65.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
+		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(169.0f, -31.0f, 65.0f), Vector3(0.0f, 180.0f, 0.0f)));	// 암살
 		
 		// 2
 		mMonsters.push_back(object::Instantiate<AshinaSoldier>(eLayerType::Monster, this, Vector3(128.0f, -21.0f, 33.0f), Vector3(0.0f, 30.0f, 0.0f)));

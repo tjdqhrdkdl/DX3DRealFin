@@ -6,6 +6,11 @@ namespace ya
 
 
 
+	BaseRenderer::BaseRenderer()
+		: Component(eComponentType::BaseRenderer)
+	{
+	}
+
 	BaseRenderer::BaseRenderer(eComponentType type)
 		: Component(type)
 	{

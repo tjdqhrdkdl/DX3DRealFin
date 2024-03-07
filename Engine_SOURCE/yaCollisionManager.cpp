@@ -366,7 +366,6 @@ namespace ya
 
 			return true;
 		}
-		// 숙제 Circle vs Cirlce
 		else
 			return false;
 	}

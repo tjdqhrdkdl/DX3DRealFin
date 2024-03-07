@@ -208,7 +208,6 @@ namespace ya
 			mParticleObject= object::Instantiate<GameObject>(eLayerType::Particle, GetScene());
 			mParticleObject->SetName(L"particle");
 			mParticleObject->AddComponent<ParticleSystem>();
-			
 		}
 	}
 
@@ -286,7 +285,7 @@ namespace ya
 	void Player::ParryEffectOn()
 	{
 		mParryEffect->UIOn();
-		ParticleSystem* particleSys = mParticleObject->GetComponent<ParticleSystem>();
+		ParticleSystem* particleSys = mParticleObject->GetRenderer<ParticleSystem>();
 		particleSys->ParticleOn();
 		particleSys->SetParticleNum(100);
 

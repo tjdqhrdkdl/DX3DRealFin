@@ -51,7 +51,7 @@ namespace ya
 		CreateViewMatrix();
 		CreateProjectionMatrix();
 		//절두체 구성
-		mFrustum.ConstructFrustum(1000.0f,mProjection,mView);
+		mFrustum.ConstructFrustum(55.5f,mProjection,mView);
 
 		RegisterCameraInRenderer();
 	}
@@ -263,8 +263,8 @@ namespace ya
 							continue;
 						}
 					}
-
-					pushGameObjectToRenderingModes(obj);
+					else
+						pushGameObjectToRenderingModes(obj);
 				}
 			}
 		}
@@ -373,8 +373,10 @@ namespace ya
 
 	void Camera::pushGameObjectToRenderingModes(GameObject* gameObj)
 	{
+		if (gameObj->GetLayerType() == eLayerType::Particle)
+			int a = 0;
 		BaseRenderer* renderer
-			= gameObj->GetComponent<BaseRenderer>();
+			= gameObj->GetRenderer<BaseRenderer>();
 		if (renderer == nullptr)
 			return;
 

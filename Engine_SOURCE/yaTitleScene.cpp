@@ -15,11 +15,13 @@
 #include "yaGridScript.h"
 #include "yaAudioListener.h"
 #include "yaAudioClip.h"
+#include "yaTime.h"
 
 namespace ya
 {
 	TitleScene::TitleScene()
 		: Scene(eSceneType::Title)
+		, mTime(0)
 	{
 
 	}
@@ -125,12 +127,12 @@ namespace ya
 
 	void TitleScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::SPACE) || Input::GetKeyDown(eKeyCode::ENTER))
+		if (Input::GetKeyDown(eKeyCode::SPACE) || Input::GetKeyDown(eKeyCode::ENTER) || mTime >= 7)
 		{
 			SceneManager::LoadScene(eSceneType::Loading);
 		}
 
-
+		mTime += Time::DeltaTime();
 		Scene::Update();
 	}
 

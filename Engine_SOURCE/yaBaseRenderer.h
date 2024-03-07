@@ -8,6 +8,7 @@ namespace ya
 	class BaseRenderer : public Component
 	{
 	public:
+		BaseRenderer();
 		BaseRenderer(eComponentType type);
 		virtual ~BaseRenderer();
 

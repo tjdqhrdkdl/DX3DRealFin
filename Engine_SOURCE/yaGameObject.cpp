@@ -33,6 +33,15 @@ namespace ya
 			delete scrComp;
 			scrComp = nullptr;
 		}
+
+		for (Component* renderer : mRenderers)
+		{
+			if (renderer == nullptr)
+				continue;
+
+			delete renderer;
+			renderer = nullptr;
+		}
 	}
 
 	void GameObject::Initialize()
@@ -52,6 +61,13 @@ namespace ya
 
 			//script->Initialize();
 		}
+		for (Component* renderer : mRenderers)
+		{
+			if (renderer == nullptr)
+				continue;
+
+			//renderer->Update();
+		}
 
 	}
 
@@ -64,7 +80,13 @@ namespace ya
 
 			comp->Update();
 		}
+		for (Component* renderer : mRenderers)
+		{
+			if (renderer == nullptr)
+				continue;
 
+			renderer->Update();
+		}
 		for (Component* script : mScripts)
 		{
 			if (script == nullptr)
@@ -72,6 +94,8 @@ namespace ya
 
 			script->Update();
 		}
+
+
 	}
 
 	void GameObject::FixedUpdate()
@@ -83,7 +107,13 @@ namespace ya
 
 			comp->FixedUpdate();
 		}
+		for (Component* renderer : mRenderers)
+		{
+			if (renderer == nullptr)
+				continue;
 
+			renderer->FixedUpdate();
+		}
 		for (Component* script : mScripts)
 		{
 			if (script == nullptr)
@@ -91,6 +121,7 @@ namespace ya
 
 			script->FixedUpdate();
 		}
+
 	}
 
 	void GameObject::PrevRender()
@@ -115,7 +146,13 @@ namespace ya
 
 				comp->Render();
 			}
+			for (Component* renderer : mRenderers)
+			{
+				if (renderer == nullptr)
+					continue;
 
+				renderer->Render();
+			}
 			for (Component* script : mScripts)
 			{
 				if (script == nullptr)
@@ -123,6 +160,9 @@ namespace ya
 
 				script->Render();
 			}
+
+
+
 		}
 	}
 
@@ -130,15 +170,23 @@ namespace ya
 	{
 		eComponentType order = comp->GetOrder();
 
-		if (order != eComponentType::Script)
+		if (order == eComponentType::Script)
 		{
-			mComponents[(UINT)order] = comp;
-			mComponents[(UINT)order]->SetOwner(this);
+
+			mScripts.push_back(dynamic_cast<Script*>(comp));
+			comp->SetOwner(this);
+		}
+
+		else if (order == eComponentType::MeshRenderer)
+		{
+			mRenderers.push_back(dynamic_cast<BaseRenderer*>(comp));
+			comp->SetOwner(this);
 		}
 		else
 		{
-			mScripts.push_back(dynamic_cast<Script*>(comp));
-			comp->SetOwner(this);
+
+			mComponents[(UINT)order] = comp;
+			mComponents[(UINT)order]->SetOwner(this);
 		}
 	}
 }

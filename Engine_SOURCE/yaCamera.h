@@ -42,6 +42,7 @@ namespace ya
 		Matrix& GetViewMatrix() { return mView; }
 		Matrix& GetProjectionMatrix() { return mProjection; }
 
+		Frustum& GetFrustum() { return mFrustum; }
 	private:
 		void sortGameObjects();
 		void renderShadow();
