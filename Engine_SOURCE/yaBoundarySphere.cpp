@@ -21,6 +21,8 @@ namespace ya
 	}
 	void BoundarySphere::FixedUpdate()
 	{
+		
+				
 		Vector3 scale = mTransform->GetScale();
 		mMaxScale = scale.x;
 		mMaxScale = max(mMaxScale, scale.y);
@@ -45,7 +47,9 @@ namespace ya
 		mMaxScale = scale.x;
 		mMaxScale = max(mMaxScale, scale.y);
 		mMaxScale = max(mMaxScale, scale.z);
-		//renderer::debugMeshes.push_back(meshAttribute);
+		//if (mainCamera->GetFrustum().CheckSphere(mPosition.x, mPosition.y, mPosition.z, GetRadius()))
+		//	renderer::debugMeshes.push_back(meshAttribute);
+
 	}
 	void BoundarySphere::Render()
 	{

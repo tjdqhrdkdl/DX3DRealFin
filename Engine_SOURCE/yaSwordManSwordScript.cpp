@@ -21,7 +21,7 @@ namespace ya
 		{
 			Player* pl = dynamic_cast<Player*>(colObj);
 			GameObject* particleObj = pl->GetParticleObject();
-			ParticleSystem* particleSys = particleObj->GetComponent<ParticleSystem>();
+			ParticleSystem* particleSys = particleObj->GetRenderer<ParticleSystem>();
 			particleObj->GetComponent<Transform>()->SetPosition(GetOwner()->GetComponent<Transform>()->GetWorldPositioin());
 
 			particleSys->ParticleOn();

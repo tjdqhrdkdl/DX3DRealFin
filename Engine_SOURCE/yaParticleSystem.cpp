@@ -121,7 +121,7 @@ namespace ya
 	{
 		//파티클 생성 시간
 		float aliveTime = 1.0f / mFrequency;
-		//누적시간
+		//누적시간	
 		mTime += Time::DeltaTime();
 
 		if (mbParticleCreate)

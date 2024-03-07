@@ -39,7 +39,7 @@ namespace ya
 				mScripts.push_back(dynamic_cast<Script*>(comp));
 				comp->SetOwner(this);
 			}
-			else if (order == eComponentType::MeshRenderer || order == eComponentType::SpriteRenderer)
+			else if (order == eComponentType::MeshRenderer || order == eComponentType::SpriteRenderer || order == eComponentType::ParticleSystem)
 			{
 				mRenderers.push_back(dynamic_cast<BaseRenderer*>(comp));
 				comp->SetOwner(this);
@@ -136,6 +136,8 @@ namespace ya
 		void SetLayerType(eLayerType type) { mType = type; }
 
 		void SetRender(bool render) { mbRender = render; }
+		bool RenderOn() { return mbRender; }
+
 
 		Scene* GetScene() { return mScene; }
 		void SetScene(Scene* scene) { mScene = scene; }
