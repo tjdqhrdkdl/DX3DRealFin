@@ -127,7 +127,7 @@ namespace ya
 
 	void TitleScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::SPACE) || Input::GetKeyDown(eKeyCode::ENTER) || mTime >= 5)
+		if (Input::GetKeyDown(eKeyCode::SPACE) || Input::GetKeyDown(eKeyCode::ENTER) || mTime >= 7)
 		{
 			SceneManager::LoadScene(eSceneType::Loading);
 		}
